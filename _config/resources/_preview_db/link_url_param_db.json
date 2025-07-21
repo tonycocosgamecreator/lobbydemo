@@ -1,0 +1,46 @@
+{
+'name': 'link_url_param_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "id",
+        "type": "S",
+        "tsType": "string",
+        "desc": "变量的名字",
+        "verifyers": []
+    }
+],
+'datas': {
+    "language": {
+        "id": "language"
+    },
+    "token": {
+        "id": "token"
+    },
+    "api": {
+        "id": "api"
+    },
+    "gid": {
+        "id": "gid"
+    },
+    "env": {
+        "id": "env"
+    },
+    "channel": {
+        "id": "channel"
+    },
+    "inviteId": {
+        "id": "inviteId"
+    },
+    "zoneId": {
+        "id": "zoneId"
+    },
+    "return_url": {
+        "id": "return_url"
+    },
+    "player_id": {
+        "id": "player_id"
+    }
+}
+}

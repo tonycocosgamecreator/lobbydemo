@@ -1,0 +1,47 @@
+{
+'name': 'gbutton_resources_statistical_db',
+'rule': 'mm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "viewName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "界面名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "buttonName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "按钮名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "bundleName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "bundle名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 5,
+        "name": "desc",
+        "type": "S",
+        "tsType": "string",
+        "desc": "描述内容(需要手动填写）",
+        "verifyers": []
+    },
+    {
+        "originCol": 6,
+        "name": "statisticalId",
+        "type": "I",
+        "tsType": "number",
+        "desc": "统计ID",
+        "verifyers": []
+    }
+],
+'datas': {}
+}

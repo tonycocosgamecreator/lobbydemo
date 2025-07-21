@@ -1,0 +1,19 @@
+{
+	"bundles" : {
+		"resources"	: 1000
+	},
+	"configs" : {
+		"customize_statistical": {
+			"start_statistical_id": 0,
+			"end_statistical_id" : 999
+		},
+		"panel_statistical" : {
+			"start_statistical_id": 1000,
+			"end_statistical_id" : 1299
+		},
+		"gbutton_statistical": {
+			"start_statistical_id": 1300,
+			"end_statistical_id" : 9999
+		}
+	}
+}

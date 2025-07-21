@@ -1,0 +1,21 @@
+{
+  "name": "prefab-tab",
+  "version": "0.2.2",
+  "package_version": 2,
+  "description": "prefab tab",
+  "author": "嘉年华",
+  "main": "./main.js",
+  "scripts": {
+    "build": "set NODE_ENV=production webpack ./panel/hackCode.js --mode production -t node"
+  },
+  "dependencies": {
+    "vue": "^3.1.4",
+    "fs-extra": "^10.0.0"
+  },
+  "contributions": {
+    "menu": [],
+    "shortcuts": [],
+    "messages": {}
+  },
+  "_storeId": "35dd12c15dc0aa82469d2e8f424b421c"
+}

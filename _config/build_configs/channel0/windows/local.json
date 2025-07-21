@@ -1,0 +1,18 @@
+{
+    "bundles-contain": [
+        "internal",
+        "main",
+        "resources",
+        "lobby",
+        "hotupdate",
+        "nlhe",
+        "prummy"
+    ],
+    "remotes": [
+        "http://192.168.50.250:8084/app/"
+    ],
+    "platform": "windows",
+    "channel": "channel0",
+    "hotupdate_env": "local",
+    "version": "1.0.0.2"
+}

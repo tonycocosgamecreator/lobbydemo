@@ -1,0 +1,78 @@
+{
+'name': 'skin_resources_db',
+'rule': 'mm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "prefabId",
+        "type": "S",
+        "tsType": "string",
+        "desc": "预制体ID",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "nodeName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "节点名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "type",
+        "type": "I",
+        "tsType": "number",
+        "desc": "类型（0：label，1：Sprite)",
+        "verifyers": []
+    },
+    {
+        "originCol": 5,
+        "name": "bundleName",
+        "type": "S",
+        "tsType": "string",
+        "verifyers": []
+    },
+    {
+        "originCol": 6,
+        "name": "spfurl",
+        "type": "S",
+        "tsType": "string",
+        "desc": "sprite路径",
+        "verifyers": []
+    },
+    {
+        "originCol": 7,
+        "name": "isNineBox",
+        "type": "I",
+        "tsType": "number",
+        "desc": "是否使用9宫格",
+        "verifyers": []
+    },
+    {
+        "originCol": 8,
+        "name": "color",
+        "type": "S",
+        "tsType": "string",
+        "desc": "label颜色",
+        "verifyers": []
+    },
+    {
+        "originCol": 9,
+        "name": "outlineColor",
+        "type": "S",
+        "tsType": "string",
+        "desc": "描边颜色",
+        "verifyers": []
+    },
+    {
+        "originCol": 10,
+        "name": "shadowColor",
+        "type": "S",
+        "tsType": "string",
+        "desc": "阴影颜色",
+        "verifyers": []
+    }
+],
+'datas': {}
+}

@@ -1,0 +1,19 @@
+{
+    "bundles-contain": [
+        "internal",
+        "main",
+        "resources",
+        "lobby",
+        "hotupdate",
+        "nlhe",
+        "prummy",
+        "chat"
+    ],
+    "remotes": [
+        "http://192.168.50.250:8084/app/"
+    ],
+    "platform": "android",
+    "channel": "channel1",
+    "hotupdate_env": "local",
+    "version": "1.0.0.0"
+}

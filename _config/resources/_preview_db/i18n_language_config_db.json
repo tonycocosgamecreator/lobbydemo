@@ -1,0 +1,44 @@
+{
+'name': 'i18n_language_config_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "id",
+        "type": "S",
+        "tsType": "string",
+        "desc": "语言ID",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "serverKey",
+        "type": "S",
+        "tsType": "string",
+        "desc": "服务器定义",
+        "verifyers": []
+    }
+],
+'datas': {
+    "en_us": {
+        "id": "en_us",
+        "serverKey": "en-US"
+    },
+    "zh_cn": {
+        "id": "zh_cn",
+        "serverKey": "zh-CN"
+    },
+    "pt_br": {
+        "id": "pt_br",
+        "serverKey": "pt-BR"
+    },
+    "hi_in": {
+        "id": "hi_in",
+        "serverKey": "hi-IN"
+    },
+    "en_in": {
+        "id": "en_in",
+        "serverKey": "en-IN"
+    }
+}
+}

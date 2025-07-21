@@ -1,0 +1,15 @@
+{
+  "name": "DemoLobby",
+  "uuid": "0ce1c277-6166-481b-a323-4b4a68eaf21f",
+  "creator": {
+    "version": "3.8.3"
+  },
+  "dependencies": {
+    "pako": "^2.1.0",
+    "protobufjs": "^7.5.3"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.3",
+    "@types/protobufjs": "^6.0.0"
+  }
+}

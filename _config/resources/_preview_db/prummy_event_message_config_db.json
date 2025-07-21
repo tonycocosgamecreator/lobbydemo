@@ -1,0 +1,112 @@
+{
+'name': 'prummy_event_message_config_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "id",
+        "type": "I",
+        "tsType": "number",
+        "desc": "事件ID",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "name",
+        "type": "S",
+        "tsType": "string",
+        "desc": "事件名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "messageName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "结构体名字",
+        "verifyers": []
+    }
+],
+'datas': {
+    "1": {
+        "id": 1,
+        "name": "RummyEnterDesk",
+        "messageName": "RummyEnterDeskNtf"
+    },
+    "2": {
+        "id": 2,
+        "name": "RummyQuitRoom",
+        "messageName": "RummyQuitRoomNtf"
+    },
+    "3": {
+        "id": 3,
+        "name": "RummyReadyStartGame",
+        "messageName": "RummyReadyStartGameNtf"
+    },
+    "4": {
+        "id": 4,
+        "name": "RummyStartGame",
+        "messageName": "RummyStartGameNtf"
+    },
+    "5": {
+        "id": 5,
+        "name": "RummySetZhuang",
+        "messageName": "RummySetZhuangNtf"
+    },
+    "6": {
+        "id": 6,
+        "name": "RummyDeal",
+        "messageName": "RummyDealNtf"
+    },
+    "7": {
+        "id": 7,
+        "name": "RummyPlayCard",
+        "messageName": "RummyPlayCardNtf"
+    },
+    "8": {
+        "id": 8,
+        "name": "RummyFixCard",
+        "messageName": "RummyFixCardNtf"
+    },
+    "9": {
+        "id": 9,
+        "name": "RummySettle",
+        "messageName": "RummySettleNtf"
+    },
+    "10": {
+        "id": 10,
+        "name": "RummyOprCard",
+        "messageName": "RummyOprCardNtf"
+    },
+    "11": {
+        "id": 11,
+        "name": "RummyFixCardPlayers",
+        "messageName": "RummyFixCardPlayersNtf"
+    },
+    "12": {
+        "id": 12,
+        "name": "CustomFixCard",
+        "messageName": "RummyOprCardNtf"
+    },
+    "13": {
+        "id": 13,
+        "name": "CustomFake",
+        "messageName": "RummyPlayerActionNtf"
+    },
+    "14": {
+        "id": 14,
+        "name": "Timeout",
+        "messageName": "RummyPlayerActionNtf"
+    },
+    "15": {
+        "id": 15,
+        "name": "Ready",
+        "messageName": "RummyReadyRoomNtf"
+    },
+    "16": {
+        "id": 16,
+        "name": "Recharge",
+        "messageName": "RummyRechargeNtf"
+    }
+}
+}

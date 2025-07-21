@@ -1,0 +1,47 @@
+{
+'name': 'customize_resources_statistical_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "customEventKey",
+        "type": "S",
+        "tsType": "string",
+        "desc": "唯一id",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "desc",
+        "type": "S",
+        "tsType": "string",
+        "desc": "描述内容(需要手动填写）",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "statisticalId",
+        "type": "I",
+        "tsType": "number",
+        "desc": "打点-时长统计ID",
+        "verifyers": []
+    }
+],
+'datas': {
+    "LOGO_SHOWING": {
+        "customEventKey": "LOGO_SHOWING",
+        "desc": "开始显示LOGO",
+        "statisticalId": 1
+    },
+    "LOADING_PROGRESS_BAR_SHOWING": {
+        "customEventKey": "LOADING_PROGRESS_BAR_SHOWING",
+        "desc": "开始加载",
+        "statisticalId": 2
+    },
+    "LOADING_COMPLETED": {
+        "customEventKey": "LOADING_COMPLETED",
+        "desc": "加载完成",
+        "statisticalId": 3
+    }
+}
+}

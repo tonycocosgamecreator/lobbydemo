@@ -1,0 +1,8 @@
+
+#///////////////////////////
+# Cocos Creator 3D Project
+#///////////////////////////
+node_modules/
+package-lock.json
+*.lock
+sources/

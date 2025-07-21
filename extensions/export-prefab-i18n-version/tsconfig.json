@@ -1,0 +1,14 @@
+{
+    "extends": "./base.tsconfig.json",
+    "compilerOptions": {
+        "target": "ES2021",
+        "outDir": "./dist",
+        "rootDir": "./source",
+        "strict": false,
+        "types": [
+            "node",
+            "@cocos/creator-types/editor",
+            "@cocos/creator-types/engine",
+        ]
+    }
+}

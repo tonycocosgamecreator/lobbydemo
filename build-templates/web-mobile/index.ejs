@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Game</title>
+
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,minimal-ui=true">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <!--<link rel="apple-touch-icon" href=".png" />-->
+    <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+    <link rel="stylesheet" type="text/css" href="<%= cssUrl ;%>" />
+</head>
+<body>
+
+    <div id="GameDiv" cc_exact_fit_screen="true" style="overflow: hidden;margin: 0;padding: 0;">
+        <div id="Cocos3dGameContainer">
+            <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="99">
+            </canvas>
+        </div>
+        <div class="inner-div2" id="myDiv" style="visibility: hidden;">
+            <!-- <img src="game.png" class="logo" alt="Logo"> -->
+            <div class="progress" id="myProgress" style="visibility: hidden;">
+                <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 0%;" id="progress-bar">
+                    
+                </div>
+                <div class="progress-notice" id="progress-notice">0%</div>
+                <div class="progress-notice-loading">Loading</div>
+            </div>
+        </div>
+    </div>
+    
+    <script text="text/javascript" src="./libs/pako.min.js"></script>
+    <script text="text/javascript" src="./libs/jszip.min.js"></script>
+    <script text="text/javascript" src="./libs/ziploader.js"></script>
+    <!-- INSERT IMPORT MAP -->
+    <!-- INSERT VCONSOLE JS-->
+    <script text='text/javascript'>
+        
+        var searchParams = {};
+        //获取当前时间 秒
+        function time(){
+            return Date.now() / 1000;
+        }
+
+        function getWindowLocationSearch() {
+            searchParams = {};
+            const search = window.location.search;
+            if (search == null || search.length == 0) return searchParams;
+            const params = search.substring(1).split('&');
+            for (let i = 0; i < params.length; i++) {
+                const param = params[i].split('=');
+                searchParams[param[0]]  = param[1];
+                if(param[0] == 'return_url'){
+                    window.return_url = decodeURIComponent(param[1]);
+                }
+                if(param[0] == 'debug'){
+                    window.debug = param[1] == 'true';
+                }
+            }
+            return searchParams;
+        }
+
+        window.searchs = getWindowLocationSearch();
+        if(window.debug == undefined){
+            window.debug = false;
+        }
+
+        //BUNDLES DEFINED//
+
+        window['pako']     = pako;
+        window["JSZIP"]   = JSZip;  
+        const ziploader     = loader.ZipLoader.Instance;
+        window['ziploader'] = ziploader;
+        var progressState   = 0;
+        function enterGame(){
+            progressState   = 1;
+            console.log('BOLE GAME INIT START!');
+            System.import('./index.js').catch(function(err) { console.error(err); })
+        }
+        var fgamestart = 0;
+        function fadeOutLogo(){
+            var fgamecomplete   = Date.now();
+            var fgameinterval   = fgamecomplete - fgamestart;
+            console.log('BOLE GAME INIT CAST ' + fgameinterval + 'ms!');
+
+            var div = document.getElementById('myDiv');
+            div.classList.add('fadeOut');
+            setTimeout(function() {
+                div.style.display = 'none'; // 在动画结束后隐藏元素
+            }, 1000); // 500毫秒后执行，与渐出动画的持续时间相同
+        }
+
+        function updateProgress(nowCount,totalCount,width){
+            const progress = document.getElementById('myProgress');
+            const notice = document.getElementById('progress-notice');
+            if(progress.style.visibility === 'hidden'){
+                fgamestart = Date.now();
+                const GameCanvas = document.getElementById('GameCanvas');
+                width   = GameCanvas.clientWidth;
+                if(width > 756){
+                    width = 756;
+                }
+                progress.style.width    = (width * 0.7) + 'px';
+                progress.style.visibility = 'hidden';
+            }
+            const percent = (progressState * 50 + (nowCount / totalCount) * 50).toFixed(2) + "%";
+            document.getElementById('progress-bar').style.width = percent;
+            //document.getElementById('progress-value').innerText = percent;
+            notice.innerText = percent;
+        }
+        //将这个方法求到window中去
+        window.fadeOutLogo      = fadeOutLogo;
+        //进度条更新
+        window.updateProgress   = updateProgress;
+
+        let index           = 0;
+        let jsBundleLoaded  = false;
+        let bundleLoaded    = false;
+        const bunldeCount   = window['bundles'].length;
+        const loadeds       = [0,0,0];
+        const totals        = [0,0,0];
+
+        ziploader.downloadSrc('%cocos-js%',(loaded,total)=>{
+            loadeds[3]  = loaded;
+            totals[3]   = total;
+            const allLoaded = loadeds.reduce((a,b)=>a+b,0);
+            const allTotal  = totals.reduce((a,b)=>a+b,0);
+            updateProgress(allLoaded,allTotal,0);
+        },(err,data)=>{
+            if(err){
+                console.error('engine download failed',err);
+                return;
+            }
+            jsBundleLoaded  = true;
+            if(bundleLoaded){
+                enterGame();
+            }
+        });
+
+        for(let i = 0; i < bunldeCount; i++){
+            const name = window['bundles'][i];
+            ziploader.downloadBundle(
+                name,
+                (loaded,total)=>{
+                    loadeds[i]  = loaded;
+                    totals[i]   = total;
+                    const allLoaded = loadeds.reduce((a,b)=>a+b,0);
+                    const allTotal  = totals.reduce((a,b)=>a+b,0);
+                    updateProgress(allLoaded,allTotal,0);
+                },
+                (err,data)=>{
+                    if(err){
+                        console.error(name + ' download failed',err);
+                        return;
+                    }
+                    console.log(name + ' download success');
+                    index += 1;
+                    if(index == bunldeCount){
+                        bundleLoaded = true;
+                        if(jsBundleLoaded){
+                            //全部加载完毕
+                            enterGame();
+                        }
+                    }
+                });
+        }
+	</script>
+<!-- COCOS TEMP BEGIN -->
+<%- include(cocosTemplate, {}) %>
+<!-- COCOS TEMP END -->
+</body>
+</html>

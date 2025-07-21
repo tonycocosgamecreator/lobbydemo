@@ -1,0 +1,20 @@
+{
+    "bundles-contain": [
+        "internal",
+        "main",
+        "resources",
+        "lobby",
+        "hotupdate",
+        "nlhe",
+        "prummy",
+        "chat",
+        "gamerecord"
+    ],
+    "remotes": [
+        "https://gog-poker-resources.s3-accelerate.amazonaws.com/app/"
+    ],
+    "platform": "android",
+    "channel": "channel1",
+    "hotupdate_env": "prerelease",
+    "version": "1.0.0.0"
+}

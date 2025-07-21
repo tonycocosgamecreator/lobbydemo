@@ -1,0 +1,17 @@
+{
+    "platforms" : [
+        "windows",
+        "android",
+        "ios"
+    ],
+    "hotupdate_env" : [
+        "local",
+        "test",
+        "prerelease",
+        "release"
+    ],
+    "channels" : [
+        "channel0",
+        "channel1"
+    ]
+}

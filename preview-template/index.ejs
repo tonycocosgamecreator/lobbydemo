@@ -1,0 +1,331 @@
+<html>
+    <head>
+        <link rel="icon" href="./favicon.ico" />
+        <meta charset="UTF-8" />
+        <title><%=title%></title>
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no,email=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="renderer" content="webkit">
+        <meta name="force-rendering" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="full-screen" content="yes">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="screen-orientation" content="portrait">
+        <meta name="x5-orientation" content="portrait">
+        <meta name="browsermode" content="application">
+        <meta name="x5-page-mode" content="app">
+        
+        <script type="text/javascript">
+            window.navigator.sendBeacon = undefined;
+            var searchParams = {};
+
+            //获取当前时间 秒
+            function time(){
+                return Date.now() / 1000;
+            }
+
+            function getWindowLocationSearch() {
+                searchParams = {};
+                const search = window.location.search;
+                if (search == null || search.length == 0) return null;
+                const params = search.substring(1).split('&');
+                for (let i = 0; i < params.length; i++) {
+                    const param = params[i].split('=');
+                    searchParams[param[0]]  = param[1];
+                    if(param[0] == 'return_url'){
+                        window.return_url = decodeURIComponent(param[1]);
+                    }
+                }
+                return searchParams;
+            }
+            window.searchs = getWindowLocationSearch();
+            
+
+        </script>
+        <link rel="stylesheet" type="text/css" href="./index.css" />
+        <style>  
+            .inner-div2 {
+                width: 100%;
+                height: 100%;
+                background-color: #000000;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                display: flex;/* 启用flex布局 */
+                justify-content: center;/* 水平居中 */
+                align-items: center; /* 垂直居中 */
+                opacity: 1;
+                visibility: visible;
+            }
+            .inner-div-progress {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0px;
+                bottom: 0px;
+                display: flex;/* 启用flex布局 */
+                justify-content: center;/* 水平居中 */
+                align-items: center; /* 垂直居中 */
+                opacity: 1;
+                visibility: visible;
+            }
+            /* 定义渐入*/
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            /* 定义渐出*/
+            .fadeOut {
+                opacity: 0; /* 渐出到完全透明 */
+                visibility: hidden; /* 完全隐藏 */
+                transition: visibility 0s 1s, opacity 1s linear; /* 延迟隐藏 */
+            }
+            /* 添加logo图片 */
+            .logo {
+                max-width: 75%;
+                max-height: 75%;
+                opacity: 0; /* 初始透明度为0 */
+                /* 添加动画 */
+                animation: fadeIn 1s forwards;
+            }
+
+            @-webkit-keyframes progress-bar-stripes {
+                from {
+                background-position:40px 0
+            }
+            to {
+                background-position:0 0
+            }
+            }@-o-keyframes progress-bar-stripes {
+                from {
+                background-position:40px 0
+            }
+            to {
+                background-position:0 0
+            }
+            }@keyframes progress-bar-stripes {
+                from {
+                background-position:40px 0
+            }
+            to {
+                background-position:0 0
+            }
+            }.progress {
+                height:20px;
+                margin-bottom:20px;
+                overflow:hidden;
+                background-color:#f5f5f5;
+                border-radius:4px;
+                -webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);
+                box-shadow:inset 0 1px 2px rgba(0,0,0,.1)
+            }
+            .progress-bar {
+                float:left;
+                width:0;
+                height:100%;
+                font-size:12px;
+                line-height:20px;
+                color:#fff;
+                text-align:center;
+                background-color:#337ab7;
+                -webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,.15);
+                box-shadow:inset 0 -1px 0 rgba(0,0,0,.15);
+                -webkit-transition:width .0016s ease;
+                -o-transition:width .0016s ease;
+                transition:width .0016s ease
+            }
+            .progress-striped .progress-bar,.progress-bar-striped {
+                background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                -webkit-background-size:40px 40px;
+                background-size:40px 40px
+            }
+            .progress.active .progress-bar,.progress-bar.active {
+                -webkit-animation:progress-bar-stripes 2s linear infinite;
+                -o-animation:progress-bar-stripes 2s linear infinite;
+                animation:progress-bar-stripes 2s linear infinite
+            }
+            .progress-bar-success {
+                background-color:#5cb85c
+            }
+            .progress-striped .progress-bar-success {
+                background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)
+            }
+            .progress-bar-info {
+                background-color:#6871f1
+            }
+            .progress-striped .progress-bar-info {
+                background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)
+            }
+            .progress-bar-warning {
+                background-color:#f0ad4e
+            }
+            .progress-striped .progress-bar-warning {
+                background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)
+            }
+            .progress-bar-danger {
+                background-color:#d9534f
+            }
+            .progress-striped .progress-bar-danger {
+                background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+                background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)
+            }
+
+
+            .progress{
+                position: absolute;
+                height: 14px;
+                background: #262626;
+                padding: 3px;
+                overflow: visible;
+                border-radius: 20px;
+                border-top: 1px solid #000;
+                border-bottom: 1px solid #7992a8;
+                width: 75%;
+                bottom: 128px;
+            }
+            .progress .progress-bar{
+                border-radius: 20px;
+                position: relative;
+                height: 10px;
+                animation: animate-positive 2s;
+                top: -2px;
+            }
+            .progress .progress-value{
+                display: block;
+                padding: 3px 7px;
+                font-size: 13px;
+                color: #fff;
+                border-radius: 4px;
+                background: #191919;
+                border: 1px solid #000;
+                position: absolute;
+                top: -40px;
+                right: -40px;
+            }
+            
+            .progress .progress-value:after{
+                content: "";
+                border-top: 10px solid #191919;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                position: absolute;
+                bottom: -6px;
+                left: 26%;
+            }
+
+            .progress .progress-notice{
+                position : absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                color: #fff;
+                font-size: 14px;
+            }
+
+            .progress .progress-notice-loading{
+                position : absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, 50%);
+                color: #fff;
+                font-size: 18px;
+            }
+
+            .progress-bar.active{
+                animation: reverse progress-bar-stripes 0.5s linear infinite, animate-positive 0.5s;
+            }
+
+            @-webkit-keyframes animate-positive{
+                0% { width: 0; }
+            }
+            @keyframes animate-positive{
+                0% { width: 0; }
+            }
+        </style>
+
+    </head>
+    <body style="overflow: hidden;width: 100%;height: 100%;margin: 0;padding: 0;">
+        <%- include(cocosToolBar, {config: config}) %>
+        <video controls autoplay="true" muted="muted" loop width="0" height="0">
+            <source
+                src="
+                data:video/mp4;base64,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"
+                type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <script text="text/javascript" src="./libs/jszip.min.js"></script>
+        <script>
+            window['JSZIP']     = JSZip;
+            function fadeOutLogo(){
+                var div = document.getElementById('myDiv');
+                var myProgress = document.getElementById('inner-progress');
+                myProgress.remove();
+                //myProgress.style.visibility = 'hidden'; // 在动画结束后隐藏元素
+                div.classList.add('fadeOut');
+                setTimeout(function() {
+                    div.style.display = 'none'; // 在动画结束后隐藏元素
+                }, 1000); // 500毫秒后执行，与渐出动画的持续时间相同
+            }
+
+            function updateProgress(nowCount,totalCount,width){
+                const notice = document.getElementById('progress-notice');
+                const progress = document.getElementById('myProgress');
+                if(progress.style.visibility === 'hidden'){
+                    progress.style.visibility = 'visible';
+                }
+                const percent = ((nowCount / totalCount) * 100).toFixed(2) + "%";
+                document.getElementById('progress-bar').style.width = percent;
+                //document.getElementById('progress-value').innerText = percent;
+                notice.innerText = percent;
+            }
+            //将这个方法求到window中去
+            window.fadeOutLogo      = fadeOutLogo;
+            window.updateProgress   = updateProgress;
+        </script>
+        <div id="content" class="content" style="overflow: hidden;width: 100%;height: 100%;margin: 0;padding: 0;">
+            <div id="GameDiv" class="wrapper">
+                <div id="Cocos3dGameContainer" style="width: 100%;height: 100%;">
+                    <canvas id="GameCanvas" tabindex="-1"></canvas>
+                </div>
+                <div id="splash">
+                    <div class="progress-bar stripes"><span></span></div>
+                </div>
+                <div id="bulletin">
+                    <div id="sceneIsEmpty" class="inner"><%=tip_sceneIsEmpty%></div>
+                </div>
+                <div class="error" id="error">
+                    <div class="title">Error <i>(Please open the console to see detailed errors)</i></div>
+                    <div class="error-main"></div>
+                    <div class="error-stack"></div>
+                </div>
+
+                <div class="inner-div2" id="myDiv">
+                    <img src="game.png" class="logo" alt="Logo">
+                </div>
+                <div class="inner-div-progress" id="inner-progress">
+                    <div class="progress" id="myProgress" style="visibility: hidden;">
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 0%;" id="progress-bar">
+                            <!-- <div class="progress-value" id="progress-value">0%</div> -->
+                        </div>
+                        <div class="progress-notice" id="progress-notice">0%</div>
+                        <div class="progress-notice-loading">Loading</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <%- include(cocosTemplate, {}) %>
+    </body>
+</html>

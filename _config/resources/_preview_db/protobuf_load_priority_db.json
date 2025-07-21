@@ -1,0 +1,39 @@
+{
+'name': 'protobuf_load_priority_db',
+'rule': 'ma',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "bundle",
+        "type": "S",
+        "tsType": "string",
+        "desc": "包体",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "priority",
+        "type": "I",
+        "tsType": "number",
+        "desc": "优先级",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "name",
+        "type": "S",
+        "tsType": "string",
+        "desc": "协议名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 5,
+        "name": "package",
+        "type": "S",
+        "tsType": "string",
+        "desc": "包名",
+        "verifyers": []
+    }
+],
+'datas': {}
+}

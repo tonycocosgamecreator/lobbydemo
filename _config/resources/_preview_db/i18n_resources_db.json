@@ -1,0 +1,71 @@
+{
+'name': 'i18n_resources_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "index",
+        "type": "S",
+        "tsType": "string",
+        "desc": "唯一id",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "nodeType",
+        "type": "I",
+        "tsType": "number",
+        "desc": "节点类型 0|不填->无，1：Label。2：Sprite",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "panelName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "界面名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 5,
+        "name": "nodeName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "节点名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 6,
+        "name": "zh_cn",
+        "type": "S",
+        "tsType": "string",
+        "desc": "中文简体",
+        "verifyers": []
+    },
+    {
+        "originCol": 7,
+        "name": "en_us",
+        "type": "S",
+        "tsType": "string",
+        "desc": "英文",
+        "verifyers": []
+    },
+    {
+        "originCol": 8,
+        "name": "hi_in",
+        "type": "S",
+        "tsType": "string",
+        "desc": "印地语",
+        "verifyers": []
+    },
+    {
+        "originCol": 9,
+        "name": "en_in",
+        "type": "S",
+        "tsType": "string",
+        "desc": "英语-印度",
+        "verifyers": []
+    }
+],
+'datas': {}
+}

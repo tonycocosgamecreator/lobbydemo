@@ -1,0 +1,80 @@
+{
+    "$schema": "./@types/schema/package/index.json",
+    "package_version": 2,
+    "name": "export_xlsx_config_db",
+    "version": "1.0.0",
+    "author": "Cocos Creator",
+    "editor": ">=3.8.2",
+    "scripts": {
+        "preinstall": "node ./scripts/preinstall.js",
+        "build": "tsc",
+        "watch": "tsc -w"
+    },
+    "description": "i18n:export_xlsx_config_db.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@cocos/creator-types": "^3.8.2",
+        "@types/fs-extra": "^11.0.4",
+        "@types/he": "^1.2.3",
+        "@types/json5": "^2.2.0",
+        "@types/jszip": "^3.4.1",
+        "@types/node": "^18.19.21",
+        "@types/node-xlsx": "^0.21.0",
+        "@types/pako": "^2.0.3",
+        "fast-xml-parser": "^4.3.5",
+        "fs-extra": "^11.2.0",
+        "he": "^1.2.0",
+        "json5": "^2.2.3",
+        "jszip": "^3.10.1",
+        "node-xlsx": "^0.23.0",
+        "typescript": "^4.3.4"
+    },
+    "contributions": {
+        "assets": {
+            "menu": {
+                "methods": "./dist/main.js",
+                "assetMenu": "onRightClickAssetMenu"
+            }
+        },
+        "menu": [
+            {
+                "path": "导出",
+                "label": "分Bundle导出配置表",
+                "message": "export_bundle_db"
+            },
+            {
+                "path": "导出",
+                "label": "导出所有bundles",
+                "message": "export_bundles"
+            },
+            {
+                "path": "i18n",
+                "label": "检测i18n配置",
+                "message": "check_i18n_config"
+            }
+        ],
+        "messages": {
+            "export_bundles": {
+                "methods": [
+                    "export_bundles"
+                ]
+            },
+            "export_target_bundle_xlsx": {
+                "methods": [
+                    "export_target_bundle_xlsx"
+                ]
+            },
+            "check_i18n_config": {
+                "methods": [
+                    "check_i18n_config"
+                ]
+            }
+        }
+    },
+    "dependencies": {
+        "@cocos/creator-types": "^3.8.2",
+        "jszip": "^3.10.1",
+        "pako": "^2.1.0",
+        "path": "^0.12.7"
+    }
+}

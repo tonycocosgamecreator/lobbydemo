@@ -1,0 +1,41 @@
+{
+    "$schema": "./@types/schema/package/index.json",
+    "package_version": 2,
+    "name": "export-prefab-i18n-version",
+    "version": "1.0.0",
+    "author": "Cocos Creator",
+    "editor": ">=3.8.2",
+    "scripts": {
+        "preinstall": "node ./scripts/preinstall.js",
+        "build": "tsc",
+        "watch": "tsc -w"
+    },
+    "description": "i18n:export-prefab-i18n-version.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@cocos/creator-types": "^3.8.2",
+        "@types/fs-extra": "^11.0.4",
+        "@types/json5": "^2.2.0",
+        "@types/node": "^18.17.1",
+        "@types/node-xlsx": "^0.21.0"
+        
+    },
+    "contributions": {
+        "assets": {
+            "menu": {
+                "methods": "./dist/main.js",
+                "assetMenu": "onAssetMenu"
+            }
+        }
+    },
+    "dependencies": {
+        "@cocos/creator-types": "^3.8.2",
+        "json5": "^2.2.3",
+        "jszip": "^3.10.1",
+        "path": "^0.12.7",
+        "fs-extra": "^11.2.0",
+        "node-xlsx": "^0.23.0",
+        "typescript": "^4.3.4",
+        "xlsx-style": "^0.8.13"
+    }
+}

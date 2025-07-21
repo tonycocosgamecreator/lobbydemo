@@ -1,0 +1,4 @@
+{
+"exportMode": "zip-json",
+"mergeFieldToArrayKeepEmptyValue" : true
+}

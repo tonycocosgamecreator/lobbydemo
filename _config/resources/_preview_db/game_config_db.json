@@ -1,0 +1,31 @@
+{
+'name': 'game_config_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "id",
+        "type": "S",
+        "tsType": "string",
+        "desc": "变量的名字",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "type",
+        "type": "S",
+        "tsType": "string",
+        "desc": "变量类型",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "value",
+        "type": "S",
+        "tsType": "string",
+        "desc": "变量数值",
+        "verifyers": []
+    }
+],
+'datas': {}
+}
