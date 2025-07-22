@@ -32,17 +32,17 @@ export class StringUtils {
      * @param digitCount  每间隔多少个数字给与一个
      * @param delimiter  间隔符号
      */
-    public static splitNumber(number: number | string, delimiter: string = ',', digitCount: number = 3): string {
-        const delimiterPattern = new RegExp(`\\B(?=(\\d{${digitCount}})+(?!\\d))`, 'g');
-        return number.toString().replace(delimiterPattern, delimiter);
-    }
+  public static splitNumber(number: number | string, delimiter: string = ',', digitCount: number = 3): string {
+    const delimiterPattern = new RegExp(`\\B(?=(\\d{${digitCount}})+(?!\\d))`, 'g');
+    return number.toString().replace(delimiterPattern, delimiter);
+  }
 
   /**
    *  将传入的时间格式化为 YYYY-MM-DD HH:mm:ss 格式
    * @param input 时间戳（秒或毫秒）
    * @returns  格式化后的时间字符串
    */
-  public static formatTime(input: number,format : string = "YYYY-MM-DD HH:mm:ss"): string {
+  public static formatTime(input: number, format: string = "YYYY-MM-DD HH:mm:ss"): string {
     // 判断是否是毫秒（时间戳大于当前时间戳的一部分）
     const timestamp = input > 1e12 ? input : input * 1000; // 如果是秒则乘1000
 
@@ -103,32 +103,48 @@ export class StringUtils {
      * 大于1000的时候转换为K,M,B,T
      * @param val 
      */
-    public static formatNumberWithUnit(val : number | string,fixedCount: number = 2) : string{
-        let num = Math.abs(Number(val));
-        if(num < 1000){
-            return num.toFixed(fixedCount);
-        }
-        let unit = ['','K','M','B','T'];
-        let index = 0;
-        while(num >= 1000 && index < unit.length){
-            num = num / 1000;
-            index++;
-        }
-        return num.toFixed(fixedCount) + unit[index];
+  public static formatNumberWithUnit(val: number | string, fixedCount: number = 2): string {
+    let num = Math.abs(Number(val));
+    if (num < 1000) {
+      return num.toFixed(fixedCount);
     }
+    let unit = ['', 'K', 'M', 'B', 'T'];
+    let index = 0;
+    while (num >= 1000 && index < unit.length) {
+      num = num / 1000;
+      index++;
+    }
+    return num.toFixed(fixedCount) + unit[index];
+  }
 
-    /**
-     * 使用指定模式更新这个label的显示,没有动效的处理，直接
-     * @param label
-     * @param val           数值
-     * @param seprateCount  多少个数字进行分割，默认3，千分位
-     * @param seprate       分割符号是什么，默认","
-     * @param pMulte        需要除以多少倍，默认1
-     * @param fixedCount    最后保留几位小数，默认2
-     */
-    public static updateNumberTextWithSperateAndFixed(label: Label, val: number, seprateCount: number = 3, seprate: string = ',', pMulte: number = 1, fixedCount: number = 2) {
-        const floater = (val / pMulte).toFixed(fixedCount);
-        const text = this.splitNumber(floater, seprate, seprateCount);
-        label.string = text;
+  /**
+   * 使用指定模式更新这个label的显示,没有动效的处理，直接
+   * @param label
+   * @param val           数值
+   * @param seprateCount  多少个数字进行分割，默认3，千分位
+   * @param seprate       分割符号是什么，默认","
+   * @param pMulte        需要除以多少倍，默认1
+   * @param fixedCount    最后保留几位小数，默认2
+   */
+  public static updateNumberTextWithSperateAndFixed(label: Label, val: number, seprateCount: number = 3, seprate: string = ',', pMulte: number = 1, fixedCount: number = 2) {
+    const floater = (val / pMulte).toFixed(fixedCount);
+    const text = this.splitNumber(floater, seprate, seprateCount);
+    label.string = text;
+  }
+
+  /**
+   * 随机字符串
+   * @param maxLength 字符长度最大位数
+   */
+  public static getSecureRandomString(maxLength: number = 20): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const length = Math.floor(Math.random() * maxLength) + 1; // 1 ~ maxLength
+    const randomValues = new Uint32Array(length);
+    crypto.getRandomValues(randomValues); // 浏览器 API，Cocos 也支持
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars[randomValues[i] % chars.length];
     }
+    return result;
+  }
 }
