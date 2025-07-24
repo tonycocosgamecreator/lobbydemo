@@ -21,8 +21,7 @@ export class HttpLobbyConnector {
     public static get instance() {
         if (!this._instance) {
             this._instance = new HttpLobbyConnector();
-            //this._instance._baseUrl = GameConfig.get<string>(resourcesDb.GAME_CONFIG_DB_ID.prerelease_lobby_https_urls);
-            this._instance._baseUrl = "http://35.78.187.16:2006"
+            this._instance._baseUrl = "http://192.168.3.208:8000";
 
         }
         return this._instance;
@@ -40,14 +39,13 @@ export class HttpLobbyConnector {
 
     public async send(content: IHttpContent) {
         if (content.type == 'GET') {
-            const data = await HttpHelper.Get(this._baseUrl + this.changeUrlByChannel(content.url), content.params, content.timeout, content.headers);
+            const data = await HttpHelper.Get(this._baseUrl + content.url, content.params, content.timeout, content.headers);
             content.callback && content.callback(data);
             return data;
-            // console.error('GET IS NOT DEFINED -> ',content.url,content.params,content.timeout);
         } else if (content.type == 'POST') {
-            const data = await HttpHelper.Post(this._baseUrl + this.changeUrlByChannel(content.url), content.params, content.timeout, content.headers);
+            const data = await HttpHelper.Post(this._baseUrl + content.url, content.params, content.timeout, content.headers);
             if (data == 'onerror') {
-                console.error('POST ERROR -> ', this.changeUrlByChannel(content.url), content.params, content.timeout);
+                console.error('POST ERROR -> ', content.url, content.params, content.timeout);
                 let msg = {
                     status: false,
                     msg: 'The network is not available, please check your network connection.',
@@ -58,7 +56,7 @@ export class HttpLobbyConnector {
                 content.callback && content.callback(msgStr);
                 return msgStr;
             } else if (data == 'ontimeout') {
-                console.error('POST TIMEOUT -> ', this.changeUrlByChannel(content.url), content.params, content.timeout);
+                console.error('POST TIMEOUT -> ', content.url, content.params, content.timeout);
                 let msg = {
                     status: false,
                     msg: 'connection timeout',
@@ -75,18 +73,4 @@ export class HttpLobbyConnector {
         }
     }
 
-    /**
-     * 根据url修改渠道
-     * @param url 
-     * @returns 
-     */
-    public changeUrlByChannel(url: string) {
-        let str = url;
-        // if (Global.ChannelId == 0) {
-        return str;
-        // } else if (Global.ChannelId == 1) {
-        //     str = str.replace(/\/mg/g, "/rajgame");
-        // }
-        return str;
-    }
 }

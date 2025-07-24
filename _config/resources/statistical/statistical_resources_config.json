@@ -2,5 +2,17 @@
     "PanelLobby": {
         "statisticalId": 100001000,
         "panelId": 0
+    },
+    "CustomGameItem": {
+        "statisticalId": 100001001,
+        "panelId": 1
+    },
+    "PanelCircleLoading": {
+        "statisticalId": 100001002,
+        "panelId": 2
+    },
+    "PanelThirdGame": {
+        "statisticalId": 100001003,
+        "panelId": 3
     }
 }

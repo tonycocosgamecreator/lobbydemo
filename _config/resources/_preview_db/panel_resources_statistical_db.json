@@ -36,11 +36,29 @@
     }
 ],
 'datas': {
+    "CustomGameItem": {
+        "viewName": "CustomGameItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001001
+    },
+    "PanelCircleLoading": {
+        "viewName": "PanelCircleLoading",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001002
+    },
     "PanelLobby": {
         "viewName": "PanelLobby",
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001000
+    },
+    "PanelThirdGame": {
+        "viewName": "PanelThirdGame",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001003
     }
 }
 }

@@ -43,5 +43,24 @@
         "verifyers": []
     }
 ],
-'datas': {}
+'datas': {
+    "CustomGameItem": {
+        "cc_buttonIcon": {
+            "viewName": "CustomGameItem",
+            "buttonName": "cc_buttonIcon",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001200
+        }
+    },
+    "PanelThirdGame": {
+        "cc_buttonBack": {
+            "viewName": "PanelThirdGame",
+            "buttonName": "cc_buttonBack",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001400
+        }
+    }
+}
 }
