@@ -18,7 +18,10 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
+    'CustomGameItem': 'CustomGameItem',
+    'PanelCircleLoading': 'PanelCircleLoading',
     'PanelLobby': 'PanelLobby',
+    'PanelThirdGame': 'PanelThirdGame',
 }
 
     /** 唯一id */
