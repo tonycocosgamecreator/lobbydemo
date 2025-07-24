@@ -5,7 +5,6 @@ import { lobbyhttp } from "../net/lobby-https-interface-define";
 
 
 export default class LobbyManager extends BaseManager {
-    static account: string = ''
 
     /**
     * PanelLobby界面

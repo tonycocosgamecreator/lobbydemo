@@ -1,7 +1,5 @@
-import LobbyManager from "../managers/lobby-manager";
 import { HttpLobbyConnector } from "./http-lobby-connector";
 import { lobbyhttp } from "./lobby-https-interface-define";
-import { log } from "cc";
 
 
 export default class HttpLobbyHelper {
@@ -30,7 +28,7 @@ export default class HttpLobbyHelper {
             type: 'POST',
             url: lobbyhttp.Message.LOGIN,
             params: {
-                account: LobbyManager.account,
+                account: lobbyhttp.Account.Value,
                 game_code: game_code,
             },
             headers: {}

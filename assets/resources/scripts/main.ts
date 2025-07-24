@@ -8,8 +8,8 @@ import Initializer from './init';
 import BrowserUtils from './core/utils/browser-utils';
 import ViewManager from './core/manager/view-manager';
 import ModuleManager from './core/manager/module-manager';
-import LobbyManager from './lobby/managers/lobby-manager';
 import { StringUtils } from './core/utils/string-utils';
+import { lobbyhttp } from './lobby/net/lobby-https-interface-define';
 const { ccclass, property } = _decorator;
 
 @ccclass('main')
@@ -36,7 +36,7 @@ export class main extends Component {
             fadeOutLogo && fadeOutLogo();
             Constant.CurrentBundleId = AssetManager.BuiltinBundleName.RESOURCES;
             const module = ModuleManager.getModuleAlreadyExist(AssetManager.BuiltinBundleName.RESOURCES);
-            LobbyManager.account = StringUtils.getSecureRandomString(16);
+            lobbyhttp.Account.Value = StringUtils.getSecureRandomString(16);
             ViewManager.OpenPanel(module, "PanelLobby");
         });
     }

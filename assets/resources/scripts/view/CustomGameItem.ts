@@ -44,12 +44,13 @@ export default class CustomGameItem extends ReusableBase {
             case 'speedcash': name = 'speed-cash'; break;
             case 'sevenupdown': name = '7up-7down'; break;
             case 'andarbahar': name = 'andar-bahar'; break;
-            case 'superWheel': name = 'luckyNumber'; break
-            case 'super777': name = 'luckyNumber'; break;
-            case 'wingolottery': name = 'luckyNumber'; break;
+            default: name = '';
+            // case 'superWheel': name = 'luckyNumber'; break
+            // case 'super777': name = 'luckyNumber'; break;
+            // case 'wingolottery': name = 'luckyNumber'; break;
         }
         this.labelName.string = data.game_code;
-        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${name == '' ? 'mines2' : name}`);
+        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${name}`);
     }
 
     clear() {
