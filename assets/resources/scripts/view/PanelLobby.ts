@@ -63,9 +63,10 @@ export default class PanelLobby extends ViewBase implements IPanelLobbyView {
 
     onReceiveGameUrlData(): void {
         UIHelper.hideCircleLoading();
-        ViewManager.HidePanel("PanelLobby");
+        window.location.href = LobbyManager.curGameUrl;
+        // ViewManager.HidePanel("PanelLobby");
         // 隐藏大厅 拉起webview
-        ViewManager.OpenPanel(this.module, "PanelThirdGame");
+        // ViewManager.OpenPanel(this.module, "PanelThirdGame");
     }
 
     clear() {
