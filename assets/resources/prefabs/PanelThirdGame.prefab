@@ -583,7 +583,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1334
+      "height": 1560
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -608,10 +608,10 @@
     "__prefab": {
       "__id__": 27
     },
-    "_alignFlags": 45,
+    "_alignFlags": 5,
     "_target": null,
-    "_left": 0,
-    "_right": 0,
+    "_left": -15,
+    "_right": -15,
     "_top": 0,
     "_bottom": 0,
     "_horizontalCenter": 0,

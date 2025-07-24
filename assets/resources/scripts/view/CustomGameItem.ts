@@ -42,12 +42,13 @@ export default class CustomGameItem extends ReusableBase {
             case 'dragonTiger': name = 'dragon-tiger'; break;
             case 'aviator': name = 'aviator'; break;
             case 'speedcash': name = 'speed-cash'; break;
-            case 'superWheel': name = 'luckyNumber'; break
             case 'sevenupdown': name = '7up-7down'; break;
             case 'andarbahar': name = 'andar-bahar'; break;
+            case 'superWheel': name = 'luckyNumber'; break
             case 'super777': name = 'luckyNumber'; break;
             case 'wingolottery': name = 'luckyNumber'; break;
         }
+        this.labelName.string = data.game_code;
         this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${name == '' ? 'mines2' : name}`);
     }
 
@@ -79,10 +80,12 @@ export default class CustomGameItem extends ReusableBase {
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_buttonIcon: [GButton, this.onClickButtonIcon.bind(this)],
+            cc_labelName: [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
     protected buttonIcon: GButton = null;
+    protected labelName: cc.Label = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
