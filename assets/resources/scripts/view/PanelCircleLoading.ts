@@ -3,10 +3,15 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+import { PanelLayer } from '../core/view/view-define';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
+
+declare type CONTEXT = {
+    info?: string;
+};
 
 @ccclass('PanelCircleLoading')
 export default class PanelCircleLoading extends ViewBase {
@@ -21,59 +26,33 @@ export default class PanelCircleLoading extends ViewBase {
         super.onDestroy();
     }
 
-    protected lateUpdate(dt: number): void {
-        if (this._isTimeOut) {
-            return;
-        }
-        this.nowTime += dt;
-        if (this.nowTime >= this.waittime) {
-            this._isTimeOut = true;
-            bDebug && cc.warn(`PanelWaitload 超时了，等待时间为 ${this.waittime} 秒`);
-            //超时了
-            this.close();
-        }
-    }
-
     //------------------------ 内部逻辑 ------------------------//
 
     /**
-     * 超时自动关闭的时间
+     * 静态方法，请重写，以加入不同的层级
      */
-    protected waittime: number = 20;
-    /**
-     * 当前时间
-     * 用于计算超时
-     */
-    protected nowTime: number = 0;
-    /**
-     * 是否超时
-     * 用于判断是否需要关闭界面
-     */
-    protected _isTimeOut: boolean = false;
+    public panelLayer: PanelLayer = PanelLayer.Top;
 
-    protected buildUi() {
-        this.resetTimeOut(20);
-    }
+    public context: CONTEXT | null = null;
 
-
-    public updateInfo(msg: string, timeout: number = 20) {
-        if (this.labelTips) {
-            this.labelTips.string = msg;
+    private buildUi() {
+        cc.tween(this.icon.node)
+            .by(5, {
+                angle: 360,
+            })
+            .repeatForever()
+            .start();
+        if (this.context && this.context.info) {
+            this.info.string = this.context.info;
         }
-        this.resetTimeOut(timeout);
     }
 
-    /**
-     * 重置超时时间,用于已经打开这个界面的情况下，再次被调用
-     * @param time 
-     */
-    public resetTimeOut(time: number): void {
-        this.waittime = time;
-        this.nowTime = 0;
+    public updateInfo(info: string) {
+        if (this.context) {
+            this.context.info = info;
+        }
+        this.info.string = info;
     }
-
-
-
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -89,14 +68,15 @@ export default class PanelCircleLoading extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_labelTips: [cc.Label],
+            cc_icon: [cc.Sprite],
+            cc_info: [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected labelTips: cc.Label = null;
+    protected icon: cc.Sprite = null;
+    protected info: cc.Label = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
@@ -116,6 +96,5 @@ export default class PanelCircleLoading extends ViewBase {
     public get viewName() {
         return PanelCircleLoading.VIEW_NAME;
     }
-
     // @view export resource end
 }

@@ -25,3 +25,21 @@ export declare type ClickEventCallback = (event?: cc.EventTouch, target?: any) =
 export declare type ViewBindConfigResult = {
     [realName: string]: [obj: typeof cc.Component | typeof cc.Node | typeof cc.Animation, event?: ClickEventCallback]
 };
+
+/**
+ * 异步方法，请使用await标记
+ * 等待指定时间后继续执行后面的内容
+ * @param time 单位：秒
+ */
+export async function WaitTime(time: number) {
+    if (time <= 0) {
+        return;
+    }
+    const fr = time * 1000;
+    //默认60帧
+    return new Promise<any>((resolve, reject) => {
+        setTimeout(() => {
+            resolve(true);
+        }, fr);
+    });
+}

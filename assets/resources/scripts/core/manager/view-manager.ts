@@ -88,7 +88,7 @@ export default class ViewManager {
      * @param panel 
      * @param context 
      */
-    public static Open<T extends ViewBase>(panel: AssetType<T>, context?: any) {
+    public static Open<T extends ViewBase>(panel: AssetType<T>, context?: any): ViewBase | null {
         const bundleName = panel['BUNDLE_NAME'];
         const viewName = panel['VIEW_NAME'];
         const module = ModuleManager.getModuleAlreadyExist(bundleName);
@@ -107,7 +107,7 @@ export default class ViewManager {
      * @param context 需要丢过去的参数吗，这个可选
      * @param subFolder 子文件夹，如果为空，则默认是prefabs目录
      */
-    public static OpenPanel(module: Module, viewName: string, context?: any,subFolder?:string): ViewBase | null {
+    public static OpenPanel(module: Module, viewName: string, context?: any, subFolder?: string): ViewBase | null {
         if (!this._isInit) {
             bDebug && console.error('ViewManager not initialized, unable to open the interface:', module, viewName);
             return null;
@@ -127,7 +127,7 @@ export default class ViewManager {
             return panel;
         }
         let url = "prefabs/";
-        if(subFolder && subFolder.length > 0){
+        if (subFolder && subFolder.length > 0) {
             url += subFolder + "/";
         }
         url += viewName;
@@ -277,8 +277,33 @@ export default class ViewManager {
             }
         }
     }
+    /**
+      * 新增一个CustomNode到指定的Layer上
+      * @param comp 
+      * @param context 
+      */
+    public static addCustomNode<T extends ViewBase>(comp: T, context?: any) {
+        const layer = comp.panelLayer;
+        const root = this._viewRoots[layer];
+        root.addChild(comp.node);
+        comp.context = context;
+        const panels = this.getPanels(layer);
+        panels.push(comp);
+    }
 
-
+    /**
+     * 获取当前指定层级上的所有ViewBase
+     * @param panel
+     * @returns
+     */
+    public static getPanels(panel: PanelLayer): ViewBase[] {
+        let panels = this._panels[panel];
+        if (!panels) {
+            panels = [];
+            this._panels[panel] = panels;
+        }
+        return panels;
+    }
 
     /**
      * 再每一帧结束后，检测是否需要销毁
@@ -298,7 +323,7 @@ export default class ViewManager {
                     //检测到已经销毁，则删除
                     continue;
                 }
-                if(panel.node.parent == null){
+                if (panel.node.parent == null) {
                     //如果节点没有父节点了，说明已经被销毁了
                     panels.splice(i, 1);
                     continue;
@@ -311,7 +336,7 @@ export default class ViewManager {
      * @param msgType 
      * @param data 
      */
-    public static onNetworkMessage(msgType: string, data: any, connectorType: ConnectorType): boolean {
+    public static onNetworkMessage(msgType: string, data: any, connectorType: ConnectorType | string = ConnectorType.Lobby): boolean {
         //以层级，从上到下，依次查找，找到第一个返回true的，就停止
         let panelLayers = [PanelLayer.Top, PanelLayer.Dialog, PanelLayer.Default];
         for (let i = 0; i < panelLayers.length; i++) {

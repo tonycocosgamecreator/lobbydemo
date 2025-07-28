@@ -9,14 +9,26 @@ import BrowserUtils from './core/utils/browser-utils';
 import ViewManager from './core/manager/view-manager';
 import ModuleManager from './core/manager/module-manager';
 import { StringUtils } from './core/utils/string-utils';
+import I18NManager from './core/manager/i18n-manager';
 import { lobbyhttp } from './lobby/net/lobby-https-interface-define';
+import { Global } from './global';
+import { MessageSender } from './lobby/net/message-sender';
+import UIHelper from './lobby/helper/ui-helper';
+import { ProtoType } from './define';
+import JsonLoginManager from './lobby/managers/json-login-manager';
 const { ccclass, property } = _decorator;
 
+enum NetWorkStatus {
+    FAIL_TO_CONNECT = -1,
+    NONE = 0,
+    SUCCESS_CONNECT = 1,
+}
 @ccclass('main')
 export class main extends Component {
 
     public uiCamera: Camera;
 
+    private _network_status: NetWorkStatus = NetWorkStatus.NONE;
 
     protected onLoad(): void {
         this.uiCamera = director.getScene().getComponentInChildren(Camera);
@@ -27,15 +39,34 @@ export class main extends Component {
     }
 
     start() {
+        //初始化浏览器参数
         BrowserUtils.Init();
         const fadeOutLogo = window['fadeOutLogo'];
         const canvas = this.uiCamera.node.parent.getComponent(Canvas);
         Constant.CurrentBundleId = AssetManager.BuiltinBundleName.MAIN;
         Initializer.Init(canvas, this.uiCamera);
-        Initializer.LoadResources().then(() => {
+        Initializer.LoadResources().then(async () => {
             fadeOutLogo && fadeOutLogo();
             Constant.CurrentBundleId = AssetManager.BuiltinBundleName.RESOURCES;
             const module = ModuleManager.getModuleAlreadyExist(AssetManager.BuiltinBundleName.RESOURCES);
+            //WEBSOCKET
+            // let bSuccess = false;
+            // if (Global.NetWorkProtoType == ProtoType.Protobuf) {
+            //     bSuccess = false;
+            //     // bSuccess = await ProtoLoginManager.ConnectToServer(false);
+            // } else {
+            //     bSuccess = await JsonLoginManager.ConnectToServer(false);
+            // }
+            // this._network_status = bSuccess ? NetWorkStatus.SUCCESS_CONNECT : NetWorkStatus.FAIL_TO_CONNECT;
+            // if (bSuccess) {
+            //     MessageSender.SendHeartBeatMessage();
+            // }
+
+            // if (this._network_status == NetWorkStatus.FAIL_TO_CONNECT) {
+            //     //连接服务器失败
+            //     UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
+            //     return;
+            // }
             lobbyhttp.Account.Value = StringUtils.getSecureRandomString(16);
             ViewManager.OpenPanel(module, "PanelLobby");
         });
@@ -44,6 +75,7 @@ export class main extends Component {
     lateUpdate(dt: number) {
         Initializer.OnLateUpdate(dt);
     }
+
 }
 
 

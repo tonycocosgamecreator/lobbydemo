@@ -19,6 +19,7 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomGameItem': 'CustomGameItem',
+    'CustomToast': 'CustomToast',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelLobby': 'PanelLobby',
     'PanelThirdGame': 'PanelThirdGame',
@@ -26,6 +27,16 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
 
     /** 唯一id */
 resourcesDb.I18N_RESOURCES_DB_INDEX = {
+    'Tip_SocketConnectFaild': 'Tip_SocketConnectFaild',
+    'EC_COIN_NO_ENOUGH': 'EC_COIN_NO_ENOUGH',
+    'Error': 'Error',
+    'Warn': 'Warn',
+    'Notice': 'Notice',
+    'Confirm': 'Confirm',
+    'Cancel': 'Cancel',
+    'Close': 'Close',
+    'ExitGame': 'ExitGame',
+    'Retry': 'Retry',
 }
 
     /** 变量的名字 */
@@ -61,6 +72,7 @@ resourcesDb.LINK_URL_PARAM_DB_ID = {
     'zoneId': 'zoneId',
     'return_url': 'return_url',
     'player_id': 'player_id',
+    'account': 'account',
 }
 
 

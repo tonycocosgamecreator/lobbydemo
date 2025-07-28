@@ -42,6 +42,12 @@
         "desc": "",
         "statisticalId": 100001001
     },
+    "CustomToast": {
+        "viewName": "CustomToast",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001004
+    },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",
         "bundleName": "resources",

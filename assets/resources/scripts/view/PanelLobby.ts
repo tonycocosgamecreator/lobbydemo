@@ -9,6 +9,7 @@ import PoolManager from '../core/manager/pool-manager';
 import CustomGameItem from './CustomGameItem';
 import UIHelper from '../lobby/helper/ui-helper';
 import ViewManager from '../core/manager/view-manager';
+import JsonLoginManager from '../lobby/managers/json-login-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -40,6 +41,7 @@ export default class PanelLobby extends ViewBase implements IPanelLobbyView {
     _items: CustomGameItem[] = [];
 
     protected buildUi(): void {
+        // JsonLoginManager.Login();
 
     }
 
