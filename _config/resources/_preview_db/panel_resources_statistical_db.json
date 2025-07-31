@@ -54,6 +54,12 @@
         "desc": "",
         "statisticalId": 100001002
     },
+    "PanelGame": {
+        "viewName": "PanelGame",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001005
+    },
     "PanelLobby": {
         "viewName": "PanelLobby",
         "bundleName": "resources",

@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0",
+  "uuid": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0@6c48a",
+      "uuid": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4@6c48a",
       "displayName": "spine",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0",
+        "imageUuidOrDatabaseUri": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0@f9941",
+      "uuid": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4@f9941",
       "displayName": "spine",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0@6c48a",
+        "imageUuidOrDatabaseUri": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "5c6b73d3-35ee-41f2-bfbd-4e8e6cd16fc0@6c48a"
+    "redirect": "a5aa8e8e-38ef-43dd-bd2c-9861a71594c4@6c48a"
   }
 }

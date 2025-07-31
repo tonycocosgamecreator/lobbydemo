@@ -70,6 +70,7 @@ declare namespace resourcesDb {
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',
+        ['PanelGame']: 'PanelGame',
         ['PanelLobby']: 'PanelLobby',
         ['PanelThirdGame']: 'PanelThirdGame',
 }

@@ -21,6 +21,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomGameItem': 'CustomGameItem',
     'CustomToast': 'CustomToast',
     'PanelCircleLoading': 'PanelCircleLoading',
+    'PanelGame': 'PanelGame',
     'PanelLobby': 'PanelLobby',
     'PanelThirdGame': 'PanelThirdGame',
 }

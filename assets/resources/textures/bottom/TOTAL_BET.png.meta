@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "8817606d-c2c3-465c-85eb-cf9f44f0aee8",
+  "uuid": "5756884f-b23b-4ebf-8370-1b439a623c74",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "8817606d-c2c3-465c-85eb-cf9f44f0aee8@6c48a",
+      "uuid": "5756884f-b23b-4ebf-8370-1b439a623c74@6c48a",
       "displayName": "TOTAL_BET",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "8817606d-c2c3-465c-85eb-cf9f44f0aee8",
+        "imageUuidOrDatabaseUri": "5756884f-b23b-4ebf-8370-1b439a623c74",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "8817606d-c2c3-465c-85eb-cf9f44f0aee8@f9941",
+      "uuid": "5756884f-b23b-4ebf-8370-1b439a623c74@f9941",
       "displayName": "TOTAL_BET",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "8817606d-c2c3-465c-85eb-cf9f44f0aee8@6c48a",
+        "imageUuidOrDatabaseUri": "5756884f-b23b-4ebf-8370-1b439a623c74@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "8817606d-c2c3-465c-85eb-cf9f44f0aee8@6c48a"
+    "redirect": "5756884f-b23b-4ebf-8370-1b439a623c74@6c48a"
   }
 }

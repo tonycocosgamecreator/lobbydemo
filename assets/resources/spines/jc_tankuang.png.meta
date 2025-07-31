@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee",
+  "uuid": "7eaf6942-fe20-426f-b492-5e381e1bfb98",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee@6c48a",
+      "uuid": "7eaf6942-fe20-426f-b492-5e381e1bfb98@6c48a",
       "displayName": "jc_tankuang",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee",
+        "imageUuidOrDatabaseUri": "7eaf6942-fe20-426f-b492-5e381e1bfb98",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee@f9941",
+      "uuid": "7eaf6942-fe20-426f-b492-5e381e1bfb98@f9941",
       "displayName": "jc_tankuang",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee@6c48a",
+        "imageUuidOrDatabaseUri": "7eaf6942-fe20-426f-b492-5e381e1bfb98@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "b07f7d4f-f7b2-425a-8095-079fdd0eb6ee@6c48a"
+    "redirect": "7eaf6942-fe20-426f-b492-5e381e1bfb98@6c48a"
   }
 }

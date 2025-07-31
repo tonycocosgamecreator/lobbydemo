@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7",
+  "uuid": "bb03255c-757a-454d-b0fb-4ff186ce827b",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7@6c48a",
+      "uuid": "bb03255c-757a-454d-b0fb-4ff186ce827b@6c48a",
       "displayName": "10109_freegames_013",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7",
+        "imageUuidOrDatabaseUri": "bb03255c-757a-454d-b0fb-4ff186ce827b",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7@f9941",
+      "uuid": "bb03255c-757a-454d-b0fb-4ff186ce827b@f9941",
       "displayName": "10109_freegames_013",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7@6c48a",
+        "imageUuidOrDatabaseUri": "bb03255c-757a-454d-b0fb-4ff186ce827b@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "7028bce4-2f45-463f-9b23-2d97e1e2c7a7@6c48a"
+    "redirect": "bb03255c-757a-454d-b0fb-4ff186ce827b@6c48a"
   }
 }

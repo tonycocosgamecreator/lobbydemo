@@ -68,7 +68,7 @@ export class main extends Component {
             //     return;
             // }
             lobbyhttp.Account.Value = StringUtils.getSecureRandomString(16);
-            // ViewManager.OpenPanel(module, "PanelLobby");
+            ViewManager.OpenPanel(module, "PanelGame");
         });
     }
 
