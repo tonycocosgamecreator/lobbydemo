@@ -1,0 +1,135 @@
+{
+  "skeleton": {
+    "hash": "q0eyHJqw8lJUcpCTB0FjgkzEbc8",
+    "spine": "3.8.99",
+    "x": -1033.93,
+    "y": -745.9,
+    "width": 1110.77,
+    "height": 2340,
+    "images": "./img/",
+    "audio": ""
+  },
+  "bones": [
+    {
+      "name": "root"
+    },
+    {
+      "name": "la1",
+      "parent": "root"
+    },
+    {
+      "name": "lagan",
+      "parent": "root",
+      "length": 175.31,
+      "rotation": 90,
+      "y": 12
+    },
+    {
+      "name": "la2",
+      "parent": "lagan",
+      "rotation": -90,
+      "x": 89.6,
+      "y": -21.84
+    },
+    {
+      "name": "la3",
+      "parent": "lagan",
+      "rotation": -90,
+      "x": 89.6,
+      "y": -21.84
+    }
+  ],
+  "slots": [
+    {
+      "name": "1",
+      "bone": "root"
+    },
+    {
+      "name": "la1",
+      "bone": "la1",
+      "attachment": "la1"
+    },
+    {
+      "name": "la2",
+      "bone": "la2",
+      "attachment": "la2"
+    },
+    {
+      "name": "la3",
+      "bone": "la3",
+      "attachment": "la3"
+    },
+    {
+      "name": "jitai",
+      "bone": "root"
+    },
+    {
+      "name": "ziti",
+      "bone": "root"
+    }
+  ],
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "la1": {
+          "la1": {
+            "width": 58,
+            "height": 94
+          }
+        },
+        "la2": {
+          "la2": {
+            "width": 110,
+            "height": 296
+          }
+        },
+        "la3": {
+          "la3": {
+            "width": 110,
+            "height": 296
+          }
+        }
+      }
+    }
+  ],
+  "animations": {
+    "animation": {
+      "bones": {
+        "lagan": {
+          "rotate": [
+            {},
+            {
+              "time": 0.3333,
+              "angle": -25
+            },
+            {
+              "time": 0.3667
+            },
+            {
+              "time": 0.4,
+              "angle": -4
+            },
+            {
+              "time": 0.4333
+            },
+            {
+              "time": 2.6667,
+              "angle": -0.35
+            }
+          ],
+          "scale": [
+            {},
+            {
+              "time": 0.3333,
+              "x": 0.75
+            },
+            {
+              "time": 0.3667
+            }
+          ]
+        }
+      }
+    }
+  }
+}

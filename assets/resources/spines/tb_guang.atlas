@@ -1,0 +1,41 @@
+
+tb_guang.png
+size: 631,260
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+g
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+gd
+  rotate: false
+  xy: 518, 4
+  size: 34, 34
+  orig: 38, 38
+  offset: 2, 2
+  index: -1
+x
+  rotate: false
+  xy: 518, 146
+  size: 111, 112
+  orig: 133, 133
+  offset: 11, 10
+  index: -1
+zg
+  rotate: false
+  xy: 260, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+zg2
+  rotate: false
+  xy: 518, 40
+  size: 109, 104
+  orig: 128, 128
+  offset: 7, 11
+  index: -1

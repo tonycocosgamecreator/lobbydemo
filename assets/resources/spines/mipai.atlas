@@ -1,0 +1,55 @@
+
+mipai.png
+size: 210,514
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+di
+  rotate: false
+  xy: 2, 75
+  size: 92, 145
+  orig: 92, 145
+  offset: 0, 0
+  index: -1
+g
+  rotate: true
+  xy: 2, 23
+  size: 50, 37
+  orig: 128, 128
+  offset: 38, 45
+  index: -1
+sg
+  rotate: true
+  xy: 104, 2
+  size: 252, 104
+  orig: 256, 128
+  offset: 4, 12
+  index: -1
+t1
+  rotate: false
+  xy: 2, 222
+  size: 36, 290
+  orig: 53, 290
+  offset: 7, 0
+  index: -1
+t2
+  rotate: false
+  xy: 40, 222
+  size: 25, 290
+  orig: 46, 290
+  offset: 11, 0
+  index: -1
+wen
+  rotate: true
+  xy: 67, 256
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+zx
+  rotate: false
+  xy: 2, 4
+  size: 100, 17
+  orig: 100, 19
+  offset: 0, 1
+  index: -1

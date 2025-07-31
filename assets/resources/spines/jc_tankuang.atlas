@@ -1,0 +1,90 @@
+
+jc_tankuang.png
+size: 2742,772
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+d
+  rotate: false
+  xy: 1659, 93
+  size: 413, 428
+  orig: 429, 429
+  offset: 8, 1
+  index: -1
+g
+  rotate: false
+  xy: 608, 27
+  size: 252, 104
+  orig: 256, 128
+  offset: 4, 12
+  index: -1
+gd
+  rotate: false
+  xy: 70, 42
+  size: 27, 27
+  orig: 29, 29
+  offset: 1, 1
+  index: -1
+gg
+  rotate: true
+  xy: 992, 22
+  size: 109, 104
+  orig: 128, 128
+  offset: 7, 11
+  index: -1
+mask_25
+  rotate: true
+  xy: 2, 2
+  size: 67, 66
+  orig: 80, 80
+  offset: 6, 7
+  index: -1
+xx
+  rotate: true
+  xy: 2, 71
+  size: 699, 604
+  orig: 699, 607
+  offset: 0, 3
+  index: -1
+xxs
+  rotate: false
+  xy: 862, 3
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+y
+  rotate: false
+  xy: 2074, 34
+  size: 666, 211
+  orig: 668, 211
+  offset: 0, 0
+  index: -1
+zk
+  rotate: true
+  xy: 608, 133
+  size: 637, 633
+  orig: 637, 633
+  offset: 0, 0
+  index: -1
+zkk
+  rotate: false
+  xy: 1659, 523
+  size: 987, 247
+  orig: 987, 247
+  offset: 0, 0
+  index: -1
+zt
+  rotate: true
+  xy: 1243, 71
+  size: 699, 414
+  orig: 699, 415
+  offset: 0, 0
+  index: -1
+zz
+  rotate: false
+  xy: 2074, 247
+  size: 627, 274
+  orig: 630, 275
+  offset: 2, 1
+  index: -1

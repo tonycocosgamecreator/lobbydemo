@@ -1,0 +1,521 @@
+{
+  "skeleton": {
+    "hash": "onm3HQC99gVZRa6y0OWirxesHRQ",
+    "spine": "3.8.99",
+    "x": -540,
+    "y": -757,
+    "width": 1080,
+    "height": 2340,
+    "images": "./img/",
+    "audio": ""
+  },
+  "bones": [
+    {
+      "name": "root"
+    },
+    {
+      "name": "db",
+      "parent": "root",
+      "scaleX": 1.41,
+      "scaleY": 1.41
+    },
+    {
+      "name": "sg",
+      "parent": "root",
+      "scaleX": 3.3,
+      "scaleY": 2,
+      "color": "ff0d01ff"
+    },
+    {
+      "name": "caihong",
+      "parent": "root"
+    },
+    {
+      "name": "ch",
+      "parent": "caihong",
+      "x": -374.55,
+      "scaleX": 4,
+      "scaleY": 66
+    },
+    {
+      "name": "caihong2",
+      "parent": "root",
+      "shearX": -180
+    },
+    {
+      "name": "ch2",
+      "parent": "caihong2",
+      "x": -374.55,
+      "scaleX": 4,
+      "scaleY": 66
+    },
+    {
+      "name": "sg2",
+      "parent": "root",
+      "scaleX": 3.3,
+      "scaleY": 2,
+      "color": "ff0d01ff"
+    },
+    {
+      "name": "sg3",
+      "parent": "root",
+      "scaleX": 3.3,
+      "scaleY": 2,
+      "color": "00ff12ff"
+    },
+    {
+      "name": "sg4",
+      "parent": "root",
+      "scaleX": 3.3,
+      "scaleY": 2,
+      "color": "00ff12ff"
+    }
+  ],
+  "slots": [
+    {
+      "name": "1",
+      "bone": "root"
+    },
+    {
+      "name": "db",
+      "bone": "db",
+      "color": "f7f6f3ff",
+      "attachment": "db"
+    },
+    {
+      "name": "cj2",
+      "bone": "caihong",
+      "attachment": "cj"
+    },
+    {
+      "name": "sg",
+      "bone": "sg",
+      "color": "00fafecf",
+      "attachment": "sg"
+    },
+    {
+      "name": "sg2",
+      "bone": "sg2",
+      "color": "00fafecf",
+      "attachment": "sg"
+    },
+    {
+      "name": "ch",
+      "bone": "ch",
+      "color": "ffffffcc",
+      "attachment": "ch",
+      "blend": "additive"
+    },
+    {
+      "name": "ch2",
+      "bone": "ch",
+      "color": "ffffff2b",
+      "attachment": "ch"
+    },
+    {
+      "name": "cj3",
+      "bone": "caihong2",
+      "attachment": "cj"
+    },
+    {
+      "name": "sg3",
+      "bone": "sg3",
+      "color": "00fafecf",
+      "attachment": "sg"
+    },
+    {
+      "name": "sg4",
+      "bone": "sg4",
+      "color": "00fafecf",
+      "attachment": "sg"
+    },
+    {
+      "name": "ch3",
+      "bone": "ch2",
+      "color": "ffffffcc",
+      "attachment": "ch",
+      "blend": "additive"
+    },
+    {
+      "name": "ch4",
+      "bone": "ch2",
+      "color": "ffffff2b",
+      "attachment": "ch"
+    }
+  ],
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "ch": {
+          "ch": {
+            "x": -10.62,
+            "width": 384,
+            "height": 8
+          }
+        },
+        "ch2": {
+          "ch": {
+            "x": -10.62,
+            "width": 384,
+            "height": 8
+          }
+        },
+        "ch3": {
+          "ch": {
+            "x": -10.62,
+            "width": 384,
+            "height": 8
+          }
+        },
+        "ch4": {
+          "ch": {
+            "x": -10.62,
+            "width": 384,
+            "height": 8
+          }
+        },
+        "cj2": {
+          "cj": {
+            "type": "clipping",
+            "end": "ch2",
+            "vertexCount": 19,
+            "vertices": [
+              -460.52,
+              245.11,
+              -483.12,
+              -245.33,
+              -0.7,
+              -244.72,
+              -0.66,
+              -227.28,
+              -454.28,
+              -227.26,
+              -461.72,
+              -227.32,
+              -463.2,
+              -227.13,
+              -463.98,
+              -226.49,
+              -464.37,
+              -225.42,
+              -464.29,
+              -224.34,
+              -464.14,
+              -221.8,
+              -463.91,
+              -217.63,
+              -443.55,
+              220.28,
+              -443.15,
+              224.05,
+              -442.67,
+              226.68,
+              -440.1,
+              227.08,
+              -436.66,
+              227.22,
+              0.8,
+              226.77,
+              0.54,
+              245.04
+            ],
+            "color": "ce3a3aff"
+          }
+        },
+        "cj3": {
+          "cj": {
+            "type": "clipping",
+            "end": "ch4",
+            "vertexCount": 19,
+            "vertices": [
+              -459.95,
+              245.3,
+              -481.29,
+              -245.33,
+              0.69,
+              -244.72,
+              0.65,
+              -227.27,
+              -452.44,
+              -227.08,
+              -459.89,
+              -227.32,
+              -461.37,
+              -227.13,
+              -462.15,
+              -226.49,
+              -462.53,
+              -225.42,
+              -462.46,
+              -224.34,
+              -462.3,
+              -221.8,
+              -462.07,
+              -217.63,
+              -441.72,
+              220.28,
+              -441.32,
+              224.05,
+              -440.84,
+              226.68,
+              -438.26,
+              227.08,
+              -434.83,
+              227.22,
+              -0.75,
+              226.69,
+              -0.58,
+              245.05
+            ],
+            "color": "ce3a3aff"
+          }
+        },
+        "db": {
+          "db": {
+            "width": 684,
+            "height": 348
+          }
+        },
+        "sg": {
+          "sg": {
+            "width": 128,
+            "height": 256
+          }
+        },
+        "sg2": {
+          "sg": {
+            "width": 128,
+            "height": 256
+          }
+        },
+        "sg3": {
+          "sg": {
+            "width": 128,
+            "height": 256
+          }
+        },
+        "sg4": {
+          "sg": {
+            "width": 128,
+            "height": 256
+          }
+        }
+      }
+    }
+  ],
+  "animations": {
+    "caihong": {
+      "slots": {
+        "sg": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "sg2": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "sg3": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "sg4": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        }
+      },
+      "bones": {
+        "ch": {
+          "translate": [
+            {
+              "x": -585.45
+            },
+            {
+              "time": 0.8333,
+              "x": 490.55
+            }
+          ]
+        },
+        "ch2": {
+          "translate": [
+            {
+              "x": -585.45
+            },
+            {
+              "time": 0.8333,
+              "x": 490.55
+            }
+          ]
+        }
+      }
+    },
+    "daiji": {
+      "slots": {
+        "ch": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch2": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch3": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch4": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        }
+      },
+      "bones": {
+        "sg": {
+          "translate": [
+            {
+              "x": -215
+            },
+            {
+              "time": 0.6667,
+              "x": -598
+            }
+          ]
+        },
+        "sg2": {
+          "translate": [
+            {
+              "x": 272
+            },
+            {
+              "time": 0.6667,
+              "x": -215
+            }
+          ]
+        },
+        "sg3": {
+          "translate": [
+            {
+              "x": 215
+            },
+            {
+              "time": 0.6667,
+              "x": 598
+            }
+          ]
+        },
+        "sg4": {
+          "translate": [
+            {
+              "x": -272
+            },
+            {
+              "time": 0.6667,
+              "x": 215
+            }
+          ]
+        }
+      }
+    },
+    "jiasu": {
+      "slots": {
+        "ch": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch2": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch3": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        },
+        "ch4": {
+          "attachment": [
+            {
+              "name": null
+            }
+          ]
+        }
+      },
+      "bones": {
+        "sg": {
+          "translate": [
+            {
+              "x": -215
+            },
+            {
+              "time": 0.5,
+              "x": -598
+            }
+          ]
+        },
+        "sg2": {
+          "translate": [
+            {
+              "x": 272
+            },
+            {
+              "time": 0.5,
+              "x": -215
+            }
+          ]
+        },
+        "sg3": {
+          "translate": [
+            {
+              "x": 215
+            },
+            {
+              "time": 0.5,
+              "x": 598
+            }
+          ]
+        },
+        "sg4": {
+          "translate": [
+            {
+              "x": -272
+            },
+            {
+              "time": 0.5,
+              "x": 215
+            }
+          ]
+        }
+      }
+    }
+  }
+}

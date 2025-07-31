@@ -1,0 +1,25 @@
+info face="10109_font_0" size=32 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
+common lineHeight=76 base=26 scaleW=300 scaleH=300 pages=1 packed=0
+page id=0 file="10109_font_0.png"
+chars count=21
+char id=44   x=285 y=77 width=14 height=76 xoffset=0 yoffset=0 xadvance=13 page=0 chnl=0
+char id=46   x=0 y=154 width=15 height=76 xoffset=0 yoffset=0 xadvance=14 page=0 chnl=0
+char id=48   x=202 y=0 width=30 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=49   x=263 y=77 width=21 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=50   x=233 y=0 width=30 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=51   x=210 y=77 width=27 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=52   x=264 y=0 width=30 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=53   x=152 y=77 width=28 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=54   x=0 y=77 width=30 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=55   x=62 y=77 width=29 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=56   x=31 y=77 width=30 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=57   x=92 y=77 width=29 height=76 xoffset=0 yoffset=0 xadvance=29 page=0 chnl=0
+char id=66   x=70 y=0 width=32 height=76 xoffset=0 yoffset=0 xadvance=31 page=0 chnl=0
+char id=68   x=36 y=0 width=33 height=76 xoffset=0 yoffset=0 xadvance=32 page=0 chnl=0
+char id=75   x=103 y=0 width=32 height=76 xoffset=0 yoffset=0 xadvance=31 page=0 chnl=0
+char id=77   x=0 y=0 width=35 height=76 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
+char id=78   x=238 y=77 width=24 height=76 xoffset=0 yoffset=0 xadvance=23 page=0 chnl=0
+char id=79   x=136 y=0 width=32 height=76 xoffset=0 yoffset=0 xadvance=31 page=0 chnl=0
+char id=81   x=169 y=0 width=32 height=76 xoffset=0 yoffset=0 xadvance=31 page=0 chnl=0
+char id=83   x=122 y=77 width=29 height=76 xoffset=0 yoffset=0 xadvance=28 page=0 chnl=0
+char id=84   x=181 y=77 width=28 height=76 xoffset=0 yoffset=0 xadvance=27 page=0 chnl=0

@@ -1,0 +1,20 @@
+
+biaoti.png
+size: 382,315
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bt
+  rotate: false
+  xy: 2, 108
+  size: 378, 205
+  orig: 379, 206
+  offset: 1, 1
+  index: -1
+g
+  rotate: false
+  xy: 2, 2
+  size: 252, 104
+  orig: 256, 128
+  offset: 4, 12
+  index: -1

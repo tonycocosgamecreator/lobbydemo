@@ -1,0 +1,69 @@
+
+tankuang.png
+size: 1801,561
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+d
+  rotate: false
+  xy: 1386, 131
+  size: 413, 428
+  orig: 429, 429
+  offset: 8, 1
+  index: -1
+f
+  rotate: true
+  xy: 1211, 6
+  size: 316, 88
+  orig: 322, 89
+  offset: 3, 1
+  index: -1
+g
+  rotate: false
+  xy: 1301, 25
+  size: 109, 104
+  orig: 128, 128
+  offset: 7, 11
+  index: -1
+gd
+  rotate: false
+  xy: 1412, 102
+  size: 27, 27
+  orig: 29, 29
+  offset: 1, 1
+  index: -1
+guang
+  rotate: false
+  xy: 989, 99
+  size: 220, 223
+  orig: 220, 228
+  offset: 0, 5
+  index: -1
+y
+  rotate: false
+  xy: 989, 30
+  size: 204, 67
+  orig: 208, 69
+  offset: 2, 1
+  index: -1
+zk
+  rotate: false
+  xy: 2, 2
+  size: 653, 557
+  orig: 655, 558
+  offset: 1, 1
+  index: -1
+zt
+  rotate: true
+  xy: 657, 17
+  size: 305, 330
+  orig: 307, 331
+  offset: 1, 1
+  index: -1
+zz
+  rotate: false
+  xy: 657, 324
+  size: 727, 235
+  orig: 730, 238
+  offset: 1, 1
+  index: -1

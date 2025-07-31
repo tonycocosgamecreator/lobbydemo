@@ -1,0 +1,201 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "65242": {
+      "importer": "sprite-frame",
+      "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c@65242",
+      "displayName": "",
+      "id": "65242",
+      "name": "10109_freegames_023",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 619,
+        "trimY": 2,
+        "width": 191,
+        "height": 290,
+        "rawWidth": 191,
+        "rawHeight": 290,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "089de57d-b980-4fb5-a631-3601c76505d3@6c48a",
+        "atlasUuid": "125c4737-cb82-4661-bb47-d64ead87e01c"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "57a8e": {
+      "importer": "sprite-frame",
+      "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c@57a8e",
+      "displayName": "",
+      "id": "57a8e",
+      "name": "10109_freegames_016",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 615,
+        "height": 272,
+        "rawWidth": 615,
+        "rawHeight": 272,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "089de57d-b980-4fb5-a631-3601c76505d3@6c48a",
+        "atlasUuid": "125c4737-cb82-4661-bb47-d64ead87e01c"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f8657": {
+      "importer": "sprite-frame",
+      "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c@f8657",
+      "displayName": "",
+      "id": "f8657",
+      "name": "10109_freegames_017",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 276,
+        "width": 553,
+        "height": 126,
+        "rawWidth": 553,
+        "rawHeight": 126,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "089de57d-b980-4fb5-a631-3601c76505d3@6c48a",
+        "atlasUuid": "125c4737-cb82-4661-bb47-d64ead87e01c"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "d0ddc": {
+      "importer": "sprite-frame",
+      "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c@d0ddc",
+      "displayName": "",
+      "id": "d0ddc",
+      "name": "10109_freegames_022",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": true,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 619,
+        "trimY": 195,
+        "width": 183,
+        "height": 290,
+        "rawWidth": 183,
+        "rawHeight": 290,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "089de57d-b980-4fb5-a631-3601c76505d3@6c48a",
+        "atlasUuid": "125c4737-cb82-4661-bb47-d64ead87e01c"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "10109_free.png",
+    "format": 3,
+    "uuid": "125c4737-cb82-4661-bb47-d64ead87e01c",
+    "textureUuid": "089de57d-b980-4fb5-a631-3601c76505d3@6c48a"
+  }
+}
