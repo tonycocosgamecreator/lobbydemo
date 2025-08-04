@@ -132,6 +132,8 @@ declare namespace resourcesDb {
         ['Close']: 'Close',
         ['ExitGame']: 'ExitGame',
         ['Retry']: 'Retry',
+        ['Tip_ReconnectFailed']: 'Tip_ReconnectFailed',
+        ['Tip_Reconnecting']: 'Tip_Reconnecting',
 }
     type game_config_db_data = {
         /** 变量的名字 */

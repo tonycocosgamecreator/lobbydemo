@@ -3,7 +3,7 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { PanelLayer } from '../core/view/view-define';
+import { PanelLayer } from '../../core/view/view-define';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -70,30 +70,30 @@ export default class PanelCircleLoading extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_icon: [cc.Sprite],
-            cc_info: [cc.Label],
+            cc_icon    : [cc.Sprite],
+            cc_info    : [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected icon: cc.Sprite = null;
-    protected info: cc.Label = null;
+   protected icon: cc.Sprite    = null;
+   protected info: cc.Label    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelCircleLoading';
+   public static readonly VIEW_NAME    = 'PanelCircleLoading';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelCircleLoading.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelCircleLoading.VIEW_NAME;
     }
     // @view export resource end

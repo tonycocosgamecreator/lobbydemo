@@ -2,12 +2,10 @@ import { log } from "cc";
 import { WaitTime, bDebug } from "../../core/define";
 import BaseConnector from "../../core/net/base-connector";
 import { Net } from "../../core/net/net";
-import { ProtoType } from "../../define";
+import { ProtoType } from "../define/define";
 import { Global } from "../../global";
 import { JsonConnector } from "./json/json-connector";
 import BrowserUtils from "../../core/utils/browser-utils";
-
-
 
 /**
  * 用于发送消息

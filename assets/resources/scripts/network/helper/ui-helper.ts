@@ -1,13 +1,13 @@
 import { Tween, UIOpacity, tween, v3 } from 'cc';
 import ViewManager from '../../core/manager/view-manager';
-import PanelCircleLoading from '../../view/PanelCircleLoading';
-import PanelMessageBox from '../../view/PanelMessageBox';
 import I18NManager from '../../core/manager/i18n-manager';
 import { bDebug } from '../../core/define';
 import { UIConfirmContext } from '../../core/view/view-define';
 import PoolManager from '../../core/manager/pool-manager';
-import CustomToast from '../../view/CustomToast';
 import BrowserUtils from '../../core/utils/browser-utils';
+import PanelCircleLoading from '../../view/Common/PanelCircleLoading';
+import CustomToast from '../../view/Common/CustomToast';
+import PanelMessageBox from '../../view/Common/PanelMessageBox';
 
 
 
@@ -40,19 +40,19 @@ export default class UIHelper {
     /**
      * Toast任务队列
      */
-    private static _tipInfoList: string[] = [];  
+    private static _tipInfoList: string[] = [];
     /**
      * PanelMessageBox队列
      */
-    private static _confirmContexts : UIConfirmContext[] = [];
+    private static _confirmContexts: UIConfirmContext[] = [];
     /**
      * 当前正在显示的PanelMessageBox
      */
-    private static _confirmPanel : PanelMessageBox | null = null;   
+    private static _confirmPanel: PanelMessageBox | null = null;
     /**
      * 是否正在显示确认框
      */
-    private static _bShowingConfirm : boolean = false;
+    private static _bShowingConfirm: boolean = false;
     //===================================confirm===================================//
     /**
      * 打开一个确认-取消 的弹出框
@@ -60,7 +60,7 @@ export default class UIHelper {
      */
     public static showConfirm(context: UIConfirmContext) {
         this._confirmContexts.push(context);
-        if(this._confirmPanel || this._bShowingConfirm){
+        if (this._confirmPanel || this._bShowingConfirm) {
             return;
         }
         this._showFirstConfirm();
@@ -74,17 +74,17 @@ export default class UIHelper {
      * @param buttonTitle   确定按钮的标题，可选
      * 
      */
-    public static showConfirmOfOneButtonToRefreshBrowser(value : string,title? : string,buttonTitle? : string) {
+    public static showConfirmOfOneButtonToRefreshBrowser(value: string, title?: string, buttonTitle?: string) {
         this.showConfirm({
-            value : value,
-            title : title,
-            yesHandler : () => {
+            value: value,
+            title: title,
+            yesHandler: () => {
                 //刷新浏览器
                 BrowserUtils.refreshURL();
             },
-            bSingleButton : true,
-            bNotShowCloseButton : true,
-            sButtonTitles : buttonTitle ? [buttonTitle] : null,
+            bSingleButton: true,
+            bNotShowCloseButton: true,
+            sButtonTitles: buttonTitle ? [buttonTitle] : null,
         });
     }
 
@@ -94,34 +94,34 @@ export default class UIHelper {
      * @param title 
      * @param buttonTitle 
      */
-    public static showConfirmOfOneButtonToClose(value : string,title? : string,buttonTitle? : string) {
+    public static showConfirmOfOneButtonToClose(value: string, title?: string, buttonTitle?: string) {
         this.showConfirm({
-            value : value,
-            title : title,
-            yesHandler : () => {
-                
+            value: value,
+            title: title,
+            yesHandler: () => {
+
             },
-            bSingleButton : true,
-            bNotShowCloseButton : true,
-            sButtonTitles : buttonTitle ? [buttonTitle] : null,
+            bSingleButton: true,
+            bNotShowCloseButton: true,
+            sButtonTitles: buttonTitle ? [buttonTitle] : null,
         });
-    }   
+    }
     /**
      * 显示一个按钮，点击后返回主页
      * @param value 
      * @param title 
      * @param buttonTitle 
      */
-    public static showConfirmOneButtonToBack(value : string,title? : string,buttonTitle? : string) {
+    public static showConfirmOneButtonToBack(value: string, title?: string, buttonTitle?: string) {
         this.showConfirm({
-            value : value,
-            title : title,
-            yesHandler : () => {
+            value: value,
+            title: title,
+            yesHandler: () => {
                 BrowserUtils.back();
             },
-            bSingleButton : true,
-            bNotShowCloseButton : true,
-            sButtonTitles : buttonTitle ? [buttonTitle] : null,
+            bSingleButton: true,
+            bNotShowCloseButton: true,
+            sButtonTitles: buttonTitle ? [buttonTitle] : null,
         });
     }
 
@@ -129,13 +129,13 @@ export default class UIHelper {
      * 显示第一个确认框
      */
     private static _showFirstConfirm() {
-        const context   = this._confirmContexts.shift();
+        const context = this._confirmContexts.shift();
         this._bShowingConfirm = true;
-        this._confirmPanel = ViewManager.Open(PanelMessageBox, context) as PanelMessageBox;
+        this._confirmPanel = ViewManager.Open(PanelMessageBox, context, 'Common') as PanelMessageBox;
         this._confirmPanel.onClose = () => {
-            this._bShowingConfirm   = false;
-            this._confirmPanel      = null;
-            if(this._confirmContexts.length > 0){
+            this._bShowingConfirm = false;
+            this._confirmPanel = null;
+            if (this._confirmContexts.length > 0) {
                 this._showFirstConfirm();
             }
         };
@@ -159,7 +159,7 @@ export default class UIHelper {
 
         UIHelper._circleLoading = ViewManager.Open(PanelCircleLoading, {
             info: info
-        }) as PanelCircleLoading;
+        }, 'Common') as PanelCircleLoading;
     }
 
     /**
@@ -219,8 +219,8 @@ export default class UIHelper {
             return;
         }
         if (!this._tipNode) {
-            const comp  = PoolManager.Get(CustomToast);
-            if(comp){
+            const comp = PoolManager.Get(CustomToast, null, 'Common');
+            if (comp) {
                 this._tipNode = comp;
                 this._tipResLoadStatus = TipPrefabLoadStatus.Loaded;
                 ViewManager.addCustomNode(comp);
@@ -230,11 +230,11 @@ export default class UIHelper {
         const opacity = this._tipNode.getComponent(UIOpacity);
         Tween.stopAllByTarget(opacity);
         Tween.stopAllByTarget(this._tipNode.node);
-        
+
         opacity.opacity = 255;
         this._tipNode.node.scale = SCALE_NORMAL;
         this._tipNode.fillData(info);
-        
+
         tween(this._tipNode.node)
             .sequence(
                 tween(this._tipNode.node)

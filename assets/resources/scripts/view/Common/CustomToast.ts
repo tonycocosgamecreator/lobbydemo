@@ -3,8 +3,8 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import ReusableBase from '../core/view/reusable-base';
-import { PanelLayer } from '../core/view/view-define';
+import ReusableBase from '../../core/view/reusable-base';
+import { PanelLayer } from '../../core/view/view-define';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -70,37 +70,35 @@ export default class CustomToast extends ReusableBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bgNode: [cc.Node],
-            cc_contentNode: [cc.Node],
-            cc_labelInfo: [cc.Label],
+            cc_bgNode    : [cc.Node],
+            cc_contentNode    : [cc.Node],
+            cc_labelInfo    : [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bgNode: cc.Node = null;
-    protected contentNode: cc.Node = null;
-    protected labelInfo: cc.Label = null;
+   protected bgNode: cc.Node    = null;
+   protected contentNode: cc.Node    = null;
+   protected labelInfo: cc.Label    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomToast';
+   public static readonly VIEW_NAME    = 'CustomToast';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomToast.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomToast.VIEW_NAME;
     }
-
     // @view export resource end
 }

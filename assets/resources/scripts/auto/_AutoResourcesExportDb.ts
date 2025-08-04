@@ -38,6 +38,8 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     'Close': 'Close',
     'ExitGame': 'ExitGame',
     'Retry': 'Retry',
+    'Tip_ReconnectFailed': 'Tip_ReconnectFailed',
+    'Tip_Reconnecting': 'Tip_Reconnecting',
 }
 
     /** 变量的名字 */

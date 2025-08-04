@@ -167,6 +167,26 @@
         "en_us": "Retry",
         "hi_in": "Retry",
         "en_in": "Retry"
+    },
+    "Tip_ReconnectFailed": {
+        "index": "Tip_ReconnectFailed",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "The network reconnection fails, please try again",
+        "en_us": "The network reconnection fails, please try again",
+        "hi_in": "A reconexão de rede falhar, tente novamente",
+        "en_in": "नेटवर्क पुन:कनेक्शन विफल रहा. पुनः प्रयास करें"
+    },
+    "Tip_Reconnecting": {
+        "index": "Tip_Reconnecting",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "The network is reconnecting, please wait.",
+        "en_us": "The network is reconnecting, please wait.",
+        "hi_in": "A rede está se reconectando, aguarde.",
+        "en_in": "नेटवर्क पुन:कनेक्शन, कृपया प्रतीक्षा करें"
     }
 }
 }
