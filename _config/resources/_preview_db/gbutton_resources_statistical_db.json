@@ -53,6 +53,64 @@
             "statisticalId": 100001200
         }
     },
+    "PanelGame": {
+        "cc_buttonFairness": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonFairness",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001600
+        },
+        "cc_buttonChip0": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        },
+        "cc_buttonChip1": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001602
+        },
+        "cc_buttonChip2": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001603
+        },
+        "cc_buttonChip3": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001604
+        },
+        "cc_buttonChip4": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001605
+        },
+        "cc_buttonChip5": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001606
+        },
+        "cc_buttonDetail": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001607
+        }
+    },
     "PanelThirdGame": {
         "cc_buttonBack": {
             "viewName": "PanelThirdGame",

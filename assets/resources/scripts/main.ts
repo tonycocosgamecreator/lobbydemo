@@ -50,23 +50,23 @@ export class main extends Component {
             Constant.CurrentBundleId = AssetManager.BuiltinBundleName.RESOURCES;
             const module = ModuleManager.getModuleAlreadyExist(AssetManager.BuiltinBundleName.RESOURCES);
             //WEBSOCKET
-            let bSuccess = false;
-            if (Global.NetWorkProtoType == ProtoType.Protobuf) {
-                bSuccess = false;
-                // bSuccess = await ProtoLoginManager.ConnectToServer(false);
-            } else {
-                bSuccess = await JsonLoginManager.ConnectToServer(false);
-            }
-            this._network_status = bSuccess ? NetWorkStatus.SUCCESS_CONNECT : NetWorkStatus.FAIL_TO_CONNECT;
-            if (bSuccess) {
-                MessageSender.SendHeartBeatMessage();
-            }
+            // let bSuccess = false;
+            // if (Global.NetWorkProtoType == ProtoType.Protobuf) {
+            //     bSuccess = false;
+            //     // bSuccess = await ProtoLoginManager.ConnectToServer(false);
+            // } else {
+            //     bSuccess = await JsonLoginManager.ConnectToServer(false);
+            // }
+            // this._network_status = bSuccess ? NetWorkStatus.SUCCESS_CONNECT : NetWorkStatus.FAIL_TO_CONNECT;
+            // if (bSuccess) {
+            //     MessageSender.SendHeartBeatMessage();
+            // }
 
-            if (this._network_status == NetWorkStatus.FAIL_TO_CONNECT) {
-                //连接服务器失败
-                UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
-                return;
-            }
+            // if (this._network_status == NetWorkStatus.FAIL_TO_CONNECT) {
+            //     //连接服务器失败
+            //     UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
+            //     return;
+            // }
             lobbyhttp.Account.Value = StringUtils.getSecureRandomString(16);
             ViewManager.OpenPanel(module, "PanelGame");
         });
