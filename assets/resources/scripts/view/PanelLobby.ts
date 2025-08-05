@@ -65,6 +65,10 @@ export default class PanelLobby extends ViewBase implements IPanelLobbyView {
 
     onReceiveGameUrlData(): void {
         UIHelper.hideCircleLoading();
+        if (LobbyManager.curGameUrl == null || LobbyManager.curGameUrl == '') {
+            UIHelper.showToast('Coming soon！');
+            return;
+        }
         window.location.href = LobbyManager.curGameUrl;
         // ViewManager.HidePanel("PanelLobby");
         // 隐藏大厅 拉起webview
