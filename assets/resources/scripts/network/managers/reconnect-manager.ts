@@ -1,6 +1,6 @@
 import { WaitTime, bDebug } from "../../core/define";
+import BaseManager from "../../core/manager/base-manager";
 import I18NManager from "../../core/manager/i18n-manager";
-import ManagerBase from "../../core/manager/manager-base";
 import { Net } from "../../core/net/net";
 import BrowserUtils from "../../core/utils/browser-utils";
 import { Global } from "../../global";
@@ -17,7 +17,7 @@ const MAX_RECONNECT_COUNT = 3;
 /**
  * 重连管理器
  */
-export class ReconnectManager extends ManagerBase {
+export class ReconnectManager extends BaseManager {
 
     /**
      * 是否正在重连

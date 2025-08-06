@@ -22,5 +22,21 @@
     "PanelGame": {
         "statisticalId": 100001005,
         "panelId": 5
+    },
+    "PanelGMMainView": {
+        "statisticalId": 100001006,
+        "panelId": 6
+    },
+    "PanelJMMainView": {
+        "statisticalId": 100001007,
+        "panelId": 7
+    },
+    "PanelJmMainView": {
+        "statisticalId": 100001008,
+        "panelId": 8
+    },
+    "PanelJmInit": {
+        "statisticalId": 100001009,
+        "panelId": 9
     }
 }

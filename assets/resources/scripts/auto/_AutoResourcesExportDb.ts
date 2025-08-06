@@ -22,6 +22,9 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomToast': 'CustomToast',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelGame': 'PanelGame',
+    'PanelGMMainView': 'PanelGMMainView',
+    'PanelJmInit': 'PanelJmInit',
+    'PanelJmMainView': 'PanelJmMainView',
     'PanelLobby': 'PanelLobby',
     'PanelThirdGame': 'PanelThirdGame',
 }

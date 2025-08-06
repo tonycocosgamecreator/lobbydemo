@@ -60,6 +60,24 @@
         "desc": "",
         "statisticalId": 100001005
     },
+    "PanelGMMainView": {
+        "viewName": "PanelGMMainView",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001006
+    },
+    "PanelJmInit": {
+        "viewName": "PanelJmInit",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001009
+    },
+    "PanelJmMainView": {
+        "viewName": "PanelJmMainView",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001008
+    },
     "PanelLobby": {
         "viewName": "PanelLobby",
         "bundleName": "resources",
