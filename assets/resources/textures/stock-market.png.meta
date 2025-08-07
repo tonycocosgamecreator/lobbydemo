@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "34f246c5-f5e1-4525-a5d3-05630db0500a",
+  "uuid": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "34f246c5-f5e1-4525-a5d3-05630db0500a@6c48a",
-      "displayName": "7up-7down",
+      "uuid": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902@6c48a",
+      "displayName": "stock-market",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "34f246c5-f5e1-4525-a5d3-05630db0500a",
+        "imageUuidOrDatabaseUri": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "34f246c5-f5e1-4525-a5d3-05630db0500a@f9941",
-      "displayName": "7up-7down",
+      "uuid": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902@f9941",
+      "displayName": "stock-market",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "34f246c5-f5e1-4525-a5d3-05630db0500a@6c48a",
+        "imageUuidOrDatabaseUri": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -127,8 +127,8 @@
   },
   "userData": {
     "type": "sprite-frame",
-    "hasAlpha": false,
+    "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "34f246c5-f5e1-4525-a5d3-05630db0500a@6c48a"
+    "redirect": "cb11cbd1-efb1-4aa2-9470-3e38ce8d8902@6c48a"
   }
 }

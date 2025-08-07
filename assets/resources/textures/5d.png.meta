@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e",
+  "uuid": "5684f879-5d73-42c6-9383-d8aa3460ad64",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e@6c48a",
-      "displayName": "aviator",
+      "uuid": "5684f879-5d73-42c6-9383-d8aa3460ad64@6c48a",
+      "displayName": "5d",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e",
+        "imageUuidOrDatabaseUri": "5684f879-5d73-42c6-9383-d8aa3460ad64",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e@f9941",
-      "displayName": "aviator",
+      "uuid": "5684f879-5d73-42c6-9383-d8aa3460ad64@f9941",
+      "displayName": "5d",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e@6c48a",
+        "imageUuidOrDatabaseUri": "5684f879-5d73-42c6-9383-d8aa3460ad64@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "5e2b8260-ba85-4ee2-b2ee-c2073f54e47e@6c48a"
+    "redirect": "5684f879-5d73-42c6-9383-d8aa3460ad64@6c48a"
   }
 }

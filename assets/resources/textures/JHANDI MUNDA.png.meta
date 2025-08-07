@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f",
+  "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f@6c48a",
-      "displayName": "speed-cash",
+      "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a",
+      "displayName": "JHANDI MUNDA",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f",
+        "imageUuidOrDatabaseUri": "413fe57f-1f8c-4f7f-9ef9-65227fa322be",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f@f9941",
-      "displayName": "speed-cash",
+      "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@f9941",
+      "displayName": "JHANDI MUNDA",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f@6c48a",
+        "imageUuidOrDatabaseUri": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -127,8 +127,8 @@
   },
   "userData": {
     "type": "sprite-frame",
-    "hasAlpha": false,
+    "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "7d299ef9-76c6-4116-a6ba-c37ddf1f6a0f@6c48a"
+    "redirect": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a"
   }
 }

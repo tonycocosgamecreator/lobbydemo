@@ -36,21 +36,8 @@ export default class CustomGameItem extends ReusableBase {
 
     setData(data: lobbyhttp.ICateGame) {
         this._data = data;
-        let name = '';
-        switch (data.game_code) {
-            case 'mines2': name = 'mines2'; break;
-            case 'dragonTiger': name = 'dragon-tiger'; break;
-            case 'aviator': name = 'aviator'; break;
-            case 'speedcash': name = 'speed-cash'; break;
-            case 'sevenupdown': name = '7up-7down'; break;
-            case 'andarbahar': name = 'andar-bahar'; break;
-            default: name = '';
-            // case 'superWheel': name = 'luckyNumber'; break
-            // case 'super777': name = 'luckyNumber'; break;
-            // case 'wingolottery': name = 'luckyNumber'; break;
-        }
         this.labelName.string = data.game_code;
-        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${name}`);
+        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${data.game_code}`);
     }
 
     clear() {
