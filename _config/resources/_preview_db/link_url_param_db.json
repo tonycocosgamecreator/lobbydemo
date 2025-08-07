@@ -41,6 +41,9 @@
     },
     "player_id": {
         "id": "player_id"
+    },
+    "account": {
+        "id": "account"
     }
 }
 }

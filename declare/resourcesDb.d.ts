@@ -68,6 +68,7 @@ declare namespace resourcesDb {
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
         ['CustomGameItem']: 'CustomGameItem',
+        ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelLobby']: 'PanelLobby',
         ['PanelThirdGame']: 'PanelThirdGame',
@@ -120,6 +121,16 @@ declare namespace resourcesDb {
     function foreach_from_i18n_resources_db(callback: (indexKey: string, data: resourcesDb.i18n_resources_db_data) => (void | boolean)): void;
     /** 唯一id */
     export const I18N_RESOURCES_DB_INDEX: {
+        ['Tip_SocketConnectFaild']: 'Tip_SocketConnectFaild',
+        ['EC_COIN_NO_ENOUGH']: 'EC_COIN_NO_ENOUGH',
+        ['Error']: 'Error',
+        ['Warn']: 'Warn',
+        ['Notice']: 'Notice',
+        ['Confirm']: 'Confirm',
+        ['Cancel']: 'Cancel',
+        ['Close']: 'Close',
+        ['ExitGame']: 'ExitGame',
+        ['Retry']: 'Retry',
 }
     type game_config_db_data = {
         /** 变量的名字 */
@@ -241,5 +252,6 @@ declare namespace resourcesDb {
         ['zoneId']: 'zoneId',
         ['return_url']: 'return_url',
         ['player_id']: 'player_id',
+        ['account']: 'account',
 }
 }

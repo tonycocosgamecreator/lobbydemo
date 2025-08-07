@@ -67,5 +67,106 @@
         "verifyers": []
     }
 ],
-'datas': {}
+'datas': {
+    "Tip_SocketConnectFaild": {
+        "index": "Tip_SocketConnectFaild",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "NetWork connect failed",
+        "en_us": "NetWork connect failed",
+        "hi_in": "O link da Web falhou",
+        "en_in": "नेटवर्क कनेक्शन विफलता"
+    },
+    "EC_COIN_NO_ENOUGH": {
+        "index": "EC_COIN_NO_ENOUGH",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Insufficient coins",
+        "en_us": "Insufficient coins",
+        "hi_in": "Moedas insuficientes",
+        "en_in": "अपर्याप्त सिक्के"
+    },
+    "Error": {
+        "index": "Error",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Error",
+        "en_us": "Error",
+        "hi_in": "Erro",
+        "en_in": "गलती"
+    },
+    "Warn": {
+        "index": "Warn",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Warn",
+        "en_us": "Warn",
+        "hi_in": "Advertir",
+        "en_in": "सूचना"
+    },
+    "Notice": {
+        "index": "Notice",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Notice",
+        "en_us": "Notice",
+        "hi_in": "Notar",
+        "en_in": "अधिसूचना"
+    },
+    "Confirm": {
+        "index": "Confirm",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Confirm",
+        "en_us": "Confirm",
+        "hi_in": "Confirmar",
+        "en_in": "पुष्टि करना"
+    },
+    "Cancel": {
+        "index": "Cancel",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Cancel",
+        "en_us": "Cancel",
+        "hi_in": "Cancelar",
+        "en_in": "रद्द करना"
+    },
+    "Close": {
+        "index": "Close",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Close",
+        "en_us": "Close",
+        "hi_in": "Fechar",
+        "en_in": "बंद कर देना"
+    },
+    "ExitGame": {
+        "index": "ExitGame",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Exit Game",
+        "en_us": "Exit Game",
+        "hi_in": "Exit Game",
+        "en_in": "Exit Game"
+    },
+    "Retry": {
+        "index": "Retry",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Retry",
+        "en_us": "Retry",
+        "hi_in": "Retry",
+        "en_in": "Retry"
+    }
+}
 }

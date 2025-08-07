@@ -14,5 +14,9 @@
     "PanelThirdGame": {
         "statisticalId": 100001003,
         "panelId": 3
+    },
+    "CustomToast": {
+        "statisticalId": 100001004,
+        "panelId": 4
     }
 }

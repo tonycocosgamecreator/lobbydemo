@@ -55,8 +55,12 @@ export default class LobbyManager extends BaseManager {
             console.error('doGameLogin error');
             return;
         }
-        const data = msg.data;
-        this.curGameUrl = data.url;
+        if (msg.code && msg.code == 200) {
+            const data = msg.data;
+            if (data.url.includes("http://") || data.url.includes("https://")) {
+                this.curGameUrl = data.url;
+            }
+        }
         if (LobbyManager.iPanelLobbyView) {
             LobbyManager.iPanelLobbyView.onReceiveGameUrlData();
         }

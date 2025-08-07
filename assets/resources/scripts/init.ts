@@ -14,7 +14,6 @@ import TaskManager from "./core/utils/task-manager";
 import ModuleManager from "./core/manager/module-manager";
 import DbManager from "./core/manager/db-manager";
 import I18nManager from "./core/manager/i18n-manager";
-import StatisticalHelper from "./core/statistical/statistical-helper";
 import { AsyncWaitInfo } from "./core/coroutine/coroutine-define";
 import ProtoManager from "./core/manager/proto-manager";
 export default class Initializer {
