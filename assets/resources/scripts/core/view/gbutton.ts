@@ -123,7 +123,7 @@ export class GButton extends Component {
     /**
      * [未选中，选中] 时的TTF字体
      */
-    private _ttf_font_of_title_with_selected : TTFFont[] = [];
+    private _ttf_font_of_title_with_selected: TTFFont[] = [];
 
     /**
      * [未选中，选中，禁用]时的icon的SpriteFrame变化
@@ -221,7 +221,7 @@ export class GButton extends Component {
      */
     public useDefaultEffect() {
         this.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.disableEffectStyle = GButtonDisableStyle.NONE;
+        this.disableEffectStyle = GButtonDisableStyle.GREY;
     }
 
     public useDefaultOpacityEffect() {
@@ -540,12 +540,12 @@ export class GButton extends Component {
         if (!this._titleLabel) {
             return;
         }
-        if(this._colors_of_title_with_selected.length >= 2){
+        if (this._colors_of_title_with_selected.length >= 2) {
             const color = this._colors_of_title_with_selected[index];
             this._titleLabel.color = color;
         }
 
-        if(this._ttf_font_of_title_with_selected.length >= 2){
+        if (this._ttf_font_of_title_with_selected.length >= 2) {
             const font = this._ttf_font_of_title_with_selected[index];
             this._titleLabel.useSystemFont = false;
             this._titleLabel.font = font;

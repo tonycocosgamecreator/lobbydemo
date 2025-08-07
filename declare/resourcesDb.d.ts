@@ -67,6 +67,10 @@ declare namespace resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
+        ['CustomBetArea']: 'CustomBetArea',
+        ['CustomChip']: 'CustomChip',
+        ['CustomChooseChip']: 'CustomChooseChip',
+        ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',

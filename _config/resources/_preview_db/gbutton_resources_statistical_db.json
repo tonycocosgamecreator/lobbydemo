@@ -44,6 +44,50 @@
     }
 ],
 'datas': {
+    "CustomChooseChip": {
+        "cc_buttonChip0": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002400
+        },
+        "cc_buttonChip1": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002401
+        },
+        "cc_buttonChip2": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002402
+        },
+        "cc_buttonChip3": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002403
+        },
+        "cc_buttonChip4": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002404
+        },
+        "cc_buttonChip5": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002405
+        }
+    },
     "CustomGameItem": {
         "cc_buttonIcon": {
             "viewName": "CustomGameItem",

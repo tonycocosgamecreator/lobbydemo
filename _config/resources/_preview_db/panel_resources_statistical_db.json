@@ -36,6 +36,30 @@
     }
 ],
 'datas': {
+    "CustomBetArea": {
+        "viewName": "CustomBetArea",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001011
+    },
+    "CustomChip": {
+        "viewName": "CustomChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001010
+    },
+    "CustomChooseChip": {
+        "viewName": "CustomChooseChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001013
+    },
+    "CustomFlyChip": {
+        "viewName": "CustomFlyChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001012
+    },
     "CustomGameItem": {
         "viewName": "CustomGameItem",
         "bundleName": "resources",

@@ -48,25 +48,24 @@ export class main extends Component {
         Initializer.LoadResources().then(async () => {
             Constant.CurrentBundleId = AssetManager.BuiltinBundleName.RESOURCES;
             const module = ModuleManager.getModuleAlreadyExist(AssetManager.BuiltinBundleName.RESOURCES);
-            let bSuccess = false;
-            if (Global.NetWorkProtoType == ProtoType.Protobuf) {
-                bSuccess = false;
-                // bSuccess = await ProtoLoginManager.ConnectToServer(false);
-            } else {
-                bSuccess = await JsonLoginManager.ConnectToServer(false);
-            }
-            this._network_status = bSuccess ? NetWorkStatus.SUCCESS_CONNECT : NetWorkStatus.FAIL_TO_CONNECT;
-            if (bSuccess) {
-                MessageSender.SendHeartBeatMessage();
-            }
+            // let bSuccess = false;
+            // if (Global.NetWorkProtoType == ProtoType.Protobuf) {
+            //     bSuccess = false;
+            //     // bSuccess = await ProtoLoginManager.ConnectToServer(false);
+            // } else {
+            //     bSuccess = await JsonLoginManager.ConnectToServer(false);
+            // }
+            // this._network_status = bSuccess ? NetWorkStatus.SUCCESS_CONNECT : NetWorkStatus.FAIL_TO_CONNECT;
+            // if (bSuccess) {
+            //     MessageSender.SendHeartBeatMessage();
+            // }
 
-            if (this._network_status == NetWorkStatus.FAIL_TO_CONNECT) {
-                fadeOutLogo && fadeOutLogo();
-                //连接服务器失败
-                UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
-                return;
-            }
-            lobbyhttp.Account.Value = StringUtils.getSecureRandomString(16);
+            // if (this._network_status == NetWorkStatus.FAIL_TO_CONNECT) {
+            //     fadeOutLogo && fadeOutLogo();
+            //     //连接服务器失败
+            //     UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
+            //     return;
+            // }
             ViewManager.OpenPanel(module, "PanelJmInit");
             fadeOutLogo && fadeOutLogo();
         });

@@ -38,5 +38,21 @@
     "PanelJmInit": {
         "statisticalId": 100001009,
         "panelId": 9
+    },
+    "CustomChip": {
+        "statisticalId": 100001010,
+        "panelId": 10
+    },
+    "CustomBetArea": {
+        "statisticalId": 100001011,
+        "panelId": 11
+    },
+    "CustomFlyChip": {
+        "statisticalId": 100001012,
+        "panelId": 12
+    },
+    "CustomChooseChip": {
+        "statisticalId": 100001013,
+        "panelId": 13
     }
 }

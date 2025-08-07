@@ -40,6 +40,8 @@ export default class JmManager extends BaseManager {
     public static onNetMessage(msgType: string, data: any): boolean {
         return false;
     }
+
+    
 }
 
 
