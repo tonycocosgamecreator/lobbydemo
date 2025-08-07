@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be",
+  "uuid": "4d1b03a2-f8ab-4195-bf7c-109312329044",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a",
-      "displayName": "JHANDI MUNDA",
+      "uuid": "4d1b03a2-f8ab-4195-bf7c-109312329044@6c48a",
+      "displayName": "chicken1",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "413fe57f-1f8c-4f7f-9ef9-65227fa322be",
+        "imageUuidOrDatabaseUri": "4d1b03a2-f8ab-4195-bf7c-109312329044",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@f9941",
-      "displayName": "JHANDI MUNDA",
+      "uuid": "4d1b03a2-f8ab-4195-bf7c-109312329044@f9941",
+      "displayName": "chicken1",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a",
+        "imageUuidOrDatabaseUri": "4d1b03a2-f8ab-4195-bf7c-109312329044@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "413fe57f-1f8c-4f7f-9ef9-65227fa322be@6c48a"
+    "redirect": "4d1b03a2-f8ab-4195-bf7c-109312329044@6c48a"
   }
 }

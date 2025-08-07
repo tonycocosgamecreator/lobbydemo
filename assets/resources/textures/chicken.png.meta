@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "f7d626a3-62cc-4661-9e63-b89d8666a2f1",
+  "uuid": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "f7d626a3-62cc-4661-9e63-b89d8666a2f1@6c48a",
-      "displayName": "CHICKENROAD1",
+      "uuid": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1@6c48a",
+      "displayName": "chicken",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "f7d626a3-62cc-4661-9e63-b89d8666a2f1",
+        "imageUuidOrDatabaseUri": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "f7d626a3-62cc-4661-9e63-b89d8666a2f1@f9941",
-      "displayName": "CHICKENROAD1",
+      "uuid": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1@f9941",
+      "displayName": "chicken",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "f7d626a3-62cc-4661-9e63-b89d8666a2f1@6c48a",
+        "imageUuidOrDatabaseUri": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "f7d626a3-62cc-4661-9e63-b89d8666a2f1@6c48a"
+    "redirect": "bb83cde8-b8ab-4e8b-bee6-9bd9fdde51d1@6c48a"
   }
 }
