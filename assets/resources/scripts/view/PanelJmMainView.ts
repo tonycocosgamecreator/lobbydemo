@@ -35,27 +35,26 @@ export default class PanelJmMainView extends ViewBase {
         super.onDestroy();
     }
 
-
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
         this.bet_area_node.on(cc.Node.EventType.TOUCH_END, this.onBetClick, this)
     }
-
+    /**--------------------------------下注----------------------------------------------- */
     onBetClick(event: EventTouch) {
         let index = this.sp_bet_choose_node.ChipSelectIndex;
         if (index == -1) return;
         const touchPos = event.getUILocation();
         for (let i = 0; i < this.bet_area_node.children.length; i++) {
             const item = this.bet_area_node.children[i];
-            if (this.check(touchPos, item)) {
+            if (this.checkNodeCollider(touchPos, item)) {
                 let sourceWorldPos = this.sp_bet_choose_node.getCurrentChipWorldPos();
                 this.fly_chip_node.getComponent(CustomFlyChip).addFlyChip(index, sourceWorldPos, new Vec3(touchPos.x, touchPos.y, 0));
             }
         }
     }
 
-    check(p: Vec2, target: Node): boolean {
+    checkNodeCollider(p: Vec2, target: Node): boolean {
         const collider = target.getComponent(PolygonCollider2D);
         if (!collider) return false;
         const uiTransform = target.getComponent(UITransform);
