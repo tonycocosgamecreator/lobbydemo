@@ -10,6 +10,10 @@ export enum GameEvent {
     * 更新货币系统
     */
     PLAYER_CURRENCY_UPDATE = 'PLAYER_CURRENCY_UPDATE',
+    /**
+     * 玩家信息更新
+     */
+    PLAYER_INFO_UPDATE = 'PLAYER_INFO_UPDATE',
 }
 
 export interface WalletInfo {
@@ -22,6 +26,23 @@ export interface WalletInfo {
      */
     balance: number;
 }
+
+export interface BetInfo{
+    /** 币种 */
+    currency : string;
+    /** 底注列表 */
+    bet_size : number[];
+    /** 倍数列表 */
+    multiple : number[];
+    /** 底注倍数列表 */
+    bet_index_rule : number[];
+}
+
+/**
+ * 游戏的主题ID
+ */
+export const THEME_ID = 1025;
+
 /**
 * 筹码金额颜色
 */

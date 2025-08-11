@@ -1,5 +1,5 @@
 /** 配置表数据结构描述文件，本文件由导出器自动生成，请勿手动修改 */
-declare namespace resourcesDb {
+declare module resourcesDb {
     function getDataBase(dbName: string): any;
     type customize_resources_statistical_db_data = {
         /** 唯一id */
@@ -141,6 +141,7 @@ declare namespace resourcesDb {
         ['Retry']: 'Retry',
         ['Tip_ReconnectFailed']: 'Tip_ReconnectFailed',
         ['Tip_Reconnecting']: 'Tip_Reconnecting',
+        ['TIP_ENTER_GAME_FAILED']: 'TIP_ENTER_GAME_FAILED',
 }
     type game_config_db_data = {
         /** 变量的名字 */

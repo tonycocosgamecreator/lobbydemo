@@ -47,6 +47,7 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     'Retry': 'Retry',
     'Tip_ReconnectFailed': 'Tip_ReconnectFailed',
     'Tip_Reconnecting': 'Tip_Reconnecting',
+    'TIP_ENTER_GAME_FAILED': 'TIP_ENTER_GAME_FAILED',
 }
 
     /** 变量的名字 */
