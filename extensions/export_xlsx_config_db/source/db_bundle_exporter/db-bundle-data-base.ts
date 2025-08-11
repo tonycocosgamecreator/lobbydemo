@@ -808,7 +808,7 @@ export class DbBundleDataBase {
         text3 += "\n";
         text3 += "/**\n * 将服务器传递过来的语言代码，转换为本地的语言代码\n * @param serverKey \n */\n";
         text3 += "export function serverLanguageKeyToLocal(serverKey : string) : string { \n";
-        text3 += "    return resourcesDb.I18N_Language_Code[serverKey]; \n";
+        text3 += "    return db.I18N_Language_Code[serverKey]; \n";
         text3 += "}\n";
 
         return text1 + "\n" + text2 + "\n" + text3;

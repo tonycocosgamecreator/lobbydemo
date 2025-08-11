@@ -172,7 +172,7 @@ export class JsonConnector extends BaseConnector {
             return;
         }
         //不是心跳包，进行消息的分发
-        const bInterrupt = Managers.onNetMessage(msg.msg_name, msg.data);
+        const bInterrupt = Managers.onNetMessageAll(msg.msg_name, msg.data);
         if (bInterrupt) {
             return;
         }
