@@ -34,5 +34,5 @@ export function getLanguageIndexByKey(name : string) : LanguageIndex | number {
  * @param serverKey 
  */
 export function serverLanguageKeyToLocal(serverKey : string) : string { 
-    return db.I18N_Language_Code[serverKey]; 
+    return resourcesDb.I18N_Language_Code[serverKey]; 
 }
