@@ -4,19 +4,16 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
-import { ChipColor, ChipCount, GameEvent } from '../define';
+import { ChipColor, GameEvent } from '../define';
 import { Color } from 'cc';
 import { Vec3 } from 'cc';
+import WalletManager from '../manager/wallet-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
 
 const TEMP_WORLD_V3 = new cc.Vec3();
-
-const FAIL_CHIP_TARGET_POS = new cc.Vec3(0, -76, 0);
-
-const PLAYER_NODE_POS = new cc.Vec3(0, 0, 0);
 
 @ccclass('CustomChooseChip')
 export default class CustomChooseChip extends ViewBase {
@@ -36,17 +33,15 @@ export default class CustomChooseChip extends ViewBase {
     /**
     * 账户金额
     */
-    private _totalBalance: number = 0;
-
+    private _totalBalance: number = -1;
+    /**
+    * 筹码底注列表
+    */
+    private _chipButtons: number[] = [];
     /**
     * 选中的筹码，默认第一个
     */
     private _chipSelectIndex: number = -1;
-
-    /**
-    * 筹码长度
-    */
-    private _chipButtonsLen: number = -1;
 
     set ChipSelectIndex(value: number) {
         this._chipSelectIndex = value;
@@ -57,75 +52,95 @@ export default class CustomChooseChip extends ViewBase {
     }
 
     buildUi() {
-        this._chipButtonsLen = this.ChipGroup.children.length;
-        this.init();
+        this._init();
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this.updateTotalBalance,
+            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
+            [GameEvent.UPDATE_BET_CHOOSE]: this._init,
         });
-    }
-    /**
-    *初始化筹码状态
-    */
-    init() {
-        this._chipSelectIndex = -1;
-        this.betChoose.node.active = false;
-        for (let i = 0; i < this._chipButtonsLen; i++) {
-            const button = this.ChipGroup.children[i];
-            button.getComponent(GButton).useDefaultEffect();
-            button.width = 101;
-            button.height = 101;
-        }
     }
     /**
     * 每局游戏结束后重置筹码状态
     */
-    clearChip() {
+    reset() {
         this._chipSelectIndex = -1;
         this.betChoose.node.active = false;
-        for (let i = 0; i < this._chipButtonsLen; i++) {
+        for (let i = 0; i < this.ChipGroup.children.length; i++) {
             const button = this.ChipGroup.children[i];
-            button.width = 101;
-            button.height = 101;
+            button.transform.width = 101;
+            button.transform.height = 101;
         }
+    }
+    /**获取当前选中筹码的世界坐标 */
+    getCurrentChipWorldPos(): Vec3 {
+        let sourceNode = this.ChipGroup.children[this._chipSelectIndex];
+        let sourceWorldPos = sourceNode.parent.transform.convertToWorldSpaceAR(sourceNode.position);
+        return sourceWorldPos;
+    }
+    /**
+    *初始化筹码状态
+    */
+    _init() {
+        this._totalBalance = WalletManager.balance;
+        this._chipButtons = WalletManager.getCurrencyBetSize();
+        if (this._chipButtons.length == 0) {
+            this.ChipGroup.active = false;
+            return;
+        }
+        this._chipSelectIndex = -1;
+        this.betChoose.node.active = false;
+        for (let i = 0; i < this.ChipGroup.children.length; i++) {
+            const button = this.ChipGroup.children[i];
+            button.active = !!this._chipButtons[i];
+            if (this._chipButtons[i]) {
+                button.getComponent(GButton).useDefaultEffect();
+                button.transform.width = 101;
+                button.transform.height = 101;
+                button.getComponentInChildren(cc.Label).string = this._chipButtons[i] + '';
+            }
+        }
+        this.ChipGroup.active = true;
+        this._updateButtonState();
     }
     /**
     * 更新筹码展示状态 不够余额下注的话置灰
     */
-    updateButtonState() {
-        for (let i = 0; i < this._chipButtonsLen; i++) {
+    _updateButtonState() {
+        if (this._chipButtons.length == -1) return;
+        if (this._totalBalance == -1) return;
+        for (let i = 0; i < this._chipButtons.length; i++) {
             const button = this.ChipGroup.children[i];
-            let isEnable = this._totalBalance >= ChipCount[i]
+            let isEnable = this._totalBalance >= this._chipButtons[i]
             button.getComponent(GButton).isEnabled = isEnable;
             button.getChildByName('title').getComponent(cc.Label).color = isEnable ? new Color(ChipColor[i]) : new Color('#4A4D55');
         }
         if (this._chipSelectIndex == -1) return;
         //当前选择的筹码大于用户余额的时候 需要重置筹码状态
-        if (this._totalBalance < ChipCount[this._chipSelectIndex]) {
-            this.clearChip();
+        if (this._totalBalance < this._chipButtons[this._chipSelectIndex]) {
+            this.reset();
         }
     }
     /**
     * 切换当前选中的筹码
     * @param index 
     */
-    changeChipSelect(index: number) {
-        if (this._chipButtonsLen == -1) return;
-        if (index < 0 || index >= this._chipButtonsLen) {
+    _changeChipSelect(index: number) {
+        if (this._chipButtons.length == -1) return;
+        if (index < 0 || index >= this._chipButtons.length) {
             bDebug && console.error(`Invalid chip index: ${index}`);
             return;
         }
         this._chipSelectIndex = index;
         let node: cc.Node | null = null;
         //取消之前的选中
-        for (let i = 0; i < this._chipButtonsLen; i++) {
+        for (let i = 0; i < this.ChipGroup.children.length; i++) {
             const button = this.ChipGroup.children[i];
             if (i == index) {
                 //选中效果
                 node = button;
             } else {
                 //取消选中效果
-                button.width = 101;
-                button.height = 101;
+                button.transform.width = 101;
+                button.transform.height = 101;
             }
         }
         this.scheduleOnce(() => {
@@ -138,22 +153,17 @@ export default class CustomChooseChip extends ViewBase {
             //将this.betChoose的坐标设置为TEMP_WORLD_V3
             this.betChoose.node.setPosition(TEMP_WORLD_V3);
             this.betChoose.node.active = true;
-            node.width = 125;
-            node.height = 125;
+            node.transform.width = 125;
+            node.transform.height = 125;
         }, 1 / 30)
     }
-
-    updateTotalBalance() {
-        //更新自己的账户余额
-        this.updateButtonState()
+    /**
+    * 更新自己的账户余额
+    */
+    _updateTotalBalance() {
+        this._totalBalance = WalletManager.balance;
+        this._updateButtonState();
     }
-
-    getCurrentChipWorldPos(): Vec3 {
-        let sourceNode = this.ChipGroup.children[this._chipSelectIndex];
-        let sourceWorldPos = sourceNode.parent.transform.convertToWorldSpaceAR(sourceNode.position);
-        return sourceWorldPos;
-    }
-
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -165,22 +175,22 @@ export default class CustomChooseChip extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
     private onClickButtonChip0(event: cc.EventTouch) {
-        this.changeChipSelect(0);
+        this._changeChipSelect(0);
     }
     private onClickButtonChip1(event: cc.EventTouch) {
-        this.changeChipSelect(1);
+        this._changeChipSelect(1);
     }
     private onClickButtonChip2(event: cc.EventTouch) {
-        this.changeChipSelect(2);
+        this._changeChipSelect(2);
     }
     private onClickButtonChip3(event: cc.EventTouch) {
-        this.changeChipSelect(3);
+        this._changeChipSelect(3);
     }
     private onClickButtonChip4(event: cc.EventTouch) {
-        this.changeChipSelect(4);
+        this._changeChipSelect(4);
     }
     private onClickButtonChip5(event: cc.EventTouch) {
-        this.changeChipSelect(5);
+        this._changeChipSelect(5);
     }
     // @view export event end
 

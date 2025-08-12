@@ -18,11 +18,13 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
+    'CustomBetAreaItem': 'CustomBetAreaItem',
     'CustomBetArea': 'CustomBetArea',
     'CustomChip': 'CustomChip',
     'CustomChooseChip': 'CustomChooseChip',
     'CustomFlyChip': 'CustomFlyChip',
     'CustomGameItem': 'CustomGameItem',
+    'CustomHistory': 'CustomHistory',
     'CustomToast': 'CustomToast',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelGame': 'PanelGame',

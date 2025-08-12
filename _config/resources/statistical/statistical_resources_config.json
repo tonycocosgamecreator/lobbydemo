@@ -54,5 +54,13 @@
     "CustomChooseChip": {
         "statisticalId": 100001013,
         "panelId": 13
+    },
+    "CustomHistory": {
+        "statisticalId": 100001014,
+        "panelId": 14
+    },
+    "CustomBetAreaItem": {
+        "statisticalId": 100001015,
+        "panelId": 15
     }
 }

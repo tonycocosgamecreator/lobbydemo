@@ -2,7 +2,19 @@ import { _decorator, Component, Node } from 'cc';
 import BaseManager from '../core/manager/base-manager';
 import UIHelper from '../network/helper/ui-helper';
 import WalletManager from './wallet-manager';
+import { IPanelJmMainView } from '../define/ipanel-jm-main-view';
+import { MessageSender } from '../network/net/message-sender';
+import { Global } from '../global';
+import { GameEvent } from '../define';
 
+export enum GameState {
+    IDLE = 'idle',          // 空闲状态，游戏未开始
+    DEALER_SHAKING = 'dealer_shaking',  // 荷官摇骰子动画阶段
+    BETTING = 'betting',     // 下注阶段
+    BET_LOCKED = 'bet_locked', // 停止下注
+    RANDOMLY_DOUBLE = 'Randomly_double', // 随机翻倍区域
+    RESULT = 'result'        // 结果显示阶段
+}
 export default class JmManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
     /**
@@ -43,11 +55,11 @@ export default class JmManager extends BaseManager {
      * @returns 如果返回true，说明消息被框架拦截了，不需要继续向下传递
      */
     public static onNetMessage(msgType: string, data: any): boolean {
-        if(msgType == baccarat.Message.MsgEnterBaccaratRsp) {
+        if (msgType == baccarat.Message.MsgEnterBaccaratRsp) {
             //进入游戏的响应
             const msg = data as baccarat.MsgEnterBaccaratRsp;
-            const result    = msg.result;
-            if(result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+            const result = msg.result;
+            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入游戏失败了
                 //这里可以弹出提示框，提示玩家进入游戏失败
                 console.error(`enter Game Failed: ${result.err_desc}`);
@@ -55,35 +67,117 @@ export default class JmManager extends BaseManager {
                     resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_ENTER_GAME_FAILED,
                     resourcesDb.I18N_RESOURCES_DB_INDEX.Error
                 );
-                const deskId = msg.info.desk_id || 0;
-                //设置钱包数据
-                WalletManager.walletInfos   = msg.wallets || [];
-                //设置玩家的下注数据
-                WalletManager.bets          = msg.info.bets;
-                //设置玩家的id
-                this.playerId     = msg.player_id || 0;
-                //设置期号
-                this.period      = msg.info.period_id || '';
-                //@todo : 需要设置其他数据
-
                 return true; //拦截消息，不继续传递
             }
-
+            this.deskId = msg.info.desk_id || 0;
+            //设置钱包数据
+            WalletManager.walletInfos = msg.wallets || [];
+            //设置玩家的下注数据
+            WalletManager.bets = msg.info.bets;
+            //设置玩家的下注数据
+            Global.sendMsg(GameEvent.UPDATE_BET_CHOOSE);
+            //设置玩家的id
+            this.playerId = msg.player_id || 0;
+            //设置期号
+            this.period = msg.info.period_id || '';
+            //@todo : 需要设置其他数据
+            MessageSender.SendMessage(baccarat.Message.MsgRecordDetailReq, { desk_id: this.deskId });
+            //更新阶段
+            this.updateStage(msg.info.stage, msg.info.have_sec || 0);
             return false;
+        }
+        if (msgType == baccarat.Message.MsgRecordDetailAck) {
+            const msg = data as baccarat.MsgRecordDetailAck;
+            //开奖记录
+            this.records = msg || null;
         }
         return false;
     }
-
+    /**
+    * 当前桌子的ID
+    */
+    public static deskId: number = -1;
     /**
      * 当前玩家的ID
      */
-    public static playerId : number = -1;
+    public static playerId: number = -1;
     /**
      * 当前期号
      */
-    public static period : string = '';
-    
+    public static _period: string = '';
+    /**
+     * 当前玩家的总投注额度
+     */
+    protected static _totalBet: number = 0;
+    /**
+    * 当前所有的开奖记录
+    */
+    protected static _records: baccarat.MsgRecordDetailAck = null;
+    /**
+    * 获取当前的期号
+    */
+    public static get period(): string {
+        return this._period;
+    }
 
+    /**
+     * 设置当前的期号
+     * @param value 
+     */
+    public static set period(value: string) {
+        this._period = value;
+        Global.sendMsg(GameEvent.PLAYER_PERIOD_UPDATE, value);
+    }
+    /**
+     * 获取开奖记录
+     */
+    public static get records(): baccarat.MsgRecordDetailAck {
+        return this._records;
+    }
+    /**
+     * 设置开奖记录
+     * @param value 
+     */
+    public static set records(value: baccarat.MsgRecordDetailAck) {
+        this._records = value;
+        Global.sendMsg(GameEvent.UPDATE_HISTORY);
+    }
+
+    protected static _view: IPanelJmMainView | null = null;
+    public static get view(): IPanelJmMainView | null {
+        return this._view;
+    }
+    public static set view(value: IPanelJmMainView | null) {
+        this._view = value;
+    }
+
+
+    protected static _stage: number = 0;
+    protected static _haveSec: number = 0;
+    public static get stage(): number {
+        return this._stage;
+    }
+    /**
+     * 获取当前阶段剩余时间
+     */
+    public static get haveSec(): number {
+        return this._haveSec;
+    }
+
+    public static set haveSec(value: number) {
+        this._haveSec = value;
+    }
+    /**
+     * 更新阶段
+     * @param value 阶段
+     * @param haveSec 剩余时间
+     */
+    public static updateStage(value: baccarat.DeskStage, haveSec: number = 0) {
+        this._stage = value;
+        this._haveSec = haveSec;
+        //通知界面更新阶段
+        this.view?.stageChanged();
+    }
 }
 
 

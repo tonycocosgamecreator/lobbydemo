@@ -3,20 +3,15 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import ReusableBase from '../core/view/reusable-base';
-import { Color } from 'cc';
-import { ChipColor } from '../define';
-import { v3 } from 'cc';
-import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
-import WalletManager from '../manager/wallet-manager';
+import { Color } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass('CustomChip')
-export default class CustomChip extends ReusableBase {
+@ccclass('CustomBetAreaItem')
+export default class CustomBetAreaItem extends ViewBase {
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
@@ -27,28 +22,39 @@ export default class CustomChip extends ReusableBase {
         super.onDestroy();
     }
 
-    unuse(): void {
-        // this.node.opacity = 255;
-    }
-    reuse(): void {
-
-    }
 
     //------------------------ 内部逻辑 ------------------------//
-    /**
-    * 设置筹码的样式
-    * @param index 筹码类型
-    */
-    setBetData(index: number) {
-        this.node.scale = v3(1, 1, 1);
-        this.node.getComponent(UIOpacity).opacity = 255;
-        this.icon.spriteFrame = this.getSpriteFrame("textures/AB_Img_" + (22 + index) + "/spriteFrame");
-        let _chipButtons = WalletManager.getCurrencyBetSize();
-        if (_chipButtons) {
-            this.title.string = _chipButtons[index] ? _chipButtons[index] + '' : '';
-        }
-        this.title.color = new Color(ChipColor[index]);
+    setRecord(idx: number, value: number) {
+        let showValue = value > 1;
+        this.bet_result_node.children[idx].getComponentInChildren(cc.Label).color = showValue ? new Color('#FFF') : new Color('#CCC');
+        this.bet_result_node.children[idx].getComponentInChildren(cc.Label).string = showValue ? value.toString() : 'X';
+        this.bet_result_node.children[idx].getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${showValue ? 'JM_Img_6' : 'JM_Img_5'}/spriteFrame`);
     }
+
+    resetRecord() {
+        this.bet_result_node.children.forEach(t => {
+            t.getComponentInChildren(cc.Label).string = '';
+            t.getComponentInChildren(cc.Label).color = new Color('#CCC');
+            t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_5/spriteFrame");
+        })
+    }
+
+    resetBetNum() {
+        this.labelSum.string = '0';
+    }
+
+    reset() {
+        Tween.stopAllByTarget(this.light_node.node);
+        this.light_node.node.active = false;
+        this.resetBetNum();
+    }
+
+
+
+
+
+
+
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -63,21 +69,22 @@ export default class CustomChip extends ReusableBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_icon: [cc.Sprite],
-            cc_title: [cc.Label],
+            cc_bet_result_node: [cc.Node],
+            cc_labelSum: [cc.Label],
+            cc_light_node: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected icon: cc.Sprite = null;
-    protected title: cc.Label = null;
+    protected bet_result_node: cc.Node = null;
+    protected labelSum: cc.Label = null;
+    protected light_node: cc.Sprite = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomChip';
+    public static readonly VIEW_NAME = 'CustomBetAreaItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
@@ -87,11 +94,10 @@ export default class CustomChip extends ReusableBase {
      * 请勿修改，脚本自动生成
     */
     public get bundleName() {
-        return CustomChip.BUNDLE_NAME;
+        return CustomBetAreaItem.BUNDLE_NAME;
     }
     public get viewName() {
-        return CustomChip.VIEW_NAME;
+        return CustomBetAreaItem.VIEW_NAME;
     }
-
     // @view export resource end
 }

@@ -5,6 +5,7 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
+import WalletManager from '../manager/wallet-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -31,7 +32,9 @@ export default class CustomSystemTopFoot extends ViewBase {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this._updateTotalBet,
             [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
+            [GameEvent.PLAYER_PERIOD_UPDATE]: this._updatePeriod,
         });
+        this._updateTotalBalance();
     }
 
     /**
@@ -42,15 +45,32 @@ export default class CustomSystemTopFoot extends ViewBase {
         this._back_callback = callback;
     }
 
-    _updateTotalBet() {
+    _updateTotalBet(val: number | string) {
+        //如果val是字符串，那么转换成数字
+        if (typeof val == 'string') {
+            val = parseFloat(val);
+        }
 
+        this.totalBet.string = val.toFixed(2);
     }
 
     _updateTotalBalance() {
-        // this.totalBalance.string =
+        this.balance.string = WalletManager.balance.toFixed(2);
     }
 
-
+    private _updatePeriod(value: string) {
+        if (value == null || value == undefined) {
+            return;
+        }
+        let val = value.toString();
+        if (val.includes('-')) {
+            const idx = val.lastIndexOf('-');
+            const period = val.substring(idx + 1);
+            this.period.string = period;
+        } else {
+            this.period.string = val || '-';
+        }
+    }
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

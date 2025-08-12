@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "7a6b5129-efd1-4ab1-942a-68a968c65f23",
+  "uuid": "d1519ce0-5214-4188-ada5-43b65fbd942a",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "CustomBetArea"
+    "syncNodeName": "CustomBetAreaItem"
   }
 }

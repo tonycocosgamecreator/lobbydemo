@@ -97,6 +97,29 @@
             "statisticalId": 100001200
         }
     },
+    "CustomHistory": {
+        "cc_buttonDetail": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002500
+        },
+        "cc_buttonCloseDetail": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002501
+        },
+        "cc_buttonCloseHistory": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonCloseHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002502
+        }
+    },
     "PanelGame": {
         "cc_buttonFairness": {
             "viewName": "PanelGame",

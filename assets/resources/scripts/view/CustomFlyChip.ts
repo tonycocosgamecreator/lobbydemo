@@ -27,22 +27,23 @@ export default class CustomFlyChip extends ViewBase {
 
     protected onDestroy(): void {
         super.onDestroy();
-        this.node.children.forEach(t => {
-            Tween.stopAllByTarget(t);
-            this._clearChip(t);
-        })
     }
-
 
     //------------------------ 内部逻辑 ------------------------//
     _baseDuration: number = 0.1; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 200; // 基准距离(像素)   
     _targetScale: number = 0.5;
+
+    reset() {
+        this.node.children.forEach(t => {
+            this._clearChip(t);
+        })
+    }
     /**
-    * 添加筹码
+    * 添加单个筹码
     * @param index 筹码类型
-    * @param sourceWorldPos 起点世界坐标
-    * @param endWorldPos 终点世界坐标
+    * @param sourceWorldPos 添加筹码位置的世界坐标
+    * @param endWorldPos 飞筹码终点的世界坐标
     */
     addFlyChip(index: number, sourceWorldPos: Vec3, endWorldPos: Vec3) {
         const chip = PoolManager.Get(CustomChip);
@@ -55,7 +56,7 @@ export default class CustomFlyChip extends ViewBase {
     }
     /**
     * 回收筹码
-    * * @param recycleWorldPos 终点世界坐标
+    * * @param recycleWorldPos 回收筹码终点的世界坐标
     */
     recycleChip(recycleWorldPos: Vec3) {
         let recyclePos = this.node.transform.convertToNodeSpaceAR(recycleWorldPos);
@@ -120,9 +121,13 @@ export default class CustomFlyChip extends ViewBase {
         return (distance / this._baseDistance) * this._baseDuration;
     }
 
+    /**
+    * 回收筹码到对象池
+    */
     _clearChip(chip: Node) {
         chip.scale = v3(1, 1, 1);
         chip.getComponent(UIOpacity).opacity = 255;
+        Tween.stopAllByTarget(chip);
         PoolManager.Put(chip.getComponent(CustomChip));
     }
 

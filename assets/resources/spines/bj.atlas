@@ -1,0 +1,111 @@
+
+bj.png
+size: 128,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xia_1
+  rotate: false
+  xy: 2, 401
+  size: 72, 77
+  orig: 74, 79
+  offset: 1, 1
+  index: -1
+xia_2
+  rotate: false
+  xy: 2, 322
+  size: 72, 77
+  orig: 74, 79
+  offset: 1, 1
+  index: -1
+xia_jiao
+  rotate: false
+  xy: 29, 79
+  size: 44, 35
+  orig: 44, 35
+  offset: 0, 0
+  index: -1
+xia_tou
+  rotate: false
+  xy: 2, 213
+  size: 71, 50
+  orig: 71, 50
+  offset: 0, 0
+  index: -1
+xia_wei
+  rotate: true
+  xy: 22, 135
+  size: 42, 51
+  orig: 42, 51
+  offset: 0, 0
+  index: -1
+xie_he
+  rotate: false
+  xy: 2, 173
+  size: 52, 38
+  orig: 54, 40
+  offset: 1, 1
+  index: -1
+xie_jiao1
+  rotate: 270
+  xy: 2, 21
+  size: 32, 40
+  orig: 32, 40
+  offset: 0, 0
+  index: -1
+xie_jiao2
+  rotate: 180
+  xy: 43, 39
+  size: 31, 41
+  orig: 31, 41
+  offset: 0, 0
+  index: -1
+xie_xiaotui2_1
+  rotate: false
+  xy: 33, 3
+  size: 27, 23
+  orig: 33, 36
+  offset: 0, 13
+  index: -1
+xie_xiaotui2_2
+  rotate: 180
+  xy: 45, 102
+  size: 28, 26
+  orig: 33, 36
+  offset: 5, 5
+  index: -1
+xie_xiaotui2_3
+  rotate: false
+  xy: 56, 177
+  size: 19, 24
+  orig: 33, 36
+  offset: 14, 0
+  index: -1
+yu_ci
+  rotate: false
+  xy: 43, 25
+  size: 24, 12
+  orig: 26, 14
+  offset: 1, 1
+  index: -1
+yu_st
+  rotate: false
+  xy: 2, 265
+  size: 73, 56
+  orig: 73, 58
+  offset: 0, 2
+  index: -1
+yu_tou
+  rotate: 270
+  xy: 2, 107
+  size: 40, 43
+  orig: 40, 43
+  offset: 0, 0
+  index: -1
+yu_wei
+  rotate: false
+  xy: 2, 50
+  size: 35, 40
+  orig: 35, 40
+  offset: 0, 0
+  index: -1

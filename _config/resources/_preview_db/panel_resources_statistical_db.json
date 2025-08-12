@@ -36,6 +36,12 @@
     }
 ],
 'datas': {
+    "CustomBetAreaItem": {
+        "viewName": "CustomBetAreaItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001015
+    },
     "CustomBetArea": {
         "viewName": "CustomBetArea",
         "bundleName": "resources",
@@ -65,6 +71,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001001
+    },
+    "CustomHistory": {
+        "viewName": "CustomHistory",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001014
     },
     "CustomToast": {
         "viewName": "CustomToast",

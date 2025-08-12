@@ -11,9 +11,21 @@ export enum GameEvent {
     */
     PLAYER_CURRENCY_UPDATE = 'PLAYER_CURRENCY_UPDATE',
     /**
+    * 玩家当前局数更新
+    */
+    PLAYER_PERIOD_UPDATE = 'PLAYER_PERIOD_UPDATE',
+    /**
      * 玩家信息更新
      */
     PLAYER_INFO_UPDATE = 'PLAYER_INFO_UPDATE',
+    /**
+     *更新下注选项的数据
+     */
+    UPDATE_BET_CHOOSE = 'UPDATE_BET_CHOOSE',
+    /**
+    *更新记录
+    */
+    UPDATE_HISTORY = 'UPDATE_HISTORY',
 }
 
 export interface WalletInfo {
@@ -27,15 +39,15 @@ export interface WalletInfo {
     balance: number;
 }
 
-export interface BetInfo{
+export interface BetInfo {
     /** 币种 */
-    currency : string;
+    currency: string;
     /** 底注列表 */
-    bet_size : number[];
+    bet_size: number[];
     /** 倍数列表 */
-    multiple : number[];
+    multiple: number[];
     /** 底注倍数列表 */
-    bet_index_rule : number[];
+    bet_index_rule: number[];
 }
 
 /**
@@ -47,9 +59,3 @@ export const THEME_ID = 1025;
 * 筹码金额颜色
 */
 export const ChipColor = ['#47506A', '#1A7401', '#1756A4', '#90017A', '#A31B09', '#A36407'];
-/**
-* 筹码金额
-*/
-export const ChipCount = [5, 10, 20, 50, 100, 200];
-
-

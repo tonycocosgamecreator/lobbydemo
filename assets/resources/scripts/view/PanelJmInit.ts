@@ -32,8 +32,6 @@ export default class PanelJmInit extends ViewBase {
         // AudioManager.playBgm()
         Managers.registe(JmManager);
         JsonLoginManager.Login();
-        // ViewManager.OpenPanel(this.module, 'PanelJmMainView');
-        // this.close();
     }
 
 
