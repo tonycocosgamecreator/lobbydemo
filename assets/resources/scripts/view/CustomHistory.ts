@@ -7,7 +7,7 @@ import * as cc from 'cc';
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import JmManager from '../manager/jm-manager';
 import BaseGlobal from '../core/message/base-global';
-import { GameEvent } from '../define';
+import { GameEvent, MsgRecordDetailAck } from '../define';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -32,7 +32,7 @@ export default class CustomHistory extends ViewBase {
     /** 是否是展开的状态 */
     _open: boolean = false;
 
-    _data: baccarat.MsgRecordDetailAck = null;
+    _data: MsgRecordDetailAck = null;
 
     buildUi() {
         this.Open = false;

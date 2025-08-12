@@ -87,11 +87,33 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 //     this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
                 // })
                 break;
-            case baccarat.DeskStage.StartBetStage: break;
+            case baccarat.DeskStage.StartBetStage:
+                //展开倒计时
+                this.timeCounterBar.node.active = true;
+                break;
             case baccarat.DeskStage.EndBetStage: break;
             case baccarat.DeskStage.OpenStage: break;
             case baccarat.DeskStage.SettleStage: break;
         }
+    }
+
+    /**
+  * 当前正在显示的倒计时秒数
+  */
+    private _currentHaveSec: number = 0;
+    protected lateUpdate(dt: number): void {
+        if (JmManager.stage != baccarat.DeskStage.StartBetStage) return;
+        const left = JmManager.minusHaveSec(dt);
+        const maxSec = JmManager.getCurrentDur();
+        const secNow = Math.ceil(left);
+        if (secNow !== this._currentHaveSec) {
+            this._currentHaveSec = secNow;
+            this.timeCount.string = secNow.toString();
+            if (JmManager.stage == baccarat.DeskStage.StartBetStage && secNow == 5) {
+                // JmManager.playSound(this.bundleName, andarbaharDb.SOUND_DB_ID.time_left_3_tip);
+            }
+        }
+        this.timeCounterBar.progress = left / maxSec;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -131,7 +153,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             cc_people_node: [cc.Sprite],
             cc_sp_bet_choose_node: [CustomChooseChip],
             cc_timeCount: [cc.Label],
-            cc_timeCounterBar: [cc.Sprite],
+            cc_timeCounterBar: [cc.ProgressBar],
             cc_top_node: [CustomSystemTopFoot],
         };
     }
@@ -145,7 +167,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     protected people_node: cc.Sprite = null;
     protected sp_bet_choose_node: CustomChooseChip = null;
     protected timeCount: cc.Label = null;
-    protected timeCounterBar: cc.Sprite = null;
+    protected timeCounterBar: cc.ProgressBar = null;
     protected top_node: CustomSystemTopFoot = null;
     /**
      * 当前界面的名字

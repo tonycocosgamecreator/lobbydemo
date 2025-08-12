@@ -28,6 +28,19 @@ export enum GameEvent {
     UPDATE_HISTORY = 'UPDATE_HISTORY',
 }
 
+export enum Message {
+    /** 记录详情 */
+    MsgRecordDetailReq = 'MsgRecordDetailReq',
+    /** 记录详情 */
+    MsgRecordDetailAck = 'MsgRecordDetailAck',
+}
+
+export interface MsgRecordDetailAck {
+    record: { luck_id: number[] }[],
+    award: number[][],
+    probability: number[]
+
+}
 export interface WalletInfo {
     /**
      * 货币类型

@@ -5,7 +5,7 @@ import WalletManager from './wallet-manager';
 import { IPanelJmMainView } from '../define/ipanel-jm-main-view';
 import { MessageSender } from '../network/net/message-sender';
 import { Global } from '../global';
-import { GameEvent } from '../define';
+import { GameEvent, Message, MsgRecordDetailAck } from '../define';
 
 export enum GameState {
     IDLE = 'idle',          // 空闲状态，游戏未开始
@@ -80,16 +80,35 @@ export default class JmManager extends BaseManager {
             this.playerId = msg.player_id || 0;
             //设置期号
             this.period = msg.info.period_id || '';
+            //设置当前游戏每个阶段的持续时间
+            this._dur = msg.info.dur || [];
             //@todo : 需要设置其他数据
-            MessageSender.SendMessage(baccarat.Message.MsgRecordDetailReq, { desk_id: this.deskId });
+            MessageSender.SendMessage(Message.MsgRecordDetailReq, { desk_id: this.deskId });
             //更新阶段
             this.updateStage(msg.info.stage, msg.info.have_sec || 0);
             return false;
         }
-        if (msgType == baccarat.Message.MsgRecordDetailAck) {
-            const msg = data as baccarat.MsgRecordDetailAck;
+        if (msgType == Message.MsgRecordDetailAck) {
+            const msg = data as MsgRecordDetailAck;
             //开奖记录
             this.records = msg || null;
+        }
+        if (msgType == baccarat.Message.MsgBaccaratNextStageNtf) {
+            //收到状态变化的通知
+            const msg = data as baccarat.MsgBaccaratNextStageNtf;
+            const stage = msg.stage;
+            const haveSec = msg.have_sec || 0;
+            //更新阶段
+            this.updateStage(stage, haveSec);
+
+            if (stage == baccarat.DeskStage.ReadyStage) {
+                //新的一个回合还是了
+                // this.reset();
+                const period_id = msg.period_id || '';
+                this.period = period_id;
+            }
+
+            return true;
         }
         return false;
     }
@@ -112,7 +131,7 @@ export default class JmManager extends BaseManager {
     /**
     * 当前所有的开奖记录
     */
-    protected static _records: baccarat.MsgRecordDetailAck = null;
+    protected static _records: MsgRecordDetailAck = null;
     /**
     * 获取当前的期号
     */
@@ -131,14 +150,14 @@ export default class JmManager extends BaseManager {
     /**
      * 获取开奖记录
      */
-    public static get records(): baccarat.MsgRecordDetailAck {
+    public static get records(): MsgRecordDetailAck {
         return this._records;
     }
     /**
      * 设置开奖记录
      * @param value 
      */
-    public static set records(value: baccarat.MsgRecordDetailAck) {
+    public static set records(value: MsgRecordDetailAck) {
         this._records = value;
         Global.sendMsg(GameEvent.UPDATE_HISTORY);
     }
@@ -166,6 +185,44 @@ export default class JmManager extends BaseManager {
 
     public static set haveSec(value: number) {
         this._haveSec = value;
+    }
+    /**
+     * 对倒计时进行减法
+     * @param value 
+     * @returns 
+     */
+    public static minusHaveSec(value: number) {
+        this._haveSec -= value;
+        if (this._haveSec < 0) {
+            this._haveSec = 0;
+        }
+        return this._haveSec;
+    }
+    /**
+ * 当前游戏，每个阶段的持续时间
+ * 这个数据是从服务器获取的，单位是秒
+ */
+    protected static _dur: number[] = [];
+    /**
+     * 获取当前游戏每个阶段的持续时间
+     * @param value 
+     */
+    public static getDur(stage: number): number {
+        if (!this._dur || this._dur.length === 0) {
+            return 0;
+        }
+        //如果阶段大于等于0，说明是有效的阶段
+        if (stage >= 0 && stage < this._dur.length) {
+            return this._dur[stage];
+        }
+        return 0;
+    }
+    /**
+     * 
+     * @returns 获取当前阶段的持续时间
+     */
+    public static getCurrentDur(): number {
+        return this.getDur(this._stage);
     }
     /**
      * 更新阶段
