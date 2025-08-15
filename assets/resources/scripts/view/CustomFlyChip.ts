@@ -15,6 +15,7 @@ import { Tween } from 'cc';
 import BaseGlobal from '../core/message/base-global';
 import { BetPoint, GameEvent } from '../define';
 import { LocalStorageManager } from '../manager/localstorage-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -95,7 +96,7 @@ export default class CustomFlyChip extends ViewBase {
                 })
             )
             .call(() => {
-                //筹码落地声音
+                 AudioManager.playSound(this.bundleName, '下注筹码声');
             })
             .start();
 

@@ -2101,8 +2101,8 @@ export namespace jmbaccarat{
         period? : string;
         /**  玩家赢奖金额 */
         win_coin : string[];
-        /**  玩家下注金额 */
-        win_type : string[];
+        /**  玩家赢奖区域数据 */
+        win_type : number[];
     }
 
     /** 翻倍数据 */

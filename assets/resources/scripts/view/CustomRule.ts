@@ -31,14 +31,6 @@ export default class CustomRule extends ReusableBase {
         
     }
 
-
-
-
-
-
-
-
-
     //------------------------ 网络消息 ------------------------//
 // @view export net begin
 

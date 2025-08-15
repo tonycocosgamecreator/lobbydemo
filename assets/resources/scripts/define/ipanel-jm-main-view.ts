@@ -5,9 +5,10 @@ export interface IPanelJmMainView {
 
     flyChip(): void;
 
-    showSettleResult(): void;
-
     doubleArea(): void;
+
+    //根据状态播放动画
+    playAnimationByStage(stage: number): void;
 }
 
 

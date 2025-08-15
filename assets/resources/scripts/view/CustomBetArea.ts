@@ -52,7 +52,7 @@ export default class CustomBetArea extends ViewBase {
             for (let i = 0; i < 5; i++) {
                 let award = _data.award[i] as any;
                 if (!award) award = [];
-                let record = _data.record[i]? _data.record[i].luck_id : []
+                let record = _data.record[i] ? _data.record[i].luck_id : []
                 let arr = this.countWithForLoop(award, record);
                 this.node.children.forEach((t, idx) => {
                     t.getComponent(CustomBetAreaItem).setRecord(i, arr[idx + 1]);
@@ -82,6 +82,14 @@ export default class CustomBetArea extends ViewBase {
         });
 
         return countMap;
+    }
+
+    updateBetArea(arr: number[]) {
+        this.node.children.forEach((t, idx) => {
+            if (arr[idx] && arr[idx] > 1) {
+                t.getComponent(CustomBetAreaItem).setBetAreaLight();
+            }
+        });
     }
 
     //------------------------ 网络消息 ------------------------//

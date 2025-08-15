@@ -60,17 +60,28 @@ export default class CustomBetAreaItem extends ViewBase {
         this.labelSum.string = num + '';
     }
 
+    setBetAreaLight() {
+        Tween.stopAllByTarget(this.light_node.node);
+        this.light_node.node.active = true;
+        this.blink(this.light_node.node, 0.2, 3);
+    }
+
     reset() {
         Tween.stopAllByTarget(this.light_node.node);
         this.light_node.node.active = false;
+        this.light_node.node.opacity = 0;
     }
 
+    blink(node, duration, times) {
+        const tween = cc.tween(node);
+        for (let i = 0; i < times; i++) {
+            tween.to(duration, { opacity: 255 })
+                .to(duration, { opacity: 0 });
+        }
+        tween.start();
+    }
 
-
-
-
-
-
+    // 使用方式
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

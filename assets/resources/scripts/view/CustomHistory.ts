@@ -58,9 +58,11 @@ export default class CustomHistory extends ViewBase {
             this.reset();
             return;
         }
+        let _records = this._data.record.reverse();
+        let _awards = this._data.award.reverse();
         this.historyList.itemRender = (item: cc.Node, i: number) => {
-            let rc = this._data.record[i].luck_id;
-            let ad = this._data.award[i] as any;
+            let rc = _records[i].luck_id;
+            let ad = _awards[i] as any;
             item.children.forEach((t, j) => {
                 if (j < 6) {
                     t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (rc[j] * 3)) + "/spriteFrame");
@@ -70,8 +72,8 @@ export default class CustomHistory extends ViewBase {
             });
         }
         this.historyDetailList.itemRender = (item: cc.Node, i: number) => {
-            let rc = this._data.record[i].luck_id;
-            let ad = this._data.award[i] as any;
+            let rc = _records[i].luck_id;
+            let ad = _awards[i] as any;
             item.children.forEach((t, j) => {
                 t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (rc[j] * 3)) + "/spriteFrame");
                 if (!ad) ad = [];

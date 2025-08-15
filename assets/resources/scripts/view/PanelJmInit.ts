@@ -9,6 +9,7 @@ import JmManager from '../manager/jm-manager';
 import JsonLoginManager from '../network/managers/json-login-manager';
 import { LocalStorageManager } from '../manager/localstorage-manager';
 import JmHistoryManager from '../manager/jm-history-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -31,7 +32,7 @@ export default class PanelJmInit extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
-        // AudioManager.playBgm()
+        AudioManager.playBgm(this.bundleName, '背景')
         Managers.registe(LocalStorageManager);
         Managers.registe(JmHistoryManager);
         Managers.registe(JmManager);

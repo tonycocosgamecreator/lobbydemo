@@ -106,7 +106,7 @@ export default class JmManager extends BaseManager {
                 }
             }
             //更新阶段
-            this.updateStage(msg.info.stage, msg.info.have_sec || 0, true);
+            this.updateStage(msg.info.stage, msg.info.have_sec || 0);
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgRecordDetailAck) {
@@ -128,11 +128,13 @@ export default class JmManager extends BaseManager {
                 const period_id = msg.period_id || '';
                 this.period = period_id;
             }
-            if (stage == jmbaccarat.DeskStage.SettleStage) {
+            if (stage == jmbaccarat.DeskStage.SettleStage || stage == jmbaccarat.DeskStage.OpenStage) {
+                //开牌阶段分别由其他消息处理
                 return;
             }
+            this.updateStage(stage, haveSec || 0)
             //更新阶段
-            this.updateStage(stage, haveSec);
+            this.view?.playAnimationByStage(data.stage);
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgBetBaccaratRsp) {
@@ -178,6 +180,7 @@ export default class JmManager extends BaseManager {
             //如果是结算通知
             const msg = data as jmbaccarat.MsgSettleNtf;
             this._openPos = msg.open_pos || [];
+            this._winType = msg.win_type || [];
             if (msg.open_pos) {
                 //新增结果
                 MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
@@ -189,7 +192,7 @@ export default class JmManager extends BaseManager {
                 //如果没有结果数据，说明是结算失败了
                 console.error(`Settle Failed: result_data is null`);
             }
-            this.view?.showSettleResult();
+            this.view?.playAnimationByStage(jmbaccarat.DeskStage.SettleStage);
             return false;
 
         }
@@ -203,6 +206,10 @@ export default class JmManager extends BaseManager {
     public static _openPos: number[] = [];
     public static get openPos(): number[] {
         return this._openPos;
+    }
+    public static _winType: number[] = [];
+    public static get winType(): number[] {
+        return this._winType;
     }
     /**
     * 当前桌子的ID

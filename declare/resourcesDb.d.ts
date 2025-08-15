@@ -149,6 +149,16 @@ declare module resourcesDb {
         ['TIP_AB_BET_FAILED']: 'TIP_AB_BET_FAILED',
         ['Tip_No_More_Historys']: 'Tip_No_More_Historys',
         ['TIP_HISTORY_GET_FAILED']: 'TIP_HISTORY_GET_FAILED',
+        ['CustomSystemTopFoot_totalbet_info_i18n']: 'CustomSystemTopFoot_totalbet_info_i18n',
+        ['CustomSystemTopFoot_balance_info_i18n']: 'CustomSystemTopFoot_balance_info_i18n',
+        ['CustomSystemTopFoot_label_period_i18n_skin']: 'CustomSystemTopFoot_label_period_i18n_skin',
+        ['PanelMessageBox_cc_title_i18n']: 'PanelMessageBox_cc_title_i18n',
+        ['PanelMessageBox_cc_cancelTitle_i18n']: 'PanelMessageBox_cc_cancelTitle_i18n',
+        ['PanelMessageBox_cc_okTitle_i18n']: 'PanelMessageBox_cc_okTitle_i18n',
+        ['PanelSystemMenu_title_i18n_button_records']: 'PanelSystemMenu_title_i18n_button_records',
+        ['PanelSystemMenu_title_i18n_button_rules']: 'PanelSystemMenu_title_i18n_button_rules',
+        ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
+        ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
 }
     type game_entrance_config_db_data = {
         /** 游戏id（bundleId） */

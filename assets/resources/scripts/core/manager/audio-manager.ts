@@ -271,7 +271,7 @@ export default class AudioManager extends BaseManager {
         const path = 'audios/' + fileName;
         const clip = module.getAssetAlreadyExit(path, AudioClip);
         if (!clip) {
-            bDebug && error('[' + this.KEY + ']错误：找不到指定背景音乐文件：' + path, moduleName);
+            bDebug && error('[' + this.KEY + ']错误：找不到指定音效文件：' + path, moduleName);
             return;
         }
 
@@ -305,7 +305,7 @@ export default class AudioManager extends BaseManager {
         const path = 'audios/' + fileName;
         const clip = module.getAssetAlreadyExit(path, AudioClip);
         if (!clip) {
-            bDebug && error('[' + this.KEY + ']错误：找不到指定背景音乐文件：' + path, moduleName);
+            bDebug && error('[' + this.KEY + ']错误：找不到指定音效文件：' + path, moduleName);
             return -1;
         }
 
