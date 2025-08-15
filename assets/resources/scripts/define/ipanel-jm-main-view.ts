@@ -1,7 +1,13 @@
 
 export interface IPanelJmMainView {
-   
-    stageChanged(): void;
+
+    stageChanged(reconnect: boolean): void;
+
+    flyChip(): void;
+
+    showSettleResult(): void;
+
+    doubleArea(): void;
 }
 
 

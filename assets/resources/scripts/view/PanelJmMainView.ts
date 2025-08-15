@@ -18,6 +18,13 @@ import { PolygonCollider2D } from 'cc';
 import { UITransform } from 'cc';
 import { Intersection2D } from 'cc';
 import { Vec3 } from 'cc';
+import WalletManager from '../manager/wallet-manager';
+import { MessageSender } from '../network/net/message-sender';
+import { BetPoint, GameEvent, THEME_ID } from '../define';
+import { LocalStorageManager } from '../manager/localstorage-manager';
+import { Global } from '../global';
+import { BaseMessage } from '../core/message/base-message';
+import JmMenuHelper from '../menu/jm-menu-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -26,8 +33,17 @@ const { ccclass, property } = cc._decorator;
 export enum SpineAnimation {
     collect = "collect",
     shaking = 'shaking',
+    idle1 = "idle1",
+    idle3 = "idle3",
+    open = "open",
+    clap = "clap",
 }
 
+export enum SpineXiaZhuAnimation {
+    xz = "xz",
+    tzxz = 'tzxz',
+    ewbl = 'ewbl',
+}
 @ccclass('PanelJmMainView')
 export default class PanelJmMainView extends ViewBase implements IPanelJmMainView {
 
@@ -44,24 +60,49 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     }
 
     //------------------------ 内部逻辑 ------------------------//
-
+    protected _isGameInBackground: boolean = false;
     buildUi() {
+        Global.registerListeners(
+            this,
+            {
+                [BaseMessage.ON_ENTER_FORGOUND]: () => {
+                    this._isGameInBackground = false;
+                },
+                [BaseMessage.ON_ENTER_BACK_GROUND]: () => {
+                    this._isGameInBackground = true;
+                },
+                [GameEvent.REQUST_OPEN_MENU]: () => {
+                    //要求打开菜单
+                    JmMenuHelper.OpenMenu();
+                }
+            }
+        );
         this.bet_area_node.node.on(cc.Node.EventType.TOUCH_END, this.onBetClick, this);
-        console.log(this.anim_node, '===============');
-        // this.spAnim.setAnimation(0, SpineAnimation.collect, false);
+        this.stageChanged();
     }
     /**--------------------------------下注----------------------------------------------- */
+    _tagetWorldPos: Vec3 = null;
+    _sourceWorldPos: Vec3 = null;
     onBetClick(event: EventTouch) {
+        if (JmManager.stage != jmbaccarat.DeskStage.StartBetStage) return;
         let index = this.sp_bet_choose_node.ChipSelectIndex;
         if (index == -1) return;
         const touchPos = event.getUILocation();
         for (let i = 0; i < this.bet_area_node.node.children.length; i++) {
             const item = this.bet_area_node.node.children[i];
             if (this.checkNodeCollider(touchPos, item)) {
-                let sourceWorldPos = this.sp_bet_choose_node.getCurrentChipWorldPos();
-                this.fly_chip_node.addFlyChip(index, sourceWorldPos, new Vec3(touchPos.x, touchPos.y, 0));
+                this.sendBetMessage(i + 1);
+                this._sourceWorldPos = this.sp_bet_choose_node.getCurrentChipWorldPos();
+                this._tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
             }
         }
+    }
+
+    flyChip() {
+        let point = LocalStorageManager.load(BetPoint, []);
+        point.push({ index: this.sp_bet_choose_node.ChipSelectIndex, pos: this._tagetWorldPos });
+        LocalStorageManager.save(BetPoint, point);
+        this.fly_chip_node.addFlyChip(this.sp_bet_choose_node.ChipSelectIndex, this._sourceWorldPos, this._tagetWorldPos);
     }
 
     checkNodeCollider(p: Vec2, target: Node): boolean {
@@ -72,54 +113,151 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         const localPos = uiTransform.convertToNodeSpaceAR(new Vec3(p.x, p.y, 0));
         return Intersection2D.pointInPolygon(new Vec2(localPos.x, localPos.y), collider.points);
     }
-
-
-    stageChanged() {
+    /**
+     * 发送下注消息
+     * @param betId 
+     */
+    protected sendBetMessage(betId: number) {
         const stage = JmManager.stage;
+        if (stage != jmbaccarat.DeskStage.StartBetStage) {
+            return;
+        }
+        const betSize = WalletManager.getCurrencyBetSize();
+        const betCount = betSize[this.sp_bet_choose_node.ChipSelectIndex];
+        let betDatas: jmbaccarat.BetData[] = [];
+        let betData: jmbaccarat.BetData = {
+            bet_id: betId,
+            bet_coin: betCount.toString(),
+            autoCashOut: false,
+            out_rate: '0',
+            is_settle: false,
+            settle_out_rate: '0',
+            is_rebet: false,
+        }
+        betDatas.push(betData);
+        //如果有之前的下注，添加到这里
+        let data: jmbaccarat.MsgBetBaccaratReq = {
+            theme_id: THEME_ID,
+            desk_id: JmManager.deskId,
+            bets: betDatas
+        };
+        MessageSender.SendMessage(jmbaccarat.Message.MsgBetBaccaratReq, data);
+    }
+
+    stageChanged(reconnect: boolean = false) {
+        const stage = JmManager.stage;
+        this.timeCounterBar.node.active = false;
+        this.spStart.node.active = false;
+        this.spXiaZhu.node.active = false;
+        this.result_node.node.active = false;
+        this.touzi_node.active = false;
+        if (stage == -1) return;
         switch (stage) {
-            case baccarat.DeskStage.ReadyStage:
+            case jmbaccarat.DeskStage.ReadyStage:
                 this.fly_chip_node.reset();
                 this.bet_area_node.reset();
                 this.sp_bet_choose_node.reset();
-                this.timeCounterBar.node.active = false;
-                // this.spAnim.setAnimation(0, SpineAnimation.collect, false);
-                // this.scheduleOnce(() => {
-                //     this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
-                // })
+                this.spStart.node.active = true;
+                this.spStart.setAnimation(0, 'animation', false);
+                this.result_node.node.active = false;
+                this.spAnim.timeScale = 0.9;
+                if (reconnect) {
+                } else {
+                    this.spAnim.setAnimation(0, SpineAnimation.collect, false);
+                    this.scheduleOnce(() => {
+                        this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
+                    }, 1.8)
+                }
                 break;
-            case baccarat.DeskStage.StartBetStage:
+            case jmbaccarat.DeskStage.StartBetStage:
                 //展开倒计时
+                this.spAnim.timeScale = 0.9;
+                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
                 this.timeCounterBar.node.active = true;
+                this.fly_chip_node.recoverChip();
+                this.spXiaZhu.node.active = true;
+                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
                 break;
-            case baccarat.DeskStage.EndBetStage: break;
-            case baccarat.DeskStage.OpenStage: break;
-            case baccarat.DeskStage.SettleStage: break;
+            case jmbaccarat.DeskStage.EndBetStage:
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                this.spXiaZhu.node.active = true;
+                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
+                if (reconnect) {
+                    this.fly_chip_node.recoverChip();
+                }
+                break;
+            case jmbaccarat.DeskStage.OpenStage:
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                if (reconnect) {
+                    this.fly_chip_node.recoverChip();
+                }
+                break;
+            case jmbaccarat.DeskStage.SettleStage:
+                this.timeCounterBar.node.active = true;
+                if (reconnect) {
+                    this.fly_chip_node.reset();
+                }
+                break;
         }
     }
-
+    showSettleResult() {
+        cc.Tween.stopAllByTarget(this.result_node.node);
+        let open = JmManager.openPos;
+        this.result_node.node.children.forEach((t, idx) => {
+            t.active = !!open[idx];
+            this.touzi_node.children[idx].active = !!open[idx];
+            if (open[idx]) {
+                t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (open[idx] * 3)) + "/spriteFrame");
+                this.touzi_node.children[idx].getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
+            }
+        });
+        this.spAnim.node.active = true;
+        this.spAnim.timeScale = 1;
+        this.spAnim.setAnimation(0, SpineAnimation.open, false);
+        this.touzi_node.active = true;
+        this.scheduleOnce(() => {
+            this.result_node.node.active = true;
+            this.result_node.node.scale = new Vec3(0.1, 0.1, 0.1);
+            cc.tween(this.result_node.node)
+                .to(0.2, { scale: new Vec3(1, 1, 1) })
+                .start();
+            this.spAnim.setAnimation(0, SpineAnimation.clap, true);
+            let sourceNode = this.people_node.node;
+            let sourceUITransform = sourceNode.parent.getComponent(UITransform);
+            let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
+            this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
+        }, 2.5);
+    }
     /**
   * 当前正在显示的倒计时秒数
   */
     private _currentHaveSec: number = 0;
     protected lateUpdate(dt: number): void {
-        if (JmManager.stage != baccarat.DeskStage.StartBetStage) return;
+        if (JmManager.stage != jmbaccarat.DeskStage.StartBetStage && JmManager.stage != jmbaccarat.DeskStage.SettleStage) return;
         const left = JmManager.minusHaveSec(dt);
-        const maxSec = JmManager.getCurrentDur();
+        const maxSec = JmManager.getDur();
         const secNow = Math.ceil(left);
         if (secNow !== this._currentHaveSec) {
             this._currentHaveSec = secNow;
             this.timeCount.string = secNow.toString();
-            if (JmManager.stage == baccarat.DeskStage.StartBetStage && secNow == 5) {
+            if (JmManager.stage == jmbaccarat.DeskStage.StartBetStage && secNow == 5) {
                 // JmManager.playSound(this.bundleName, andarbaharDb.SOUND_DB_ID.time_left_3_tip);
             }
         }
         this.timeCounterBar.progress = left / maxSec;
     }
+
+    doubleArea() {
+        this.scheduleOnce(() => {
+            this.spXiaZhu.node.active = true;
+            this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
+        }, 1)
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == baccarat.Message.MsgBaccaratOnlineNtf) {
+        if (msgType == jmbaccarat.Message.MsgBaccaratOnlineNtf) {
             //在线玩家数量刷新
             this.labelPeopleNum.string = (data.online_sum || 0).toString();
             return true;
@@ -133,10 +271,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     // @view export event begin
     private onClickButtonFairness(event: cc.EventTouch) {
         cc.log('on click event cc_buttonFairness');
-        // let sourceNode = this.buttonFairness.node;
-        // let sourceUITransform = sourceNode.parent.getComponent(UITransform);
-        // let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
-        // this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
+
     }
     // @view export event end
 
@@ -144,31 +279,41 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_anim_node: [cc.sp.Skeleton],
+            cc_animation_node: [cc.Node],
             cc_bet_area_node: [CustomBetArea],
             cc_buttonFairness: [GButton, this.onClickButtonFairness.bind(this)],
             cc_fly_chip_node: [CustomFlyChip],
             cc_history_node: [CustomHistory],
             cc_labelPeopleNum: [cc.Label],
             cc_people_node: [cc.Sprite],
+            cc_result_node: [cc.Sprite],
+            cc_spAnim: [cc.sp.Skeleton],
+            cc_spStart: [cc.sp.Skeleton],
+            cc_spXiaZhu: [cc.sp.Skeleton],
             cc_sp_bet_choose_node: [CustomChooseChip],
             cc_timeCount: [cc.Label],
             cc_timeCounterBar: [cc.ProgressBar],
             cc_top_node: [CustomSystemTopFoot],
+            cc_touzi_node: [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected anim_node: cc.sp.Skeleton = null;
+    protected animation_node: cc.Node = null;
     protected bet_area_node: CustomBetArea = null;
     protected buttonFairness: GButton = null;
     protected fly_chip_node: CustomFlyChip = null;
     protected history_node: CustomHistory = null;
     protected labelPeopleNum: cc.Label = null;
     protected people_node: cc.Sprite = null;
+    protected result_node: cc.Sprite = null;
+    protected spAnim: cc.sp.Skeleton = null;
+    protected spStart: cc.sp.Skeleton = null;
+    protected spXiaZhu: cc.sp.Skeleton = null;
     protected sp_bet_choose_node: CustomChooseChip = null;
     protected timeCount: cc.Label = null;
     protected timeCounterBar: cc.ProgressBar = null;
     protected top_node: CustomSystemTopFoot = null;
+    protected touzi_node: cc.Node = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

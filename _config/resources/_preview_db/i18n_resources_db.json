@@ -197,6 +197,36 @@
         "en_us": "Enter game failed",
         "hi_in": "Enter game failed",
         "en_in": "Enter game failed"
+    },
+    "TIP_AB_BET_FAILED": {
+        "index": "TIP_AB_BET_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Bet failed",
+        "en_us": "Bet failed",
+        "hi_in": "Bet failed",
+        "en_in": "Bet failed"
+    },
+    "Tip_No_More_Historys": {
+        "index": "Tip_No_More_Historys",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "No more history!",
+        "en_us": "No more history!",
+        "hi_in": "Não há mais histórias!",
+        "en_in": "और कोई इतिहास नहीं"
+    },
+    "TIP_HISTORY_GET_FAILED": {
+        "index": "TIP_HISTORY_GET_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "History get failed",
+        "en_us": "History get failed",
+        "hi_in": "History get failed",
+        "en_in": "History get failed"
     }
 }
 }

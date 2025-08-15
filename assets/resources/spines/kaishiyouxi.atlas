@@ -1,0 +1,111 @@
+
+kaishiyouxi.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bjguang
+  rotate: false
+  xy: 724, 187
+  size: 220, 222
+  orig: 220, 222
+  offset: 0, 0
+  index: -1
+ditiao2
+  rotate: true
+  xy: 2, 2
+  size: 42, 281
+  orig: 42, 281
+  offset: 0, 0
+  index: -1
+hua1
+  rotate: false
+  xy: 285, 7
+  size: 40, 37
+  orig: 42, 39
+  offset: 1, 1
+  index: -1
+hua2
+  rotate: false
+  xy: 327, 3
+  size: 25, 41
+  orig: 27, 43
+  offset: 1, 1
+  index: -1
+hua3
+  rotate: false
+  xy: 354, 16
+  size: 25, 28
+  orig: 27, 30
+  offset: 1, 1
+  index: -1
+hua4
+  rotate: false
+  xy: 381, 12
+  size: 18, 32
+  orig: 20, 34
+  offset: 1, 1
+  index: -1
+hua5
+  rotate: false
+  xy: 788, 65
+  size: 42, 52
+  orig: 44, 54
+  offset: 1, 1
+  index: -1
+hua6
+  rotate: false
+  xy: 428, 24
+  size: 17, 20
+  orig: 20, 22
+  offset: 2, 1
+  index: -1
+hua7
+  rotate: false
+  xy: 401, 23
+  size: 25, 21
+  orig: 27, 23
+  offset: 1, 1
+  index: -1
+hua8
+  rotate: false
+  xy: 788, 4
+  size: 34, 59
+  orig: 36, 61
+  offset: 1, 1
+  index: -1
+kuan
+  rotate: false
+  xy: 2, 46
+  size: 720, 363
+  orig: 720, 373
+  offset: 0, 5
+  index: -1
+xing1
+  rotate: false
+  xy: 724, 54
+  size: 62, 63
+  orig: 70, 70
+  offset: 4, 3
+  index: -1
+xing2
+  rotate: false
+  xy: 724, 119
+  size: 67, 66
+  orig: 74, 74
+  offset: 4, 4
+  index: -1
+xing3
+  rotate: false
+  xy: 724, 2
+  size: 46, 50
+  orig: 53, 57
+  offset: 3, 4
+  index: -1
+yingyu/STAT GAME
+  rotate: true
+  xy: 946, 42
+  size: 367, 72
+  orig: 371, 76
+  offset: 2, 2
+  index: -1

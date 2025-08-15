@@ -557,8 +557,8 @@ declare namespace baccarat{
         odds : AbOdd[];
         /**  当前回合已经打开的牌的记录 */
         open_cards? : OpenRecord;
-        /**  当前回合的持续时间列表,单位秒 */
-        dur : number[];
+        /**  当前阶段总时间 */
+        stage_total_time? : number;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */

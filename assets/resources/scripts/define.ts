@@ -1,3 +1,5 @@
+import { game } from "cc";
+
 /**
  * 游戏内部通知
  */
@@ -7,12 +9,12 @@ export enum GameEvent {
      */
     PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
     /**
-    * 更新货币系统
-    */
+     * 更新货币系统
+     */
     PLAYER_CURRENCY_UPDATE = 'PLAYER_CURRENCY_UPDATE',
     /**
-    * 玩家当前局数更新
-    */
+     * 玩家当前局数更新
+     */
     PLAYER_PERIOD_UPDATE = 'PLAYER_PERIOD_UPDATE',
     /**
      * 玩家信息更新
@@ -23,24 +25,23 @@ export enum GameEvent {
      */
     UPDATE_BET_CHOOSE = 'UPDATE_BET_CHOOSE',
     /**
-    *更新记录
-    */
+     *更新记录
+     */
     UPDATE_HISTORY = 'UPDATE_HISTORY',
+    /**
+     *断线重连恢复筹码位置
+     */
+    RECOVER_CHIP = 'RECOVER_CHIP',
+    /**
+     * 要求打开菜单
+     */
+    REQUST_OPEN_MENU = 'REQUST_OPEN_MENU',
+    /**
+     * 要求更新历史记录的列表
+     */
+    REQUEST_REFRESH_GAME_HISTORY = 'REQUEST_REFRESH_GAME_HISTORY',
 }
 
-export enum Message {
-    /** 记录详情 */
-    MsgRecordDetailReq = 'MsgRecordDetailReq',
-    /** 记录详情 */
-    MsgRecordDetailAck = 'MsgRecordDetailAck',
-}
-
-export interface MsgRecordDetailAck {
-    record: { luck_id: number[] }[],
-    award: number[][],
-    probability: number[]
-
-}
 export interface WalletInfo {
     /**
      * 货币类型
@@ -72,3 +73,21 @@ export const THEME_ID = 1025;
 * 筹码金额颜色
 */
 export const ChipColor = ['#47506A', '#1A7401', '#1756A4', '#90017A', '#A31B09', '#A36407'];
+
+export const BetPoint = 'BetPoint';
+
+/**
+ * 异步方法，请使用await标记
+ * 等待指定帧后继续执行
+ * 注意：每一帧的时间为理论时间，若DC过高或者游戏逻辑耗时严重，会导致时间不正确
+ * @param frame 帧数量，默认为1
+ */
+export async function WaitFrame(frame: number = 1) {
+    const fr = game.frameTime * frame;
+    //bDebug && console.log("期望等待的时间：",fr);
+    return new Promise<any>((resolve, reject) => {
+        setTimeout(() => {
+            resolve(true);
+        }, fr);
+    });
+}

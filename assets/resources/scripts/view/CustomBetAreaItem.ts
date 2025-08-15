@@ -5,6 +5,7 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { Tween } from 'cc';
 import { Color } from 'cc';
+import JmManager from '../manager/jm-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -39,14 +40,29 @@ export default class CustomBetAreaItem extends ViewBase {
         })
     }
 
-    resetBetNum() {
-        this.labelSum.string = '0';
+    setBetNum(idx: number) {
+        let num = 0;
+        let id = idx + 1;
+        const data = JmManager.MyData;
+        if (!data) {
+            this.labelSum.string = num + '';
+            return;
+        }
+        if (data && data.length == 0) {
+            this.labelSum.string = num + '';
+            return;
+        }
+        JmManager.MyData.forEach(t => {
+            if (t.bet_id == id) {
+                num += parseInt(t.bet_coin);
+            }
+        })
+        this.labelSum.string = num + '';
     }
 
     reset() {
         Tween.stopAllByTarget(this.light_node.node);
         this.light_node.node.active = false;
-        this.resetBetNum();
     }
 
 

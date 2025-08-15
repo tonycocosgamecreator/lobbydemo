@@ -7,6 +7,8 @@ import TaskManager from "../utils/task-manager";
 import { AudioClip } from "cc";
 import { BufferAsset } from "cc";
 import LanguageManager from "../manager/language-manager";
+import { Asset } from "cc";
+import { AssetType } from "../define";
 /**
  * 当前bundle状态
  */
@@ -338,5 +340,16 @@ export default class Module {
             }
         }
     }
-
+    /**
+     * 直接获取一个已经加载的资源
+     * 调用的时候需要注意你自己要预先加载到内存中
+     * @param url
+     * @param assetType
+     */
+    public getAssetAlreadyExit<T extends Asset>(url: string, assetType: AssetType<T>): T | null {
+        if (!this.isValid) {
+            return null;
+        }
+        return this.bundle.get(url, assetType);
+    }
 }

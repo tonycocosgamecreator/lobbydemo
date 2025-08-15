@@ -7,7 +7,7 @@ import * as cc from 'cc';
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import JmManager from '../manager/jm-manager';
 import BaseGlobal from '../core/message/base-global';
-import { GameEvent, MsgRecordDetailAck } from '../define';
+import { GameEvent } from '../define';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -32,7 +32,7 @@ export default class CustomHistory extends ViewBase {
     /** 是否是展开的状态 */
     _open: boolean = false;
 
-    _data: MsgRecordDetailAck = null;
+    _data: jmbaccarat.MsgRecordDetailAck = null;
 
     buildUi() {
         this.Open = false;
@@ -60,7 +60,7 @@ export default class CustomHistory extends ViewBase {
         }
         this.historyList.itemRender = (item: cc.Node, i: number) => {
             let rc = this._data.record[i].luck_id;
-            let ad = this._data.award[i];
+            let ad = this._data.award[i] as any;
             item.children.forEach((t, j) => {
                 if (j < 6) {
                     t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (rc[j] * 3)) + "/spriteFrame");
@@ -71,7 +71,7 @@ export default class CustomHistory extends ViewBase {
         }
         this.historyDetailList.itemRender = (item: cc.Node, i: number) => {
             let rc = this._data.record[i].luck_id;
-            let ad = this._data.award[i];
+            let ad = this._data.award[i] as any;
             item.children.forEach((t, j) => {
                 t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (rc[j] * 3)) + "/spriteFrame");
                 if (!ad) ad = [];

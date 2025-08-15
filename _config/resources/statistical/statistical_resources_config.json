@@ -62,5 +62,13 @@
     "CustomBetAreaItem": {
         "statisticalId": 100001015,
         "panelId": 15
+    },
+    "CustomSystemMenuHistory": {
+        "statisticalId": 100001016,
+        "panelId": 16
+    },
+    "CustomMenuHistoryItem": {
+        "statisticalId": 100001017,
+        "panelId": 17
     }
 }

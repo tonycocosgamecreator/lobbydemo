@@ -5,7 +5,8 @@ import WalletManager from './wallet-manager';
 import { IPanelJmMainView } from '../define/ipanel-jm-main-view';
 import { MessageSender } from '../network/net/message-sender';
 import { Global } from '../global';
-import { GameEvent, Message, MsgRecordDetailAck } from '../define';
+import { BetPoint, GameEvent } from '../define';
+import { LocalStorageManager } from './localstorage-manager';
 
 export enum GameState {
     IDLE = 'idle',          // 空闲状态，游戏未开始
@@ -55,9 +56,9 @@ export default class JmManager extends BaseManager {
      * @returns 如果返回true，说明消息被框架拦截了，不需要继续向下传递
      */
     public static onNetMessage(msgType: string, data: any): boolean {
-        if (msgType == baccarat.Message.MsgEnterBaccaratRsp) {
+        if (msgType == jmbaccarat.Message.MsgEnterBaccaratRsp) {
             //进入游戏的响应
-            const msg = data as baccarat.MsgEnterBaccaratRsp;
+            const msg = data as jmbaccarat.MsgEnterBaccaratRsp;
             const result = msg.result;
             if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入游戏失败了
@@ -69,7 +70,7 @@ export default class JmManager extends BaseManager {
                 );
                 return true; //拦截消息，不继续传递
             }
-            this.deskId = msg.info.desk_id || 0;
+            this._deskId = msg.info.desk_id || 0;
             //设置钱包数据
             WalletManager.walletInfos = msg.wallets || [];
             //设置玩家的下注数据
@@ -81,41 +82,132 @@ export default class JmManager extends BaseManager {
             //设置期号
             this.period = msg.info.period_id || '';
             //设置当前游戏每个阶段的持续时间
-            this._dur = msg.info.dur || [];
+            this._dur = msg.info.stage_total_time;
+            //更新下注数据
+            this._myBets = msg.my?.bets || [];
+            let _totalBet = 0;
+            for (let i = 0; i < this._myBets.length; i++) {
+                const bet = this._myBets[i];
+                _totalBet += parseFloat(bet.bet_coin || '0');
+            }
+            this.totalBet = _totalBet;
             //@todo : 需要设置其他数据
-            MessageSender.SendMessage(Message.MsgRecordDetailReq, { desk_id: this.deskId });
+            MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
+            if (msg.info.stage == jmbaccarat.DeskStage.ReadyStage) {
+                LocalStorageManager.remove(BetPoint);
+            } else {
+                if (this._myBets.length) {
+                    let point = LocalStorageManager.load(BetPoint, []);
+                    if (point.length == this._myBets.length) {
+                        Global.sendMsg(GameEvent.RECOVER_CHIP);
+                    } else {
+                        LocalStorageManager.remove(BetPoint);
+                    }
+                }
+            }
             //更新阶段
-            this.updateStage(msg.info.stage, msg.info.have_sec || 0);
+            this.updateStage(msg.info.stage, msg.info.have_sec || 0, true);
             return false;
         }
-        if (msgType == Message.MsgRecordDetailAck) {
-            const msg = data as MsgRecordDetailAck;
+        if (msgType == jmbaccarat.Message.MsgRecordDetailAck) {
+            const msg = data as jmbaccarat.MsgRecordDetailAck;
             //开奖记录
             this.records = msg || null;
+            return false;
         }
-        if (msgType == baccarat.Message.MsgBaccaratNextStageNtf) {
+        if (msgType == jmbaccarat.Message.MsgBaccaratNextStageNtf) {
             //收到状态变化的通知
-            const msg = data as baccarat.MsgBaccaratNextStageNtf;
+            const msg = data as jmbaccarat.MsgBaccaratNextStageNtf;
             const stage = msg.stage;
             const haveSec = msg.have_sec || 0;
-            //更新阶段
-            this.updateStage(stage, haveSec);
-
-            if (stage == baccarat.DeskStage.ReadyStage) {
-                //新的一个回合还是了
-                // this.reset();
+            this._dur = msg.have_sec || 0;
+            if (stage == jmbaccarat.DeskStage.ReadyStage) {
+                LocalStorageManager.remove(BetPoint);
+                this._myBets = [];
+                this.totalBet = 0;
                 const period_id = msg.period_id || '';
                 this.period = period_id;
             }
+            if (stage == jmbaccarat.DeskStage.SettleStage) {
+                return;
+            }
+            //更新阶段
+            this.updateStage(stage, haveSec);
+            return false;
+        }
+        if (msgType == jmbaccarat.Message.MsgBetBaccaratRsp) {
+            const msg = data as jmbaccarat.MsgBetBaccaratRsp;
+            const result = msg.result;
+            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+                //如果有错误码，说明下注失败了
+                //这里可以弹出提示框，提示玩家下注失败
+                console.error(`Bet Failed: ${result.err_desc}`);
+                UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_AB_BET_FAILED);
+                return true; //拦截消息，不继续传递
+            }
+            const new_coin = msg.new_coin || '0';
+            const bets = msg.bets || [];
+            //更新客户端下注金币
+            WalletManager.updatePlayerCoin(parseFloat(new_coin));
+            //更新下注数据
+            let _totalBet = this._totalBet
+            for (let i = 0; i < bets.length; i++) {
+                const bet = bets[i];
+                _totalBet += parseFloat(bet.bet_coin || '0');
+                this._myBets.push(bet);
+            }
+            this.totalBet = _totalBet;
+            this._view?.flyChip()
+            return false;
+        }
+        if (msgType == jmbaccarat.Message.MsgOddNtf) {
+            const msg = data as jmbaccarat.MsgOddNtf;
+            this._odd = msg.odd_string || [];
+            let show = false;
+            this._odd.forEach((t, idx) => {
+                if (t && +t[idx]) {
+                    show = true;
+                }
+            })
+            if (show) {
+                this._view?.doubleArea()
+            }
+            return false;
+        }
+        if (msgType == jmbaccarat.Message.MsgSettleNtf) {
+            //如果是结算通知
+            const msg = data as jmbaccarat.MsgSettleNtf;
+            this._openPos = msg.open_pos || [];
+            if (msg.open_pos) {
+                //新增结果
+                MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
+                if (data.win_data && data.win_data.new_coin) {
+                    WalletManager.updatePlayerCoin(parseFloat(data.win_data.new_coin));
+                }
+                this.totalBet = 0;
+            } else {
+                //如果没有结果数据，说明是结算失败了
+                console.error(`Settle Failed: result_data is null`);
+            }
+            this.view?.showSettleResult();
+            return false;
 
-            return true;
         }
         return false;
+    }
+    public static _odd: string[] = [];
+    public static get odd(): string[] {
+        return this._odd;
+    }
+
+    public static _openPos: number[] = [];
+    public static get openPos(): number[] {
+        return this._openPos;
     }
     /**
     * 当前桌子的ID
     */
-    public static deskId: number = -1;
+    public static _deskId: number = -1;
     /**
      * 当前玩家的ID
      */
@@ -131,33 +223,48 @@ export default class JmManager extends BaseManager {
     /**
     * 当前所有的开奖记录
     */
-    protected static _records: MsgRecordDetailAck = null;
-    /**
-    * 获取当前的期号
-    */
-    public static get period(): string {
-        return this._period;
-    }
+    protected static _records: jmbaccarat.MsgRecordDetailAck = null;
 
+    protected static _myBets: jmbaccarat.BetData[] = [];
+
+    public static get MyData(): jmbaccarat.BetData[] {
+        return this._myBets;
+    }
+    public static get deskId(): number {
+        return this._deskId;
+    }
+    protected static set totalBet(value: number) {
+        this._totalBet = value;
+        Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+    }
+    public static get totalBet(): number {
+        return this._totalBet;
+    }
     /**
      * 设置当前的期号
      * @param value 
      */
     public static set period(value: string) {
         this._period = value;
-        Global.sendMsg(GameEvent.PLAYER_PERIOD_UPDATE, value);
+        Global.sendMsg(GameEvent.PLAYER_PERIOD_UPDATE);
+    }
+    /**
+    * 获取当前的期号
+    */
+    public static get period(): string {
+        return this._period;
     }
     /**
      * 获取开奖记录
      */
-    public static get records(): MsgRecordDetailAck {
+    public static get records(): jmbaccarat.MsgRecordDetailAck {
         return this._records;
     }
     /**
      * 设置开奖记录
      * @param value 
      */
-    public static set records(value: MsgRecordDetailAck) {
+    public static set records(value: jmbaccarat.MsgRecordDetailAck) {
         this._records = value;
         Global.sendMsg(GameEvent.UPDATE_HISTORY);
     }
@@ -171,7 +278,7 @@ export default class JmManager extends BaseManager {
     }
 
 
-    protected static _stage: number = 0;
+    protected static _stage: number = -1;
     protected static _haveSec: number = 0;
     public static get stage(): number {
         return this._stage;
@@ -199,42 +306,29 @@ export default class JmManager extends BaseManager {
         return this._haveSec;
     }
     /**
- * 当前游戏，每个阶段的持续时间
- * 这个数据是从服务器获取的，单位是秒
- */
-    protected static _dur: number[] = [];
+     * 当前游戏，每个阶段的持续时间
+     * 这个数据是从服务器获取的，单位是秒
+     */
+    protected static _dur: number;
     /**
-     * 获取当前游戏每个阶段的持续时间
+     * 获取当前阶段的持续时间
      * @param value 
      */
-    public static getDur(stage: number): number {
-        if (!this._dur || this._dur.length === 0) {
-            return 0;
-        }
-        //如果阶段大于等于0，说明是有效的阶段
-        if (stage >= 0 && stage < this._dur.length) {
-            return this._dur[stage];
-        }
-        return 0;
-    }
-    /**
-     * 
-     * @returns 获取当前阶段的持续时间
-     */
-    public static getCurrentDur(): number {
-        return this.getDur(this._stage);
+    public static getDur(): number {
+        return this._dur;
     }
     /**
      * 更新阶段
      * @param value 阶段
      * @param haveSec 剩余时间
      */
-    public static updateStage(value: baccarat.DeskStage, haveSec: number = 0) {
+    public static updateStage(value: jmbaccarat.DeskStage, haveSec: number = 0, reconnect: boolean = false) {
         this._stage = value;
         this._haveSec = haveSec;
         //通知界面更新阶段
-        this.view?.stageChanged();
+        this.view?.stageChanged(reconnect);
     }
+
 }
 
 

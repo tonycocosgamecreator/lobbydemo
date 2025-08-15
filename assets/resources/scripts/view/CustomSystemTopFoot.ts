@@ -4,8 +4,11 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
-import { GameEvent } from '../define';
+import { GameEvent, THEME_ID } from '../define';
 import WalletManager from '../manager/wallet-manager';
+import JmManager from '../manager/jm-manager';
+import { MessageSender } from '../network/net/message-sender';
+import { Global } from '../global';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -29,12 +32,15 @@ export default class CustomSystemTopFoot extends ViewBase {
     _back_callback: () => void = null;
 
     buildUi() {
+        this.buttonBack.node.active = false;
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this._updateTotalBet,
             [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
             [GameEvent.PLAYER_PERIOD_UPDATE]: this._updatePeriod,
         });
         this._updateTotalBalance();
+        this._updateTotalBet();
+        this._updatePeriod();
     }
 
     /**
@@ -45,31 +51,16 @@ export default class CustomSystemTopFoot extends ViewBase {
         this._back_callback = callback;
     }
 
-    _updateTotalBet(val: number | string) {
-        //如果val是字符串，那么转换成数字
-        if (typeof val == 'string') {
-            val = parseFloat(val);
-        }
-
-        this.totalBet.string = val.toFixed(2);
+    _updateTotalBet() {
+        this.totalBet.string = JmManager.totalBet + '';
     }
 
     _updateTotalBalance() {
         this.balance.string = WalletManager.balance.toFixed(2);
     }
 
-    private _updatePeriod(value: string) {
-        if (value == null || value == undefined) {
-            return;
-        }
-        let val = value.toString();
-        if (val.includes('-')) {
-            const idx = val.lastIndexOf('-');
-            const period = val.substring(idx + 1);
-            this.period.string = period;
-        } else {
-            this.period.string = val || '-';
-        }
+    private _updatePeriod() {
+        this.period.string = JmManager.period;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -83,12 +74,17 @@ export default class CustomSystemTopFoot extends ViewBase {
     // @view export event begin
 
     private onClickButtonBack(event: cc.EventTouch) {
-        cc.log('on click event cc_buttonBack');
+        const data: jmbaccarat.MsgLeaveBaccaratReq = {
+            desk_id: JmManager.deskId,
+            theme_id: THEME_ID,
+        };
+        MessageSender.SendMessage(jmbaccarat.Message.MsgLeaveBaccaratReq, data);
     }
 
 
     private onClickButtonMenu(event: cc.EventTouch) {
         cc.log('on click event cc_buttonMenu');
+        Global.sendMsg(GameEvent.REQUST_OPEN_MENU);
     }
 
     // @view export event end

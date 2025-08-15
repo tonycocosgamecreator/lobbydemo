@@ -12,6 +12,9 @@ import { UITransform } from 'cc';
 import { Node } from 'cc';
 import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
+import BaseGlobal from '../core/message/base-global';
+import { BetPoint, GameEvent } from '../define';
+import { LocalStorageManager } from '../manager/localstorage-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -23,6 +26,7 @@ export default class CustomFlyChip extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -33,6 +37,12 @@ export default class CustomFlyChip extends ViewBase {
     _baseDuration: number = 0.1; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 200; // 基准距离(像素)   
     _targetScale: number = 0.5;
+
+    buildUi() {
+        BaseGlobal.registerListeners(this, {
+            [GameEvent.RECOVER_CHIP]: this.recoverChip,
+        });
+    }
 
     reset() {
         this.node.children.forEach(t => {
@@ -130,7 +140,22 @@ export default class CustomFlyChip extends ViewBase {
         Tween.stopAllByTarget(chip);
         PoolManager.Put(chip.getComponent(CustomChip));
     }
+    /**
+    * 断线重连展示筹码
+    */
+    recoverChip() {
+        let point = LocalStorageManager.load(BetPoint, []);
+        if (point.length == 0) return;
+        point.forEach((t) => {
+            const chip = PoolManager.Get(CustomChip);
+            chip.setBetData(t.index);
+            this.node.addChild(chip.node);
+            let endPos = this.node.transform.convertToNodeSpaceAR(t.pos);
+            chip.node.position = endPos;
+            chip.node.scale = v3(this._targetScale, this._targetScale, this._targetScale);
 
+        })
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

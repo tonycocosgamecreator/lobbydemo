@@ -20,6 +20,7 @@ import JsonLoginManager from "./network/managers/json-login-manager";
 import { EnterGameManager } from "./network/managers/enter-game-manager";
 import WalletManager from "./manager/wallet-manager";
 import { ReconnectManager } from "./network/managers/reconnect-manager";
+import AudioManager from "./core/manager/audio-manager";
 export default class Initializer {
 
 
@@ -32,7 +33,8 @@ export default class Initializer {
         Managers.registe(EnterGameManager);
         Managers.registe(WalletManager);
         Managers.registe(ReconnectManager);
-        
+        Managers.registe(AudioManager);
+
     }
 
     /**

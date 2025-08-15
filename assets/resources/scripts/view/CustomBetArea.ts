@@ -32,12 +32,14 @@ export default class CustomBetArea extends ViewBase {
     buildUi() {
         this._init();
         BaseGlobal.registerListeners(this, {
-            [GameEvent.UPDATE_HISTORY]: this._resetRecords
+            [GameEvent.UPDATE_HISTORY]: this._resetRecords,
+            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this._updateTotalBet,
         });
     }
 
     _init() {
         this._resetRecords();
+        this._updateTotalBet();
     }
 
     _resetRecords() {
@@ -48,12 +50,15 @@ export default class CustomBetArea extends ViewBase {
             })
         } else {
             for (let i = 0; i < 5; i++) {
-                let arr = this.countNumbers(_data.award[i] ? _data.award[i] : []);
-                this.node.children.forEach((t,idx) => {
-                t.getComponent(CustomBetAreaItem).setRecord(i,arr[idx]);
-            })
+                let award = _data.award[i] as any;
+                if (!award) award = [];
+                let record = _data.record[i]? _data.record[i].luck_id : []
+                let arr = this.countWithForLoop(award, record);
+                this.node.children.forEach((t, idx) => {
+                    t.getComponent(CustomBetAreaItem).setRecord(i, arr[idx + 1]);
+                })
             }
-            
+
         }
     }
 
@@ -63,28 +68,20 @@ export default class CustomBetArea extends ViewBase {
         })
     }
 
-    countNumbers(arr: number[]): number[] {
-        // 初始化计数器对象，记录 1~6 的出现次数
-        const countMap: Record<number, number> = {
-            1: 0,
-            2: 0,
-            3: 0,
-            4: 0,
-            5: 0,
-            6: 0,
-        };
-        // 遍历数组，统计每个数字的出现次数
-        arr.forEach((num) => {
-            if (num >= 1 && num <= 6) {
-                countMap[num]++;
-            }
-        });
-        // 将统计结果转换为字符串数组
-        const result = Object.entries(countMap).map(
-            ([num, count]) => count
-        );
+    _updateTotalBet() {
+        this.node.children.forEach((t, idx) => {
+            t.getComponent(CustomBetAreaItem).setBetNum(idx);
+        })
+    }
 
-        return result;
+    countWithForLoop(arr1: number[], arr2: number[]): Record<number, number> {
+        // 初始化计数器对象，记录 1~6 的出现次数
+        const countMap: Record<number, number> = {};
+        arr1.forEach((num) => {
+            countMap[num] = arr2.filter((item) => item === num).length;
+        });
+
+        return countMap;
     }
 
     //------------------------ 网络消息 ------------------------//

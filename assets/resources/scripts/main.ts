@@ -16,6 +16,12 @@ import { MessageSender } from './network/net/message-sender';
 import UIHelper from './network/helper/ui-helper';
 import { ProtoType } from './network/define/define';
 import JsonLoginManager from './network/managers/json-login-manager';
+import { game } from 'cc';
+import { Game } from 'cc';
+import Timer from './core/utils/timer';
+import { bDebug } from './core/define';
+import { BaseMessage } from './core/message/base-message';
+import { Net } from './core/net/net';
 const { ccclass, property } = _decorator;
 
 enum NetWorkStatus {
@@ -34,8 +40,8 @@ export class main extends Component {
         this.uiCamera = director.getScene().getComponentInChildren(Camera);
         //游戏事件注册
         director.addPersistRootNode(this.node);
-        //game.on(Game.EVENT_HIDE, this.onEnterBackground, this);
-        //game.on(Game.EVENT_SHOW, this.onEnterForgeground, this);
+        game.on(Game.EVENT_HIDE, this.onEnterBackground, this);
+        game.on(Game.EVENT_SHOW, this.onEnterForgeground, this);
     }
 
     start() {
@@ -65,7 +71,7 @@ export class main extends Component {
                 UIHelper.showConfirmOneButtonToBack(I18NManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_SocketConnectFaild));
                 return;
             }
-            
+
             ViewManager.OpenPanel(module, "PanelJmInit");
             fadeOutLogo && fadeOutLogo();
         });
@@ -74,7 +80,28 @@ export class main extends Component {
     lateUpdate(dt: number) {
         Initializer.OnLateUpdate(dt);
     }
+    //===============================事件监听============================//
+    /**
+     * 进入游戏后台的时间,毫秒
+     */
+    private _iEnterBackgroundTime: number = 0;
 
+    private onEnterBackground() {
+        this._iEnterBackgroundTime = Timer.now;
+        bDebug && console.log('游戏进入后台~');
+        Global.sendMsg(BaseMessage.ON_ENTER_BACK_GROUND);
+    }
+
+    private onEnterForgeground() {
+        const nt = Timer.now;
+        const cast = nt - this._iEnterBackgroundTime;
+        bDebug && console.log('游戏恢复前台~', cast, 'ms');
+        if (cast >= 1000 * 5) {
+            //超过5秒，重新加载
+            MessageSender.CloseConnector(null, Net.WebSocketCloseEventType.HEART_BEAT_TIMEOUT);
+        }
+        Global.sendMsg(BaseMessage.ON_ENTER_FORGOUND);
+    }
 }
 
 

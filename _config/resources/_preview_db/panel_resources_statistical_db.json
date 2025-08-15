@@ -78,6 +78,18 @@
         "desc": "",
         "statisticalId": 100001014
     },
+    "CustomMenuHistoryItem": {
+        "viewName": "CustomMenuHistoryItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001017
+    },
+    "CustomSystemMenuHistory": {
+        "viewName": "CustomSystemMenuHistory",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001016
+    },
     "CustomToast": {
         "viewName": "CustomToast",
         "bundleName": "resources",

@@ -74,6 +74,8 @@ declare module resourcesDb {
         ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHistory']: 'CustomHistory',
+        ['CustomMenuHistoryItem']: 'CustomMenuHistoryItem',
+        ['CustomSystemMenuHistory']: 'CustomSystemMenuHistory',
         ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelGame']: 'PanelGame',
@@ -144,6 +146,43 @@ declare module resourcesDb {
         ['Tip_ReconnectFailed']: 'Tip_ReconnectFailed',
         ['Tip_Reconnecting']: 'Tip_Reconnecting',
         ['TIP_ENTER_GAME_FAILED']: 'TIP_ENTER_GAME_FAILED',
+        ['TIP_AB_BET_FAILED']: 'TIP_AB_BET_FAILED',
+        ['Tip_No_More_Historys']: 'Tip_No_More_Historys',
+        ['TIP_HISTORY_GET_FAILED']: 'TIP_HISTORY_GET_FAILED',
+}
+    type game_entrance_config_db_data = {
+        /** 游戏id（bundleId） */
+        readonly id: string,
+        /** 入口Panel名称 */
+        readonly entrancePanelName: string,
+        /** 游戏内部菜单 */
+        readonly systemMenus: number[],
+        /** 进入模式 */
+        readonly enterMode: number,
+        /** 游戏ID */
+        readonly themeId: number,
+        /** 进入游戏的请求ID */
+        readonly enterReq: string,
+        /** 是否自定义进入游戏得请求 */
+        readonly isOverrideEnterMsg: number,
+    };
+
+    type game_entrance_config_db = {
+        [id: string]: game_entrance_config_db_data,
+    };
+
+    function get_game_entrance_config_db(): resourcesDb.game_entrance_config_db;
+    function get_from_game_entrance_config_db(id: string, bQuiet?: boolean): resourcesDb.game_entrance_config_db_data;
+    function foreach_from_game_entrance_config_db(callback: (idKey: string, data: resourcesDb.game_entrance_config_db_data) => (void | boolean)): void;
+    /** 游戏ID */
+    export const GAME_THEMEID_BUNDLE: {
+        ['0']: 'lobby',
+        ['1025']: 'Jhandimunda',
+}
+    /** 游戏id（bundleId） */
+    export const GAME_ENTRANCE_CONFIG_DB_ID: {
+        ['Jhandimunda']: 'Jhandimunda',
+        ['lobby']: 'lobby',
 }
     type game_config_db_data = {
         /** 变量的名字 */
@@ -195,6 +234,31 @@ declare module resourcesDb {
     function foreach_from_skin_resources_db(callback: (prefabIdKey: string, nodeNameKey: string, data: resourcesDb.skin_resources_db_data) => (void | boolean)): void;
     function getMap_from_skin_resources_db(prefabId: string, bQuiet?: boolean): { [nodeName: string]: resourcesDb.skin_resources_db_data };
     function foreachMap_from_skin_resources_db(callback: (prefabIdKey: string, datas: { [nodeName: string]: resourcesDb.skin_resources_db_data }) => (void | boolean)): void;
+    type system_menu_db_data = {
+        /** 菜单名字 */
+        readonly id: number,
+        /** 顶部菜单名字 */
+        readonly title: string,
+        /** 使用的spriteFrame的地址 */
+        readonly spfUrls: string[],
+        /** 节点名字 */
+        readonly nodeName: string,
+        /** title翻译的key */
+        readonly i18n_key: string,
+    };
+
+    type system_menu_db = system_menu_db_data[];
+
+    function get_system_menu_db(): resourcesDb.system_menu_db;
+    function get_from_system_menu_db(index: number, bQuiet?: boolean): resourcesDb.system_menu_db_data;
+    function foreach_from_system_menu_db(callback: (index: number, data: resourcesDb.system_menu_db_data) => (void | boolean)): void;
+    /** 顶部菜单名字 */
+    export const MENU_TITLE_ID: {
+        ['Records']: 0,
+        ['Rules']: 1,
+        ['Sound']: 2,
+        ['Exit']: 3,
+}
     type prummy_event_message_config_db_data = {
         /** 事件ID */
         readonly id: number,

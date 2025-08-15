@@ -748,9 +748,9 @@ export class GButton extends Component {
         }
         event.propagationStopped = this._bSwallowTouches;
         if (this._click_event_sound_config) {
-            AudioManager.playSfx(this._click_event_sound_config.bundleName, this._click_event_sound_config.audioName);
+            AudioManager.playSound(this._click_event_sound_config.bundleName, this._click_event_sound_config.audioName);
         } else {
-            AudioManager.playSfx('resources', 'button');
+            AudioManager.playSound('resources', 'button');
         }
 
         if (this.BUNDLE_NAME == '' || this.PANEL_NAME == '') {

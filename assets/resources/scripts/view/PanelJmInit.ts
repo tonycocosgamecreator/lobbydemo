@@ -7,6 +7,8 @@ import ViewManager from '../core/manager/view-manager';
 import Managers from '../core/manager/managers';
 import JmManager from '../manager/jm-manager';
 import JsonLoginManager from '../network/managers/json-login-manager';
+import { LocalStorageManager } from '../manager/localstorage-manager';
+import JmHistoryManager from '../manager/jm-history-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -30,6 +32,8 @@ export default class PanelJmInit extends ViewBase {
 
     buildUi() {
         // AudioManager.playBgm()
+        Managers.registe(LocalStorageManager);
+        Managers.registe(JmHistoryManager);
         Managers.registe(JmManager);
         JsonLoginManager.Login();
     }
@@ -40,7 +44,7 @@ export default class PanelJmInit extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if(msgType == baccarat.Message.MsgEnterBaccaratRsp){
+        if (msgType == jmbaccarat.Message.MsgEnterBaccaratRsp) {
             //进入游戏的回应,这个时候，jm-manager已经处理好消息了
             ViewManager.OpenPanel(this.module, 'PanelJmMainView');
             this.close();
