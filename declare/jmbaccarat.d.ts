@@ -556,7 +556,7 @@ declare namespace jmbaccarat{
         /**  加密文本列表 */
         encrypt_text : EncryptText[];
         /**  赔率列表 */
-        odds : AbOdd[];
+        odds : string[];
         /**  当前回合已经打开的牌的记录 */
         open_cards? : OpenRecord;
         /**  当前回合的持续时间列表,单位秒 */
@@ -2103,6 +2103,8 @@ declare namespace jmbaccarat{
         win_coin : string[];
         /**  玩家赢奖区域数据 */
         win_type : number[];
+        /**  我的开奖数据 */
+        win_data? : MsgStockSettleData;
     }
 
     /** 翻倍数据 */

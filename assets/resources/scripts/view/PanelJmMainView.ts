@@ -4,7 +4,7 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
-import CustomBetArea from 'db://assets/resources/scripts/view/CustomBetArea';
+import CustomBetArea, { SpineAreaAnimation } from 'db://assets/resources/scripts/view/CustomBetArea';
 import CustomChooseChip from 'db://assets/resources/scripts/view/CustomChooseChip';
 import CustomFlyChip from 'db://assets/resources/scripts/view/CustomFlyChip';
 import CustomHistory from 'db://assets/resources/scripts/view/CustomHistory';
@@ -45,6 +45,7 @@ export enum SpineXiaZhuAnimation {
     tzxz = 'tzxz',
     ewbl = 'ewbl',
 }
+
 @ccclass('PanelJmMainView')
 export default class PanelJmMainView extends ViewBase implements IPanelJmMainView {
 
@@ -192,13 +193,6 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         this.timeCounterBar.progress = left / maxSec;
     }
 
-    doubleArea() {
-        this.scheduleOnce(() => {
-            this.spXiaZhu.node.active = true;
-            this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
-        }, 1)
-    }
-
 
     playAnimationByStage(stage: number): void {
         this.resetAnimation();
@@ -230,6 +224,21 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 AudioManager.playSound(this.bundleName, '停止下注');
                 break;
             case jmbaccarat.DeskStage.OpenStage:
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 1
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                let show = false;
+                JmManager.odd.forEach((t, idx) => {
+                    if (t && +t[idx]) {
+                        show = true;
+                    }
+                })
+                if (show) {
+                    this.bet_area_node.showAnimaton();
+                    this.spXiaZhu.node.active = true;
+                    this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
+                }
+
                 break;
             case jmbaccarat.DeskStage.SettleStage:
                 cc.Tween.stopAllByTarget(this.result_node.node);
@@ -252,12 +261,28 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                     cc.tween(this.result_node.node)
                         .to(0.2, { scale: new Vec3(1, 1, 1) })
                         .start();
-                    this.bet_area_node.updateBetArea(JmManager.winType);
-                    this.spAnim.setAnimation(0, SpineAnimation.clap, true);
-                    let sourceNode = this.people_node.node;
-                    let sourceUITransform = sourceNode.parent.getComponent(UITransform);
-                    let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
-                    this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
+                    let winType = JmManager.winType;
+                    this.bet_area_node.updateBetArea(winType);
+                    let win = false;
+                    winType.forEach(t => {
+                        if (winType[t] > 1) {
+                            win = true;
+                        }
+                    });
+                    if (win) {
+                        AudioManager.playSound(this.bundleName, '押中中奖音效');
+                    }
+                    this.scheduleOnce(() => {
+                        if (JmManager.winCoin > 0) {
+                            AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
+                        }
+                        this.spAnim.setAnimation(0, SpineAnimation.clap, true);
+                        let sourceNode = this.people_node.node;
+                        let sourceUITransform = sourceNode.parent.getComponent(UITransform);
+                        let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
+                        this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
+                    }, win ? 1.2 : 0)
+
                 }, 2.5);
                 break;
         }

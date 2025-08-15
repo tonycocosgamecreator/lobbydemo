@@ -67,9 +67,15 @@ export default class CustomBetAreaItem extends ViewBase {
     }
 
     reset() {
+        this.spineDouble.node.active = false;
         Tween.stopAllByTarget(this.light_node.node);
         this.light_node.node.active = false;
         this.light_node.node.opacity = 0;
+    }
+
+    showAnimaton(name: string) {
+        this.spineDouble.node.active = true;
+        this.spineDouble.setAnimation(0, name, false);
     }
 
     blink(node, duration, times) {
@@ -101,12 +107,14 @@ export default class CustomBetAreaItem extends ViewBase {
             cc_bet_result_node: [cc.Node],
             cc_labelSum: [cc.Label],
             cc_light_node: [cc.Sprite],
+            cc_spineDouble: [cc.sp.Skeleton],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
     protected bet_result_node: cc.Node = null;
     protected labelSum: cc.Label = null;
     protected light_node: cc.Sprite = null;
+    protected spineDouble: cc.sp.Skeleton = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

@@ -70,6 +70,7 @@ export default class JmManager extends BaseManager {
                 );
                 return true; //拦截消息，不继续传递
             }
+            this.reset();
             this._deskId = msg.info.desk_id || 0;
             //设置钱包数据
             WalletManager.walletInfos = msg.wallets || [];
@@ -85,6 +86,7 @@ export default class JmManager extends BaseManager {
             this._dur = msg.info.stage_total_time;
             //更新下注数据
             this._myBets = msg.my?.bets || [];
+            this._odd=msg.info.odds||[];
             let _totalBet = 0;
             for (let i = 0; i < this._myBets.length; i++) {
                 const bet = this._myBets[i];
@@ -123,15 +125,12 @@ export default class JmManager extends BaseManager {
             this._dur = msg.have_sec || 0;
             if (stage == jmbaccarat.DeskStage.ReadyStage) {
                 LocalStorageManager.remove(BetPoint);
+                this.reset()
                 this._myBets = [];
-                this.totalBet = 0;
                 const period_id = msg.period_id || '';
                 this.period = period_id;
             }
-            if (stage == jmbaccarat.DeskStage.SettleStage || stage == jmbaccarat.DeskStage.OpenStage) {
-                //开牌阶段分别由其他消息处理
-                return;
-            }
+            if (stage == jmbaccarat.DeskStage.SettleStage) return;
             this.updateStage(stage, haveSec || 0)
             //更新阶段
             this.view?.playAnimationByStage(data.stage);
@@ -165,15 +164,6 @@ export default class JmManager extends BaseManager {
         if (msgType == jmbaccarat.Message.MsgOddNtf) {
             const msg = data as jmbaccarat.MsgOddNtf;
             this._odd = msg.odd_string || [];
-            let show = false;
-            this._odd.forEach((t, idx) => {
-                if (t && +t[idx]) {
-                    show = true;
-                }
-            })
-            if (show) {
-                this._view?.doubleArea()
-            }
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgSettleNtf) {
@@ -181,13 +171,13 @@ export default class JmManager extends BaseManager {
             const msg = data as jmbaccarat.MsgSettleNtf;
             this._openPos = msg.open_pos || [];
             this._winType = msg.win_type || [];
+            this._winCoin = +msg.win_data?.win_coin || 0;
             if (msg.open_pos) {
                 //新增结果
                 MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
                 if (data.win_data && data.win_data.new_coin) {
                     WalletManager.updatePlayerCoin(parseFloat(data.win_data.new_coin));
                 }
-                this.totalBet = 0;
             } else {
                 //如果没有结果数据，说明是结算失败了
                 console.error(`Settle Failed: result_data is null`);
@@ -197,6 +187,18 @@ export default class JmManager extends BaseManager {
 
         }
         return false;
+    }
+
+    static reset() {
+        this._winCoin = -1;
+        this._odd = [];
+        this._openPos = [];
+        this._winType = [];
+        this.totalBet = 0;
+    }
+    public static _winCoin: number = -1;
+    public static get winCoin(): number {
+        return this._winCoin;
     }
     public static _odd: string[] = [];
     public static get odd(): string[] {
@@ -211,6 +213,7 @@ export default class JmManager extends BaseManager {
     public static get winType(): number[] {
         return this._winType;
     }
+
     /**
     * 当前桌子的ID
     */

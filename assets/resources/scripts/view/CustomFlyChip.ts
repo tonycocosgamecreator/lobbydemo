@@ -96,7 +96,7 @@ export default class CustomFlyChip extends ViewBase {
                 })
             )
             .call(() => {
-                 AudioManager.playSound(this.bundleName, '下注筹码声');
+                AudioManager.playSound(this.bundleName, '下注筹码声');
             })
             .start();
 

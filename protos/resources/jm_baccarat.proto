@@ -162,7 +162,7 @@ message DeskInfo {
 
     repeated EncryptText encrypt_text = 25;          // 加密文本列表
 
-    repeated AbOdd odds = 26;                          // 赔率列表
+    repeated string odds = 26;                          // 赔率列表
 
     optional OpenRecord open_cards = 27;                  // 当前回合已经打开的牌的记录
 
@@ -1252,6 +1252,7 @@ message MsgSettleNtf {
     optional string period = 4;                       //开奖期数
     repeated string win_coin = 5;                     // 玩家赢奖金额
     repeated int32 win_type = 6;                     // 玩家赢奖区域数据
+    optional MsgStockSettleData win_data = 7;             // 我的开奖数据
 }
 //翻倍数据
 message MsgOddNtf{

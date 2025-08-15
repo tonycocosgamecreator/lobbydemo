@@ -13,7 +13,12 @@ import JmManager from '../manager/jm-manager';
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-
+export enum SpineAreaAnimation {
+    open = "1open",
+    end2 = "2end",
+    obtain2 = "2obtain",
+    baokai = "baokai",
+}
 @ccclass('CustomBetArea')
 export default class CustomBetArea extends ViewBase {
 
@@ -85,9 +90,30 @@ export default class CustomBetArea extends ViewBase {
     }
 
     updateBetArea(arr: number[]) {
+        let odd = JmManager.odd;
         this.node.children.forEach((t, idx) => {
-            if (arr[idx] && arr[idx] > 1) {
+            let wintype = arr[idx] && arr[idx] > 1;
+            if (wintype) {
                 t.getComponent(CustomBetAreaItem).setBetAreaLight();
+            }
+            if (odd[idx] && +odd[idx]) {
+                if (wintype) {
+                    t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.obtain2);
+                    this.scheduleOnce(() => {
+                        t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.baokai);
+                    }, 0.2);
+                } else {
+                    t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end2);
+                }
+            }
+        });
+    }
+
+    showAnimaton() {
+        let odd = JmManager.odd;
+        this.node.children.forEach((t, idx) => {
+            if (odd[idx] && +odd[idx]) {
+                t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.open);
             }
         });
     }
