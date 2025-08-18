@@ -4,11 +4,12 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
-import CustomBetArea, { SpineAreaAnimation } from 'db://assets/resources/scripts/view/CustomBetArea';
+import CustomBetArea from 'db://assets/resources/scripts/view/CustomBetArea';
 import CustomChooseChip from 'db://assets/resources/scripts/view/CustomChooseChip';
 import CustomFlyChip from 'db://assets/resources/scripts/view/CustomFlyChip';
 import CustomHistory from 'db://assets/resources/scripts/view/CustomHistory';
 import CustomSystemTopFoot from 'db://assets/resources/scripts/view/CustomSystemTopFoot';
+import CustomResult from 'db://assets/resources/scripts/view/CustomResult';
 import { IPanelJmMainView } from '../define/ipanel-jm-main-view';
 import JmManager from '../manager/jm-manager';
 import { EventTouch } from 'cc';
@@ -80,7 +81,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             }
         );
         this.bet_area_node.node.on(cc.Node.EventType.TOUCH_END, this.onBetClick, this);
-        this.stageChanged();
+        this.reconnect();
     }
     /**--------------------------------下注----------------------------------------------- */
     _tagetWorldPos: Vec3 = null;
@@ -145,31 +146,122 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         };
         MessageSender.SendMessage(jmbaccarat.Message.MsgBetBaccaratReq, data);
     }
-
-    stageChanged(reconnect: boolean = false) {
+    reconnect() {
         const stage = JmManager.stage;
-        this.timeCounterBar.node.active = false;
-        this.result_node.node.active = false;
+        this.reset();
+        if (stage == -1) return;
+        switch (stage) {
+            case jmbaccarat.DeskStage.ReadyStage:
+                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                break;
+            case jmbaccarat.DeskStage.StartBetStage:
+                this.timeCounterBar.node.active = true;
+                this.fly_chip_node.reconnectChip();
+                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                break;
+            case jmbaccarat.DeskStage.EndBetStage:
+                this.fly_chip_node.reconnectChip();
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                break;
+            case jmbaccarat.DeskStage.OpenStage:
+                this.fly_chip_node.reconnectChip();
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                if (JmManager.double) {
+                    this.bet_area_node.reconnectAnimaton();
+                }
+                break;
+            case jmbaccarat.DeskStage.SettleStage:
+                this.timeCounterBar.node.active = true;
+                this.setTouZiData();
+                this.spAnim.setAnimation(0, SpineAnimation.clap, true);
+                this.result_node.reconnectResult();
+                break;
+        }
+    }
+    stageChanged() {
+        const stage = JmManager.stage;
+        this.reset();
         if (stage == -1) return;
         switch (stage) {
             case jmbaccarat.DeskStage.ReadyStage:
                 this.fly_chip_node.reset();
                 this.bet_area_node.reset();
                 this.sp_bet_choose_node.reset();
-                break;
+                this.spStart.node.active = true;
+                this.spStart.setAnimation(0, 'animation', false);
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 0.9;
+                this.spAnim.setAnimation(0, SpineAnimation.collect, false);
+                this.scheduleOnce(() => {
+                    AudioManager.playSound(this.bundleName, '摇骰子音效');
+                    this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
+                }, 1.8); break;
             case jmbaccarat.DeskStage.StartBetStage:
                 this.timeCounterBar.node.active = true;
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 0.9;
+                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                this.spXiaZhu.node.active = true;
+                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
+                AudioManager.playSound(this.bundleName, '开始下注');
                 break;
             case jmbaccarat.DeskStage.EndBetStage:
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 1
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                this.spXiaZhu.node.active = true;
+                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
+                AudioManager.playSound(this.bundleName, '停止下注');
                 break;
             case jmbaccarat.DeskStage.OpenStage:
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 1
+                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
+                if (JmManager.double) {
+                    this.bet_area_node.showAnimaton();
+                    this.spXiaZhu.node.active = true;
+                    this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
+                }
                 break;
             case jmbaccarat.DeskStage.SettleStage:
                 this.timeCounterBar.node.active = true;
+                this.setTouZiData();
+                if (JmManager.double) {
+                    this.bet_area_node.reconnectAnimaton();
+                }
+                this.spAnim.node.active = true;
+                this.spAnim.timeScale = 1;
+                this.spAnim.setAnimation(0, SpineAnimation.open, false);
+                this.scheduleOnce(() => {
+                    this.result_node.showResult();
+                    this.bet_area_node.showResult();
+                    if (JmManager.win) {
+                        AudioManager.playSound(this.bundleName, '押中中奖音效');
+                    }
+                    this.scheduleOnce(() => {
+                        if (JmManager.winCoin > 0) {
+                            AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
+                        }
+                        this.spAnim.setAnimation(0, SpineAnimation.clap, true);
+                        let sourceNode = this.people_node.node;
+                        let sourceUITransform = sourceNode.parent.getComponent(UITransform);
+                        let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
+                        this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
+                    }, JmManager.win ? 1.2 : 0)
+                }, 2.5);
                 break;
         }
     }
-
+    setTouZiData() {
+        let open = JmManager.openPos;
+        this.touzi_node.children.forEach((t, idx) => {
+            t.active = !!open[idx];
+            if (open[idx]) {
+                t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
+            }
+        });
+        this.touzi_node.active = true;
+    }
     /**
       * 当前正在显示的倒计时秒数
       */
@@ -193,106 +285,15 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         this.timeCounterBar.progress = left / maxSec;
     }
 
-
-    playAnimationByStage(stage: number): void {
-        this.resetAnimation();
-        switch (stage) {
-            case jmbaccarat.DeskStage.ReadyStage:
-                this.spStart.node.active = true;
-                this.spStart.setAnimation(0, 'animation', false);
-                this.spAnim.node.active = true;
-                this.spAnim.timeScale = 0.9;
-                this.spAnim.setAnimation(0, SpineAnimation.collect, false);
-                this.scheduleOnce(() => {
-                    AudioManager.playSound(this.bundleName, '摇骰子音效');
-                    this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
-                }, 1.8); break
-            case jmbaccarat.DeskStage.StartBetStage:
-                this.spAnim.node.active = true;
-                this.spAnim.timeScale = 0.9;
-                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
-                this.spXiaZhu.node.active = true;
-                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
-                AudioManager.playSound(this.bundleName, '开始下注');
-                break;
-            case jmbaccarat.DeskStage.EndBetStage:
-                this.spAnim.node.active = true;
-                this.spAnim.timeScale = 1
-                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
-                this.spXiaZhu.node.active = true;
-                this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
-                AudioManager.playSound(this.bundleName, '停止下注');
-                break;
-            case jmbaccarat.DeskStage.OpenStage:
-                this.spAnim.node.active = true;
-                this.spAnim.timeScale = 1
-                this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
-                let show = false;
-                JmManager.odd.forEach((t, idx) => {
-                    if (t && +t[idx]) {
-                        show = true;
-                    }
-                })
-                if (show) {
-                    this.bet_area_node.showAnimaton();
-                    this.spXiaZhu.node.active = true;
-                    this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
-                }
-
-                break;
-            case jmbaccarat.DeskStage.SettleStage:
-                cc.Tween.stopAllByTarget(this.result_node.node);
-                let open = JmManager.openPos;
-                this.result_node.node.children.forEach((t, idx) => {
-                    t.active = !!open[idx];
-                    this.touzi_node.children[idx].active = !!open[idx];
-                    if (open[idx]) {
-                        t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (open[idx] * 3)) + "/spriteFrame");
-                        this.touzi_node.children[idx].getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
-                    }
-                });
-                this.spAnim.node.active = true;
-                this.spAnim.timeScale = 1;
-                this.spAnim.setAnimation(0, SpineAnimation.open, false);
-                this.touzi_node.active = true;
-                this.scheduleOnce(() => {
-                    this.result_node.node.active = true;
-                    this.result_node.node.scale = new Vec3(0.1, 0.1, 0.1);
-                    cc.tween(this.result_node.node)
-                        .to(0.2, { scale: new Vec3(1, 1, 1) })
-                        .start();
-                    let winType = JmManager.winType;
-                    this.bet_area_node.updateBetArea(winType);
-                    let win = false;
-                    winType.forEach(t => {
-                        if (winType[t] > 1) {
-                            win = true;
-                        }
-                    });
-                    if (win) {
-                        AudioManager.playSound(this.bundleName, '押中中奖音效');
-                    }
-                    this.scheduleOnce(() => {
-                        if (JmManager.winCoin > 0) {
-                            AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
-                        }
-                        this.spAnim.setAnimation(0, SpineAnimation.clap, true);
-                        let sourceNode = this.people_node.node;
-                        let sourceUITransform = sourceNode.parent.getComponent(UITransform);
-                        let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
-                        this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
-                    }, win ? 1.2 : 0)
-
-                }, 2.5);
-                break;
-        }
-    }
-
-    resetAnimation() {
+    reset() {
         this.spStart.node.active = false;
         this.spXiaZhu.node.active = false;
-        this.result_node.node.active = false;
         this.touzi_node.active = false;
+        this.timeCounterBar.node.active = false;
+        this.result_node.reset();
+        this.bet_area_node.reset();
+        this.bet_area_node.reset();
+        this.fly_chip_node.reset();
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -327,7 +328,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             cc_history_node: [CustomHistory],
             cc_labelPeopleNum: [cc.Label],
             cc_people_node: [cc.Sprite],
-            cc_result_node: [cc.Sprite],
+            cc_result_node: [CustomResult],
             cc_spAnim: [cc.sp.Skeleton],
             cc_spStart: [cc.sp.Skeleton],
             cc_spXiaZhu: [cc.sp.Skeleton],
@@ -346,7 +347,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     protected history_node: CustomHistory = null;
     protected labelPeopleNum: cc.Label = null;
     protected people_node: cc.Sprite = null;
-    protected result_node: cc.Sprite = null;
+    protected result_node: CustomResult = null;
     protected spAnim: cc.sp.Skeleton = null;
     protected spStart: cc.sp.Skeleton = null;
     protected spXiaZhu: cc.sp.Skeleton = null;

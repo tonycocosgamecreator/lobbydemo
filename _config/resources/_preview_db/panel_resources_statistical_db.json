@@ -84,6 +84,12 @@
         "desc": "",
         "statisticalId": 100001017
     },
+    "CustomResult": {
+        "viewName": "CustomResult",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001018
+    },
     "CustomSystemMenuHistory": {
         "viewName": "CustomSystemMenuHistory",
         "bundleName": "resources",

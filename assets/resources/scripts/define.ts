@@ -29,10 +29,6 @@ export enum GameEvent {
      */
     UPDATE_HISTORY = 'UPDATE_HISTORY',
     /**
-     *断线重连恢复筹码位置
-     */
-    RECOVER_CHIP = 'RECOVER_CHIP',
-    /**
      * 要求打开菜单
      */
     REQUST_OPEN_MENU = 'REQUST_OPEN_MENU',

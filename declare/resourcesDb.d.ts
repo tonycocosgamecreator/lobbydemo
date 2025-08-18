@@ -75,6 +75,7 @@ declare module resourcesDb {
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHistory']: 'CustomHistory',
         ['CustomMenuHistoryItem']: 'CustomMenuHistoryItem',
+        ['CustomResult']: 'CustomResult',
         ['CustomSystemMenuHistory']: 'CustomSystemMenuHistory',
         ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',

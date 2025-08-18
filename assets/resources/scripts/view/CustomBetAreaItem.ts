@@ -3,14 +3,21 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { Tween } from 'cc';
 import { Color } from 'cc';
+import { Node } from 'cc';
 import JmManager from '../manager/jm-manager';
+import { Tween } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
+export enum SpineAreaAnimation {
+    open = "1open",
+    end2 = "2end",
+    end3 = "3end",
+    obtain2 = "2obtain",
+    baokai = "baokai",
+}
 const { ccclass, property } = cc._decorator;
-
 @ccclass('CustomBetAreaItem')
 export default class CustomBetAreaItem extends ViewBase {
 
@@ -68,17 +75,29 @@ export default class CustomBetAreaItem extends ViewBase {
 
     reset() {
         this.spineDouble.node.active = false;
+        this.spineDouble2.node.active = false;
         Tween.stopAllByTarget(this.light_node.node);
         this.light_node.node.active = false;
         this.light_node.node.opacity = 0;
     }
 
-    showAnimaton(name: string) {
+    showAnimaton(name: string, syncPlay: boolean = false) {
         this.spineDouble.node.active = true;
-        this.spineDouble.setAnimation(0, name, false);
+        const trackEntry = this.spineDouble.setAnimation(0, name, false);
+        trackEntry.trackTime = 0;
+        if (syncPlay) {
+            this.spineDouble2.node.active = true;
+            this.spineDouble.setAnimation(0, SpineAreaAnimation.baokai, false);
+        }
     }
 
-    blink(node, duration, times) {
+    reconnectAnimaton(name: string) {
+        this.spineDouble.node.active = true;
+        const trackEntry = this.spineDouble.setAnimation(0, name, false);
+        trackEntry.trackTime = trackEntry.animationEnd;
+    }
+
+    blink(node: Node, duration: number, times: number) {
         const tween = cc.tween(node);
         for (let i = 0; i < times; i++) {
             tween.to(duration, { opacity: 255 })
@@ -108,6 +127,7 @@ export default class CustomBetAreaItem extends ViewBase {
             cc_labelSum: [cc.Label],
             cc_light_node: [cc.Sprite],
             cc_spineDouble: [cc.sp.Skeleton],
+            cc_spineDouble2: [cc.sp.Skeleton],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
@@ -115,6 +135,7 @@ export default class CustomBetAreaItem extends ViewBase {
     protected labelSum: cc.Label = null;
     protected light_node: cc.Sprite = null;
     protected spineDouble: cc.sp.Skeleton = null;
+    protected spineDouble2: cc.sp.Skeleton = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

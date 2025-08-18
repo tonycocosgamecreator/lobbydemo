@@ -86,7 +86,7 @@ export default class JmManager extends BaseManager {
             this._dur = msg.info.stage_total_time;
             //更新下注数据
             this._myBets = msg.my?.bets || [];
-            this._odd=msg.info.odds||[];
+            this.odd = msg.info.odds || [];
             let _totalBet = 0;
             for (let i = 0; i < this._myBets.length; i++) {
                 const bet = this._myBets[i];
@@ -94,21 +94,28 @@ export default class JmManager extends BaseManager {
             }
             this.totalBet = _totalBet;
             //@todo : 需要设置其他数据
+            this._stage = msg.info.stage;
+            this._haveSec = msg.info.have_sec || 0;
+            //请求开奖记录
             MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
+            //恢复筹码位置
             if (msg.info.stage == jmbaccarat.DeskStage.ReadyStage) {
                 LocalStorageManager.remove(BetPoint);
             } else {
-                if (this._myBets.length) {
+                if (this._myBets.length == 0) {
+                    LocalStorageManager.remove(BetPoint);
+                } else {
                     let point = LocalStorageManager.load(BetPoint, []);
-                    if (point.length == this._myBets.length) {
-                        Global.sendMsg(GameEvent.RECOVER_CHIP);
-                    } else {
+                    if (point.length != this._myBets.length) {
                         LocalStorageManager.remove(BetPoint);
                     }
                 }
             }
+            if (msg.info.stage == jmbaccarat.DeskStage.SettleStage) {
+                this._openPos = msg.info.records ? msg.info.records[msg.info.records.length - 1].luck_id : [];
+            }
             //更新阶段
-            this.updateStage(msg.info.stage, msg.info.have_sec || 0);
+            this.view?.reconnect();
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgRecordDetailAck) {
@@ -120,20 +127,17 @@ export default class JmManager extends BaseManager {
         if (msgType == jmbaccarat.Message.MsgBaccaratNextStageNtf) {
             //收到状态变化的通知
             const msg = data as jmbaccarat.MsgBaccaratNextStageNtf;
-            const stage = msg.stage;
-            const haveSec = msg.have_sec || 0;
+            this._stage = msg.stage;
+            this._haveSec = msg.have_sec || 0;
             this._dur = msg.have_sec || 0;
-            if (stage == jmbaccarat.DeskStage.ReadyStage) {
+            if (this._stage == jmbaccarat.DeskStage.ReadyStage) {
                 LocalStorageManager.remove(BetPoint);
                 this.reset()
-                this._myBets = [];
                 const period_id = msg.period_id || '';
                 this.period = period_id;
             }
-            if (stage == jmbaccarat.DeskStage.SettleStage) return;
-            this.updateStage(stage, haveSec || 0)
-            //更新阶段
-            this.view?.playAnimationByStage(data.stage);
+            if (msg.stage == jmbaccarat.DeskStage.SettleStage) return false;
+            this.view?.stageChanged();
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgBetBaccaratRsp) {
@@ -163,7 +167,7 @@ export default class JmManager extends BaseManager {
         }
         if (msgType == jmbaccarat.Message.MsgOddNtf) {
             const msg = data as jmbaccarat.MsgOddNtf;
-            this._odd = msg.odd_string || [];
+            this.odd = msg.odd_string || [];
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgSettleNtf) {
@@ -172,6 +176,12 @@ export default class JmManager extends BaseManager {
             this._openPos = msg.open_pos || [];
             this._winType = msg.win_type || [];
             this._winCoin = +msg.win_data?.win_coin || 0;
+            this._win = false;
+            this._winType.forEach(t => {
+                if (this._winType[t] > 1) {
+                    this._win = true;
+                }
+            });
             if (msg.open_pos) {
                 //新增结果
                 MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
@@ -182,7 +192,7 @@ export default class JmManager extends BaseManager {
                 //如果没有结果数据，说明是结算失败了
                 console.error(`Settle Failed: result_data is null`);
             }
-            this.view?.playAnimationByStage(jmbaccarat.DeskStage.SettleStage);
+            this.view?.stageChanged();
             return false;
 
         }
@@ -190,11 +200,14 @@ export default class JmManager extends BaseManager {
     }
 
     static reset() {
+        this._double = false;
+        this._win = false;
         this._winCoin = -1;
         this._odd = [];
         this._openPos = [];
         this._winType = [];
         this.totalBet = 0;
+        this._myBets = [];
     }
     public static _winCoin: number = -1;
     public static get winCoin(): number {
@@ -204,10 +217,31 @@ export default class JmManager extends BaseManager {
     public static get odd(): string[] {
         return this._odd;
     }
-
+    public static set odd(value: string[]) {
+        this._odd = value;
+        for (let i = 0; i < this._odd.length; i++) {
+            if (this._odd[i] && +this._odd[i]) {
+                this._double = true;
+            }
+        }
+    }
+    /**
+    * 是否翻倍
+    */
+    public static _double: boolean = false;
+    public static get double(): boolean {
+        return this._double;
+    }
     public static _openPos: number[] = [];
     public static get openPos(): number[] {
         return this._openPos;
+    }
+    /**
+    * 是否压中
+    */
+    public static _win: boolean = false;
+    public static get win(): boolean {
+        return this._win;
     }
     public static _winType: number[] = [];
     public static get winType(): number[] {
@@ -327,17 +361,7 @@ export default class JmManager extends BaseManager {
     public static getDur(): number {
         return this._dur;
     }
-    /**
-     * 更新阶段
-     * @param value 阶段
-     * @param haveSec 剩余时间
-     */
-    public static updateStage(value: jmbaccarat.DeskStage, haveSec: number = 0, reconnect: boolean = false) {
-        this._stage = value;
-        this._haveSec = haveSec;
-        //通知界面更新阶段
-        this.view?.stageChanged(reconnect);
-    }
+
 
 }
 

@@ -70,5 +70,9 @@
     "CustomMenuHistoryItem": {
         "statisticalId": 100001017,
         "panelId": 17
+    },
+    "CustomResult": {
+        "statisticalId": 100001018,
+        "panelId": 18
     }
 }

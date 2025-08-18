@@ -4,7 +4,7 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
-import CustomBetAreaItem from 'db://assets/resources/scripts/view/CustomBetAreaItem';
+import CustomBetAreaItem, { SpineAreaAnimation } from 'db://assets/resources/scripts/view/CustomBetAreaItem';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import JmManager from '../manager/jm-manager';
@@ -13,12 +13,7 @@ import JmManager from '../manager/jm-manager';
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-export enum SpineAreaAnimation {
-    open = "1open",
-    end2 = "2end",
-    obtain2 = "2obtain",
-    baokai = "baokai",
-}
+
 @ccclass('CustomBetArea')
 export default class CustomBetArea extends ViewBase {
 
@@ -49,19 +44,25 @@ export default class CustomBetArea extends ViewBase {
 
     _resetRecords() {
         let _data = JmManager.records;
-        if (!_data) {
+        if (!_data || _data.record.length == 0) {
             this.node.children.forEach(t => {
                 t.getComponent(CustomBetAreaItem).resetRecord();
             })
         } else {
+            let len = _data.record.length - 1;
             for (let i = 0; i < 5; i++) {
-                let award = _data.award[i] as any;
-                if (!award) award = [];
-                let record = _data.record[i] ? _data.record[i].luck_id : []
-                let arr = this.countWithForLoop(award, record);
-                this.node.children.forEach((t, idx) => {
-                    t.getComponent(CustomBetAreaItem).setRecord(i, arr[idx + 1]);
-                })
+                let award = _data.award[len - i] as any;
+                if (!award) {
+                    this.node.children.forEach((t, idx) => {
+                        t.getComponent(CustomBetAreaItem).setRecord(i, 0);
+                    })
+                } else {
+                    let record = _data.record[i] ? _data.record[len - i].luck_id : []
+                    let arr = this.countWithForLoop(award, record);
+                    this.node.children.forEach((t, idx) => {
+                        t.getComponent(CustomBetAreaItem).setRecord(i, arr[idx + 1]);
+                    })
+                }
             }
 
         }
@@ -89,18 +90,19 @@ export default class CustomBetArea extends ViewBase {
         return countMap;
     }
 
-    updateBetArea(arr: number[]) {
+    showResult() {
+        let wintype = JmManager.winType;
         let odd = JmManager.odd;
         this.node.children.forEach((t, idx) => {
-            let wintype = arr[idx] && arr[idx] > 1;
-            if (wintype) {
+            let win = wintype[idx] && wintype[idx] > 1;
+            if (win) {
                 t.getComponent(CustomBetAreaItem).setBetAreaLight();
             }
             if (odd[idx] && +odd[idx]) {
                 if (wintype) {
                     t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.obtain2);
                     this.scheduleOnce(() => {
-                        t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.baokai);
+                        t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end3, true);
                     }, 0.2);
                 } else {
                     t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end2);
@@ -118,6 +120,14 @@ export default class CustomBetArea extends ViewBase {
         });
     }
 
+    reconnectAnimaton(){
+          let odd = JmManager.odd;
+        this.node.children.forEach((t, idx) => {
+            if (odd[idx] && +odd[idx]) {
+                t.getComponent(CustomBetAreaItem).reconnectAnimaton(SpineAreaAnimation.open);
+            }
+        });
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

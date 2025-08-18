@@ -27,7 +27,6 @@ export default class CustomFlyChip extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -38,12 +37,6 @@ export default class CustomFlyChip extends ViewBase {
     _baseDuration: number = 0.1; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 200; // 基准距离(像素)   
     _targetScale: number = 0.5;
-
-    buildUi() {
-        BaseGlobal.registerListeners(this, {
-            [GameEvent.RECOVER_CHIP]: this.recoverChip,
-        });
-    }
 
     reset() {
         this.node.children.forEach(t => {
@@ -144,7 +137,7 @@ export default class CustomFlyChip extends ViewBase {
     /**
     * 断线重连展示筹码
     */
-    recoverChip() {
+    reconnectChip() {
         let point = LocalStorageManager.load(BetPoint, []);
         if (point.length == 0) return;
         point.forEach((t) => {
