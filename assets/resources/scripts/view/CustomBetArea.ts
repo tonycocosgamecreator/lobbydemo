@@ -103,7 +103,7 @@ export default class CustomBetArea extends ViewBase {
                     t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.obtain2);
                     this.scheduleOnce(() => {
                         t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end3, true);
-                    }, 0.2);
+                    }, 0.5);
                 } else {
                     t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end2);
                 }

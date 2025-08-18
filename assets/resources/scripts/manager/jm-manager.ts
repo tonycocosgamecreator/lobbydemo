@@ -206,8 +206,8 @@ export default class JmManager extends BaseManager {
         this._odd = [];
         this._openPos = [];
         this._winType = [];
-        this.totalBet = 0;
         this._myBets = [];
+        this.totalBet = 0;
     }
     public static _winCoin: number = -1;
     public static get winCoin(): number {
