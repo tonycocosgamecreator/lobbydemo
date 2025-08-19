@@ -8,11 +8,9 @@ import { tween } from 'cc';
 import { v3 } from 'cc';
 import PoolManager from '../core/manager/pool-manager';
 import CustomChip from './CustomChip';
-import { UITransform } from 'cc';
 import { Node } from 'cc';
 import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
-import BaseGlobal from '../core/message/base-global';
 import { BetPoint, GameEvent } from '../define';
 import { LocalStorageManager } from '../manager/localstorage-manager';
 import AudioManager from '../core/manager/audio-manager';
@@ -138,18 +136,26 @@ export default class CustomFlyChip extends ViewBase {
     * 断线重连展示筹码
     */
     reconnectChip() {
-        let point = LocalStorageManager.load(BetPoint, []);
-        if (point.length == 0) return;
-        point.forEach((t) => {
-            const chip = PoolManager.Get(CustomChip);
-            chip.setBetData(t.index);
-            this.node.addChild(chip.node);
-            let endPos = this.node.transform.convertToNodeSpaceAR(t.pos);
-            chip.node.position = endPos;
-            chip.node.scale = v3(this._targetScale, this._targetScale, this._targetScale);
+        let _data = LocalStorageManager.load(BetPoint, null);
+        if (!_data) return;
+        for (let i = 0; i < _data.idx.length; i++) {
+            let _d = _data.idx[i];
+            if (_d) {
+                _d.forEach((t) => {
+                    const chip = PoolManager.Get(CustomChip);
+                    chip.setBetData(t.index);
+                    this.node.addChild(chip.node);
+                    let endPos = this.node.transform.convertToNodeSpaceAR(t.pos);
+                    chip.node.position = endPos;
+                    chip.node.scale = v3(this._targetScale, this._targetScale, this._targetScale);
+                })
+            }
 
-        })
+        }
+
     }
+
+
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

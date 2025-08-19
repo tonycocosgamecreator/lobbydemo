@@ -93,22 +93,30 @@ export default class CustomBetArea extends ViewBase {
     showResult() {
         let wintype = JmManager.winType;
         let odd = JmManager.odd;
-        this.node.children.forEach((t, idx) => {
-            let win = wintype[idx] && wintype[idx] > 1;
+        let myBets = JmManager.MyData;
+        for (let i = 0; i < this.node.children.length; i++) {
+            let node = this.node.children[i];
+            let win = wintype[i] && wintype[i] > 1;
             if (win) {
-                t.getComponent(CustomBetAreaItem).setBetAreaLight();
+                node.getComponent(CustomBetAreaItem).setBetAreaLight();
             }
-            if (odd[idx] && +odd[idx]) {
-                if (wintype) {
-                    t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.obtain2);
+            if (odd[i] && +odd[i]) {
+                let num = 0;
+                myBets.forEach(t => {
+                    if (t.bet_id == i + 1) {
+                        num += parseInt(t.bet_coin);
+                    }
+                })
+                if (win && num > 0) {
+                    node.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.obtain2);
                     this.scheduleOnce(() => {
-                        t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end3, true);
+                        node.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end3, true);
                     }, 0.5);
                 } else {
-                    t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end2);
+                    node.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.end2);
                 }
             }
-        });
+        }
     }
 
     showAnimaton() {
@@ -120,8 +128,8 @@ export default class CustomBetArea extends ViewBase {
         });
     }
 
-    reconnectAnimaton(){
-          let odd = JmManager.odd;
+    reconnectAnimaton() {
+        let odd = JmManager.odd;
         this.node.children.forEach((t, idx) => {
             if (odd[idx] && +odd[idx]) {
                 t.getComponent(CustomBetAreaItem).reconnectAnimaton(SpineAreaAnimation.open);

@@ -6,6 +6,8 @@ export interface IPanelJmMainView {
     flyChip(): void;
 
     reconnect(): void;
+
+    flyOtherChip(value: jmbaccarat.BetPlayer[]): void;
 }
 
 

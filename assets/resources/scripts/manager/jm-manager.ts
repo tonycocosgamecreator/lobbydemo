@@ -7,6 +7,7 @@ import { MessageSender } from '../network/net/message-sender';
 import { Global } from '../global';
 import { BetPoint, GameEvent } from '../define';
 import { LocalStorageManager } from './localstorage-manager';
+import { Vec3 } from 'cc';
 
 export enum GameState {
     IDLE = 'idle',          // 空闲状态，游戏未开始
@@ -79,13 +80,14 @@ export default class JmManager extends BaseManager {
             //设置玩家的下注数据
             Global.sendMsg(GameEvent.UPDATE_BET_CHOOSE);
             //设置玩家的id
-            this.playerId = msg.player_id || 0;
+            this._playerId = msg.player_id || 0;
             //设置期号
             this.period = msg.info.period_id || '';
             //设置当前游戏每个阶段的持续时间
             this._dur = msg.info.stage_total_time;
             //更新下注数据
             this._myBets = msg.my?.bets || [];
+            this._allBets = msg.info.all_bets || [];
             this.odd = msg.info.odds || [];
             let _totalBet = 0;
             for (let i = 0; i < this._myBets.length; i++) {
@@ -99,17 +101,9 @@ export default class JmManager extends BaseManager {
             //请求开奖记录
             MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
             //恢复筹码位置
-            if (msg.info.stage == jmbaccarat.DeskStage.ReadyStage) {
+            let _d = LocalStorageManager.load(BetPoint, null);
+            if (_d && _d.key != this.period) {
                 LocalStorageManager.remove(BetPoint);
-            } else {
-                if (this._myBets.length == 0) {
-                    LocalStorageManager.remove(BetPoint);
-                } else {
-                    let point = LocalStorageManager.load(BetPoint, []);
-                    if (point.length != this._myBets.length) {
-                        LocalStorageManager.remove(BetPoint);
-                    }
-                }
             }
             if (msg.info.stage == jmbaccarat.DeskStage.SettleStage) {
                 this._openPos = msg.info.records ? msg.info.records[msg.info.records.length - 1].luck_id : [];
@@ -194,7 +188,12 @@ export default class JmManager extends BaseManager {
             }
             this.view?.stageChanged();
             return false;
-
+        }
+        if (msgType == jmbaccarat.Message.MsgBetBaccaratNtf) {
+            const msg = data as jmbaccarat.MsgBetBaccaratNtf;
+            if (msg.desk_id != this._deskId) return false;
+            this._view?.flyOtherChip(msg.players || []);
+            return false;
         }
         return false;
     }
@@ -207,6 +206,7 @@ export default class JmManager extends BaseManager {
         this._openPos = [];
         this._winType = [];
         this._myBets = [];
+        this._allBets = [];
         this.totalBet = 0;
     }
     public static _winCoin: number = -1;
@@ -255,7 +255,11 @@ export default class JmManager extends BaseManager {
     /**
      * 当前玩家的ID
      */
-    public static playerId: number = -1;
+    public static _playerId: number = -1;
+    public static get playerId(): number {
+        return this._playerId;
+    }
+
     /**
      * 当前期号
      */
@@ -268,6 +272,10 @@ export default class JmManager extends BaseManager {
     * 当前所有的开奖记录
     */
     protected static _records: jmbaccarat.MsgRecordDetailAck = null;
+    protected static _allBets: jmbaccarat.BetData[] = [];
+    public static get AllBet(): jmbaccarat.BetData[] {
+        return this._allBets;
+    }
 
     protected static _myBets: jmbaccarat.BetData[] = [];
 
@@ -289,6 +297,7 @@ export default class JmManager extends BaseManager {
      * @param value 
      */
     public static set period(value: string) {
+        console.log('设置当前的期号', value);
         this._period = value;
         Global.sendMsg(GameEvent.PLAYER_PERIOD_UPDATE);
     }
@@ -361,8 +370,24 @@ export default class JmManager extends BaseManager {
     public static getDur(): number {
         return this._dur;
     }
-
-
+    /**
+     * 获取当前阶段的持续时间
+     * @param index 筹码类型索引
+     * @param pos 筹码位置
+     * @param id 筹码ID
+     */
+    public static storageChipPos(index: number, pos: Vec3, id: number) {
+        let _data = LocalStorageManager.load(BetPoint, null);
+        if (!_data) {
+            _data = { key: this.period, idx: [] };
+        }
+        if (!_data.idx[id]) _data.idx[id] = [];
+        _data.idx[id].push({ index: index, pos: pos });
+        if (_data.idx[id].length > 20) {
+            _data.idx[id].shift(); // 保持每个位置最多20个筹码
+        }
+        LocalStorageManager.save(BetPoint, _data);
+    }
 }
 
 

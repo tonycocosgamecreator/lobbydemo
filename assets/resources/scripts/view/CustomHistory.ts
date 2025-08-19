@@ -81,7 +81,7 @@ export default class CustomHistory extends ViewBase {
             });
         }
         this.probability_node.children.forEach((item: cc.Node, i: number) => {
-            item.getComponentInChildren(cc.Label).string = this._data.probability[i] + '';
+            item.getComponentInChildren(cc.Label).string = Math.floor(this._data.probability[i] * 100) + '%';
         })
         this.historyList.numItems = this._data.record.length;
         this.historyDetailList.numItems = this._data.record.length;

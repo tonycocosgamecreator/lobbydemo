@@ -100,6 +100,7 @@ export default class CustomChooseChip extends ViewBase {
         }
         this.ChipGroup.active = true;
         this._updateButtonState();
+        this._changeChipSelect(0);
     }
     /**
     * 更新筹码展示状态 不够余额下注的话置灰

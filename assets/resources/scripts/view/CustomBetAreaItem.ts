@@ -53,10 +53,12 @@ export default class CustomBetAreaItem extends ViewBase {
         const data = JmManager.MyData;
         if (!data) {
             this.labelSum.string = num + '';
+            this.labelSum.node.parent.active = false;
             return;
         }
         if (data && data.length == 0) {
             this.labelSum.string = num + '';
+            this.labelSum.node.parent.active = false;
             return;
         }
         JmManager.MyData.forEach(t => {
@@ -65,6 +67,7 @@ export default class CustomBetAreaItem extends ViewBase {
             }
         })
         this.labelSum.string = num + '';
+        this.labelSum.node.parent.active = num > 0;
     }
 
     setBetAreaLight() {

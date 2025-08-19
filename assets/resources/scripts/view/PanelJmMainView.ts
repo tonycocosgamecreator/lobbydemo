@@ -21,12 +21,12 @@ import { Intersection2D } from 'cc';
 import { Vec3 } from 'cc';
 import WalletManager from '../manager/wallet-manager';
 import { MessageSender } from '../network/net/message-sender';
-import { BetPoint, GameEvent, THEME_ID } from '../define';
-import { LocalStorageManager } from '../manager/localstorage-manager';
+import { GameEvent, THEME_ID } from '../define';
 import { Global } from '../global';
 import { BaseMessage } from '../core/message/base-message';
 import JmMenuHelper from '../menu/jm-menu-helper';
 import AudioManager from '../core/manager/audio-manager';
+import { randomRange } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -86,6 +86,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     /**--------------------------------下注----------------------------------------------- */
     _tagetWorldPos: Vec3 = null;
     _sourceWorldPos: Vec3 = null;
+    /** 下注区域位置1，2，3，4，5，6 */
+    private _betId = -1;
     onBetClick(event: EventTouch) {
         if (JmManager.stage != jmbaccarat.DeskStage.StartBetStage) return;
         let index = this.sp_bet_choose_node.ChipSelectIndex;
@@ -94,7 +96,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         for (let i = 0; i < this.bet_area_node.node.children.length; i++) {
             const item = this.bet_area_node.node.children[i];
             if (this.checkNodeCollider(touchPos, item)) {
-                this.sendBetMessage(i + 1);
+                this._betId = i + 1;
+                this.sendBetMessage(this._betId);
                 this._sourceWorldPos = this.sp_bet_choose_node.getCurrentChipWorldPos();
                 this._tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
             }
@@ -102,10 +105,30 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     }
 
     flyChip() {
-        let point = LocalStorageManager.load(BetPoint, []);
-        point.push({ index: this.sp_bet_choose_node.ChipSelectIndex, pos: this._tagetWorldPos });
-        LocalStorageManager.save(BetPoint, point);
+        JmManager.storageChipPos(this.sp_bet_choose_node.ChipSelectIndex, this._tagetWorldPos, this._betId - 1)
         this.fly_chip_node.addFlyChip(this.sp_bet_choose_node.ChipSelectIndex, this._sourceWorldPos, this._tagetWorldPos);
+    }
+
+    flyOtherChip(value: jmbaccarat.BetPlayer[]) {
+        if (!value || !value.length) return;
+        let _chipButtons = WalletManager.getCurrencyBetSize();
+        for (let i = 0; i < value.length; i++) {
+            const bet = value[i].bets || [];
+            let playerId = value[i].player_id;
+            if (playerId != JmManager.playerId) {
+                bet.forEach(t => {
+                    let index = _chipButtons.indexOf(parseInt(t.bet_coin));
+                    if (index != -1) {
+                        let node = this.bet_area_node.node.children[t.bet_id - 1];
+                        let endPos = node.parent.transform.convertToWorldSpaceAR(node.position);
+                        let _tagetWorldPos = this.getRandomPointAround(endPos);
+                        let _sourceWorldPos = this.people_node.node.parent.transform.convertToWorldSpaceAR(this.people_node.node.position);
+                        JmManager.storageChipPos(index, _tagetWorldPos, t.bet_id - 1);
+                        this.fly_chip_node.addFlyChip(index, _sourceWorldPos, _tagetWorldPos);
+                    }
+                });
+            }
+        }
     }
 
     checkNodeCollider(p: Vec2, target: Node): boolean {
@@ -115,6 +138,18 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         if (!uiTransform) return false;
         const localPos = uiTransform.convertToNodeSpaceAR(new Vec3(p.x, p.y, 0));
         return Intersection2D.pointInPolygon(new Vec2(localPos.x, localPos.y), collider.points);
+    }
+
+    public getRandomPointAround(centerPoint: Vec3, horizontalRange: number = 90, verticalRange: number = 120): Vec3 {
+        // 左右范围: ±horizontalRange
+        const randomX = randomRange(-horizontalRange, horizontalRange);
+        // 上下范围: ±verticalRange
+        const randomY = randomRange(-verticalRange, verticalRange);
+        return new Vec3(
+            centerPoint.x + randomX,
+            centerPoint.y + randomY,
+            centerPoint.z,
+        );
     }
     /**
      * 发送下注消息
@@ -149,13 +184,14 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     reconnect() {
         const stage = JmManager.stage;
         this.reset();
+        this.fly_chip_node.reset();
         if (stage == -1) return;
         switch (stage) {
             case jmbaccarat.DeskStage.ReadyStage:
                 this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
                 break;
             case jmbaccarat.DeskStage.StartBetStage:
-                this.timeCounterBar.node.active = true;
+                this.timeCounterBar.node.parent.active = true;
                 this.fly_chip_node.reconnectChip();
                 this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
                 break;
@@ -171,7 +207,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 }
                 break;
             case jmbaccarat.DeskStage.SettleStage:
-                this.timeCounterBar.node.active = true;
+                this.timeCounterBar.node.parent.active = true;
                 this.setTouZiData();
                 this.spAnim.setAnimation(0, SpineAnimation.clap, true);
                 this.result_node.reconnectResult();
@@ -186,7 +222,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             case jmbaccarat.DeskStage.ReadyStage:
                 this.fly_chip_node.reset();
                 this.bet_area_node.reset();
-                this.sp_bet_choose_node.reset();
+                // this.sp_bet_choose_node.reset();
                 this.spStart.node.active = true;
                 this.spStart.setAnimation(0, 'animation', false);
                 this.spAnim.node.active = true;
@@ -197,7 +233,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                     this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
                 }, 1.8); break;
             case jmbaccarat.DeskStage.StartBetStage:
-                this.timeCounterBar.node.active = true;
+                this.timeCounterBar.node.parent.active = true;
                 this.spAnim.node.active = true;
                 this.spAnim.timeScale = 0.9;
                 this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
@@ -224,7 +260,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 }
                 break;
             case jmbaccarat.DeskStage.SettleStage:
-                this.timeCounterBar.node.active = true;
+                this.timeCounterBar.node.parent.active = true;
                 this.setTouZiData();
                 if (JmManager.double) {
                     this.bet_area_node.reconnectAnimaton();
@@ -289,11 +325,10 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         this.spStart.node.active = false;
         this.spXiaZhu.node.active = false;
         this.touzi_node.active = false;
-        this.timeCounterBar.node.active = false;
+        this.timeCounterBar.node.parent.active = false;
         this.result_node.reset();
         this.bet_area_node.reset();
         this.bet_area_node.reset();
-        this.fly_chip_node.reset();
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
