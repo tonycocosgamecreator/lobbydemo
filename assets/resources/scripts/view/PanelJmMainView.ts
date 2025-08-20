@@ -27,6 +27,8 @@ import { BaseMessage } from '../core/message/base-message';
 import JmMenuHelper from '../menu/jm-menu-helper';
 import AudioManager from '../core/manager/audio-manager';
 import { randomRange } from 'cc';
+import { utils } from 'cc';
+import TextUtils from '../core/utils/text-utils';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -263,6 +265,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
                 AudioManager.playSound(this.bundleName, '开始下注');
+                this.spWin.node.active = true;
+                this.spWin.setAnimation(0, 'animation', false);
                 break;
             case jmbaccarat.DeskStage.EndBetStage:
                 this.spAnim.node.active = true;
@@ -271,6 +275,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
                 AudioManager.playSound(this.bundleName, '停止下注');
+                this.spWin.node.active = true;
+                this.spWin.setAnimation(0, 'animation', false);
                 break;
             case jmbaccarat.DeskStage.OpenStage:
                 this.spAnim.node.active = true;
@@ -297,6 +303,9 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                     this.spAnim.setAnimation(0, SpineAnimation.clap, true);
                     if (JmManager.WinCoin > 0) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
+                        TextUtils.updateNumberTextWithSperateAndFixed(this.labelwinCoin, JmManager.WinCoin, 3, ',', 1, 0);
+                        this.spWin.node.active = true;
+                        this.spWin.setAnimation(0, 'animation', false);
                     }
                     this.scheduleOnce(() => {
                         if (JmManager.WinCoin > 0) {
@@ -349,6 +358,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     reset() {
         this.spStart.node.active = false;
         this.spXiaZhu.node.active = false;
+        this.spWin.node.active = false;
         this.touzi_node.active = false;
         this.timeCounterBar.node.parent.active = false;
         this.result_node.reset();
@@ -387,10 +397,12 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             cc_fly_chip_node: [CustomFlyChip],
             cc_history_node: [CustomHistory],
             cc_labelPeopleNum: [cc.Label],
+            cc_labelwinCoin: [cc.Label],
             cc_people_node: [cc.Sprite],
             cc_result_node: [CustomResult],
             cc_spAnim: [cc.sp.Skeleton],
             cc_spStart: [cc.sp.Skeleton],
+            cc_spWin: [cc.sp.Skeleton],
             cc_spXiaZhu: [cc.sp.Skeleton],
             cc_sp_bet_choose_node: [CustomChooseChip],
             cc_timeCount: [cc.Label],
@@ -406,10 +418,12 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     protected fly_chip_node: CustomFlyChip = null;
     protected history_node: CustomHistory = null;
     protected labelPeopleNum: cc.Label = null;
+    protected labelwinCoin: cc.Label = null;
     protected people_node: cc.Sprite = null;
     protected result_node: CustomResult = null;
     protected spAnim: cc.sp.Skeleton = null;
     protected spStart: cc.sp.Skeleton = null;
+    protected spWin: cc.sp.Skeleton = null;
     protected spXiaZhu: cc.sp.Skeleton = null;
     protected sp_bet_choose_node: CustomChooseChip = null;
     protected timeCount: cc.Label = null;
