@@ -265,8 +265,6 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
                 AudioManager.playSound(this.bundleName, '开始下注');
-                this.spWin.node.active = true;
-                this.spWin.setAnimation(0, 'animation', false);
                 break;
             case jmbaccarat.DeskStage.EndBetStage:
                 this.spAnim.node.active = true;
@@ -275,8 +273,6 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
                 AudioManager.playSound(this.bundleName, '停止下注');
-                this.spWin.node.active = true;
-                this.spWin.setAnimation(0, 'animation', false);
                 break;
             case jmbaccarat.DeskStage.OpenStage:
                 this.spAnim.node.active = true;
@@ -321,16 +317,28 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         }
     }
 
+    private _index = [new Vec3(0, 40, 7), new Vec3(26, 33, 6), new Vec3(-26, 33, 5), new Vec3(0, 18, 4), new Vec3(26, 3, 3), new Vec3(-26, 3, 2), new Vec3(-15, -21, 1), new Vec3(15, -21, 0)];
     setTouZiData() {
         let open = JmManager.OpenPos;
+        const pos = this.shuffleArray(this._index)
         const children = this.touzi_node.children;
         children.forEach((child, idx) => {
             child.active = !!open[idx];
             if (open[idx]) {
                 child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
+                child.position = pos[idx];
             }
         });
         this.touzi_node.active = true;
+    }
+    
+    shuffleArray(array: Vec3[]) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
     }
     /**
       * 当前正在显示的倒计时秒数
