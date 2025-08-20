@@ -43,25 +43,29 @@ export default class CustomBetArea extends ViewBase {
     }
 
     _resetRecords() {
-        let _data = JmManager.records;
+        let _data = JmManager.Records;
+        const children = this.node.children;
         if (!_data || _data.record.length == 0) {
-            this.node.children.forEach(t => {
-                t.getComponent(CustomBetAreaItem).resetRecord();
-            })
+            children.forEach(child => {
+                child.getComponent(CustomBetAreaItem).resetRecord();
+            });
         } else {
-            let len = _data.record.length - 1;
-            for (let i = 0; i < 5; i++) {
-                let award = _data.award[len - i] as any;
+            const lastIndex = _data.record.length - 1;
+            const maxItems = 5;
+            for (let i = 0; i < maxItems; i++) {
+                const historyIndex = lastIndex - i;
+                const award = _data.award[historyIndex] as any;
+                const recordItem = _data.record[historyIndex];
                 if (!award) {
-                    this.node.children.forEach((t, idx) => {
-                        t.getComponent(CustomBetAreaItem).setRecord(i, 0);
-                    })
+                    children.forEach(child => {
+                        child.getComponent(CustomBetAreaItem).setRecord(i, 0);
+                    });
                 } else {
-                    let record = _data.record[i] ? _data.record[len - i].luck_id : []
-                    let arr = this.countWithForLoop(award, record);
-                    this.node.children.forEach((t, idx) => {
-                        t.getComponent(CustomBetAreaItem).setRecord(i, arr[idx + 1]);
-                    })
+                    const luckIds = recordItem ? recordItem.luck_id : [];
+                    const counts = this.countWithForLoop(award, luckIds);
+                    children.forEach((child, idx) => {
+                        child.getComponent(CustomBetAreaItem).setRecord(i, counts[idx + 1] || 0);
+                    });
                 }
             }
 
@@ -81,7 +85,6 @@ export default class CustomBetArea extends ViewBase {
     }
 
     countWithForLoop(arr1: number[], arr2: number[]): Record<number, number> {
-        // 初始化计数器对象，记录 1~6 的出现次数
         const countMap: Record<number, number> = {};
         arr1.forEach((num) => {
             countMap[num] = arr2.filter((item) => item === num).length;
@@ -91,9 +94,9 @@ export default class CustomBetArea extends ViewBase {
     }
 
     showResult() {
-        let wintype = JmManager.winType;
-        let odd = JmManager.odd;
-        let myBets = JmManager.MyData;
+        let wintype = JmManager.WinType;
+        let odd = JmManager.Odd;
+        let myBets = JmManager.MyBets;
         for (let i = 0; i < this.node.children.length; i++) {
             let node = this.node.children[i];
             let win = wintype[i] && wintype[i] > 1;
@@ -120,19 +123,21 @@ export default class CustomBetArea extends ViewBase {
     }
 
     showAnimaton() {
-        let odd = JmManager.odd;
-        this.node.children.forEach((t, idx) => {
+        let odd = JmManager.Odd;
+        const children = this.node.children;
+        children.forEach((child, idx) => {
             if (odd[idx] && +odd[idx]) {
-                t.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.open);
+                child.getComponent(CustomBetAreaItem).showAnimaton(SpineAreaAnimation.open);
             }
         });
     }
 
     reconnectAnimaton() {
-        let odd = JmManager.odd;
-        this.node.children.forEach((t, idx) => {
+        let odd = JmManager.Odd;
+        const children = this.node.children;
+        children.forEach((child, idx) => {
             if (odd[idx] && +odd[idx]) {
-                t.getComponent(CustomBetAreaItem).reconnectAnimaton(SpineAreaAnimation.open);
+                child.getComponent(CustomBetAreaItem).reconnectAnimaton(SpineAreaAnimation.open);
             }
         });
     }

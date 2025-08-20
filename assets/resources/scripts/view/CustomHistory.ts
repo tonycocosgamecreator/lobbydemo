@@ -53,18 +53,19 @@ export default class CustomHistory extends ViewBase {
     }
 
     _init() {
-        this._data = JmManager.records;
+        this._data = JmManager.Records;
         if (!this._data) {
             this.reset();
             return;
         }
-        let _records = this._data.record.reverse();
-        let _awards = this._data.award.reverse();
+        const _records = [...this._data.record].reverse();
+        const _awards = [...this._data.award].reverse();
+        const maxDisplayItems = 6; // 最大显示项数
         this.historyList.itemRender = (item: cc.Node, i: number) => {
             let rc = _records[i].luck_id;
             let ad = _awards[i] as any;
             item.children.forEach((t, j) => {
-                if (j < 6) {
+                if (j < maxDisplayItems) {
                     t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (rc[j] * 3)) + "/spriteFrame");
                     if (!ad) ad = [];
                     t.children[0].active = ad.includes(rc[j]);

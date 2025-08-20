@@ -44,14 +44,7 @@ export default class CustomMenuHistoryItem extends ViewBase {
             }
         });
     }
-
-
-
-
-
-
-
-
+    
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

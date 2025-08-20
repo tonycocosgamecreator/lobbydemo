@@ -33,13 +33,6 @@ export default class CustomMenuHistoryTitle extends ReusableBase {
         
     }
 
-
-
-
-
-
-
-
     //------------------------ 网络消息 ------------------------//
 // @view export net begin
 

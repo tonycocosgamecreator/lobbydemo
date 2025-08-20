@@ -35,7 +35,7 @@ const { ccclass, property } = cc._decorator;
 export enum SpineAnimation {
     collect = "collect",
     shaking = 'shaking',
-    idle1 = "idle1",
+    idle2 = "idle2",
     idle3 = "idle3",
     open = "open",
     clap = "clap",
@@ -53,17 +53,25 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        JmManager.view = this;
+        JmManager.View = this;
         this.buildUi();
     }
 
     protected onDestroy(): void {
         super.onDestroy();
-        JmManager.view = null;
+        JmManager.View = null;
     }
 
     //------------------------ 内部逻辑 ------------------------//
+
+    _tagetWorldPos: Vec3 = null;
+    _sourceWorldPos: Vec3 = null;
+    /** 
+     * 下注区域位置1，2，3，4，5，6 
+     * */
+    _betId = -1;
     protected _isGameInBackground: boolean = false;
+
     buildUi() {
         Global.registerListeners(
             this,
@@ -84,17 +92,15 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         this.reconnect();
     }
     /**--------------------------------下注----------------------------------------------- */
-    _tagetWorldPos: Vec3 = null;
-    _sourceWorldPos: Vec3 = null;
-    /** 下注区域位置1，2，3，4，5，6 */
-    private _betId = -1;
+
     onBetClick(event: EventTouch) {
-        if (JmManager.stage != jmbaccarat.DeskStage.StartBetStage) return;
+        if (JmManager.Stage != jmbaccarat.DeskStage.StartBetStage) return;
         let index = this.sp_bet_choose_node.ChipSelectIndex;
         if (index == -1) return;
         const touchPos = event.getUILocation();
-        for (let i = 0; i < this.bet_area_node.node.children.length; i++) {
-            const item = this.bet_area_node.node.children[i];
+        const children = this.bet_area_node.node.children;
+        for (let i = 0; i < children.length; i++) {
+            const item = children[i];
             if (this.checkNodeCollider(touchPos, item)) {
                 this._betId = i + 1;
                 this.sendBetMessage(this._betId);
@@ -103,32 +109,47 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             }
         }
     }
-
+    /**
+    * 自己飞筹码动画
+    */
     flyChip() {
         JmManager.storageChipPos(this.sp_bet_choose_node.ChipSelectIndex, this._tagetWorldPos, this._betId - 1)
         this.fly_chip_node.addFlyChip(this.sp_bet_choose_node.ChipSelectIndex, this._sourceWorldPos, this._tagetWorldPos);
     }
 
-    flyOtherChip(value: jmbaccarat.BetPlayer[]) {
-        if (!value || !value.length) return;
-        let _chipButtons = WalletManager.getCurrencyBetSize();
-        for (let i = 0; i < value.length; i++) {
-            const bet = value[i].bets || [];
-            let playerId = value[i].player_id;
-            if (playerId != JmManager.playerId) {
-                bet.forEach(t => {
-                    let index = _chipButtons.indexOf(parseInt(t.bet_coin));
-                    if (index != -1) {
-                        let node = this.bet_area_node.node.children[t.bet_id - 1];
-                        let endPos = node.parent.transform.convertToWorldSpaceAR(node.position);
-                        let _tagetWorldPos = this.getRandomPointAround(endPos);
-                        let _sourceWorldPos = this.people_node.node.parent.transform.convertToWorldSpaceAR(this.people_node.node.position);
-                        JmManager.storageChipPos(index, _tagetWorldPos, t.bet_id - 1);
-                        this.fly_chip_node.addFlyChip(index, _sourceWorldPos, _tagetWorldPos);
-                    }
-                });
-            }
-        }
+    /**
+    * 其他玩家飞筹码动画
+    * @param players 其他玩家的下注数据数组
+    */
+    flyOtherChip(players: jmbaccarat.BetPlayer[]) {
+        if (!players?.length) return;
+        const chipButtons = WalletManager.getCurrencyBetSize();
+        const currentPlayerId = JmManager.PlayerId;
+        players.forEach(player => {
+            // 跳过当前玩家
+            if (player.player_id === currentPlayerId) return;
+            // 处理每个下注
+            player.bets?.forEach(bet => {
+                const chipValue = parseInt(bet.bet_coin);
+                const chipIndex = chipButtons.indexOf(chipValue);
+                // 如果筹码值有效
+                if (chipIndex !== -1) {
+                    // 下注区域索引
+                    const betAreaIndex = bet.bet_id - 1;
+                    //获取目标节点和位置
+                    const targetNode = this.bet_area_node.node.children[betAreaIndex];
+                    const endPos = targetNode.parent.transform.convertToWorldSpaceAR(targetNode.position);
+                    const targetWorldPos = this.getRandomPointAround(endPos);
+                    //获取起始位置
+                    const sourceWorldPos = this.people_node.node.parent.transform.convertToWorldSpaceAR(
+                        this.people_node.node.position
+                    );
+                    //存储位置并执行飞筹码动画
+                    JmManager.storageChipPos(chipIndex, targetWorldPos, betAreaIndex);
+                    this.fly_chip_node.addFlyChip(chipIndex, sourceWorldPos, targetWorldPos);
+                }
+            });
+        });
     }
 
     checkNodeCollider(p: Vec2, target: Node): boolean {
@@ -140,10 +161,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         return Intersection2D.pointInPolygon(new Vec2(localPos.x, localPos.y), collider.points);
     }
 
-    public getRandomPointAround(centerPoint: Vec3, horizontalRange: number = 90, verticalRange: number = 120): Vec3 {
-        // 左右范围: ±horizontalRange
+    getRandomPointAround(centerPoint: Vec3, horizontalRange: number = 90, verticalRange: number = 120): Vec3 {
         const randomX = randomRange(-horizontalRange, horizontalRange);
-        // 上下范围: ±verticalRange
         const randomY = randomRange(-verticalRange, verticalRange);
         return new Vec3(
             centerPoint.x + randomX,
@@ -151,12 +170,13 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             centerPoint.z,
         );
     }
+
     /**
      * 发送下注消息
      * @param betId 
      */
     protected sendBetMessage(betId: number) {
-        const stage = JmManager.stage;
+        const stage = JmManager.Stage;
         if (stage != jmbaccarat.DeskStage.StartBetStage) {
             return;
         }
@@ -176,24 +196,25 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         //如果有之前的下注，添加到这里
         let data: jmbaccarat.MsgBetBaccaratReq = {
             theme_id: THEME_ID,
-            desk_id: JmManager.deskId,
+            desk_id: JmManager.DeskId,
             bets: betDatas
         };
         MessageSender.SendMessage(jmbaccarat.Message.MsgBetBaccaratReq, data);
     }
+
     reconnect() {
-        const stage = JmManager.stage;
+        const stage = JmManager.Stage;
         this.reset();
         this.fly_chip_node.reset();
         if (stage == -1) return;
         switch (stage) {
             case jmbaccarat.DeskStage.ReadyStage:
-                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                this.spAnim.setAnimation(0, SpineAnimation.idle2, false);
                 break;
             case jmbaccarat.DeskStage.StartBetStage:
                 this.timeCounterBar.node.parent.active = true;
                 this.fly_chip_node.reconnectChip();
-                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                this.spAnim.setAnimation(0, SpineAnimation.idle2, false);
                 break;
             case jmbaccarat.DeskStage.EndBetStage:
                 this.fly_chip_node.reconnectChip();
@@ -202,7 +223,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             case jmbaccarat.DeskStage.OpenStage:
                 this.fly_chip_node.reconnectChip();
                 this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
-                if (JmManager.double) {
+                if (JmManager.Double) {
                     this.bet_area_node.reconnectAnimaton();
                 }
                 break;
@@ -214,21 +235,23 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 break;
         }
     }
+
     stageChanged() {
-        const stage = JmManager.stage;
+        const stage = JmManager.Stage;
         this.reset();
         if (stage == -1) return;
         switch (stage) {
             case jmbaccarat.DeskStage.ReadyStage:
                 this.fly_chip_node.reset();
                 this.bet_area_node.reset();
-                // this.sp_bet_choose_node.reset();
                 this.spStart.node.active = true;
                 this.spStart.setAnimation(0, 'animation', false);
                 this.spAnim.node.active = true;
                 this.spAnim.timeScale = 0.9;
+                this.touzi_node.active = true;
                 this.spAnim.setAnimation(0, SpineAnimation.collect, false);
                 this.scheduleOnce(() => {
+                    this.touzi_node.active = false;
                     AudioManager.playSound(this.bundleName, '摇骰子音效');
                     this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
                 }, 1.8); break;
@@ -236,7 +259,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.timeCounterBar.node.parent.active = true;
                 this.spAnim.node.active = true;
                 this.spAnim.timeScale = 0.9;
-                this.spAnim.setAnimation(0, SpineAnimation.idle1, false);
+                this.spAnim.setAnimation(0, SpineAnimation.idle2, false);
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
                 AudioManager.playSound(this.bundleName, '开始下注');
@@ -253,7 +276,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spAnim.node.active = true;
                 this.spAnim.timeScale = 1
                 this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
-                if (JmManager.double) {
+                if (JmManager.Double) {
                     this.bet_area_node.showAnimaton();
                     this.spXiaZhu.node.active = true;
                     this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.ewbl, false);
@@ -262,7 +285,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             case jmbaccarat.DeskStage.SettleStage:
                 this.timeCounterBar.node.parent.active = true;
                 this.setTouZiData();
-                if (JmManager.double) {
+                if (JmManager.Double) {
                     this.bet_area_node.reconnectAnimaton();
                 }
                 this.spAnim.node.active = true;
@@ -271,29 +294,31 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.scheduleOnce(() => {
                     this.result_node.showResult();
                     this.bet_area_node.showResult();
-                    if (JmManager.win) {
+                    this.spAnim.setAnimation(0, SpineAnimation.clap, true);
+                    if (JmManager.WinCoin > 0) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
                     }
                     this.scheduleOnce(() => {
-                        if (JmManager.winCoin > 0) {
+                        if (JmManager.WinCoin > 0) {
                             AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
                         }
-                        this.spAnim.setAnimation(0, SpineAnimation.clap, true);
                         let sourceNode = this.people_node.node;
                         let sourceUITransform = sourceNode.parent.getComponent(UITransform);
                         let sourceWorldPos = sourceUITransform.convertToWorldSpaceAR(sourceNode.position);
                         this.fly_chip_node.getComponent(CustomFlyChip).recycleChip(sourceWorldPos)
-                    }, JmManager.win ? 1.2 : 0)
-                }, 2.5);
+                    }, 1)
+                }, 2.8);
                 break;
         }
     }
+
     setTouZiData() {
-        let open = JmManager.openPos;
-        this.touzi_node.children.forEach((t, idx) => {
-            t.active = !!open[idx];
+        let open = JmManager.OpenPos;
+        const children = this.touzi_node.children;
+        children.forEach((child, idx) => {
+            child.active = !!open[idx];
             if (open[idx]) {
-                t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
+                child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
             }
         });
         this.touzi_node.active = true;
@@ -303,14 +328,14 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
       */
     private _currentHaveSec: number = 0;
     protected lateUpdate(dt: number): void {
-        if (JmManager.stage != jmbaccarat.DeskStage.StartBetStage && JmManager.stage != jmbaccarat.DeskStage.SettleStage) return;
+        if (JmManager.Stage != jmbaccarat.DeskStage.StartBetStage && JmManager.Stage != jmbaccarat.DeskStage.SettleStage) return;
         const left = JmManager.minusHaveSec(dt);
-        const maxSec = JmManager.getDur();
+        const maxSec = JmManager.Dur;
         const secNow = Math.ceil(left);
         if (secNow !== this._currentHaveSec) {
             this._currentHaveSec = secNow;
             this.timeCount.string = secNow.toString();
-            if (JmManager.stage == jmbaccarat.DeskStage.StartBetStage) {
+            if (JmManager.Stage == jmbaccarat.DeskStage.StartBetStage) {
                 if (secNow == 5) {
                     AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
                 } else if (secNow < 5 && secNow > 0) {
@@ -328,8 +353,8 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         this.timeCounterBar.node.parent.active = false;
         this.result_node.reset();
         this.bet_area_node.reset();
-        this.bet_area_node.reset();
     }
+
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

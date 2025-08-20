@@ -82,40 +82,36 @@ export default class JmManager extends BaseManager {
             //设置玩家的id
             this._playerId = msg.player_id || 0;
             //设置期号
-            this.period = msg.info.period_id || '';
+            this.Period = msg.info.period_id || '';
             //设置当前游戏每个阶段的持续时间
             this._dur = msg.info.stage_total_time;
             //更新下注数据
             this._myBets = msg.my?.bets || [];
-            this._allBets = msg.info.all_bets || [];
-            this.odd = msg.info.odds || [];
+            //翻倍数据
+            this.Odd = msg.info.odds || [];
             let _totalBet = 0;
             for (let i = 0; i < this._myBets.length; i++) {
                 const bet = this._myBets[i];
                 _totalBet += parseFloat(bet.bet_coin || '0');
             }
-            this.totalBet = _totalBet;
+            this.TotalBet = _totalBet;
             //@todo : 需要设置其他数据
             this._stage = msg.info.stage;
             this._haveSec = msg.info.have_sec || 0;
             //请求开奖记录
             MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
-            //恢复筹码位置
-            let _d = LocalStorageManager.load(BetPoint, null);
-            if (_d && _d.key != this.period) {
-                LocalStorageManager.remove(BetPoint);
-            }
+            this.checkChipPosData();
             if (msg.info.stage == jmbaccarat.DeskStage.SettleStage) {
                 this._openPos = msg.info.records ? msg.info.records[msg.info.records.length - 1].luck_id : [];
             }
             //更新阶段
-            this.view?.reconnect();
+            this.View?.reconnect();
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgRecordDetailAck) {
             const msg = data as jmbaccarat.MsgRecordDetailAck;
             //开奖记录
-            this.records = msg || null;
+            this.Records = msg || null;
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgBaccaratNextStageNtf) {
@@ -128,10 +124,10 @@ export default class JmManager extends BaseManager {
                 LocalStorageManager.remove(BetPoint);
                 this.reset()
                 const period_id = msg.period_id || '';
-                this.period = period_id;
+                this.Period = period_id;
             }
             if (msg.stage == jmbaccarat.DeskStage.SettleStage) return false;
-            this.view?.stageChanged();
+            this.View?.stageChanged();
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgBetBaccaratRsp) {
@@ -155,13 +151,13 @@ export default class JmManager extends BaseManager {
                 _totalBet += parseFloat(bet.bet_coin || '0');
                 this._myBets.push(bet);
             }
-            this.totalBet = _totalBet;
+            this.TotalBet = _totalBet;
             this._view?.flyChip()
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgOddNtf) {
             const msg = data as jmbaccarat.MsgOddNtf;
-            this.odd = msg.odd_string || [];
+            this.Odd = msg.odd_string || [];
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgSettleNtf) {
@@ -170,12 +166,6 @@ export default class JmManager extends BaseManager {
             this._openPos = msg.open_pos || [];
             this._winType = msg.win_type || [];
             this._winCoin = +msg.win_data?.win_coin || 0;
-            this._win = false;
-            this._winType.forEach(t => {
-                if (this._winType[t] > 1) {
-                    this._win = true;
-                }
-            });
             if (msg.open_pos) {
                 //新增结果
                 MessageSender.SendMessage(jmbaccarat.Message.MsgRecordDetailReq, { desk_id: this._deskId });
@@ -186,7 +176,7 @@ export default class JmManager extends BaseManager {
                 //如果没有结果数据，说明是结算失败了
                 console.error(`Settle Failed: result_data is null`);
             }
-            this.view?.stageChanged();
+            this.View?.stageChanged();
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgBetBaccaratNtf) {
@@ -198,26 +188,92 @@ export default class JmManager extends BaseManager {
         return false;
     }
 
-    static reset() {
-        this._double = false;
-        this._win = false;
-        this._winCoin = -1;
-        this._odd = [];
-        this._openPos = [];
-        this._winType = [];
-        this._myBets = [];
-        this._allBets = [];
-        this.totalBet = 0;
-    }
-    public static _winCoin: number = -1;
-    public static get winCoin(): number {
-        return this._winCoin;
-    }
-    public static _odd: string[] = [];
-    public static get odd(): string[] {
-        return this._odd;
-    }
-    public static set odd(value: string[]) {
+    /**----------------游戏状态相关-------------------*/
+    /** 
+     * 当前状态
+     */
+    private static _stage: number = -1;
+    /** 
+     * 当前阶段剩余时间，单位是秒
+     */
+    private static _haveSec: number = 0;
+    /** 
+     * 当前阶段持续时间，单位是秒
+     */
+    private static _dur: number;
+
+    /**----------------玩家数据相关-------------------*/
+
+    /**
+     * 当前桌子的ID
+     */
+    private static _deskId: number = -1;
+    /**
+     * 当前玩家的ID
+     */
+    private static _playerId: number = -1;
+    /**
+     * 当前期号
+     */
+    private static _period: string = '';
+    /**
+     * 当前玩家的总投注额度
+     */
+    private static _totalBet: number = 0;
+
+    /**----------------游戏结果相关-------------------*/
+    /**
+     * 赢的金币数
+     */
+    private static _winCoin: number = 0;
+    /**
+     * 下注区域赔率
+     */
+    private static _odd: string[] = [];
+    /**
+     * 本局是否有翻倍
+     */
+    private static _double: boolean = false;
+    /**
+     * 开牌点数
+     */
+    private static _openPos: number[] = [];
+    /**
+     * 玩家赢奖区域数据
+     */
+    private static _winType: number[] = [];
+
+    /**----------------下注数据相关-------------------*/
+    /**
+     * 当前所有的开奖记录
+     */
+    private static _records: jmbaccarat.MsgRecordDetailAck | null = null;
+    /**
+     * 本局玩家的下注数据
+     */
+    private static _myBets: jmbaccarat.BetData[] = [];
+
+    /**----------------绑定界面-------------------*/
+    private static _view: IPanelJmMainView | null = null;
+
+
+    public static get WinCoin(): number { return this._winCoin; }
+    public static get Odd(): string[] { return this._odd; }
+    public static get Double(): boolean { return this._double; }
+    public static get OpenPos(): number[] { return this._openPos; }
+    public static get WinType(): number[] { return this._winType; }
+    public static get PlayerId(): number { return this._playerId; }
+    public static get MyBets(): jmbaccarat.BetData[] { return this._myBets; }
+    public static get DeskId(): number { return this._deskId; }
+    public static get TotalBet(): number { return this._totalBet; }
+    public static get Period(): string { return this._period; }
+    public static get Records(): jmbaccarat.MsgRecordDetailAck | null { return this._records; }
+    public static get View(): IPanelJmMainView | null { return this._view; }
+    public static get Stage(): number { return this._stage; }
+    public static get HaveSec(): number { return this._haveSec; }
+    public static get Dur(): number { return this._dur; }
+
+    public static set Odd(value: string[]) {
         this._odd = value;
         for (let i = 0; i < this._odd.length; i++) {
             if (this._odd[i] && +this._odd[i]) {
@@ -225,131 +281,43 @@ export default class JmManager extends BaseManager {
             }
         }
     }
-    /**
-    * 是否翻倍
-    */
-    public static _double: boolean = false;
-    public static get double(): boolean {
-        return this._double;
-    }
-    public static _openPos: number[] = [];
-    public static get openPos(): number[] {
-        return this._openPos;
-    }
-    /**
-    * 是否压中
-    */
-    public static _win: boolean = false;
-    public static get win(): boolean {
-        return this._win;
-    }
-    public static _winType: number[] = [];
-    public static get winType(): number[] {
-        return this._winType;
-    }
 
-    /**
-    * 当前桌子的ID
-    */
-    public static _deskId: number = -1;
-    /**
-     * 当前玩家的ID
-     */
-    public static _playerId: number = -1;
-    public static get playerId(): number {
-        return this._playerId;
-    }
-
-    /**
-     * 当前期号
-     */
-    public static _period: string = '';
-    /**
-     * 当前玩家的总投注额度
-     */
-    protected static _totalBet: number = 0;
-    /**
-    * 当前所有的开奖记录
-    */
-    protected static _records: jmbaccarat.MsgRecordDetailAck = null;
-    protected static _allBets: jmbaccarat.BetData[] = [];
-    public static get AllBet(): jmbaccarat.BetData[] {
-        return this._allBets;
-    }
-
-    protected static _myBets: jmbaccarat.BetData[] = [];
-
-    public static get MyData(): jmbaccarat.BetData[] {
-        return this._myBets;
-    }
-    public static get deskId(): number {
-        return this._deskId;
-    }
-    protected static set totalBet(value: number) {
+    public static set TotalBet(value: number) {
         this._totalBet = value;
         Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
     }
-    public static get totalBet(): number {
-        return this._totalBet;
-    }
-    /**
-     * 设置当前的期号
-     * @param value 
-     */
-    public static set period(value: string) {
-        console.log('设置当前的期号', value);
+
+    public static set Period(value: string) {
         this._period = value;
         Global.sendMsg(GameEvent.PLAYER_PERIOD_UPDATE);
     }
-    /**
-    * 获取当前的期号
-    */
-    public static get period(): string {
-        return this._period;
-    }
-    /**
-     * 获取开奖记录
-     */
-    public static get records(): jmbaccarat.MsgRecordDetailAck {
-        return this._records;
-    }
-    /**
-     * 设置开奖记录
-     * @param value 
-     */
-    public static set records(value: jmbaccarat.MsgRecordDetailAck) {
+
+    public static set Records(value: jmbaccarat.MsgRecordDetailAck) {
         this._records = value;
         Global.sendMsg(GameEvent.UPDATE_HISTORY);
     }
 
-    protected static _view: IPanelJmMainView | null = null;
-    public static get view(): IPanelJmMainView | null {
-        return this._view;
-    }
-    public static set view(value: IPanelJmMainView | null) {
+    public static set View(value: IPanelJmMainView | null) {
         this._view = value;
     }
 
-
-    protected static _stage: number = -1;
-    protected static _haveSec: number = 0;
-    public static get stage(): number {
-        return this._stage;
-    }
+    /**----------------核心方法-------------------*/
     /**
-     * 获取当前阶段剩余时间
+     * 重置所有数据
      */
-    public static get haveSec(): number {
-        return this._haveSec;
+    public static reset() {
+        this._double = false;
+        this._winCoin = 0;
+        this._odd = [];
+        this._openPos = [];
+        this._winType = [];
+        this._myBets = [];
+        this.TotalBet = 0;
     }
 
-    public static set haveSec(value: number) {
-        this._haveSec = value;
-    }
     /**
      * 对倒计时进行减法
      * @param value 
-     * @returns 
      */
     public static minusHaveSec(value: number) {
         this._haveSec -= value;
@@ -358,20 +326,9 @@ export default class JmManager extends BaseManager {
         }
         return this._haveSec;
     }
+
     /**
-     * 当前游戏，每个阶段的持续时间
-     * 这个数据是从服务器获取的，单位是秒
-     */
-    protected static _dur: number;
-    /**
-     * 获取当前阶段的持续时间
-     * @param value 
-     */
-    public static getDur(): number {
-        return this._dur;
-    }
-    /**
-     * 获取当前阶段的持续时间
+     *记录筹码位置
      * @param index 筹码类型索引
      * @param pos 筹码位置
      * @param id 筹码ID
@@ -379,7 +336,7 @@ export default class JmManager extends BaseManager {
     public static storageChipPos(index: number, pos: Vec3, id: number) {
         let _data = LocalStorageManager.load(BetPoint, null);
         if (!_data) {
-            _data = { key: this.period, idx: [] };
+            _data = { key: this._period + this._playerId, idx: [] };
         }
         if (!_data.idx[id]) _data.idx[id] = [];
         _data.idx[id].push({ index: index, pos: pos });
@@ -387,6 +344,16 @@ export default class JmManager extends BaseManager {
             _data.idx[id].shift(); // 保持每个位置最多20个筹码
         }
         LocalStorageManager.save(BetPoint, _data);
+    }
+
+    /**
+     * 检查存储在本地的筹码位置数据是否有效
+     */
+    public static checkChipPosData() {
+        let _data = LocalStorageManager.load(BetPoint, null);
+        if (_data && _data.key != this._period + this._playerId) {
+            LocalStorageManager.remove(BetPoint);
+        }
     }
 }
 

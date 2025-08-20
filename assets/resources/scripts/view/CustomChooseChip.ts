@@ -55,6 +55,7 @@ export default class CustomChooseChip extends ViewBase {
         this._init();
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
+            [GameEvent.PLAYER_INFO_UPDATE]: this._updateTotalBalance,
             [GameEvent.UPDATE_BET_CHOOSE]: this._init,
         });
     }

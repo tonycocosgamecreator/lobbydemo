@@ -31,11 +31,13 @@ export default class CustomResult extends ViewBase {
     }
 
     _init() {
-        let open = JmManager.openPos;
-        this.node.children.forEach((t, idx) => {
-            t.active = !!open[idx];
+        this.reset();
+        let open = JmManager.OpenPos;
+        const children = this.node.children;
+        children.forEach((child, idx) => {
+            child.active = !!open[idx];
             if (open[idx]) {
-                t.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (open[idx] * 3)) + "/spriteFrame");
+                child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/JM_Img_" + (11 + (open[idx] * 3)) + "/spriteFrame");
             }
         });
     }
@@ -50,16 +52,13 @@ export default class CustomResult extends ViewBase {
     }
 
     /**
-      * 断线重连展示结果
-      */
+    * 断线重连展示结果
+    */
     reconnectResult() {
         this._init();
         this.node.active = true;
         this.node.scale = new Vec3(1, 1, 1);
     }
-
-
-
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

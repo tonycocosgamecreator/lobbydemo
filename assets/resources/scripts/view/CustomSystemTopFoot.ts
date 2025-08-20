@@ -35,8 +35,9 @@ export default class CustomSystemTopFoot extends ViewBase {
         this.buttonBack.node.active = false;
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this._updateTotalBet,
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
+            [GameEvent.PLAYER_INFO_UPDATE]: this._updateTotalBalance,
             [GameEvent.PLAYER_PERIOD_UPDATE]: this._updatePeriod,
+            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance
         });
         this._updateTotalBalance();
         this._updateTotalBet();
@@ -52,7 +53,7 @@ export default class CustomSystemTopFoot extends ViewBase {
     }
 
     _updateTotalBet() {
-        this.totalBet.string = JmManager.totalBet + '';
+        this.totalBet.string = JmManager.TotalBet + '';
     }
 
     _updateTotalBalance() {
@@ -60,7 +61,7 @@ export default class CustomSystemTopFoot extends ViewBase {
     }
 
     private _updatePeriod() {
-        this.period.string = JmManager.period;
+        this.period.string = JmManager.Period;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -75,7 +76,7 @@ export default class CustomSystemTopFoot extends ViewBase {
 
     private onClickButtonBack(event: cc.EventTouch) {
         const data: jmbaccarat.MsgLeaveBaccaratReq = {
-            desk_id: JmManager.deskId,
+            desk_id: JmManager.DeskId,
             theme_id: THEME_ID,
         };
         MessageSender.SendMessage(jmbaccarat.Message.MsgLeaveBaccaratReq, data);

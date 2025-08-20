@@ -50,7 +50,7 @@ export default class CustomBetAreaItem extends ViewBase {
     setBetNum(idx: number) {
         let num = 0;
         let id = idx + 1;
-        const data = JmManager.MyData;
+        const data = JmManager.MyBets;
         if (!data) {
             this.labelSum.string = num + '';
             this.labelSum.node.parent.active = false;
@@ -61,7 +61,7 @@ export default class CustomBetAreaItem extends ViewBase {
             this.labelSum.node.parent.active = false;
             return;
         }
-        JmManager.MyData.forEach(t => {
+        data.forEach(t => {
             if (t.bet_id == id) {
                 num += parseInt(t.bet_coin);
             }
