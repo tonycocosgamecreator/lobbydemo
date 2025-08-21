@@ -299,13 +299,16 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                     this.spAnim.setAnimation(0, SpineAnimation.clap, true);
                     if (JmManager.WinCoin > 0) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
-                        TextUtils.updateNumberTextWithSperateAndFixed(this.labelwinCoin, JmManager.WinCoin, 3, ',', 1, 0);
-                        this.spWin.node.active = true;
-                        this.spWin.setAnimation(0, 'animation', false);
                     }
                     this.scheduleOnce(() => {
                         if (JmManager.WinCoin > 0) {
+                            this.result_node.reset();
                             AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
+                            if (JmManager.WinCoin > 0) {
+                                TextUtils.updateNumberTextWithSperateAndFixed(this.labelwinCoin, JmManager.WinCoin, 3, ',', 1, 0);
+                                this.spWin.node.active = true;
+                                this.spWin.setAnimation(0, 'animation', false);
+                            }
                         }
                         let sourceNode = this.people_node.node;
                         let sourceUITransform = sourceNode.parent.getComponent(UITransform);
