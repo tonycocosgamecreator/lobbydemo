@@ -36,5 +36,19 @@
         }
       }
     }
+  },
+  "textureCompressConfig": {
+    "userPreset": {
+      "88bQEiXHlINJO2AmMBaa4A": {
+        "name": "H5",
+        "options": {
+          "web": {
+            "webp": {
+              "quality": 80
+            }
+          }
+        }
+      }
+    }
   }
 }

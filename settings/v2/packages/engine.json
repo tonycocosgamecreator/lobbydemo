@@ -9,13 +9,13 @@
         "_value": true
       },
       "gfx-webgl2": {
-        "_value": false
+        "_value": true
       },
       "animation": {
         "_value": true
       },
       "skeletal-animation": {
-        "_value": true
+        "_value": false
       },
       "3d": {
         "_value": false
@@ -33,10 +33,10 @@
         "_value": true
       },
       "particle": {
-        "_value": true
+        "_value": false
       },
       "physics": {
-        "_value": true,
+        "_value": false,
         "_option": "physics-ammo"
       },
       "physics-ammo": {
@@ -52,7 +52,7 @@
         "_value": false
       },
       "physics-2d": {
-        "_value": true,
+        "_value": false,
         "_option": "physics-2d-box2d"
       },
       "physics-2d-box2d": {
@@ -62,13 +62,13 @@
         "_value": false
       },
       "intersection-2d": {
-        "_value": true
+        "_value": false
       },
       "primitive": {
-        "_value": true
+        "_value": false
       },
       "profiler": {
-        "_value": true
+        "_value": false
       },
       "occlusion-query": {
         "_value": false
@@ -80,34 +80,34 @@
         "_value": false
       },
       "particle-2d": {
-        "_value": true
+        "_value": false
       },
       "audio": {
         "_value": true
       },
       "video": {
-        "_value": true
+        "_value": false
       },
       "webview": {
-        "_value": true
+        "_value": false
       },
       "tween": {
         "_value": true
       },
       "websocket": {
-        "_value": true
+        "_value": false
       },
       "websocket-server": {
         "_value": false
       },
       "terrain": {
-        "_value": true
+        "_value": false
       },
       "light-probe": {
-        "_value": true
+        "_value": false
       },
       "tiled-map": {
-        "_value": true
+        "_value": false
       },
       "spine": {
         "_value": true
@@ -116,7 +116,7 @@
         "_value": true
       },
       "marionette": {
-        "_value": true
+        "_value": false
       },
       "procedural-animation": {
         "_value": false
@@ -138,25 +138,11 @@
       "base",
       "dragon-bones",
       "gfx-webgl",
-      "intersection-2d",
-      "light-probe",
-      "marionette",
+      "gfx-webgl2",
       "meshopt",
-      "particle",
-      "particle-2d",
-      "physics-2d-box2d",
-      "physics-ammo",
-      "primitive",
-      "profiler",
-      "skeletal-animation",
       "spine",
-      "terrain",
-      "tiled-map",
       "tween",
-      "ui",
-      "video",
-      "websocket",
-      "webview"
+      "ui"
     ],
     "noDeprecatedFeatures": {
       "value": false,
