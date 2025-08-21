@@ -317,7 +317,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
         }
     }
 
-    private _index = [new Vec3(0, 40, 7), new Vec3(26, 33, 6), new Vec3(-26, 33, 5), new Vec3(0, 18, 4), new Vec3(26, 3, 3), new Vec3(-26, 3, 2), new Vec3(-15, -21, 1), new Vec3(15, -21, 0)];
+    private _index = [new Vec3(0, 40, 8), new Vec3(26, 33, 7), new Vec3(-26, 33, 6), new Vec3(0, 18, 5), new Vec3(26, 3, 4), new Vec3(-26, 3, 3), new Vec3(-15, -21, 1), new Vec3(15, -21, 0)];
     setTouZiData() {
         let open = JmManager.OpenPos;
         const pos = this.shuffleArray(this._index)
@@ -326,12 +326,12 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             child.active = !!open[idx];
             if (open[idx]) {
                 child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/" + open[idx] + "/spriteFrame");
-                child.position = pos[idx];
+                child.position = idx == 0 ? new Vec3(0, 0, 2) : pos[idx];
             }
         });
         this.touzi_node.active = true;
     }
-    
+
     shuffleArray(array: Vec3[]) {
         const shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
