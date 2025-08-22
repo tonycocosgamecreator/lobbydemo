@@ -3,7 +3,7 @@ export interface IPanelJmMainView {
 
     stageChanged(): void;
 
-    flyChip(): void;
+    flyChip(id: number): void;
 
     reconnect(): void;
 

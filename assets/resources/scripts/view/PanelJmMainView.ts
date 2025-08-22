@@ -29,6 +29,7 @@ import AudioManager from '../core/manager/audio-manager';
 import { randomRange } from 'cc';
 import { utils } from 'cc';
 import TextUtils from '../core/utils/text-utils';
+import Formater from '../core/utils/formater';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -47,6 +48,13 @@ export enum SpineXiaZhuAnimation {
     xz = "xz",
     tzxz = 'tzxz',
     ewbl = 'ewbl',
+}
+
+export interface betDatas {
+    betId: number;
+    index: number;
+    sourceWorldPos: Vec3;
+    tagetWorldPos: Vec3;
 }
 
 @ccclass('PanelJmMainView')
@@ -105,18 +113,25 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             const item = children[i];
             if (this.checkNodeCollider(touchPos, item)) {
                 this._betId = i + 1;
-                this.sendBetMessage(this._betId);
                 this._sourceWorldPos = this.sp_bet_choose_node.getCurrentChipWorldPos();
                 this._tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+                this._betData.push({ betId: this._betId, index: index, tagetWorldPos: this._tagetWorldPos, sourceWorldPos: this._sourceWorldPos });
+                this.sendBetMessage(this._betId);
             }
         }
     }
+    private _betData: betDatas[] = [];
     /**
     * 自己飞筹码动画
     */
-    flyChip() {
-        JmManager.storageChipPos(this.sp_bet_choose_node.ChipSelectIndex, this._tagetWorldPos, this._betId - 1)
-        this.fly_chip_node.addFlyChip(this.sp_bet_choose_node.ChipSelectIndex, this._sourceWorldPos, this._tagetWorldPos);
+    flyChip(id: number) {
+        const _betD = this._betData;
+        if (!_betD || !_betD[id]) {
+            return console.warn(this._betData + " ->flyChip error");
+        }
+        const _data = _betD[id];
+        JmManager.storageChipPos(_data.index, _data.tagetWorldPos, _data.betId - 1)
+        this.fly_chip_node.addFlyChip(_data.index, _data.sourceWorldPos, _data.tagetWorldPos);
     }
 
     /**
@@ -254,7 +269,9 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spAnim.setAnimation(0, SpineAnimation.collect, false);
                 this.scheduleOnce(() => {
                     this.touzi_node.active = false;
-                    AudioManager.playSound(this.bundleName, '摇骰子音效');
+                    if (this._isGameInBackground == false) {
+                        AudioManager.playSound(this.bundleName, '摇骰子音效');
+                    }
                     this.spAnim.setAnimation(0, SpineAnimation.shaking, false);
                 }, 1.8); break;
             case jmbaccarat.DeskStage.StartBetStage:
@@ -264,7 +281,9 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spAnim.setAnimation(0, SpineAnimation.idle2, false);
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.xz, false);
-                AudioManager.playSound(this.bundleName, '开始下注');
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '开始下注');
+                }
                 break;
             case jmbaccarat.DeskStage.EndBetStage:
                 this.spAnim.node.active = true;
@@ -272,7 +291,9 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                 this.spAnim.setAnimation(0, SpineAnimation.idle3, true);
                 this.spXiaZhu.node.active = true;
                 this.spXiaZhu.setAnimation(0, SpineXiaZhuAnimation.tzxz, false);
-                AudioManager.playSound(this.bundleName, '停止下注');
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '停止下注');
+                }
                 break;
             case jmbaccarat.DeskStage.OpenStage:
                 this.spAnim.node.active = true;
@@ -297,15 +318,23 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
                     this.result_node.showResult();
                     this.bet_area_node.showResult();
                     this.spAnim.setAnimation(0, SpineAnimation.clap, true);
-                    if (JmManager.WinCoin > 0) {
+                    if (JmManager.WinCoin > 0 && this._isGameInBackground == false) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
                     }
                     this.scheduleOnce(() => {
                         if (JmManager.WinCoin > 0) {
                             this.result_node.reset();
-                            AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
+                            if (this._isGameInBackground == false) {
+                                AudioManager.playSound(this.bundleName, '当前玩家获胜增加金币音效');
+                            }
                             if (JmManager.WinCoin > 0) {
-                                TextUtils.updateNumberTextWithSperateAndFixed(this.labelwinCoin, JmManager.WinCoin, 3, ',', 1, 0);
+                                let strText = Formater.splitNumber(JmManager.WinCoin.toFixed(2), ',', 3);
+                                if (strText.endsWith('.00')) {
+                                    strText = strText.slice(0, -3)
+                                } else if (strText.includes('.') && strText.endsWith('0')) {
+                                    strText = strText.slice(0, -1);
+                                }
+                                this.labelwinCoin.string = strText;
                                 this.spWin.node.active = true;
                                 this.spWin.setAnimation(0, 'animation', false);
                             }
@@ -356,10 +385,12 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
             this._currentHaveSec = secNow;
             this.timeCount.string = secNow.toString();
             if (JmManager.Stage == jmbaccarat.DeskStage.StartBetStage) {
-                if (secNow == 5) {
-                    AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
-                } else if (secNow < 5 && secNow > 0) {
-                    AudioManager.playSound(this.bundleName, '剩余4秒，倒计时提示音，每秒播放一次');
+                if (this._isGameInBackground == false) {
+                    if (secNow == 5) {
+                        AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
+                    } else if (secNow < 5 && secNow > 0) {
+                        AudioManager.playSound(this.bundleName, '剩余4秒，倒计时提示音，每秒播放一次');
+                    }
                 }
             }
         }
@@ -367,6 +398,7 @@ export default class PanelJmMainView extends ViewBase implements IPanelJmMainVie
     }
 
     reset() {
+        this._betData = [];
         this.spStart.node.active = false;
         this.spXiaZhu.node.active = false;
         this.spWin.node.active = false;

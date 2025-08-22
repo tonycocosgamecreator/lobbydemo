@@ -126,6 +126,7 @@ export default class JmManager extends BaseManager {
                 const period_id = msg.period_id || '';
                 this.Period = period_id;
             }
+            this._id = -1;
             if (msg.stage == jmbaccarat.DeskStage.SettleStage) return false;
             this.View?.stageChanged();
             return false;
@@ -133,6 +134,7 @@ export default class JmManager extends BaseManager {
         if (msgType == jmbaccarat.Message.MsgBetBaccaratRsp) {
             const msg = data as jmbaccarat.MsgBetBaccaratRsp;
             const result = msg.result;
+            this._id++;
             if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明下注失败了
                 //这里可以弹出提示框，提示玩家下注失败
@@ -152,7 +154,7 @@ export default class JmManager extends BaseManager {
                 this._myBets.push(bet);
             }
             this.TotalBet = _totalBet;
-            this._view?.flyChip()
+            this._view?.flyChip(this._id)
             return false;
         }
         if (msgType == jmbaccarat.Message.MsgOddNtf) {
@@ -242,7 +244,10 @@ export default class JmManager extends BaseManager {
      * 玩家赢奖区域数据
      */
     private static _winType: number[] = [];
-
+    /**
+     * 玩家下筹码顺序
+     */
+    private static _id: number = 0;
     /**----------------下注数据相关-------------------*/
     /**
      * 当前所有的开奖记录
@@ -313,6 +318,7 @@ export default class JmManager extends BaseManager {
         this._winType = [];
         this._myBets = [];
         this.TotalBet = 0;
+        this._id = -1;
     }
 
     /**
