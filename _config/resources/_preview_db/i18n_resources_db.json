@@ -187,6 +187,146 @@
         "en_us": "The network is reconnecting, please wait.",
         "hi_in": "A rede está se reconectando, aguarde.",
         "en_in": "नेटवर्क पुन:कनेक्शन, कृपया प्रतीक्षा करें"
+    },
+    "TIP_ENTER_GAME_FAILED": {
+        "index": "TIP_ENTER_GAME_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Enter game failed",
+        "en_us": "Enter game failed",
+        "hi_in": "Enter game failed",
+        "en_in": "Enter game failed"
+    },
+    "TIP_AB_BET_FAILED": {
+        "index": "TIP_AB_BET_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Bet failed",
+        "en_us": "Bet failed",
+        "hi_in": "Bet failed",
+        "en_in": "Bet failed"
+    },
+    "Tip_No_More_Historys": {
+        "index": "Tip_No_More_Historys",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "No more history!",
+        "en_us": "No more history!",
+        "hi_in": "Não há mais histórias!",
+        "en_in": "और कोई इतिहास नहीं"
+    },
+    "TIP_HISTORY_GET_FAILED": {
+        "index": "TIP_HISTORY_GET_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "History get failed",
+        "en_us": "History get failed",
+        "hi_in": "History get failed",
+        "en_in": "History get failed"
+    },
+    "CustomSystemTopFoot_totalbet_info_i18n": {
+        "index": "CustomSystemTopFoot_totalbet_info_i18n",
+        "nodeType": 1,
+        "panelName": "CustomSystemTopFoot",
+        "nodeName": "totalbet_info_i18n",
+        "zh_cn": "Total Bet:",
+        "en_us": "Total Bet:",
+        "hi_in": "Aposta Total:",
+        "en_in": "कुल दांव:"
+    },
+    "CustomSystemTopFoot_balance_info_i18n": {
+        "index": "CustomSystemTopFoot_balance_info_i18n",
+        "nodeType": 1,
+        "panelName": "CustomSystemTopFoot",
+        "nodeName": "balance_info_i18n",
+        "zh_cn": "Balance:",
+        "en_us": "Balance:",
+        "hi_in": "Equilíbrio:",
+        "en_in": "संतुलन:"
+    },
+    "CustomSystemTopFoot_label_period_i18n_skin": {
+        "index": "CustomSystemTopFoot_label_period_i18n_skin",
+        "nodeType": 1,
+        "panelName": "CustomSystemTopFoot",
+        "nodeName": "label_period_i18n_skin",
+        "zh_cn": "Period:",
+        "en_us": "Period:",
+        "hi_in": "Período:",
+        "en_in": "अवधि:"
+    },
+    "PanelMessageBox_cc_title_i18n": {
+        "index": "PanelMessageBox_cc_title_i18n",
+        "nodeType": 1,
+        "panelName": "PanelMessageBox",
+        "nodeName": "cc_title_i18n",
+        "zh_cn": "Notice",
+        "en_us": "Notification",
+        "hi_in": "Notificação",
+        "en_in": "अधिसूचना"
+    },
+    "PanelMessageBox_cc_cancelTitle_i18n": {
+        "index": "PanelMessageBox_cc_cancelTitle_i18n",
+        "nodeType": 1,
+        "panelName": "PanelMessageBox",
+        "nodeName": "cc_cancelTitle_i18n",
+        "zh_cn": "Cancel",
+        "en_us": "Cancel",
+        "hi_in": "Cancelar",
+        "en_in": "रद्द करना"
+    },
+    "PanelMessageBox_cc_okTitle_i18n": {
+        "index": "PanelMessageBox_cc_okTitle_i18n",
+        "nodeType": 1,
+        "panelName": "PanelMessageBox",
+        "nodeName": "cc_okTitle_i18n",
+        "zh_cn": "Confirm",
+        "en_us": "Confirm",
+        "hi_in": "Confirme",
+        "en_in": "पुष्टि करना"
+    },
+    "PanelSystemMenu_title_i18n_button_records": {
+        "index": "PanelSystemMenu_title_i18n_button_records",
+        "nodeType": 1,
+        "panelName": "PanelSystemMenu",
+        "nodeName": "title_i18n_button_records",
+        "zh_cn": "Records",
+        "en_us": "Records",
+        "hi_in": "Registros",
+        "en_in": "अभिलेख"
+    },
+    "PanelSystemMenu_title_i18n_button_rules": {
+        "index": "PanelSystemMenu_title_i18n_button_rules",
+        "nodeType": 1,
+        "panelName": "PanelSystemMenu",
+        "nodeName": "title_i18n_button_rules",
+        "zh_cn": "Rules",
+        "en_us": "Rules",
+        "hi_in": "Regras",
+        "en_in": "नियम"
+    },
+    "PanelSystemMenu_title_i18n_button_sound": {
+        "index": "PanelSystemMenu_title_i18n_button_sound",
+        "nodeType": 1,
+        "panelName": "PanelSystemMenu",
+        "nodeName": "title_i18n_button_sound",
+        "zh_cn": "Sound",
+        "en_us": "Sound",
+        "hi_in": "Som",
+        "en_in": "आवाज़"
+    },
+    "PanelSystemMenu_title_i18n_button_exit": {
+        "index": "PanelSystemMenu_title_i18n_button_exit",
+        "nodeType": 1,
+        "panelName": "PanelSystemMenu",
+        "nodeName": "title_i18n_button_exit",
+        "zh_cn": "Exit",
+        "en_us": "Exit",
+        "hi_in": "Sair",
+        "en_in": "निकास"
     }
 }
 }

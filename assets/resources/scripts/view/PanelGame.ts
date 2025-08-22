@@ -43,6 +43,12 @@ export default class PanelGame extends ViewBase {
 
     //------------------------ 事件定义 ------------------------//
 // @view export event begin
+    private onClickButton(event : cc.EventTouch){
+        cc.log('on click event cc_button');
+    }
+    private onClickButton(event : cc.EventTouch){
+        cc.log('on click event cc_button');
+    }
 // @view export event end
 
 
@@ -50,9 +56,27 @@ export default class PanelGame extends ViewBase {
 
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
+            cc_button    : [GButton,this.onClickButton.bind(this)],
+            cc_labelBar    : [cc.Label],
+            cc_labelCurrent    : [cc.Label],
+            cc_labelTotal    : [cc.Label],
+            cc_ndBar1    : [cc.Node],
+            cc_ndBar2    : [cc.Node],
+            cc_ndBar3    : [cc.Node],
+            cc_ndBar4    : [cc.Node],
+            cc_ndBar5    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
+   protected button: GButton    = null;
+   protected labelBar: cc.Label    = null;
+   protected labelCurrent: cc.Label    = null;
+   protected labelTotal: cc.Label    = null;
+   protected ndBar1: cc.Node    = null;
+   protected ndBar2: cc.Node    = null;
+   protected ndBar3: cc.Node    = null;
+   protected ndBar4: cc.Node    = null;
+   protected ndBar5: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

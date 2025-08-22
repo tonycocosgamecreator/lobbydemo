@@ -1,0 +1,1260 @@
+syntax = "proto2";
+
+// slots 协议
+
+package baccarat;
+
+import "common_rummy.proto";
+
+// ID
+enum BaccaratID {
+     Bct_Fruit = 100;           // 水果
+     Bct_LongHu = 101;          // 龙虎
+     Bct_HongHei = 102;         // 红黑
+
+     Bct_WinGoLottery = 1001;           // WinGoLottery
+     Bct_FiveD = 1002;           // 5D
+     Bct_Rocket = 1003;          // 小火箭
+     Bct_Rocket3D = 1004;        // 3d小火箭
+    Bct_LongHu2024 = 1005;        // 龙虎
+     Bct_Stock = 1006;            // 股票
+
+    Bac_WinGO2 = 1012;   //wingo2
+}
+
+// 阶段
+enum DeskStage {
+    	// ReadyStage 准备阶段
+    	ReadyStage = 0;
+    	// StartBetStage 开始下注阶段
+    	StartBetStage  = 1;
+    	// EndBetStage 结束下注阶段
+    	EndBetStage  = 2;
+    	// OpenStage 开奖阶段
+    	OpenStage  = 3;
+    	// SettleStage 结算阶段
+    	SettleStage  = 4;
+}
+
+// OpenAward 开奖类型
+enum OpenAward {
+    	// 普通开奖
+    	OpenNormal = 0;
+    	// Good Luck 开奖
+    	OpenGoodLuck  = 1;
+    	// 大三仙
+    	OpenDaSanXian = 2;
+    	// 小三仙
+    	OpenXiaoSanXian = 3;
+    	// 小四喜
+    	OpenXiaoSiXi = 4;
+    	// 天女散花
+    	OpenTianNvSanHua = 5;
+    	// 双子星
+        OpenShuangZiXing = 6;
+    	// 开火车
+        OpenKaiHuoChe  = 7;
+        // 大满罐
+        OpenDaManGuan  = 8;
+}
+
+//选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小
+enum WinGoLotteryBetZone {
+    Type0 = 0;
+    Type1 = 1;
+    Type2 = 2;
+    Type3 = 3;
+    Type4 = 4;
+    Type5 = 5;
+    Type6 = 6;
+    Type7 = 7;
+    Type8 = 8;
+    Type9 = 9;
+    TypeGreen = 10;
+    TypeViolet = 11;
+    TypeRed = 12;
+    TypeBig = 13;
+    TypeSmall = 14;
+}
+
+message BetData {
+    optional int32 bet_id = 1;                       // 下注元素ID
+    optional string bet_coin = 2;                     // 下注金额
+    optional bool autoCashOut = 3; //是否是自动cashOut
+    optional string out_rate = 4; //自动cashOutRate
+    optional bool is_settle = 5;//已经结算
+    optional string settle_out_rate = 6;//结算的rate
+    optional bool is_rebet = 7;                         //是否是rebet
+}
+
+message AbCard {
+    optional int32 data = 1;                          // 牌ID
+    optional string data_string = 2;             // 明文文本
+    optional string encrypt_text = 3;                 // 加密文本
+    optional string seed = 4;                     // 随机种子
+}
+
+message OpenRecord {
+    optional AbCard card = 1;                          // 中间牌
+    repeated AbCard card_all = 2;                  // 所有牌
+    repeated AbCard card_left = 3;                 // 左边牌列表
+    repeated AbCard card_right = 4;                // 右边牌列表
+    optional int32 pos = 5;                         // 开奖位置ID
+    optional int32 last_pos = 6;                    // 开奖的位置（1 = 左边，3 = 右边）
+    repeated AbCard card_three = 7;                  // 前三张牌
+    optional int32 card_type = 8;                     // 牌型ID (2 = 同花，3 = 顺子，4 = 同花顺，其他不需要)
+}
+
+message MsgDealCardNft {
+    optional int32 pos = 1;                          // 开奖位置ID
+    optional AbCard card = 2;                          // 开奖牌
+}
+
+message MyData {
+    optional string prev_bet = 1;                     // 上次底注金额
+    repeated BetData bets = 2;                        // 下注列表
+    optional string win_coin = 3;                     // 当前桌子上赢金币总数
+    optional string new_coin = 4;                     // 玩家最新金币余额
+    optional string win_rate = 5;                     // 玩家当局赢的倍数
+}
+
+message EncryptText {
+    optional uint32 data = 1;
+    optional string data_string = 2;             // 明文文本
+    optional string encrypt_text = 3;                 // 加密文本
+    optional string seed = 4;                     // 随机种子
+}
+
+message AbOdd {
+    optional int32 bet_id = 1;                       // 下注元素ID
+    optional string bet_coin = 2;                     // 下注金额
+}
+
+message DeskInfo {
+    optional int64 desk_id = 1;                       // 桌子ID
+    optional DeskStage stage = 2;                     // 桌子阶段
+    optional int64 end_time = 3;                      // 此阶段结束时间戳,这里是毫秒时间戳
+    map<string,BetInfo> bets = 4;                         // 支持的下注列表
+    
+    optional int32 online_sum = 5;                    // 桌子人数
+    repeated BetData all_bets = 6;                    // 所有人的下注金额列表
+    repeated RecordEntry records = 7;                  // 最近20次的开奖记录
+
+    optional int32 have_sec = 8;                      // 此阶段剩余秒数
+
+    optional string bet_min = 9;                     // 最少下注金币金币余额
+    optional string bet_max = 10;                     // 最大下注金币金币余额
+
+    optional string jacket_coin = 11;                 // jackpot金额
+    optional int64 open_time = 12;                    // 开奖开始时间unix时间戳，用于小火箭
+    repeated string desk_param = 13;                   // 参数: 1.小火箭2个参数
+    optional string seq = 14;                          // 序列
+    optional string  period_id = 15;                    //当前期号
+    optional WinGoInfo wingo_info = 16;               //wingo下注区域赔率
+    repeated BetPlayer bet_player = 17;               //玩家下注信息
+    optional FiveDInfo five_d_info = 18;              //5d下注区域赔率
+    optional RocketDInfo rocket_d_info = 19;          //小火箭下注配置信息
+    optional Rocket3DInfo rocket_3d_info = 20;        //3d小火箭下注配置信息
+    optional LongHuInfo longhu_info = 21;        //龙虎下注配置信息
+    optional StockInfo stock_info = 22;               //股票数据信息
+    repeated AreaUserBetsNum area_bet_num = 23;                    // 区域下注人数
+    optional SevenUpDownInfo seven_up_down_info = 24;               //7updown配置信息
+
+    repeated EncryptText encrypt_text = 25;          // 加密文本列表
+
+    repeated string odds = 26;                          // 赔率列表
+
+    optional OpenRecord open_cards = 27;                  // 当前回合已经打开的牌的记录
+
+    optional int32 stage_total_time = 28;                          // 当前回合的持续时间列表,单位秒
+}
+
+message FiveDInfo {
+    optional FiveDOdds five_odds = 1;
+    optional FiveDOdds sum_odds = 2;
+    optional int32 end_sec = 3;                          // 停止下注秒数
+}
+
+message FiveDOdds{
+    optional string number  = 1;  //数字区域
+    optional string small  = 2; //小
+    optional string big  = 3;    //大
+    optional string odd  = 4; //奇数
+    optional string even  = 5; //偶数
+}
+
+message WinGoInfo {
+    optional WinGoOdds wingo_odds = 1;                   //wingo下注区域赔率
+    optional int32 end_sec = 2;                          // 停止下注秒数
+    repeated WinGoOpenInfo wingo_open_info = 3;    //开奖结果
+    optional int32 cycle_time = 4;    //回合秒数
+}
+
+message WinGoOpenInfo{
+    optional string period = 1;
+    optional int32 pos = 2;
+}
+
+// WinGoOdds WinGo下注区域赔率
+message WinGoOdds{
+    optional string green  = 1;  //绿色区域
+    optional string violet  = 2; //紫色
+    optional string red  = 3;    //红色
+    optional string common  = 4; //单个
+    optional string special  = 5; //特殊
+    optional string big  = 6; //大
+    optional string small  = 7; // 小
+}
+
+//RocketDInfo 小火箭配置信息
+message RocketDInfo{
+    repeated string betLevelQuota = 1; //[0,9] 加减注切换
+    repeated string fastBetQuota = 2; //快速选择下注配置
+    optional int32 cfg_time = 3;//配置时间
+    optional int32 end_sec = 4; //停止下注秒数
+    repeated string args = 5;//计算参数
+    repeated BetData userBetInfos = 6; //当前玩家下注信息,如果有的话
+    optional string  period_id = 7;//当前期号
+}
+
+//Rocket3DInfo 3d小火箭配置信息
+message Rocket3DInfo{
+    repeated string betLevelQuota = 1; //[0,9] 加减注切换
+    repeated string fastBetQuota = 2; //快速选择下注配置
+    optional int32 cfg_time = 3;//配置时间（下注时间）
+    optional int32 end_sec = 4; //停止下注秒数
+    repeated string args = 5;//计算参数
+    repeated BetData userBetInfos = 6; //当前玩家下注信息,如果有的话
+    optional string  period_id = 7;//当前期号
+    optional int32 cfg_max_rate = 10;//最大倍率（配置）
+}
+
+message LongHuInfo {
+    repeated string longhu_odds = 1;                   //龙虎下注区域赔率(0龙 1虎 2合 3纯合)
+    optional int32 end_sec = 2;                          // 停止下注秒数
+    repeated LongHuOpenInfo longhu_open_info = 3;    //开奖结果
+    optional int32 cycle_time = 4;    //回合秒数
+    repeated int32 win_type_list  = 5;    //开奖结果列表
+}
+
+message LongHuOpenInfo{
+    optional string period = 1;
+    optional int32 pos = 2;
+}
+
+message SevenUpDownInfo {
+    repeated string odds = 1;                   //下注区域赔率
+    optional int32 end_sec = 2;                          // 停止下注秒数
+    repeated SevenUpDownOpenInfo open_info = 3;    //开奖结果
+    optional int32 cycle_time = 4;    //回合秒数
+    repeated int32 win_type_list  = 5;    //开奖结果列表
+}
+
+message SevenUpDownOpenInfo{
+    optional string period = 1;
+    optional int32 win_type = 2;
+}
+
+// 股票信息
+message StockInfo {
+    optional int32 base = 1;           //基础值
+    repeated int32 points = 2;         //涨跌值列表
+    optional string  period_id = 3;     //当前期号
+    optional int32 cfg_bet_time = 4;    //配置时间（下注时间）
+}
+
+message PlayerInfo {
+    optional int64 player_id = 1;                         // 玩家ID
+    optional string name = 2;                             // 昵称
+    optional string icon = 3;                             // 头像
+    optional string coin = 4;                             // 金币
+    optional string win_coin = 5;                         // 赢金币数
+    optional int32 win_count = 6;                         // 胜局数
+    optional string bet_coin = 7;                         // 押注金额
+}
+
+// CashOutPlayer 下车玩家
+message CashOutPlayer {
+    optional string name = 1;                         // 昵称
+    optional int64 player_id = 2;                     // 玩家ID
+    optional string icon = 3;                         // 头像
+    optional string out_rate = 4;                     // 下车倍数
+    optional string win_coin = 5;                     // 赢金币
+    optional bool   is_robot = 6;                     // 是否机器人
+    optional int32 bet_id = 7;                        // 下注id
+}
+
+
+// EnterBaccaratReq 进入百人场请求
+message MsgEnterBaccaratReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional bool change = 2;                         // 是否是换桌
+    optional int32 desk_type = 3;                         // 桌子类型
+}
+
+message BetInfo {
+    required string currency = 1;    //币种
+    repeated double bet_size = 2; //底注列表
+    repeated double multiple = 3; //倍数列表
+    repeated double bet_index_rule = 4; //底注倍数列表
+    optional double min_bet = 5; //最小下注
+    optional double max_bet = 6; //最大下注
+    repeated double fast_bet_size = 7; //快速下注列表
+}
+
+message WalletInfo {
+    required string currency = 1;    //币种
+    required double balance = 2;  //余额
+}
+
+// EnterBaccaratRsp 进入百人场请求响应
+message MsgEnterBaccaratRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional DeskInfo info = 2;                       // 桌子信息
+    optional MyData  my = 3;                          // 我的信息
+    repeated PlayerInfo left_rank = 4;                // 左边的排行榜
+    repeated PlayerInfo right_rank = 5;               // 右边的排行榜
+    optional bool can_spin  = 6;                      // 是否可以下注
+    repeated CashOutPlayer out_list = 7;              // 下车列表
+    optional int64 pay_min  = 8;                      // 最小充值金额
+    repeated WalletInfo wallets = 9;                  // 钱包列表
+    optional int32 player_id = 10;                     // 玩家ID
+}
+
+// LeaveBaccaratReq 离开百人场请求
+message MsgLeaveBaccaratReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+}
+
+// LeaveBaccaratRsp 离开百人场请求响应
+message MsgLeaveBaccaratRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+}
+
+// BetBaccaratReq 百人场下注请求
+message MsgBetBaccaratReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional string prev_bet = 3;                      // 上次底注金额
+    repeated BetData bets = 4;                        // 下注列表
+}
+
+// BetBaccaratRsp 百人场下注请求响应
+message MsgBetBaccaratRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string cost_coin = 2;                    // 扣除金币
+    optional string new_coin = 3;                     // 我的最新金币余额
+    repeated BetData bets = 4;                        // 下注列表
+}
+
+// BetBaccaratCancelReq 百人场下注取消请求
+message MsgBetBaccaratCancelReq{
+    optional int32 theme_id = 1; // 主题ID
+    optional int64 desk_id = 2;  // 桌子ID
+    optional int32 bet_id = 3;  //取消下注的ID
+}
+
+// BetBaccaratCancelRsp 百人场下注取消请求响应
+message MsgBetBaccaratCancelRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                      // 主题ID
+    optional int64 desk_id = 3;                       // 桌子ID
+    optional int32 bet_id = 4; //取消下注的ID
+    optional string new_coin = 5;                     // 我的最新金币余额
+}
+
+// GetBaccaratPlayerListReq 获取百人场玩家请求
+message MsgGetBaccaratPlayerListReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id  = 2;                      // 桌子ID
+}
+
+// GetBaccaratPlayerListRsp 获取百人场玩家请求响应
+message MsgGetBaccaratPlayerListRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated PlayerInfo players = 2;                  // 玩家列表
+}
+
+
+// PauseBaccaratReq 暂停百人场请求
+message MsgPauseBaccaratReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+
+}
+
+// PauseBaccaratRsp 暂停百人场请求响应
+message MsgPauseBaccaratRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+}
+
+
+// BetPlayer 百人场下注请求
+message BetPlayer {
+    optional string name = 1;                         // 昵称
+    repeated BetData bets = 2;                        // 下注列表
+    optional int64 player_id = 3;                      // 玩家ID
+    optional string icon = 4;                         // 头像
+    optional string player_info = 5;                       // 玩家信息
+    optional string period = 6;                       // lottery 期数
+    optional bool is_robot = 7;                       // 是否机器人
+}
+
+// BetBaccaratNtf 最新玩家下注通知消息
+message MsgBetBaccaratNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated BetPlayer players = 3;                   // 最新的下注玩家信息
+}
+
+// BaccaratNextStageNtf 阶段变化通知消息
+message MsgBaccaratNextStageNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional DeskStage stage = 4;                     // 桌子阶段
+    optional int64 end_time = 5;                      // 此阶段结束时间戳
+    optional int32 have_sec = 6;                      // 此阶段剩余秒数
+    optional string period_id = 7;//当前期号
+    optional StockInfo stock_info = 8;                  //股票点位（开奖和结算阶段会发）
+}
+
+// WinPlayer 赢奖玩家
+message WinPlayer {
+    optional int64 player_id = 1;                         // 玩家ID
+    optional string name = 2;                             // 昵称
+    optional string icon = 3;                             // 头像
+    optional string win_coin = 4;                         // 赢金币数
+    optional string bet_coin = 5;                         // 下注金币数
+}
+
+// MyWinData 我的赢奖数据
+message MyWinData {
+   optional string win_coin = 1;                         // 我赢的金币数
+   repeated OpenData  open_elem = 2;                    // 我的开奖数据
+   optional string new_coin = 3;                        // 我的最新金币余额
+}
+
+// OpenData 开奖数据
+message OpenData {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional string win_times = 2;                      // 赢倍数
+    optional string win_coin = 3;                       // 赢金币数
+}
+
+// BaccaratSettleNtf 结算通知消息
+message MsgBaccaratSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional OpenAward open_type = 3;                 // 开奖类型
+    repeated int32  open_pos = 4;                     // 开奖位置ID
+    optional MyWinData my_data = 5;                   // 我的开奖数据
+
+    repeated PlayerInfo left_rank = 6;                // 左边的排行榜
+    repeated PlayerInfo right_rank = 7;               // 右边的排行榜
+
+    repeated WinPlayer big_win = 8;                     // big win列表
+    repeated WinPlayer mega_win = 9;                    // mega win列表
+    repeated WinPlayer super_win = 10;                  // super win列表
+
+    repeated BetData my_bets = 11;                       // 我的下注列表
+}
+
+
+// BaccaratOnlineNtf 在线人数变化通知消息
+message MsgBaccaratOnlineNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int32 online_sum = 3;                    // 最新在线人数
+}
+
+// BaccaratAreaUserBetsNtf 每个区域用户下注累计值
+message MsgBaccaratAreaUserBetsNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated AreaUserBetsNum bet_num = 3;
+}
+
+message AreaUserBetsNum {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional int32 user_sum = 2;                    // 下注人数
+    optional int64 bet_sum = 3;                    // 下注和
+}
+
+// MyWinDataShort 我的赢奖数据
+message MyWinDataShort{
+   optional string win_coin = 1;                        // 我赢的金币数
+   optional string new_coin = 2;                        // 我的最新金币余额
+   optional string bet_coin = 3;                        // 我的下注余额
+}
+
+
+// BaccaratKickOutNtf 长时间未下注踢出通知消息
+message MsgBaccaratKickOutNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int64  uid = 3;                          // 玩家ID
+}
+
+// MsgRecordDetailReq 请求游戏的历史记录
+message MsgRecordDetailReq{
+    optional int64 desk_id = 1; 
+}
+
+message RecordEntry {
+    repeated int32 luck_id = 1;  // 数组形式的幸运ID
+}
+
+// MsgRecordDetailAck 游戏的历史记录
+message MsgRecordDetailAck{
+    repeated RecordEntry record = 1;  // 记录数组，每个元素包含一个luck_id数组
+    repeated bytes award = 2;    // 奖励数组，二维数组结构
+    repeated double probability = 3; // 概率数组
+}
+
+////////////////////////////// LH私有协议  /////////////////////
+
+
+// 开奖类型ID:  1=龙， 2=胡， 3=和
+enum LHOpenAward {
+    // 龙
+    LHOpenLong = 1;
+    // 虎
+    LHOpenHu = 2;
+    // 和
+    LHOpenHe = 3;
+};
+
+// 牌ID和rummy定义相同
+
+// BaccaratLongHuSettleNtf LH结算通知消息
+message MsgBaccaratLongHuSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional LHOpenAward open_id = 3;                 // 开奖类型ID
+    repeated int32  open_data = 4;                     // 开奖牌列表
+    optional MyWinDataShort my_data = 5;               // 我的开奖数据
+
+    repeated PlayerInfo left_rank = 6;                // 左边的排行榜
+    repeated PlayerInfo right_rank = 7;               // 右边的排行榜
+
+    repeated WinPlayer big_win = 8;                     // big win列表
+    repeated WinPlayer mega_win = 9;                    // mega win列表
+    repeated WinPlayer super_win = 10;                  // super win列表
+
+    repeated BetData my_bets = 11;                      // 我的下注列表
+}
+
+////////////////////////////// 红黑私有协议  /////////////////////
+
+// 开奖类型ID:  1=红， 2=黑， 3=红+牌型， 4=黑+牌型
+enum RBOpenAward {
+    // 红
+    HHOpenRed = 1;
+    // 黑
+    HHOpenBlack = 2;
+    // 红+牌型
+    HHOpenRedType = 3;
+    // 黑+牌型
+    HHOpenBlackType = 4;
+}
+
+// RBCardType 红黑牌型
+enum RBCardType{
+    SCORE_SINGLE = 1;           //  单张
+    SCORE_DUI_ZI = 2;           //  对子
+    SCORE_SHUN_ZI = 3;          //  顺子
+    SCORE_YI_SE = 4;            //  同花
+    SCORE_SHUN_JIN = 5;         //  顺金
+    SCORE_SAN_ZHANG = 6;        //  炸弹
+}
+
+// BaccaratRedBlackSettleNtf HH结算通知消息
+message MsgBaccaratRedBlackSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional RBOpenAward open_id = 3;                 // 开奖类型ID
+    repeated RBCardType card_type = 4;               // 开奖红黑牌型
+    repeated int32  open_data = 5;                     // 开奖牌列表
+    optional MyWinDataShort my_data = 6;               // 我的开奖数据
+
+    repeated PlayerInfo left_rank = 7;                // 左边的排行榜
+    repeated PlayerInfo right_rank = 8;               // 右边的排行榜
+
+    repeated WinPlayer big_win = 9;                   // big win列表
+    repeated WinPlayer mega_win = 10;                 // mega win列表
+    repeated WinPlayer super_win = 11;                // super win列表
+
+    repeated BetData my_bets = 12;                    // 我的下注列表
+}
+
+
+////////////////////////////// 小飞机私有协议  /////////////////////
+
+// RocketCashOutReq 小飞机下车请求
+message MsgRocketCashOutReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int32 bet_id = 3;                        //下车那次下注
+}
+
+// RocketCashOutRsp 小火箭下车请求响应
+message MsgRocketCashOutRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 bet_id = 2;                        //下车那次下注
+    optional string win_coin = 3;                     // 赢取金币数
+    optional string new_coin = 4;                     // 我的最新金币余额
+    optional string win_rate = 5;                     // 赢倍数
+}
+
+// RocketSettleNtf 小飞机爆炸结算通知消息
+message MsgRocketSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional string open_rate = 3;                    // 爆炸倍率
+    optional bool  open_jackpot= 4;                   // 是否开jackpot
+    optional WinPlayer jack_top = 5;                  // jacket pot最大赢家
+    optional MyWinDataShort jack_my = 6;              // jacket pot 我赢的金币
+    optional int32 open_seconds = 7;                  // 爆炸时的毫秒数
+    optional int64 open_unix = 8;                     // 爆炸时的unix毫秒时间戳
+    optional string jack_pool = 9;                    // jackpot奖池总金币
+    optional string jack_award = 10;                  // 本次瓜分 jackpot奖池金币
+}
+
+// RocketFlyNtf 小火箭 起飞通知消息
+message MsgRocketFlyNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int64 start_time = 3;                    // 小火箭起飞毫秒时间戳
+}
+
+
+
+// RocketCashOutNtf 小火箭下车通知消息
+message MsgRocketCashOutNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated CashOutPlayer players = 3;               // 最新的小火箭下车玩家
+}
+
+
+//小火箭进度通知
+message MsgRocketRateNtf {
+    optional int32 theme_id = 1;                    // 主题ID
+    optional int64 desk_id = 2;                    // 桌子ID
+    optional int64 start_time = 3;                    // 小火箭起飞毫秒时间戳
+    optional int64 progress_time = 4;                    //当前跑到多少时间了
+    optional string rate_time = 5;                    //当前倍率
+}
+
+//玩家取消自动下车请求
+message MsgRocketAutoCashOutReq{
+    optional int32 theme_id = 1;                    // 主题ID
+    optional int64 desk_id = 2;                    // 桌子ID
+    optional int32 bet_id = 3;                     //那次下注
+    optional bool  isAuto = 4;                    //是否自动
+    optional string out_rate = 5;                 //只有isAuto 是true的时候才有意义
+}
+
+//玩家取消自动下车请求返回
+message MsgRocketAutoCashOutRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                    // 主题ID
+    optional int64 desk_id = 3;                    // 桌子ID
+    optional int32 bet_id = 4;                     //那次下注
+    optional bool  isAuto = 5;                    //是否自动
+    optional string out_rate = 6;                 //只有isAuto 是true的时候才有意义
+}
+
+//小火箭下注记录列表请求
+message MsgRocketPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                      // 桌子ID
+    optional int32 page_count = 3;//多少页
+}
+
+//小火箭下注记录列表返回
+message MsgRocketPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 page_count = 2;
+    repeated RocketPlayerHistory history = 3;          // 历史下注
+}
+
+message RocketData {
+    optional int32 bet_id   = 1;
+    optional string bet_coin = 2;
+    optional string out_rate = 3;
+    optional string win_coin = 4;
+}
+
+message RocketPlayerHistory {
+    optional string period = 1;   // 期数
+    optional int64 save_time = 2; //时间
+    optional string open_rate = 3;//开奖倍率
+    repeated RocketData infos = 4;
+}
+
+//小火箭验证消息请求
+message MsgRocketEncryptedDataReq{
+    optional int32 theme_id = 1;              // 主题ID
+    optional string period = 2;               // 期数
+    optional int64 desk_id = 3;              //桌子id
+}
+
+//小火箭验证消息返回
+message MsgRocketEncryptedDataRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string period = 2;
+    optional string plain_text = 3;        //明文
+    optional string encrypt_text = 4;      //密文
+}
+
+//小火箭对局历史列表请求
+message MsgRocketDeskHistoryReq{
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                      // 桌子ID
+    optional int32 page_count = 3;//多少页
+}
+
+message RocketDeskRate {
+    optional string period = 1;
+    optional int64 save_time = 2; //时间
+    optional string open_rate = 3;//开奖倍率
+}
+
+//小火箭对局历史列表返回
+message MsgRocketDeskHistoryRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                      // 主题ID
+    optional int64 desk_id = 3;                      // 桌子ID
+    optional int32 page_count = 4;//多少页
+    repeated RocketDeskRate infos = 5;
+}
+
+////////////////////////////// double 私有协议  /////////////////////
+
+// 开奖类型ID:  1=红， 2=黑， 3=皇冠
+enum DBOpenAward {
+    // 红
+    DBOpenRed = 1;
+    // 黑
+    DBOpenBlack = 2;
+    // 皇冠
+    DBOpenKing = 3;
+};
+
+
+
+////////////////////////////// winGoLottery私有协议  /////////////////////
+
+message MsgLotteryPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+}
+// 玩家下注信息
+message MsgLotteryPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated LotteryPlayerHistory history = 2;          // 历史下注
+}
+
+message LotteryPlayerHistory {
+    optional string period = 1;                       // 期数
+    optional int32 select = 2;                    // 下注位置id
+    optional string point = 3;                     // 下注金额
+    optional int32 pos_id = 4;                     // 开奖id
+    optional string amount = 5;                     // 赢奖数量
+    optional bool is_open = 6;                     // 是否开奖
+}
+
+
+message MsgLotteryEncryptedDataReq{
+    optional int32 theme_id = 1;              // 主题ID
+    optional string period = 2;               // 期数
+    optional int64 desk_id = 3;              //桌子id
+}
+
+message MsgLotteryEncryptedDataRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string period = 2;
+    optional string plain_text = 3;        //明文
+    optional string encrypt_text = 4;      //密文
+}
+
+
+// LotterySettleNtf 结算通知消息
+message MsgLotterySettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated int32  open_pos = 3;                     // 开奖位置ID
+    optional SelfWinData my_data = 4;                   // 我的开奖数据
+    optional string period = 5;                       //开奖期数
+    optional string  next_period = 6;               //下一期
+    optional bool is_last = 7;                      //是否最后一期
+
+}
+
+
+// SelfWinData 我的赢奖数据
+message SelfWinData {
+    optional string win_coin = 1;                         // 我赢的金币数
+    repeated LotteryOpenData  open_elem = 2;                    // 我的开奖数据
+    optional string new_coin = 3;                        // 我的最新金币余额
+}
+
+// LotteryOpenData 开奖数据
+message LotteryOpenData {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional string win_times = 2;                      // 赢倍数
+    optional string win_coin = 3;                       // 赢金币数
+}
+
+////////////////////////////// 5d   /////////////////////
+
+message MsgLotteryHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  desk_type = 3;                      // 桌子类型
+    optional int32  page = 4;                      // 第几页
+}
+
+message MsgLotteryHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated LotteryHistory history = 2;                // 历史开奖
+    optional bool IsLast = 3;   //是否最后一页
+    optional int64  desk_id = 4;                      // 桌子ID
+    optional int32  desk_type = 5;                      // 桌子类型
+}
+
+message LotteryHistory {
+    optional string period = 1;                       // 期数
+    optional int32 open_res = 2;                     // 开奖结果
+}
+
+message MsgEncryptedDataReq{
+    optional int32 theme_id = 1;              // 主题ID
+    optional string period = 2;               // 期数
+    optional int64 desk_id = 3;              //桌子id
+    optional int32 desk_type = 4;              //桌子类型
+}
+
+message MsgEncryptedDataRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string period = 2;
+    optional string plain_text = 3;        //明文
+    optional string encrypt_text = 4;      //密文
+}
+
+
+message MsgPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  desk_type = 3;                      // 桌子类型
+    optional int32  page = 4;                      // 第几页
+}
+// 玩家下注信息
+message MsgPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated PlayerHistory history = 2;          // 历史下注
+    optional bool IsLast = 3;   //是否最后一页
+    optional int64  desk_id = 4;                      // 桌子ID
+    optional int32  desk_type = 5;                      // 桌子类型
+    optional int32 max_page_num = 6; // 最大页数
+}
+
+message PlayerHistory {
+    optional string period = 1;                       // 期数
+    optional string bet = 2;                    // 下注金额
+    optional string win_coin = 3;                     // 获利金额
+    repeated int32 win_type = 4;                     // 开奖id
+    optional string plain_text = 5;                     
+    optional bool encrypt_text = 6;                     
+}
+
+////////////////////////////// 小飞机3d版本私有协议  /////////////////////
+
+// Rocket3DCashOutReq 小飞机下车请求
+message MsgRocket3DCashOutReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int32 bet_id = 3;                        //下车那次下注
+}
+
+// Rocket3DCashOutRsp 小火箭下车请求响应
+message MsgRocket3DCashOutRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 bet_id = 2;                        //下车那次下注
+    optional string win_coin = 3;                     // 赢取金币数
+    optional string new_coin = 4;                     // 我的最新金币余额
+    optional string win_rate = 5;                     // 赢倍数
+}
+
+// Rocket3DSettleNtf 小飞机爆炸结算通知消息
+message MsgRocket3DSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional string open_rate = 3;                    // 爆炸倍率
+    optional bool  open_jackpot= 4;                   // 是否开jackpot
+    optional WinPlayer jack_top = 5;                  // jacket pot最大赢家
+    optional MyWinDataShort jack_my = 6;              // jacket pot 我赢的金币
+    optional int32 open_seconds = 7;                  // 爆炸时的毫秒数
+    optional int64 open_unix = 8;                     // 爆炸时的unix毫秒时间戳
+    optional string jack_pool = 9;                    // jackpot奖池总金币
+    optional string jack_award = 10;                  // 本次瓜分 jackpot奖池金币
+}
+
+// Rocket3DFlyNtf 小火箭 起飞通知消息
+message MsgRocket3DFlyNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int64 start_time = 3;                    // 小火箭起飞毫秒时间戳
+}
+
+
+
+// Rocket3DCashOutNtf 小火箭下车通知消息
+message MsgRocket3DCashOutNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated CashOutPlayer players = 3;               // 最新的小火箭下车玩家
+}
+
+
+//小火箭进度通知
+message MsgRocket3DRateNtf {
+    optional int32 theme_id = 1;                    // 主题ID
+    optional int64 desk_id = 2;                    // 桌子ID
+    optional int64 start_time = 3;                    // 小火箭起飞毫秒时间戳
+    optional int64 progress_time = 4;                    //当前跑到多少时间了
+    optional string rate_time = 5;                    //当前倍率
+}
+
+//玩家取消自动下车请求
+message MsgRocket3DAutoCashOutReq{
+    optional int32 theme_id = 1;                    // 主题ID
+    optional int64 desk_id = 2;                    // 桌子ID
+    optional int32 bet_id = 3;                     //那次下注
+    optional bool  isAuto = 4;                    //是否自动
+    optional string out_rate = 5;                 //只有isAuto 是true的时候才有意义
+}
+
+//玩家取消自动下车请求返回
+message MsgRocket3DAutoCashOutRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                    // 主题ID
+    optional int64 desk_id = 3;                    // 桌子ID
+    optional int32 bet_id = 4;                     //那次下注
+    optional bool  isAuto = 5;                    //是否自动
+    optional string out_rate = 6;                 //只有isAuto 是true的时候才有意义
+}
+
+//小火箭下注记录列表请求
+message MsgRocket3DPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                      // 桌子ID
+    optional int32 page_count = 3;//多少页
+}
+
+//小火箭下注记录列表返回
+message MsgRocket3DPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 page_count = 2;
+    repeated RocketPlayerHistory history = 3;          // 历史下注
+}
+
+message MsgRocket3DData {
+    optional int32 bet_id   = 1;
+    optional string bet_coin = 2;
+    optional string out_rate = 3;
+    optional string win_coin = 4;
+}
+
+message MsgRocket3DPlayerHistory {
+    optional string period = 1;   // 期数
+    optional int64 save_time = 2; //时间
+    optional string open_rate = 3;//开奖倍率
+    repeated MsgRocket3DData infos = 4;
+}
+
+//小火箭验证消息请求
+message MsgRocket3DEncryptedDataReq{
+    optional int32 theme_id = 1;              // 主题ID
+    optional string period = 2;               // 期数
+    optional int64 desk_id = 3;              //桌子id
+}
+
+//小火箭验证消息返回
+message MsgRocket3DEncryptedDataRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string period = 2;
+    optional string plain_text = 3;        //明文
+    optional string encrypt_text = 4;      //密文
+}
+
+//小火箭对局历史列表请求
+message MsgRocket3DDeskHistoryReq{
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                      // 桌子ID
+    optional int32 page_count = 3;//多少页
+}
+
+message MsgRocket3DDeskRate {
+    optional string period = 1;
+    optional int64 save_time = 2; //时间
+    optional string open_rate = 3;//开奖倍率
+}
+
+//小火箭对局历史列表返回
+message MsgRocket3DDeskHistoryRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                      // 主题ID
+    optional int64 desk_id = 3;                      // 桌子ID
+    optional int32 page_count = 4;//多少页
+    repeated MsgRocket3DDeskRate infos = 5;
+}
+
+message MsgRocket3DPlayer {
+    optional string name = 1;                         // 昵称
+    optional int64 player_id = 2;                     // 玩家ID
+    optional bool   is_robot = 3;                     // 是否机器人
+    optional string bet_coin = 4;                     //下注金额
+    optional string out_rate = 5;                     // 下车倍数
+    optional string win_coin = 6;                     // 赢金币
+    optional bool   is_settle = 7;                    //是否结算
+    optional int32  bet_id = 8;                       //下注区域id
+}
+
+//小火箭本局下注玩家列表查看请求
+message MsgRocket3DDeskBetsHistoryReq{
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                      // 桌子ID
+    optional int32 page_count = 3;                   //多少页
+}
+message MsgRocket3DDeskBetsHistoryRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                      // 主题ID
+    optional int64 desk_id = 3;                      // 桌子ID
+    optional int32 page_count = 4;                   // 多少页
+    optional int32 max_page_count = 5;               // 最大页数
+    repeated MsgRocket3DPlayer bet_info = 6;           // 用户下注信息
+}
+
+
+////////////////////////////// 龙虎私有协议  /////////////////////
+
+// LongHuSettleNtf 结算通知消息
+message MsgLongHuSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated int32  open_pos = 3;                     // 开奖位置ID
+    optional int32  win_type = 4;                     // 开奖区域
+    optional MsgLongHuWinData win_data = 5;                   // 我的开奖数据
+    optional string period = 6;                       //开奖期数
+    optional string  next_period = 7;               //下一期
+    optional bool is_last = 8;                      //是否最后一期
+}
+
+// SelfWinData 我的赢奖数据
+message MsgLongHuWinData {
+    optional string win_coin = 1;                         // 我赢的金币数
+    optional string new_coin = 3;                        // 我的最新金币余额
+    repeated MsgLongHuOpenData  open_elem = 2;                    // 我的开奖数据
+}
+
+// LongHuShuffleCardsNtf 洗牌消息
+message MsgLongHuShuffleCardsNtf {
+    optional int32 card_num = 1;                         // 我赢的金币数
+}
+
+// LotteryOpenData 开奖数据
+message MsgLongHuOpenData {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional string win_times = 2;                      // 赢倍数
+    optional string win_coin = 3;                       // 赢金币数
+}
+
+////龙虎验证消息请求
+//message LongHuEncryptedDataReq{
+//    optional int32 theme_id = 1;              // 主题ID
+//    optional string period = 2;               // 期数
+//    optional int64 desk_id = 3;              //桌子id
+//}
+//
+////龙虎验证消息返回
+//message LongHuEncryptedDataRsp{
+//    optional common.RummyResult result = 1;           // 请求结果信息
+//    optional string period = 2;
+//    optional string plain_text = 3;        //明文
+//    optional string encrypt_text = 4;      //密文
+//}
+
+message MsgLongHuPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  page = 4;                      // 第几页
+}
+
+// 玩家下注信息
+message MsgLongHuPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated MsgLongHuPlayerHistory history = 2;          // 历史下注
+    optional bool IsLast = 3;   //是否最后一页
+}
+
+message MsgLongHuPlayerHistory {
+    optional string period = 1;                       // 期数
+    optional int32 bet_area = 2;                    // 下注区域
+    optional string bet = 3;                     // 下注金额
+    optional int32 win_type = 4;                     // 开奖id
+    optional string win_coin = 5;                     // 赢奖数量
+}
+
+
+////////////////////////////// 股票私有协议  /////////////////////
+// 玩家下注信息
+message MsgStockPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  page = 3;                      // 第几页 （从1开始）
+}
+
+message MsgStockPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated MsgStockPlayerHistory history = 2;          // 历史下注
+    optional int32  page = 3;                      // 第几页
+    optional int32  max_page = 4;                      // 最大页数
+}
+
+message MsgStockPlayerHistory {
+    optional string period = 1;                    // 期数
+    optional int32 bet_id = 2;                     // 下注位置id
+    optional string bet_coin = 3;                  // 下注金额
+    optional int32  open_id = 4;                   // 开奖id
+    optional int32  open_rate = 5;                 // 开奖倍率
+    optional string win_coin = 6;                  // 赢奖数量
+    optional bool is_open = 7;                     // 是否开奖
+}
+
+// 公平性验证
+message MsgStockEncryptedDataReq{
+    optional int32 theme_id = 1;              // 主题ID
+    optional string period = 2;               // 期数
+    optional int64 desk_id = 3;              //桌子id
+}
+
+message MsgStockEncryptedDataRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string period = 2;
+    optional string plain_text = 3;        //明文
+    optional string encrypt_text = 4;      //密文
+}
+
+
+// StockSettleNtf 结算通知消息
+message MsgStockSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int32  open_id = 3;                     // 开奖位置ID
+    optional string win_rate = 4;                      // 赢倍数
+    optional MsgStockSettleData my_data = 5;             // 我的开奖数据
+    optional string period = 6;                       // 开奖期数
+    repeated MsgStockWinData win_list = 7;               // 赢钱玩家列表
+}
+
+
+// StockSettleData 结算数据
+message MsgStockSettleData {
+    optional int32 bet_pos = 1;                          // 位置ID
+    optional string win_coin = 3;                       // 赢金币数
+    optional string new_coin = 4;                        // 最新金币余额
+}
+
+// StockWinData 胜利者数据
+message MsgStockWinData {
+    optional string name = 1;                       // 赢金币数
+    optional string win_coin = 2;                       // 赢金币数
+}
+
+//股票历史列表请求
+message MsgStockDeskHistoryReq{
+    optional int32 theme_id = 1;                // 主题ID
+    optional int64 desk_id = 2;                // 桌子ID
+    optional int32 page = 3;                   //第几页 （从1开始）
+}
+
+message MsgStockDeskHistory {
+    optional string period = 1;
+    optional StockInfo stock_info = 2; //股票曲线点位
+}
+
+//股票历史列表请求
+message MsgStockDeskHistoryRsp{
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional int32 theme_id = 2;                      // 主题ID
+    optional int64 desk_id = 3;                       // 桌子ID
+    repeated MsgStockDeskHistory infos = 4;               // 历史信息
+    optional int32  page = 5;                          // 第几页
+    optional int32  max_page = 6;                      // 最大页数
+}
+
+
+////////////////////////////// 7updown私有协议 //////////////////////////////
+// SevenUpDownSettleNtf 结算通知消息
+message MsgSevenUpDownSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated int32  open_pos = 3;                     // 开奖位置ID
+    optional int32  win_type = 4;                     // 开奖区域
+    optional MsgSevenUpDownWinData win_data = 5;                   // 我的开奖数据
+    optional string period = 6;                       //开奖期数
+    optional string  next_period = 7;               //下一期
+    optional bool is_last = 8;                      //是否最后一期
+}
+
+// SelfWinData 我的赢奖数据
+message MsgSevenUpDownWinData {
+    optional string win_coin = 1;                         // 我赢的金币数
+    optional string new_coin = 3;                        // 我的最新金币余额
+    repeated MsgSevenUpDownOpenData  open_elem = 2;                    // 我的开奖数据
+}
+
+// LotteryOpenData 开奖数据
+message MsgSevenUpDownOpenData {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional string win_times = 2;                      // 赢倍数
+    optional string win_coin = 3;                       // 赢金币数
+}
+
+message MsgSevenUpDownPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  page = 4;                      // 第几页
+}
+
+// 玩家下注信息
+message MsgSevenUpDownPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated MsgSevenUpDownPlayerHistory history = 2;          // 历史下注
+    optional bool IsLast = 3;   //是否最后一页
+}
+
+message MsgSevenUpDownPlayerHistory {
+    optional string period = 1;                       // 期数
+    optional int32 bet_area = 2;                    // 下注区域
+    optional string bet = 3;                     // 下注金额
+    optional int32 win_type = 4;                     // 开奖id
+    optional string win_coin = 5;                     // 赢奖数量
+}
+// 结算消息
+message MsgSettleNtf {
+    optional int64 desk_id = 1;                       // 桌子ID
+    repeated RocketPlayerHistory history = 2
+    repeated int32 open_pos = 3;                     // 开奖结果数据
+    optional string period = 4;                       //开奖期数
+    repeated string win_coin = 5;                     // 玩家赢奖金额
+    repeated int32 win_type = 6;                     // 玩家赢奖区域数据
+    optional MsgStockSettleData win_data = 7;             // 我的开奖数据
+}
+//翻倍数据
+message MsgOddNtf{
+repeated string odd_string = 1;   //每个区域的翻倍情况
+}

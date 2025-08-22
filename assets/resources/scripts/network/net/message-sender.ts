@@ -35,10 +35,11 @@ export class MessageSender {
             // }
         } else if (Global.NetWorkProtoType == ProtoType.Json) {
             // const url = BrowserUtils.getParam(resourcesDb.LINK_URL_PARAM_DB_ID.server_url);
-            const url = BrowserUtils.getParam('server_url');
+            let url = BrowserUtils.getParam('server_url');
             if (!url || url == '') {
                 return '';
             }
+            url = decodeURIComponent(url);
             if (this._usedUrls.indexOf(url) == -1) {
                 this._usedUrls.push(url);
                 return url;

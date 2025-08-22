@@ -44,6 +44,87 @@
     }
 ],
 'datas': {
+    "CustomButtom": {
+        "cc_buttonSpin": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonSpin",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003100
+        },
+        "cc_buttonAuto": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonAuto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003101
+        },
+        "cc_button_add": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_button_add",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003102
+        },
+        "cc_button_times": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_button_times",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003103
+        },
+        "cc_button_sub": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_button_sub",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003104
+        }
+    },
+    "CustomChooseChip": {
+        "cc_buttonChip0": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002400
+        },
+        "cc_buttonChip1": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002401
+        },
+        "cc_buttonChip2": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002402
+        },
+        "cc_buttonChip3": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002403
+        },
+        "cc_buttonChip4": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002404
+        },
+        "cc_buttonChip5": {
+            "viewName": "CustomChooseChip",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002405
+        }
+    },
     "CustomGameItem": {
         "cc_buttonIcon": {
             "viewName": "CustomGameItem",
@@ -51,6 +132,289 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001200
+        }
+    },
+    "CustomHistory": {
+        "cc_buttonDetail": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002500
+        },
+        "cc_buttonCloseDetail": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002501
+        },
+        "cc_buttonCloseHistory": {
+            "viewName": "CustomHistory",
+            "buttonName": "cc_buttonCloseHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002502
+        }
+    },
+    "PanelGame": {
+        "cc_buttonFairness": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonFairness",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001600
+        },
+        "cc_buttonChip0": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        },
+        "cc_buttonChip1": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001602
+        },
+        "cc_buttonChip2": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001603
+        },
+        "cc_buttonChip3": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001604
+        },
+        "cc_buttonChip4": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001605
+        },
+        "cc_buttonChip5": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001606
+        },
+        "cc_buttonDetail": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001607
+        },
+        "cc_button": {
+            "viewName": "PanelGame",
+            "buttonName": "cc_button",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001608
+        }
+    },
+    "PanelGMMainView": {
+        "cc_buttonFairness": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonFairness",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001700
+        },
+        "cc_buttonChip0": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001701
+        },
+        "cc_buttonChip1": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001702
+        },
+        "cc_buttonChip2": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001703
+        },
+        "cc_buttonChip3": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001704
+        },
+        "cc_buttonChip4": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001705
+        },
+        "cc_buttonChip5": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001706
+        },
+        "cc_buttonDetail": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001707
+        },
+        "cc_buttonCloseDetail": {
+            "viewName": "PanelGMMainView",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001708
+        }
+    },
+    "PanelJMMainView": {
+        "cc_buttonFairness": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonFairness",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001800
+        },
+        "cc_buttonChip0": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001801
+        },
+        "cc_buttonChip1": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001802
+        },
+        "cc_buttonChip2": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001803
+        },
+        "cc_buttonChip3": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001804
+        },
+        "cc_buttonChip4": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001805
+        },
+        "cc_buttonChip5": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001806
+        },
+        "cc_buttonDetail": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001807
+        },
+        "cc_buttonCloseDetail": {
+            "viewName": "PanelJMMainView",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001808
+        }
+    },
+    "PanelJmMainView": {
+        "cc_buttonFairness": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonFairness",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001900
+        },
+        "cc_buttonChip0": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip0",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001901
+        },
+        "cc_buttonChip1": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001902
+        },
+        "cc_buttonChip2": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001903
+        },
+        "cc_buttonChip3": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001904
+        },
+        "cc_buttonChip4": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001905
+        },
+        "cc_buttonChip5": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonChip5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001906
+        },
+        "cc_buttonDetail": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001907
+        },
+        "cc_buttonCloseDetail": {
+            "viewName": "PanelJmMainView",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001908
         }
     },
     "PanelThirdGame": {

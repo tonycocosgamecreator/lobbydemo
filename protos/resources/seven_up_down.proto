@@ -1,0 +1,175 @@
+syntax = "proto2";
+
+// slots 协议
+
+package baccarat;
+
+import "common_rummy.proto";
+
+// 阶段
+enum SUDDeskStage {
+    	// ReadyStage 准备阶段
+    	ReadyStage = 0;
+    	// StartBetStage 开始下注阶段
+    	StartBetStage  = 1;
+    	// EndBetStage 结束下注阶段
+    	EndBetStage  = 2;
+    	// OpenStage 开奖阶段
+    	OpenStage  = 3;
+    	// SettleStage 结算阶段
+    	SettleStage  = 4;
+}
+
+message SUDBetData {
+    optional int32 bet_id = 1;                       // 下注元素ID
+    optional string bet_coin = 2;                     // 下注金额
+    optional bool is_rebet = 7;                         //是否是rebet
+}
+
+message SUDMyData {
+    optional string prev_bet = 1;                     // 上次底注金额
+    repeated SUDBetData bets = 2;                        // 下注列表
+    optional string win_coin = 3;                     // 当前桌子上赢金币总数
+    optional string new_coin = 4;                     // 玩家最新金币余额
+    optional string win_rate = 5;                     // 玩家当局赢的倍数
+}
+
+message SUDDeskInfo {
+    optional int64 desk_id = 1;                       // 桌子ID
+    optional SUDDeskStage stage = 2;                     // 桌子阶段
+    optional int64 end_time = 3;                      // 此阶段结束时间戳,这里是毫秒时间戳
+    map<string,BetInfo> bets = 4;                         // 支持的下注列表 bets = 4;                         // 支持的下注列表
+
+    optional int32 online_sum = 5;                    // 桌子人数
+    repeated SUDBetData all_bets = 6;                    // 所有人的下注金额列表
+
+    optional int32 have_sec = 8;                      // 此阶段剩余秒数
+
+    optional string bet_min = 9;                     // 最少下注金币金币余额
+    optional string bet_max = 10;                     // 最大下注金币金币余额
+    optional string seq = 14;                          // 序列
+    optional string  period_id = 15;                    //当前期号
+    repeated SUDAreaUserBetsNum area_bet_num = 23;                    // 区域下注人数
+    optional SUDSevenUpDownInfo seven_up_down_info = 24;               //7updown配置信息
+
+    optional int32 stage_total_time = 25;                      // 当前阶段总时间
+}
+
+message SUDAreaUserBetsNum {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional int32 user_sum = 2;                    // 下注人数
+    optional int64 bet_sum = 3;                    // 下注和
+}
+
+message SUDSevenUpDownInfo {
+    repeated string odds = 1;                   //下注区域赔率
+    optional int32 end_sec = 2;                          // 停止下注秒数
+    optional int32 cycle_time = 3;    //回合秒数
+    repeated SUDSevenUpDownWinType win_type_list  = 4;    //开奖结果列表
+}
+
+message SUDSevenUpDownWinType {
+    repeated int32 win_type  = 1;    //开奖结果列表
+}
+
+// EnterBaccaratReq 进入7UPDOWN请求
+message MsgEnterSevenUpDownReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional bool change = 2;                         // 是否是换桌
+    optional int32 desk_type = 3;                         // 桌子类型
+}
+
+// EnterBaccaratRsp 进入7UPDOWN请求响应
+message MsgEnterSevenUpDownRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional SUDDeskInfo info = 2;                       // 桌子信息
+    optional SUDMyData  my = 3;                          // 我的信息
+    optional int32 player_id = 4;                     // 玩家ID
+    optional bool can_spin  = 6;                      // 是否可以下注
+    repeated WalletInfo wallets = 9;                  // 钱包列表
+}
+
+// LeaveBaccaratReq 离开7UPDOWN请求
+message MsgLeaveSevenUpDownReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+}
+
+// LeaveBaccaratRsp 离开7UPDOWN请求响应
+message MsgLeaveSevenUpDownRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+}
+
+// BetBaccaratReq 7UPDOWN下注请求
+message MsgBetSevenUpDownReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional string prev_bet = 3;                      // 上次底注金额
+    repeated SUDBetData bets = 4;                        // 下注列表
+}
+
+// BetBaccaratRsp 7UPDOWN下注请求响应
+message MsgBetSevenUpDownRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string cost_coin = 2;                    // 扣除金币
+    optional string new_coin = 3;                     // 我的最新金币余额
+    repeated SUDBetData bets = 4;                        // 下注列表
+}
+
+// SevenUpDownSettleNtf 结算通知消息
+message MsgSevenUpDownSettleNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated int32  open_pos = 3;                     // 开奖位置ID
+    optional int32  win_type = 4;                     // 开奖区域
+    optional SevenUpDownWinData win_data = 5;                   // 我的开奖数据
+    optional string period = 6;                       //开奖期数
+    optional string  next_period = 7;               //下一期
+    optional bool is_last = 8;                      //是否最后一期
+    repeated SUDBetData bets = 9;                        // 下注列表
+    repeated SettleWinData win_list = 10;               // 赢钱玩家列表
+    optional SevenUpDownPlayerHistory history = 11;          // 历史下注
+}
+
+// StockWinData 胜利者数据
+message SettleWinData {
+    optional string name = 1;                       // 赢金币数
+    optional string win_coin = 2;                       // 赢金币数
+    optional int64  player_id = 3;                     // 用户id
+}
+
+// SelfWinData 我的赢奖数据
+message SevenUpDownWinData {
+    optional string win_coin = 1;                         // 我赢的金币数
+    optional string new_coin = 3;                        // 我的最新金币余额
+    repeated SevenUpDownOpenData  open_elem = 2;                    // 我的开奖数据
+}
+
+// LotteryOpenData 开奖数据
+message SevenUpDownOpenData {
+    optional int32 pos_id = 1;                          // 位置ID
+    optional string win_times = 2;                      // 赢倍数
+    optional string win_coin = 3;                       // 赢金币数
+}
+
+message MsgSevenUpDownPlayerHistoryReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64  desk_id = 2;                      // 桌子ID
+    optional int32  page = 4;                      // 第几页
+}
+
+// 玩家下注信息
+message MsgSevenUpDownPlayerHistoryRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    repeated SevenUpDownPlayerHistory history = 2;          // 历史下注
+    optional bool IsLast = 3;   //是否最后一页
+}
+
+message SevenUpDownPlayerHistory {
+    optional string period = 1;                       // 期数
+    optional string bet = 3;                     // 下注金额
+    repeated int32 win_type = 4;                     // 开奖id
+    optional string win_coin = 5;                     // 赢奖数量
+    optional string plain_text = 6;        //明文
+    optional string encrypt_text = 7;      //密文
+}

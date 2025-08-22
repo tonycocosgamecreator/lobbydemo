@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "ef4577d5-5969-47cf-9c74-f65458316037",
+  "uuid": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "ef4577d5-5969-47cf-9c74-f65458316037@6c48a",
+      "uuid": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8@6c48a",
       "displayName": "tankuang1",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "ef4577d5-5969-47cf-9c74-f65458316037",
+        "imageUuidOrDatabaseUri": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "ef4577d5-5969-47cf-9c74-f65458316037@f9941",
+      "uuid": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8@f9941",
       "displayName": "tankuang1",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "ef4577d5-5969-47cf-9c74-f65458316037@6c48a",
+        "imageUuidOrDatabaseUri": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "ef4577d5-5969-47cf-9c74-f65458316037@6c48a"
+    "redirect": "eb9eb03d-1a60-44f0-9cd0-9160d35654d8@6c48a"
   }
 }

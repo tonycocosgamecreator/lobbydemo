@@ -6,6 +6,7 @@ import { jsonmsg } from "../net/json/json-message-define";
 import { MessageSender } from "../net/message-sender"
 import BaseManager from "../../core/manager/base-manager";
 import BrowserUtils from "../../core/utils/browser-utils";
+import { EnterGameManager } from "./enter-game-manager";
 
 export default class JsonLoginManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -49,7 +50,7 @@ export default class JsonLoginManager extends BaseManager {
             const data = msg as jsonmsg.MsgGameAuthAck;
             const code = data.code;
             const game_code = data.game_code;
-            // EnterGameManager.enterGame(game_code);
+            EnterGameManager.enterGame(game_code);
         }
         return false;
     }

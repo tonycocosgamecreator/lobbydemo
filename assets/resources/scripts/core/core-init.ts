@@ -23,7 +23,7 @@ export function CoreInit(APP_SAVE_KEY : string,playerId : string) {
     Managers.registe(RecordManager);
     Managers.registe(DeviceManager);
     Managers.registe(ModuleManager);
-    Managers.registe(DbManager);
+    //Managers.registe(DbManager);
     Managers.registe(I18nManager);
     Managers.registe(PoolManager);
 }

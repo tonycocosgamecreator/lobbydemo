@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "438b1843-3f0f-48b1-b82c-539cb05df3ae",
+  "uuid": "7547b231-857b-4f72-8772-aece54ed950f",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "438b1843-3f0f-48b1-b82c-539cb05df3ae@6c48a",
+      "uuid": "7547b231-857b-4f72-8772-aece54ed950f@6c48a",
       "displayName": "jinbi_db",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "438b1843-3f0f-48b1-b82c-539cb05df3ae",
+        "imageUuidOrDatabaseUri": "7547b231-857b-4f72-8772-aece54ed950f",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "438b1843-3f0f-48b1-b82c-539cb05df3ae@f9941",
+      "uuid": "7547b231-857b-4f72-8772-aece54ed950f@f9941",
       "displayName": "jinbi_db",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "438b1843-3f0f-48b1-b82c-539cb05df3ae@6c48a",
+        "imageUuidOrDatabaseUri": "7547b231-857b-4f72-8772-aece54ed950f@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "438b1843-3f0f-48b1-b82c-539cb05df3ae@6c48a"
+    "redirect": "7547b231-857b-4f72-8772-aece54ed950f@6c48a"
   }
 }

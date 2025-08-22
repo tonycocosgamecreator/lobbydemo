@@ -1,0 +1,141 @@
+syntax = "proto2";
+
+package login;
+
+
+enum ErrorCode {
+    SUCCESS = 0;    // 成功
+    ABNORMAL = 1;   // 服务器异常
+    ERR_NEED_CHECK = 2; // 需要验证手机验证码
+
+    ERR_EXPIRE_TOKEN = 101; // 认证超时
+    ERR_INVALID_TOKEN = 102;  // 无效的 token 
+    ERR_ACCOUNT_NOT_EXIST = 103;    // 账号不存在
+    ERR_PASSWORD_ERR = 104; // 密码错误
+    ERR_ACCOUNT_OR_PASSWORD_ERR = 105;  // 账号或密码错误
+    ERR_ACCOUNT_DISABLED = 106; // 账号被封停
+    ERR_PIC_CODE = 107;          // 图形验证码错误
+    ERR_INVITOR_CODE = 108;     // 邀请码错误
+
+    ERR_GET_WX_SESSION = 1001; // 微信session获取失败
+
+}
+
+// 登录方式
+enum LoginType {
+    TOKEN_LOGIN = 0;
+    VISITOR_LOGIN = 1;
+    PHONE_LOGIN = 2;
+    WECHAT_LOGIN = 3;
+    WECHAT_XYX_LOGIN = 4;
+    GOOGLE_LOGIN = 5;
+    FACEBOOK_LOGIN = 6;
+    ACCOUNT_LOGIN = 7;
+}
+
+// 登录方式
+enum SealType {
+    NO_SEAL = 0;                    // 未封号
+    DISABLE_LOGIN = 1;              // 禁止登录
+    CHECK_MODE = 2;                 // 审核模式
+    DISABLE_WITHDRAW = 3;           // 禁止提现
+}
+
+
+// 绑定类型
+enum BindType {
+	WECHAT = 3; // 微信
+}
+
+// 绑定信息根据绑定类型为不同数据结构，无绑定类型时为空数组
+message BindInfo{
+    optional string wc_appid = 1; //微信appid
+    optional string wc_openid = 2; //openid
+    optional string wc_unionid = 3; //微信unionid
+}
+
+
+// 登录数据，与平台 API http://192.168.8.242:8086/project/24/interface/api/41 相对应
+message LoginData{
+    optional LoginType type = 1;  //登录方式
+    optional int32 channel = 2;  //渠道
+    optional string username = 3; //用户名根据登录方式： 1 游客：IMEI/Iphone生成唯一ID 2 手机账号：传手机号码 3 微信账号：传openid 5 google: id_token
+    optional string dymc_code = 4;  //1.游客注册传空字符串2.微信传空字符串, 3.手机登录短信验证码
+    optional string password = 5; //1.游客注册传空字符串 2.手机登录传密码 3.微信登录传code
+    optional uint64 pro_id = 6;  //省ID
+    optional uint64 city_id = 7;  //市ID
+    optional BindInfo bind_info = 8; //绑定信息
+    optional BindType bind_type = 9; // 绑定方式
+    optional int32 send_case = 10;  // 验证码发送场景
+    optional string adid = 11;      // 广告 id
+    optional uint64 product_id = 12;  //产品ID
+    optional uint64 invite_id = 13;   //邀请人玩家playerID
+    optional string promoter_id = 14; //推广员ID
+    optional string from_id = 15;     //来源ID
+    optional string zone_id = 16;     //场景ID
+    optional string nick_name = 17;   //微信昵称或者其他平台昵称
+    optional bool isChannelAcct = 18; //是否根据渠道生成新的账号
+}
+
+// LoginAuthReq 认证请求
+message LoginAuthReq {
+    optional uint64 account_id = 1;     // 账号 ID
+    optional LoginData request_data = 2;// 登录请求数据，服务器直接转发给账号平台服务
+    // ...
+    optional string adid = 10;          // 广告 id，邀请码
+    optional string version = 11;       // 客户端版本号
+    optional string device = 12;        // 登录设备名
+    optional string imei = 13;          // 登录设备 IMEI
+    optional uint64 player_id = 14;     // 用于 player_id + token 登录
+    optional string token = 15;         // 用于 player_id + token 登录
+
+    optional string sdk_data = 16;      // 用于LoeMaster sdk 基础数据
+    optional string coordinate = 17;      // 地理坐标,x,y经纬度  用,分割。
+    optional string language = 18;      // 手机系统语言
+    optional string phone_name = 19;      // 手机名称
+    optional string service_provider = 20;  // 运营商
+    optional  bool is_real = 21;            // 是否真金模式: 由客户端根据SDK提供
+
+    optional string time_zone = 22;         // 客户端时区
+    optional string gaid = 23;              //
+    optional string jwt_token = 24;         // h5大厅登录签发token，用于启动游戏时候的游戏内登录
+}
+
+// LoginAuthRsp 认证应答
+message LoginAuthRsp {
+    optional ErrorCode err_code = 1;    // 错误码
+    optional uint64 player_id = 2;      // 游戏用户 ID 
+    optional string token = 3;          // 重连时使用 token + player_id 登录
+
+    optional string seal_reason = 4;    // 封停原因
+    optional int64  seal_end_time = 5;  // 封停结束时间
+    optional int32  seal_days = 6;      // 封停天数
+    optional bool   first_login = 7;    // 首次登录,true 为首次登录
+    optional string   open_id = 8;      // 微信open_id
+    optional uint64 account_id = 9;     // 账号 ID
+    optional string   err_msg = 10;     // 错误描述
+    optional string  http_rsp = 11;      // java http服务器回复，json格式。
+
+    optional SealType seal_mode = 12;    // 封号模式
+    optional string jwt_token = 13;      // h5大厅接口权限认证和h5启动游戏使用
+}
+
+// AccountSysLoginRequestData 账号系统登录消息
+message AccountSysLoginRequestData {
+    optional uint64 product_id = 1;     // 产品 ID
+    optional bytes data = 2;            // 登录数据
+}
+
+// LoginModPassReq 修改登录密码请求
+message LoginModPassReq {
+    optional string old_pass = 1;          // 旧密码
+    optional string new_pass = 2;          // 新密码
+}
+
+// LoginModPassRsp 修改登录密码应答
+message LoginModPassRsp {
+    optional ErrorCode err_code = 1;    // 错误码
+    optional string   err_msg = 2;     // 错误描述
+
+}
+

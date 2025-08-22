@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "fe4491ad-5c76-4326-8abf-a7e272a06c83",
+  "uuid": "1b1793c0-b101-42d1-a360-59ad927d491f",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "fe4491ad-5c76-4326-8abf-a7e272a06c83@6c48a",
+      "uuid": "1b1793c0-b101-42d1-a360-59ad927d491f@6c48a",
       "displayName": "FREE_GAME",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "fe4491ad-5c76-4326-8abf-a7e272a06c83",
+        "imageUuidOrDatabaseUri": "1b1793c0-b101-42d1-a360-59ad927d491f",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "fe4491ad-5c76-4326-8abf-a7e272a06c83@f9941",
+      "uuid": "1b1793c0-b101-42d1-a360-59ad927d491f@f9941",
       "displayName": "FREE_GAME",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "fe4491ad-5c76-4326-8abf-a7e272a06c83@6c48a",
+        "imageUuidOrDatabaseUri": "1b1793c0-b101-42d1-a360-59ad927d491f@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": true,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "fe4491ad-5c76-4326-8abf-a7e272a06c83@6c48a"
+    "redirect": "1b1793c0-b101-42d1-a360-59ad927d491f@6c48a"
   }
 }

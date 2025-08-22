@@ -1,103 +1,91 @@
+import { bDebug } from "../define";
 import BaseGlobal from "../message/base-global";
-import { ConnectorType } from "../net/net-define";
+import { Tools } from "../utils/tools";
 import BaseManager from "./base-manager";
 
 /**
  * 所有管理器的的管理类
  */
 export default class Managers {
-    protected static _managers: { [key: string]: typeof BaseManager } = {};
+    //======================所有管理器相关======================//
     /**
-     * 注册管理器
-     * @param manager 
-     * @returns 
+     * 当前所有注册的管理器
      */
-    public static registe(manager: typeof BaseManager) {
-        if(manager.BundleName == ""){
-            console.error(`${manager.KEY} BundleName is empty!registe failed!`);
+    private static _managerInstances: { [key: string]: typeof BaseManager } = {};
+    /**
+     * 初始化-注册
+     * 注册时会主动按照顺序调用-> init(),loadRecored()方法
+     */
+    public static registe(_base: typeof BaseManager) {
+        if (this._managerInstances[_base.KEY]) {
+            bDebug && console.warn('试图重复注册管理器：' + _base.KEY);
             return;
         }
-        if(this._managers[manager.KEY]){
-            console.error(`${manager.KEY} already registered!`);
-            return;
-        }
-        manager.init();
-        manager.loadRecord();
-        this._managers[manager.KEY] = manager;
+        _base.init();
+        _base.loadRecord();
+        this._managerInstances[_base.KEY] = _base;
+    }
+    /**
+     * 移除自己的注册
+     */
+    public static unregiste(_base: typeof BaseManager) {
+        _base.clear();
+        BaseGlobal.removeAllListeners(_base);
+        delete this._managerInstances[_base.KEY];
     }
 
     /**
-     * 注销管理器
-     * @param manager 
-     */ 
-    public static unregiste(manager: typeof BaseManager) {
-        manager.destroy();
-        delete this._managers[manager.KEY];
-    }
-
-    /**
-     * 注销管理器
-     * @param keys 
-     */  
-    public static unregisteByKeys(keys: string[]) {
-        for(let key of keys){
-            const base = this._managers[key];
-            if(base){
-                base.destroy();
-                delete this._managers[key];
-            }
-        }
-    }
-    /**
-     * 注销所有管理器
-     * @param bundleName 
-     */
-    public static unregisteAll(bundleName: string) {
-        for(let key in this._managers){
-            const manager = this._managers[key];
-            if(manager.BundleName === bundleName){
-                this.unregiste(manager);
-            }
-        }
-    }
-    /**
-     * 获取管理器
+     * 根据key来移除注册
      * @param key 
      * @returns 
      */
-    public static getManager(key: string) {
-        return this._managers[key];
+    public static unregisteOfKey(key: string) {
+        const base = this._managerInstances[key];
+        if (!base) {
+            return;
+        }
+        base.destroy();
+        //在destory里面已经处理了
+        //BaseGlobal.removeAllListeners(base);
+        delete this._managerInstances[key];
     }
 
+
     /**
-     * 每一帧回调一次,帧结束时
+     * 每帧更新一次
+     * @deprecated 框架内部方法，请勿主动调用
      * @param dt
      */
     public static onLateUpdate(dt: number) {
-        for(let key in this._managers){
-            const manager = this._managers[key];
-            if(manager.isEnabled()){
-                manager.onLateUpdate(dt);
+        Tools.forEachMap(this._managerInstances, (key, ma) => {
+            if (!ma.isEnabled) {
+                return;
             }
-        }
+            ma.onLateUpdate(dt);
+        });
     }
-    /**
-     * 网络消息拦截器
-     * @param msgType 
-     * @param data 
-     * @param connectorType 
-     * @returns 
-     */
-    public static onNetMessage(msgType: string, data: any,connectorType : ConnectorType | string = ConnectorType.Lobby): boolean {
-        for(let key in this._managers){
-            const manager = this._managers[key];
-            if(manager.isEnabled()){
-                const isIntercept = manager.onNetMessage(msgType, data, connectorType);
-                if(isIntercept){
-                    return true;
-                }
+
+    public static onNetMessageAll(msgType: string, data: any): boolean {
+        let bIntercept = false;
+
+        //获取重连管理器，如果有重连管理器，优先传递
+        let reconnectManager = this._managerInstances['ReconnectManager'];
+        if (reconnectManager) {
+            bIntercept = reconnectManager.onNetMessage(msgType, data);
+            if (bIntercept) {
+                return true;
             }
         }
-        return false;
+
+        Tools.forEachMap(this._managerInstances, (key, ma) => {
+            if (!ma.isEnabled) {
+                return;
+            }
+            bIntercept = ma.onNetMessage(msgType, data);
+            if (bIntercept) {
+                return true;
+            }
+        });
+        return bIntercept;
     }
 }

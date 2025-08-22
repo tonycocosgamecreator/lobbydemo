@@ -48,12 +48,3 @@ interface ProtoFile {
     enums       : ProtoEnum[];
     bundleName  : string;
 }
-/**
- * 一个proto包
- */
-interface ProtoPackage {
-    /**包名字 */
-    name : string;
-    /**当前所有的文件*/
-    files : {[fileName : string] : ProtoFile};
-}

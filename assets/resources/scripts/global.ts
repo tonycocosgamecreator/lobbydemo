@@ -1,4 +1,4 @@
-import BaseGlobal from "./core/utils/base-global";
+import BaseGlobal from "./core/message/base-global";
 import { ProtoType } from "./network/define/define";
 
 export enum EnvType {

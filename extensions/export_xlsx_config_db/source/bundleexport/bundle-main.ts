@@ -40,7 +40,7 @@ export class BundleMain {
             text += `    ${name} = "${name}",\n`;
         }
         text += "}";
-        //AssetDbUtils.RequestCreateNewAsset("db://assets/resources/scripts/auto/bundles.ts", text);
+        AssetDbUtils.RequestCreateNewAsset("db://assets/resources/scripts/auto/bundles.ts", text);
     }
 
 }
