@@ -36,44 +36,14 @@
     }
 ],
 'datas': {
-    "CustomBetAreaItem": {
-        "viewName": "CustomBetAreaItem",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001015
-    },
-    "CustomBetArea": {
-        "viewName": "CustomBetArea",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001011
-    },
     "CustomButtom": {
         "viewName": "CustomButtom",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001020
+        "statisticalId": 100001000
     },
-    "CustomChip": {
-        "viewName": "CustomChip",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001010
-    },
-    "CustomChooseChip": {
-        "viewName": "CustomChooseChip",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001013
-    },
-    "CustomFlyChip": {
-        "viewName": "CustomFlyChip",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001012
-    },
-    "CustomGameItem": {
-        "viewName": "CustomGameItem",
+    "CustomDetail": {
+        "viewName": "CustomDetail",
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001001
@@ -84,23 +54,47 @@
         "desc": "",
         "statisticalId": 100001014
     },
+    "CustomItem": {
+        "viewName": "CustomItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001009
+    },
+    "CustomList": {
+        "viewName": "CustomList",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001010
+    },
     "CustomMenuHistoryItem": {
         "viewName": "CustomMenuHistoryItem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001017
+        "statisticalId": 100001002
     },
-    "CustomResult": {
-        "viewName": "CustomResult",
+    "CustomRotation": {
+        "viewName": "CustomRotation",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001018
+        "statisticalId": 100001003
+    },
+    "CustomScore": {
+        "viewName": "CustomScore",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001004
+    },
+    "CustomSystemMenuBase": {
+        "viewName": "CustomSystemMenuBase",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001005
     },
     "CustomSystemMenuHistory": {
         "viewName": "CustomSystemMenuHistory",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001016
+        "statisticalId": 100001006
     },
     "CustomToast": {
         "viewName": "CustomToast",
@@ -114,47 +108,17 @@
         "desc": "",
         "statisticalId": 100001002
     },
-    "PanelGame": {
-        "viewName": "PanelGame",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001005
-    },
-    "PanelGMMainView": {
-        "viewName": "PanelGMMainView",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001006
-    },
-    "PanelJmInit": {
-        "viewName": "PanelJmInit",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001009
-    },
-    "PanelJmMainView": {
-        "viewName": "PanelJmMainView",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001008
-    },
-    "PanelLobby": {
-        "viewName": "PanelLobby",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001000
-    },
     "PanelSuperSevenInit": {
         "viewName": "PanelSuperSevenInit",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001019
+        "statisticalId": 100001007
     },
-    "PanelThirdGame": {
-        "viewName": "PanelThirdGame",
+    "PanelSuperSevenMain": {
+        "viewName": "PanelSuperSevenMain",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001003
+        "statisticalId": 100001008
     }
 }
 }

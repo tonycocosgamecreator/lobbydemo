@@ -1,86 +1,46 @@
 {
-    "PanelLobby": {
+    "CustomButtom": {
         "statisticalId": 100001000,
         "panelId": 0
     },
-    "CustomGameItem": {
+    "CustomDetail": {
         "statisticalId": 100001001,
         "panelId": 1
     },
-    "PanelCircleLoading": {
+    "CustomMenuHistoryItem": {
         "statisticalId": 100001002,
         "panelId": 2
     },
-    "PanelThirdGame": {
+    "CustomRotation": {
         "statisticalId": 100001003,
         "panelId": 3
     },
-    "CustomToast": {
+    "CustomScore": {
         "statisticalId": 100001004,
         "panelId": 4
     },
-    "PanelGame": {
+    "CustomSystemMenuBase": {
         "statisticalId": 100001005,
         "panelId": 5
     },
-    "PanelGMMainView": {
+    "CustomSystemMenuHistory": {
         "statisticalId": 100001006,
         "panelId": 6
     },
-    "PanelJMMainView": {
+    "PanelSuperSevenInit": {
         "statisticalId": 100001007,
         "panelId": 7
     },
-    "PanelJmMainView": {
+    "PanelSuperSevenMain": {
         "statisticalId": 100001008,
         "panelId": 8
     },
-    "PanelJmInit": {
+    "CustomItem": {
         "statisticalId": 100001009,
         "panelId": 9
     },
-    "CustomChip": {
+    "CustomList": {
         "statisticalId": 100001010,
         "panelId": 10
-    },
-    "CustomBetArea": {
-        "statisticalId": 100001011,
-        "panelId": 11
-    },
-    "CustomFlyChip": {
-        "statisticalId": 100001012,
-        "panelId": 12
-    },
-    "CustomChooseChip": {
-        "statisticalId": 100001013,
-        "panelId": 13
-    },
-    "CustomHistory": {
-        "statisticalId": 100001014,
-        "panelId": 14
-    },
-    "CustomBetAreaItem": {
-        "statisticalId": 100001015,
-        "panelId": 15
-    },
-    "CustomSystemMenuHistory": {
-        "statisticalId": 100001016,
-        "panelId": 16
-    },
-    "CustomMenuHistoryItem": {
-        "statisticalId": 100001017,
-        "panelId": 17
-    },
-    "CustomResult": {
-        "statisticalId": 100001018,
-        "panelId": 18
-    },
-    "PanelSuperSevenInit": {
-        "statisticalId": 100001019,
-        "panelId": 19
-    },
-    "CustomButtom": {
-        "statisticalId": 100001020,
-        "panelId": 20
     }
 }

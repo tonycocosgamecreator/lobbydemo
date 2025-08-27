@@ -2,6 +2,7 @@ import { bDebug } from "../../core/define";
 import BaseManager from "../../core/manager/base-manager";
 import { GameEvent, THEME_ID } from "../../define";
 import { Global } from "../../global";
+import { jsonmsg } from "../net/json/json-message-define";
 import { MessageSender } from "../net/message-sender";
 /**
  * 这里处理进入游戏的一些消息
@@ -62,15 +63,10 @@ export class EnterGameManager extends BaseManager {
         if (change == null) {
             change = false;
         }
-        
-        const data: baccarat.MsgEnterBaccaratReq = {
-            theme_id: THEME_ID,
-            //player_id   : GameApiManager.config.player_id,
-            desk_type: deskType,
-            change: change
-        };
+
+        const data: baccarat.MsgEnterBaccaratReq = {};
         //直接发送进入游戏的消息,只负责发消息，不负责接消息，因为快速线游戏已经在游戏里面了
         //根据游戏服务器的消息定义看来，每一个游戏都有一套自己的进入游戏的玩意儿在里面，所以 这里我们无需处理
-        MessageSender.SendMessage(baccarat.Message.MsgEnterBaccaratReq, data);
+        MessageSender.SendMessage(supersevenbaccarat.Message.MsgGameEnterReq, data);
     }
 }

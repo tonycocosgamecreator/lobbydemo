@@ -1,8 +1,9 @@
 // @view export import begin
 import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
-import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, WaitTime, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
+import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug, WaitTime } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+//------------------------上述内容请勿修改----------------------------//
 // @view export import end
 import { Global } from '../global';
 import PoolManager from '../core/manager/pool-manager';
@@ -383,48 +384,48 @@ export default class PanelSystemMenu extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bg: [cc.Node],
-            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
-            cc_buttonExit: [GButton, this.onClickButtonExit.bind(this)],
-            cc_buttonGameRecords: [GButton, this.onClickButtonGameRecords.bind(this)],
-            cc_buttonRules: [GButton, this.onClickButtonRules.bind(this)],
-            cc_buttonSound: [GButton, this.onClickButtonSound.bind(this)],
-            cc_labelTitle: [cc.Label],
-            cc_menuSelected: [cc.Sprite],
-            cc_menus: [cc.Node],
-            cc_root: [cc.Node],
-            cc_totalBg: [cc.Sprite],
+            cc_bg    : [cc.Node],
+            cc_buttonClose    : [GButton,this.onClickButtonClose.bind(this)],
+            cc_buttonExit    : [GButton,this.onClickButtonExit.bind(this)],
+            cc_buttonGameRecords    : [GButton,this.onClickButtonGameRecords.bind(this)],
+            cc_buttonRules    : [GButton,this.onClickButtonRules.bind(this)],
+            cc_buttonSound    : [GButton,this.onClickButtonSound.bind(this)],
+            cc_labelTitle    : [cc.Label],
+            cc_menuSelected    : [cc.Sprite],
+            cc_menus    : [cc.Node],
+            cc_root    : [cc.Node],
+            cc_totalBg    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bg: cc.Node = null;
-    protected buttonClose: GButton = null;
-    protected buttonExit: GButton = null;
-    protected buttonGameRecords: GButton = null;
-    protected buttonRules: GButton = null;
-    protected buttonSound: GButton = null;
-    protected labelTitle: cc.Label = null;
-    protected menuSelected: cc.Sprite = null;
-    protected menus: cc.Node = null;
-    protected root: cc.Node = null;
-    protected totalBg: cc.Sprite = null;
+   protected bg: cc.Node    = null;
+   protected buttonClose: GButton    = null;
+   protected buttonExit: GButton    = null;
+   protected buttonGameRecords: GButton    = null;
+   protected buttonRules: GButton    = null;
+   protected buttonSound: GButton    = null;
+   protected labelTitle: cc.Label    = null;
+   protected menuSelected: cc.Sprite    = null;
+   protected menus: cc.Node    = null;
+   protected root: cc.Node    = null;
+   protected totalBg: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelSystemMenu';
+   public static readonly VIEW_NAME    = 'PanelSystemMenu';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelSystemMenu.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelSystemMenu.VIEW_NAME;
     }
     // @view export resource end

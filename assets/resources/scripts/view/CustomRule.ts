@@ -4,7 +4,6 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import ReusableBase from '../core/view/reusable-base';
-
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 const { ccclass, property } = cc._decorator;
@@ -44,7 +43,6 @@ export default class CustomRule extends ReusableBase {
 
 
 // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -69,6 +67,5 @@ export default class CustomRule extends ReusableBase {
    public get viewName(){
         return CustomRule.VIEW_NAME;
     }
-
 // @view export resource end
 }

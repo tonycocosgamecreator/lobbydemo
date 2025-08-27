@@ -67,26 +67,20 @@ declare module resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
-        ['CustomBetAreaItem']: 'CustomBetAreaItem',
-        ['CustomBetArea']: 'CustomBetArea',
         ['CustomButtom']: 'CustomButtom',
-        ['CustomChip']: 'CustomChip',
-        ['CustomChooseChip']: 'CustomChooseChip',
-        ['CustomFlyChip']: 'CustomFlyChip',
-        ['CustomGameItem']: 'CustomGameItem',
+        ['CustomDetail']: 'CustomDetail',
         ['CustomHistory']: 'CustomHistory',
+        ['CustomItem']: 'CustomItem',
+        ['CustomList']: 'CustomList',
         ['CustomMenuHistoryItem']: 'CustomMenuHistoryItem',
-        ['CustomResult']: 'CustomResult',
+        ['CustomRotation']: 'CustomRotation',
+        ['CustomScore']: 'CustomScore',
+        ['CustomSystemMenuBase']: 'CustomSystemMenuBase',
         ['CustomSystemMenuHistory']: 'CustomSystemMenuHistory',
         ['CustomToast']: 'CustomToast',
         ['PanelCircleLoading']: 'PanelCircleLoading',
-        ['PanelGame']: 'PanelGame',
-        ['PanelGMMainView']: 'PanelGMMainView',
-        ['PanelJmInit']: 'PanelJmInit',
-        ['PanelJmMainView']: 'PanelJmMainView',
-        ['PanelLobby']: 'PanelLobby',
         ['PanelSuperSevenInit']: 'PanelSuperSevenInit',
-        ['PanelThirdGame']: 'PanelThirdGame',
+        ['PanelSuperSevenMain']: 'PanelSuperSevenMain',
 }
     type protobuf_load_priority_db_data = {
         /** 包体 */

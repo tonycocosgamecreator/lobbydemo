@@ -79,6 +79,34 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003104
+        },
+        "cc_buttonStop": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonStop",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003105
+        },
+        "cc_buttonSub": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonSub",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003106
+        },
+        "cc_buttonTimes": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonTimes",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003106
+        },
+        "cc_buttonAdd": {
+            "viewName": "CustomButtom",
+            "buttonName": "cc_buttonAdd",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003106
         }
     },
     "CustomChooseChip": {

@@ -4,7 +4,6 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import ReusableBase from '../core/view/reusable-base';
-
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 const { ccclass, property } = cc._decorator;

@@ -5,29 +5,13 @@ import { game } from "cc";
  */
 export enum GameEvent {
     /**
-     * 玩家总下注额度更新
-     */
-    PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
-    /**
      * 更新货币系统
      */
     PLAYER_CURRENCY_UPDATE = 'PLAYER_CURRENCY_UPDATE',
     /**
-     * 玩家当前局数更新
-     */
-    PLAYER_PERIOD_UPDATE = 'PLAYER_PERIOD_UPDATE',
-    /**
      * 玩家信息更新
      */
     PLAYER_INFO_UPDATE = 'PLAYER_INFO_UPDATE',
-    /**
-     *更新下注选项的数据
-     */
-    UPDATE_BET_CHOOSE = 'UPDATE_BET_CHOOSE',
-    /**
-     *更新记录
-     */
-    UPDATE_HISTORY = 'UPDATE_HISTORY',
     /**
      * 要求打开菜单
      */
@@ -36,6 +20,11 @@ export enum GameEvent {
      * 要求更新历史记录的列表
      */
     REQUEST_REFRESH_GAME_HISTORY = 'REQUEST_REFRESH_GAME_HISTORY',
+    /**
+     * 更新下注金额
+     */
+    UPDATE_BET = 'UPDATE_BET',
+
 }
 
 export interface WalletInfo {
@@ -65,12 +54,6 @@ export interface BetInfo {
  */
 export const THEME_ID = 1025;
 
-/**
-* 筹码金额颜色
-*/
-export const ChipColor = ['#47506A', '#1A7401', '#1756A4', '#90017A', '#A31B09', '#A36407'];
-
-export const BetPoint = 'BetPoint';
 
 /**
  * 异步方法，请使用await标记

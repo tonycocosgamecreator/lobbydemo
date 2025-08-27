@@ -3,24 +3,18 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import ViewManager from '../core/manager/view-manager';
-import Managers from '../core/manager/managers';
-import JsonLoginManager from '../network/managers/json-login-manager';
-import { LocalStorageManager } from '../manager/localstorage-manager';
-import JmHistoryManager from '../manager/jm-history-manager';
-import AudioManager from '../core/manager/audio-manager';
+import SuperSevenManager from '../manager/ss-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass('PanelJmInit')
-export default class PanelJmInit extends ViewBase {
+@ccclass('CustomItem')
+export default class CustomItem extends ViewBase {
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -29,29 +23,34 @@ export default class PanelJmInit extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-
-    buildUi() {
-        AudioManager.playBgm(this.bundleName, '背景')
-        Managers.registe(LocalStorageManager);
-        Managers.registe(JmHistoryManager);
-        // Managers.registe(JmManager);
-        JsonLoginManager.Login();
+    @ViewBase.requireResourceLoaded
+    setData(name: string) {
+        this.reset()
+        this.sprImg.spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/10109_symbols', name);
     }
 
+    flashAnimation(name: string) {
+        if (name.includes('M')) {
+            this.spSkeleton.setAnimation(0, name, true);
+            this.spSkeleton.node.active = true;
+        } else {
+            this.spSymbol.setAnimation(0, name, true);
+            this.spSymbol.node.active = true;
+        }
+        this.scheduleOnce(() => {
+            this.reset();
+        }, 0.2)
+    }
 
+    reset() {
+        this.spSkeleton.node.active = false;
+        this.spSymbol.node.active = false;
+    }
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
-    public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == jmbaccarat.Message.MsgEnterBaccaratRsp) {
-            //进入游戏的回应,这个时候，jm-manager已经处理好消息了
-            // ViewManager.OpenPanel(this.module, 'PanelJmMainView');
-            this.close();
-            return true;
-        }
-        return false;
-    }
+    //这是一个Custom预制体，不会被主动推送网络消息，需要自己在Panel中主动推送
 
     // @view export event end
 
@@ -61,17 +60,22 @@ export default class PanelJmInit extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
+            cc_spSkeleton: [cc.sp.Skeleton],
+            cc_spSymbol: [cc.sp.Skeleton],
+            cc_sprImg: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
+    protected spSkeleton: cc.sp.Skeleton = null;
+    protected spSymbol: cc.sp.Skeleton = null;
+    protected sprImg: cc.Sprite = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelJmInit';
+    public static readonly VIEW_NAME = 'CustomItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
@@ -81,11 +85,10 @@ export default class PanelJmInit extends ViewBase {
      * 请勿修改，脚本自动生成
     */
     public get bundleName() {
-        return PanelJmInit.BUNDLE_NAME;
+        return CustomItem.BUNDLE_NAME;
     }
     public get viewName() {
-        return PanelJmInit.VIEW_NAME;
+        return CustomItem.VIEW_NAME;
     }
-
     // @view export resource end
 }

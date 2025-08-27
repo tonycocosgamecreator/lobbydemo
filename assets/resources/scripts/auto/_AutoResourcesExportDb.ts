@@ -18,26 +18,20 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
-    'CustomBetAreaItem': 'CustomBetAreaItem',
-    'CustomBetArea': 'CustomBetArea',
     'CustomButtom': 'CustomButtom',
-    'CustomChip': 'CustomChip',
-    'CustomChooseChip': 'CustomChooseChip',
-    'CustomFlyChip': 'CustomFlyChip',
-    'CustomGameItem': 'CustomGameItem',
+    'CustomDetail': 'CustomDetail',
     'CustomHistory': 'CustomHistory',
+    'CustomItem': 'CustomItem',
+    'CustomList': 'CustomList',
     'CustomMenuHistoryItem': 'CustomMenuHistoryItem',
-    'CustomResult': 'CustomResult',
+    'CustomRotation': 'CustomRotation',
+    'CustomScore': 'CustomScore',
+    'CustomSystemMenuBase': 'CustomSystemMenuBase',
     'CustomSystemMenuHistory': 'CustomSystemMenuHistory',
     'CustomToast': 'CustomToast',
     'PanelCircleLoading': 'PanelCircleLoading',
-    'PanelGame': 'PanelGame',
-    'PanelGMMainView': 'PanelGMMainView',
-    'PanelJmInit': 'PanelJmInit',
-    'PanelJmMainView': 'PanelJmMainView',
-    'PanelLobby': 'PanelLobby',
     'PanelSuperSevenInit': 'PanelSuperSevenInit',
-    'PanelThirdGame': 'PanelThirdGame',
+    'PanelSuperSevenMain': 'PanelSuperSevenMain',
 }
 
     /** 唯一id */

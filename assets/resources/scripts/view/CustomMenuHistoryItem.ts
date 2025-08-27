@@ -60,36 +60,36 @@ export default class CustomMenuHistoryItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bg: [cc.Sprite],
-            cc_labelBet: [cc.Label],
-            cc_labelPeroid: [cc.Label],
-            cc_labelWin: [cc.Label],
-            cc_layout_node: [cc.Node],
+            cc_bg    : [cc.Sprite],
+            cc_labelBet    : [cc.Label],
+            cc_labelPeroid    : [cc.Label],
+            cc_labelWin    : [cc.Label],
+            cc_layout_node    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bg: cc.Sprite = null;
-    protected labelBet: cc.Label = null;
-    protected labelPeroid: cc.Label = null;
-    protected labelWin: cc.Label = null;
-    protected layout_node: cc.Node = null;
+   protected bg: cc.Sprite    = null;
+   protected labelBet: cc.Label    = null;
+   protected labelPeroid: cc.Label    = null;
+   protected labelWin: cc.Label    = null;
+   protected layout_node: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomMenuHistoryItem';
+   public static readonly VIEW_NAME    = 'CustomMenuHistoryItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomMenuHistoryItem.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomMenuHistoryItem.VIEW_NAME;
     }
     // @view export resource end

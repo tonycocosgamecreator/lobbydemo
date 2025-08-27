@@ -3,17 +3,27 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+import ViewManager from '../core/manager/view-manager';
+import Managers from '../core/manager/managers';
+import SuperSevenManager from '../manager/ss-manager';
+import JsonLoginManager from '../network/managers/json-login-manager';
+import WalletManager from '../manager/wallet-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-
+interface MsgGameEnterAck {
+    code: number;
+    /**游戏唯一编码 */
+    game_code: string;
+}
 @ccclass('PanelSuperSevenInit')
 export default class PanelSuperSevenInit extends ViewBase {
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -23,31 +33,36 @@ export default class PanelSuperSevenInit extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
+    buildUi() {
+        Managers.registe(SuperSevenManager);
+        JsonLoginManager.Login();
 
-
-
-
-
-
-
-
+    }
 
     //------------------------ 网络消息 ------------------------//
-// @view export net begin
+    // @view export net begin
 
-    public onNetworkMessage(msgType : string,data : any) : boolean {
+    public onNetworkMessage(msgType: string, data: any): boolean {
+        if (msgType == supersevenbaccarat.Message.MsgGameEnterAck) {
+            const msg = data as supersevenbaccarat.MsgGameEnterAck
+            if (data.code != 0) return false;
+            WalletManager.bets = msg.bet_config;
+            WalletManager.walletInfos = msg.wallets || [];
+            SuperSevenManager.PlayInfo = msg.player || null;
+            ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
+            this.close();
+        }
         return false;
     }
 
-// @view export event end
+    // @view export event end
 
     //------------------------ 事件定义 ------------------------//
-// @view export event begin
-// @view export event end
+    // @view export event begin
+    // @view export event end
 
 
-// @view export resource begin
-
+    // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -72,6 +87,5 @@ export default class PanelSuperSevenInit extends ViewBase {
    public get viewName(){
         return PanelSuperSevenInit.VIEW_NAME;
     }
-
-// @view export resource end
+    // @view export resource end
 }

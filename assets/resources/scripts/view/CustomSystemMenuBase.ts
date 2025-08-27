@@ -9,7 +9,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass('CustomSystemMenuBase')
 export default class CustomSystemMenuBase extends ReusableBase {
-    
+
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
@@ -40,18 +40,18 @@ export default class CustomSystemMenuBase extends ReusableBase {
 
 
     //------------------------ 网络消息 ------------------------//
-// @view export net begin
+    // @view export net begin
 
-//这是一个Custom预制体，不会被主动推送网络消息，需要自己在Panel中主动推送
+    //这是一个Custom预制体，不会被主动推送网络消息，需要自己在Panel中主动推送
 
-// @view export event end
+    // @view export event end
 
     //------------------------ 事件定义 ------------------------//
-// @view export event begin
-// @view export event end
+    // @view export event begin
+    // @view export event end
 
 
-// @view export resource begin
+    // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -61,20 +61,20 @@ export default class CustomSystemMenuBase extends ReusableBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static VIEW_NAME    = 'CustomSystemMenuBase';
+    public static VIEW_NAME = 'CustomSystemMenuBase';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static BUNDLE_NAME  = 'resources';
+    public static BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomSystemMenuBase.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomSystemMenuBase.VIEW_NAME;
     }
-// @view export resource end
+    // @view export resource end
 }
