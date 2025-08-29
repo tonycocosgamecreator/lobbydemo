@@ -166,10 +166,7 @@
       "b": 255,
       "a": 255
     },
-    "_spriteFrame": {
-      "__uuid__": "b0f6432e-825b-4698-a38c-eab4ae361061@fdc5b",
-      "__expectedType__": "cc.SpriteFrame"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_fillType": 0,
     "_sizeMode": 1,
@@ -211,7 +208,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 9
@@ -347,7 +344,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 15
@@ -443,8 +440,8 @@
       "__expectedType__": "sp.SkeletonData"
     },
     "defaultSkin": "default",
-    "defaultAnimation": "3xwild_win",
-    "_premultipliedAlpha": true,
+    "defaultAnimation": "<None>",
+    "_premultipliedAlpha": false,
     "_timeScale": 1,
     "_preCacheMode": 0,
     "_cacheMode": 0,

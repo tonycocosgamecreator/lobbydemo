@@ -42,5 +42,13 @@
     "CustomList": {
         "statisticalId": 100001010,
         "panelId": 10
+    },
+    "CustomAuto": {
+        "statisticalId": 100001011,
+        "panelId": 11
+    },
+    "PanelAuto": {
+        "statisticalId": 100001012,
+        "panelId": 12
     }
 }

@@ -24,6 +24,34 @@ export enum GameEvent {
      * 更新下注金额
      */
     UPDATE_BET = 'UPDATE_BET',
+    /**
+     *spin
+     */
+    UPDATE_ROTATION = 'UPDATE_ROTATION',
+    /**
+     *停止旋转
+     */
+    STOP_ROTATION = 'STOP_ROTATION',
+    /**
+     *游戏状态
+     */
+    UPDATE_STATE = 'UPDATE_STATE',
+    /**
+     *转轴倍数
+     */
+    UPDATE_TIMES = 'UPDATE_TIMES',
+    /**
+     *结束旋转
+     */
+    ROTATION_END = 'ROTATION_END',
+    /**
+     *免费游戏
+     */
+    UPDATE_FREE = 'UPDATE_FREE',
+    /**
+     *自动游戏
+     */
+    UPDATE_AUTO = 'UPDATE_AUTO',
 
 }
 

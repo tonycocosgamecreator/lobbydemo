@@ -67,6 +67,7 @@ declare module resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
+        ['CustomAuto']: 'CustomAuto',
         ['CustomButtom']: 'CustomButtom',
         ['CustomDetail']: 'CustomDetail',
         ['CustomHistory']: 'CustomHistory',
@@ -78,6 +79,7 @@ declare module resourcesDb {
         ['CustomSystemMenuBase']: 'CustomSystemMenuBase',
         ['CustomSystemMenuHistory']: 'CustomSystemMenuHistory',
         ['CustomToast']: 'CustomToast',
+        ['PanelAuto']: 'PanelAuto',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelSuperSevenInit']: 'PanelSuperSevenInit',
         ['PanelSuperSevenMain']: 'PanelSuperSevenMain',

@@ -44,6 +44,85 @@
     }
 ],
 'datas': {
+    "CustomAuto": {
+        "cc_buttonClose": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonClose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002200
+        },
+        "cc_buttonspeed1": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonspeed1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002201
+        },
+        "cc_buttonspeed2": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonspeed2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002202
+        },
+        "cc_buttonauto1": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonauto1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002203
+        },
+        "cc_buttonauto2": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonauto2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002204
+        },
+        "cc_buttonauto3": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonauto3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002205
+        },
+        "cc_buttonauto4": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonauto4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002206
+        },
+        "cc_buttonauto5": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonauto5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002207
+        },
+        "cc_buttonAdd": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonAdd",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002208
+        },
+        "cc_buttonSub": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_buttonSub",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002209
+        },
+        "cc_button_auto": {
+            "viewName": "CustomAuto",
+            "buttonName": "cc_button_auto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002210
+        }
+    },
     "CustomButtom": {
         "cc_buttonSpin": {
             "viewName": "CustomButtom",
@@ -87,9 +166,9 @@
             "desc": "",
             "statisticalId": 100003105
         },
-        "cc_buttonSub": {
+        "cc_buttonAdd": {
             "viewName": "CustomButtom",
-            "buttonName": "cc_buttonSub",
+            "buttonName": "cc_buttonAdd",
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003106
@@ -101,9 +180,9 @@
             "desc": "",
             "statisticalId": 100003106
         },
-        "cc_buttonAdd": {
+        "cc_buttonSub": {
             "viewName": "CustomButtom",
-            "buttonName": "cc_buttonAdd",
+            "buttonName": "cc_buttonSub",
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003106
@@ -183,6 +262,85 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002502
+        }
+    },
+    "PanelAuto": {
+        "cc_buttonClose": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonClose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002300
+        },
+        "cc_buttonspeed1": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonspeed1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002301
+        },
+        "cc_buttonspeed2": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonspeed2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002302
+        },
+        "cc_buttonauto1": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonauto1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002303
+        },
+        "cc_buttonauto2": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonauto2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002304
+        },
+        "cc_buttonauto3": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonauto3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002305
+        },
+        "cc_buttonauto4": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonauto4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002306
+        },
+        "cc_buttonauto5": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonauto5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002307
+        },
+        "cc_buttonAdd": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonAdd",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002308
+        },
+        "cc_buttonSub": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_buttonSub",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002309
+        },
+        "cc_button_auto": {
+            "viewName": "PanelAuto",
+            "buttonName": "cc_button_auto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002310
         }
     },
     "PanelGame": {
@@ -443,6 +601,15 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001908
+        }
+    },
+    "PanelSuperSevenMain": {
+        "cc_buttonStart": {
+            "viewName": "PanelSuperSevenMain",
+            "buttonName": "cc_buttonStart",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001900
         }
     },
     "PanelThirdGame": {

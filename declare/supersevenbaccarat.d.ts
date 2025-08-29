@@ -1,9 +1,9 @@
-declare namespace supersevenbaccarat{
+declare namespace supersevenbaccarat {
 
     const PACKAGE_NAME = 'baccarat';
 
     /** ID */
-    enum BaccaratID{
+    enum BaccaratID {
         /**  水果 */
         Bct_Fruit = 100,
         /**  龙虎 */
@@ -27,7 +27,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** 阶段 */
-    enum DeskStage{
+    enum DeskStage {
         /** ReadyStage 准备阶段 */
         ReadyStage = 0,
         /** StartBetStage 开始下注阶段 */
@@ -41,7 +41,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** OpenAward 开奖类型 */
-    enum OpenAward{
+    enum OpenAward {
         /** 普通开奖 */
         OpenNormal = 0,
         /** Good Luck 开奖 */
@@ -63,7 +63,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    enum WinGoLotteryBetZone{
+    enum WinGoLotteryBetZone {
         /**  */
         Type0 = 0,
         /**  */
@@ -97,7 +97,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** 开奖类型ID:  1=龙， 2=胡， 3=和 */
-    enum LHOpenAward{
+    enum LHOpenAward {
         /** 龙 */
         LHOpenLong = 1,
         /** 虎 */
@@ -107,7 +107,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** 开奖类型ID:  1=红， 2=黑， 3=红+牌型， 4=黑+牌型 */
-    enum RBOpenAward{
+    enum RBOpenAward {
         /** 红 */
         HHOpenRed = 1,
         /** 黑 */
@@ -119,7 +119,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** RBCardType 红黑牌型 */
-    enum RBCardType{
+    enum RBCardType {
         /**   单张 */
         SCORE_SINGLE = 1,
         /**   对子 */
@@ -135,7 +135,7 @@ declare namespace supersevenbaccarat{
     }
 
     /** 开奖类型ID:  1=红， 2=黑， 3=皇冠 */
-    enum DBOpenAward{
+    enum DBOpenAward {
         /** 红 */
         DBOpenRed = 1,
         /** 黑 */
@@ -424,1821 +424,1821 @@ declare namespace supersevenbaccarat{
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface BetData{
+    interface BetData {
         /**  下注元素ID */
-        bet_id? : number;
+        bet_id?: number;
         /**  下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
         /** 是否是自动cashOut */
-        autoCashOut? : boolean;
+        autoCashOut?: boolean;
         /** 自动cashOutRate */
-        out_rate? : string;
+        out_rate?: string;
         /** 已经结算 */
-        is_settle? : boolean;
+        is_settle?: boolean;
         /** 结算的rate */
-        settle_out_rate? : string;
+        settle_out_rate?: string;
         /** 是否是rebet */
-        is_rebet? : boolean;
+        is_rebet?: boolean;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface AbCard{
+    interface AbCard {
         /**  牌ID */
-        data? : number;
+        data?: number;
         /**  明文文本 */
-        data_string? : string;
+        data_string?: string;
         /**  加密文本 */
-        encrypt_text? : string;
+        encrypt_text?: string;
         /**  随机种子 */
-        seed? : string;
+        seed?: string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface OpenRecord{
+    interface OpenRecord {
         /**  中间牌 */
-        card? : AbCard;
+        card?: AbCard;
         /**  所有牌 */
-        card_all : AbCard[];
+        card_all: AbCard[];
         /**  左边牌列表 */
-        card_left : AbCard[];
+        card_left: AbCard[];
         /**  右边牌列表 */
-        card_right : AbCard[];
+        card_right: AbCard[];
         /**  开奖位置ID */
-        pos? : number;
+        pos?: number;
         /**  开奖的位置（1 = 左边，3 = 右边） */
-        last_pos? : number;
+        last_pos?: number;
         /**  前三张牌 */
-        card_three : AbCard[];
+        card_three: AbCard[];
         /**  牌型ID (2 = 同花，3 = 顺子，4 = 同花顺，其他不需要) */
-        card_type? : number;
+        card_type?: number;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface MsgDealCardNft{
+    interface MsgDealCardNft {
         /**  开奖位置ID */
-        pos? : number;
+        pos?: number;
         /**  开奖牌 */
-        card? : AbCard;
+        card?: AbCard;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface MyData{
+    interface MyData {
         /**  上次底注金额 */
-        prev_bet? : string;
+        prev_bet?: string;
         /**  下注列表 */
-        bets : BetData[];
+        bets: BetData[];
         /**  当前桌子上赢金币总数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  玩家最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  玩家当局赢的倍数 */
-        win_rate? : string;
+        win_rate?: string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface EncryptText{
+    interface EncryptText {
         /**  */
-        data? : number;
+        data?: number;
         /**  明文文本 */
-        data_string? : string;
+        data_string?: string;
         /**  加密文本 */
-        encrypt_text? : string;
+        encrypt_text?: string;
         /**  随机种子 */
-        seed? : string;
+        seed?: string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface AbOdd{
+    interface AbOdd {
         /**  下注元素ID */
-        bet_id? : number;
+        bet_id?: number;
         /**  下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface DeskInfo{
+    interface DeskInfo {
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子阶段 */
-        stage? : baccarat.DeskStage;
+        stage?: baccarat.DeskStage;
         /**  此阶段结束时间戳,这里是毫秒时间戳 */
-        end_time? : number;
+        end_time?: number;
         /**  */
-        bets : { [key : string] : baccarat.BetInfo};
+        bets: { [key: string]: baccarat.BetInfo };
         /**  桌子人数 */
-        online_sum? : number;
+        online_sum?: number;
         /**  所有人的下注金额列表 */
-        all_bets : BetData[];
+        all_bets: BetData[];
         /**  最近20次的开奖记录 */
-        records : OpenRecord[];
+        records: OpenRecord[];
         /**  此阶段剩余秒数 */
-        have_sec? : number;
+        have_sec?: number;
         /**  最少下注金币金币余额 */
-        bet_min? : string;
+        bet_min?: string;
         /**  最大下注金币金币余额 */
-        bet_max? : string;
+        bet_max?: string;
         /**  jackpot金额 */
-        jacket_coin? : string;
+        jacket_coin?: string;
         /**  开奖开始时间unix时间戳，用于小火箭 */
-        open_time? : number;
+        open_time?: number;
         /**  参数: 1.小火箭2个参数 */
-        desk_param : string[];
+        desk_param: string[];
         /**  序列 */
-        seq? : string;
+        seq?: string;
         /** 当前期号 */
-        period_id? : string;
+        period_id?: string;
         /** wingo下注区域赔率 */
-        wingo_info? : WinGoInfo;
+        wingo_info?: WinGoInfo;
         /** 玩家下注信息 */
-        bet_player : BetPlayer[];
+        bet_player: BetPlayer[];
         /** 5d下注区域赔率 */
-        five_d_info? : FiveDInfo;
+        five_d_info?: FiveDInfo;
         /** 小火箭下注配置信息 */
-        rocket_d_info? : RocketDInfo;
+        rocket_d_info?: RocketDInfo;
         /** 3d小火箭下注配置信息 */
-        rocket_3d_info? : Rocket3DInfo;
+        rocket_3d_info?: Rocket3DInfo;
         /** 龙虎下注配置信息 */
-        longhu_info? : LongHuInfo;
+        longhu_info?: LongHuInfo;
         /** 股票数据信息 */
-        stock_info? : StockInfo;
+        stock_info?: StockInfo;
         /**  区域下注人数 */
-        area_bet_num : AreaUserBetsNum[];
+        area_bet_num: AreaUserBetsNum[];
         /** 7updown配置信息 */
-        seven_up_down_info? : SevenUpDownInfo;
+        seven_up_down_info?: SevenUpDownInfo;
         /**  加密文本列表 */
-        encrypt_text : EncryptText[];
+        encrypt_text: EncryptText[];
         /**  赔率列表 */
-        odds : AbOdd[];
+        odds: AbOdd[];
         /**  当前回合已经打开的牌的记录 */
-        open_cards? : OpenRecord;
+        open_cards?: OpenRecord;
         /**  当前阶段总时间 */
-        stage_total_time? : number;
+        stage_total_time?: number;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface FiveDInfo{
+    interface FiveDInfo {
         /**  */
-        five_odds? : FiveDOdds;
+        five_odds?: FiveDOdds;
         /**  */
-        sum_odds? : FiveDOdds;
+        sum_odds?: FiveDOdds;
         /**  停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface FiveDOdds{
+    interface FiveDOdds {
         /** 数字区域 */
-        number? : string;
+        number?: string;
         /** 小 */
-        small? : string;
+        small?: string;
         /** 大 */
-        big? : string;
+        big?: string;
         /** 奇数 */
-        odd? : string;
+        odd?: string;
         /** 偶数 */
-        even? : string;
+        even?: string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface WinGoInfo{
+    interface WinGoInfo {
         /** wingo下注区域赔率 */
-        wingo_odds? : WinGoOdds;
+        wingo_odds?: WinGoOdds;
         /**  停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
         /** 开奖结果 */
-        wingo_open_info : WinGoOpenInfo[];
+        wingo_open_info: WinGoOpenInfo[];
         /** 回合秒数 */
-        cycle_time? : number;
+        cycle_time?: number;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
-    interface WinGoOpenInfo{
+    interface WinGoOpenInfo {
         /**  */
-        period? : string;
+        period?: string;
         /**  */
-        pos? : number;
+        pos?: number;
     }
 
     /** WinGoOdds WinGo下注区域赔率 */
-    interface WinGoOdds{
+    interface WinGoOdds {
         /** 绿色区域 */
-        green? : string;
+        green?: string;
         /** 紫色 */
-        violet? : string;
+        violet?: string;
         /** 红色 */
-        red? : string;
+        red?: string;
         /** 单个 */
-        common? : string;
+        common?: string;
         /** 特殊 */
-        special? : string;
+        special?: string;
         /** 大 */
-        big? : string;
+        big?: string;
         /**  小 */
-        small? : string;
+        small?: string;
     }
 
     /** RocketDInfo 小火箭配置信息 */
-    interface RocketDInfo{
+    interface RocketDInfo {
         /** [0,9] 加减注切换 */
-        betLevelQuota : string[];
+        betLevelQuota: string[];
         /** 快速选择下注配置 */
-        fastBetQuota : string[];
+        fastBetQuota: string[];
         /** 配置时间 */
-        cfg_time? : number;
+        cfg_time?: number;
         /** 停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
         /** 计算参数 */
-        args : string[];
+        args: string[];
         /** 当前玩家下注信息,如果有的话 */
-        userBetInfos : BetData[];
+        userBetInfos: BetData[];
         /** 当前期号 */
-        period_id? : string;
+        period_id?: string;
     }
 
     /** Rocket3DInfo 3d小火箭配置信息 */
-    interface Rocket3DInfo{
+    interface Rocket3DInfo {
         /** [0,9] 加减注切换 */
-        betLevelQuota : string[];
+        betLevelQuota: string[];
         /** 快速选择下注配置 */
-        fastBetQuota : string[];
+        fastBetQuota: string[];
         /** 配置时间（下注时间） */
-        cfg_time? : number;
+        cfg_time?: number;
         /** 停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
         /** 计算参数 */
-        args : string[];
+        args: string[];
         /** 当前玩家下注信息,如果有的话 */
-        userBetInfos : BetData[];
+        userBetInfos: BetData[];
         /** 当前期号 */
-        period_id? : string;
+        period_id?: string;
         /** 最大倍率（配置） */
-        cfg_max_rate? : number;
+        cfg_max_rate?: number;
     }
 
     /** Rocket3DInfo 3d小火箭配置信息 */
-    interface LongHuInfo{
+    interface LongHuInfo {
         /** 龙虎下注区域赔率(0龙 1虎 2合 3纯合) */
-        longhu_odds : string[];
+        longhu_odds: string[];
         /**  停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
         /** 开奖结果 */
-        longhu_open_info : LongHuOpenInfo[];
+        longhu_open_info: LongHuOpenInfo[];
         /** 回合秒数 */
-        cycle_time? : number;
+        cycle_time?: number;
         /** 开奖结果列表 */
-        win_type_list : number[];
+        win_type_list: number[];
     }
 
     /** Rocket3DInfo 3d小火箭配置信息 */
-    interface LongHuOpenInfo{
+    interface LongHuOpenInfo {
         /**  */
-        period? : string;
+        period?: string;
         /**  */
-        pos? : number;
+        pos?: number;
     }
 
     /** Rocket3DInfo 3d小火箭配置信息 */
-    interface SevenUpDownInfo{
+    interface SevenUpDownInfo {
         /** 下注区域赔率 */
-        odds : string[];
+        odds: string[];
         /**  停止下注秒数 */
-        end_sec? : number;
+        end_sec?: number;
         /** 开奖结果 */
-        open_info : SevenUpDownOpenInfo[];
+        open_info: SevenUpDownOpenInfo[];
         /** 回合秒数 */
-        cycle_time? : number;
+        cycle_time?: number;
         /** 开奖结果列表 */
-        win_type_list : number[];
+        win_type_list: number[];
     }
 
     /** Rocket3DInfo 3d小火箭配置信息 */
-    interface SevenUpDownOpenInfo{
+    interface SevenUpDownOpenInfo {
         /**  */
-        period? : string;
+        period?: string;
         /**  */
-        win_type? : number;
+        win_type?: number;
     }
 
     /** 股票信息 */
-    interface StockInfo{
+    interface StockInfo {
         /** 基础值 */
-        base? : number;
+        base?: number;
         /** 涨跌值列表 */
-        points : number[];
+        points: number[];
         /** 当前期号 */
-        period_id? : string;
+        period_id?: string;
         /** 配置时间（下注时间） */
-        cfg_bet_time? : number;
+        cfg_bet_time?: number;
     }
 
     /** CashOutPlayer 下车玩家 */
-    interface CashOutPlayer{
+    interface CashOutPlayer {
         /**  昵称 */
-        name? : string;
+        name?: string;
         /**  玩家ID */
-        player_id? : number;
+        player_id?: number;
         /**  头像 */
-        icon? : string;
+        icon?: string;
         /**  下车倍数 */
-        out_rate? : string;
+        out_rate?: string;
         /**  赢金币 */
-        win_coin? : string;
+        win_coin?: string;
         /**  是否机器人 */
-        is_robot? : boolean;
+        is_robot?: boolean;
         /**  下注id */
-        bet_id? : number;
+        bet_id?: number;
     }
 
     /** EnterBaccaratReq 进入百人场请求 */
-    interface MsgEnterBaccaratReq{
+    interface MsgEnterBaccaratReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  是否是换桌 */
-        change? : boolean;
+        change?: boolean;
         /**  桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
     }
 
     /** EnterBaccaratReq 进入百人场请求 */
-    interface BetInfo{
+    interface BetInfo {
         /** 币种 */
-        currency : string;
+        currency: string;
         /** 底注列表 */
-        bet_size : number[];
+        bet_size: number[];
         /** 倍数列表 */
-        multiple : number[];
+        multiple: number[];
         /** 底注倍数列表 */
-        bet_index_rule : number[];
+        bet_index_rule: number[];
         /** 最小下注 */
-        min_bet? : number;
+        min_bet?: number;
         /** 最大下注 */
-        max_bet? : number;
+        max_bet?: number;
         /** 快速下注列表 */
-        fast_bet_size : number[];
+        fast_bet_size: number[];
     }
 
     /** EnterBaccaratReq 进入百人场请求 */
-    interface WalletInfo{
+    interface WalletInfo {
         /** 币种 */
-        currency : string;
+        currency: string;
         /** 余额 */
-        balance : number;
+        balance: number;
     }
 
     /** EnterBaccaratRsp 进入百人场请求响应 */
-    interface MsgEnterBaccaratRsp{
+    interface MsgEnterBaccaratRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  桌子信息 */
-        info? : DeskInfo;
+        info?: DeskInfo;
         /**  我的信息 */
-        my? : MyData;
+        my?: MyData;
         /**  左边的排行榜 */
-        left_rank : PlayerInfo[];
+        left_rank: PlayerInfo[];
         /**  右边的排行榜 */
-        right_rank : PlayerInfo[];
+        right_rank: PlayerInfo[];
         /**  是否可以下注 */
-        can_spin? : boolean;
+        can_spin?: boolean;
         /**  下车列表 */
-        out_list : CashOutPlayer[];
+        out_list: CashOutPlayer[];
         /**  最小充值金额 */
-        pay_min? : number;
+        pay_min?: number;
         /**  钱包列表 */
-        wallets : WalletInfo[];
+        wallets: WalletInfo[];
         /**  玩家ID */
-        player_id? : number;
+        player_id?: number;
     }
 
     /** LeaveBaccaratReq 离开百人场请求 */
-    interface MsgLeaveBaccaratReq{
+    interface MsgLeaveBaccaratReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** LeaveBaccaratRsp 离开百人场请求响应 */
-    interface MsgLeaveBaccaratRsp{
+    interface MsgLeaveBaccaratRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
     }
 
     /** BetBaccaratReq 百人场下注请求 */
-    interface MsgBetBaccaratReq{
+    interface MsgBetBaccaratReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  上次底注金额 */
-        prev_bet? : string;
+        prev_bet?: string;
         /**  下注列表 */
-        bets : BetData[];
+        bets: BetData[];
     }
 
     /** BetBaccaratRsp 百人场下注请求响应 */
-    interface MsgBetBaccaratRsp{
+    interface MsgBetBaccaratRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  扣除金币 */
-        cost_coin? : string;
+        cost_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  下注列表 */
-        bets : BetData[];
+        bets: BetData[];
     }
 
     /** BetBaccaratCancelReq 百人场下注取消请求 */
-    interface MsgBetBaccaratCancelReq{
+    interface MsgBetBaccaratCancelReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 取消下注的ID */
-        bet_id? : number;
+        bet_id?: number;
     }
 
     /** BetBaccaratCancelRsp 百人场下注取消请求响应 */
-    interface MsgBetBaccaratCancelRsp{
+    interface MsgBetBaccaratCancelRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 取消下注的ID */
-        bet_id? : number;
+        bet_id?: number;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
     }
 
     /** GetBaccaratPlayerListReq 获取百人场玩家请求 */
-    interface MsgGetBaccaratPlayerListReq{
+    interface MsgGetBaccaratPlayerListReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** GetBaccaratPlayerListRsp 获取百人场玩家请求响应 */
-    interface MsgGetBaccaratPlayerListRsp{
+    interface MsgGetBaccaratPlayerListRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  玩家列表 */
-        players : PlayerInfo[];
+        players: PlayerInfo[];
     }
 
     /** PauseBaccaratReq 暂停百人场请求 */
-    interface MsgPauseBaccaratReq{
+    interface MsgPauseBaccaratReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** PauseBaccaratRsp 暂停百人场请求响应 */
-    interface MsgPauseBaccaratRsp{
+    interface MsgPauseBaccaratRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
     }
 
     /** BetPlayer 百人场下注请求 */
-    interface BetPlayer{
+    interface BetPlayer {
         /**  昵称 */
-        name? : string;
+        name?: string;
         /**  下注列表 */
-        bets : BetData[];
+        bets: BetData[];
         /**  玩家ID */
-        player_id? : number;
+        player_id?: number;
         /**  头像 */
-        icon? : string;
+        icon?: string;
         /**  玩家信息 */
-        player_info? : string;
+        player_info?: string;
         /**  lottery 期数 */
-        period? : string;
+        period?: string;
         /**  是否机器人 */
-        is_robot? : boolean;
+        is_robot?: boolean;
     }
 
     /** BetBaccaratNtf 最新玩家下注通知消息 */
-    interface MsgBetBaccaratNtf{
+    interface MsgBetBaccaratNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  最新的下注玩家信息 */
-        players : BetPlayer[];
+        players: BetPlayer[];
     }
 
     /** BaccaratNextStageNtf 阶段变化通知消息 */
-    interface MsgBaccaratNextStageNtf{
+    interface MsgBaccaratNextStageNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子阶段 */
-        stage? : baccarat.DeskStage;
+        stage?: baccarat.DeskStage;
         /**  此阶段结束时间戳 */
-        end_time? : number;
+        end_time?: number;
         /**  此阶段剩余秒数 */
-        have_sec? : number;
+        have_sec?: number;
         /** 当前期号 */
-        period_id? : string;
+        period_id?: string;
         /** 股票点位（开奖和结算阶段会发） */
-        stock_info? : StockInfo;
+        stock_info?: StockInfo;
     }
 
     /** WinPlayer 赢奖玩家 */
-    interface WinPlayer{
+    interface WinPlayer {
         /**  玩家ID */
-        player_id? : number;
+        player_id?: number;
         /**  昵称 */
-        name? : string;
+        name?: string;
         /**  头像 */
-        icon? : string;
+        icon?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  下注金币数 */
-        bet_coin? : string;
+        bet_coin?: string;
     }
 
     /** MyWinData 我的赢奖数据 */
-    interface MyWinData{
+    interface MyWinData {
         /**  我赢的金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的开奖数据 */
-        open_elem : OpenData[];
+        open_elem: OpenData[];
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
     }
 
     /** OpenData 开奖数据 */
-    interface OpenData{
+    interface OpenData {
         /**  位置ID */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢倍数 */
-        win_times? : string;
+        win_times?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** BaccaratSettleNtf 结算通知消息 */
-    interface MsgBaccaratSettleNtf{
+    interface MsgBaccaratSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖类型 */
-        open_type? : baccarat.OpenAward;
+        open_type?: baccarat.OpenAward;
         /**  开奖位置ID */
-        open_pos : number[];
+        open_pos: number[];
         /**  我的开奖数据 */
-        my_data? : MyWinData;
+        my_data?: MyWinData;
         /**  左边的排行榜 */
-        left_rank : PlayerInfo[];
+        left_rank: PlayerInfo[];
         /**  右边的排行榜 */
-        right_rank : PlayerInfo[];
+        right_rank: PlayerInfo[];
         /**  big win列表 */
-        big_win : WinPlayer[];
+        big_win: WinPlayer[];
         /**  mega win列表 */
-        mega_win : WinPlayer[];
+        mega_win: WinPlayer[];
         /**  super win列表 */
-        super_win : WinPlayer[];
+        super_win: WinPlayer[];
         /**  我的下注列表 */
-        my_bets : BetData[];
+        my_bets: BetData[];
     }
 
     /** BaccaratOnlineNtf 在线人数变化通知消息 */
-    interface MsgBaccaratOnlineNtf{
+    interface MsgBaccaratOnlineNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  最新在线人数 */
-        online_sum? : number;
+        online_sum?: number;
     }
 
     /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
-    interface MsgBaccaratAreaUserBetsNtf{
+    interface MsgBaccaratAreaUserBetsNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  */
-        bet_num : AreaUserBetsNum[];
+        bet_num: AreaUserBetsNum[];
     }
 
     /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
-    interface AreaUserBetsNum{
+    interface AreaUserBetsNum {
         /**  位置ID */
-        pos_id? : number;
+        pos_id?: number;
         /**  下注人数 */
-        user_sum? : number;
+        user_sum?: number;
         /**  下注和 */
-        bet_sum? : number;
+        bet_sum?: number;
     }
 
     /** MyWinDataShort 我的赢奖数据 */
-    interface MyWinDataShort{
+    interface MyWinDataShort {
         /**  我赢的金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  我的下注余额 */
-        bet_coin? : string;
+        bet_coin?: string;
     }
 
     /** BaccaratKickOutNtf 长时间未下注踢出通知消息 */
-    interface MsgBaccaratKickOutNtf{
+    interface MsgBaccaratKickOutNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  玩家ID */
-        uid? : number;
+        uid?: number;
     }
 
     /** BaccaratLongHuSettleNtf LH结算通知消息 */
-    interface MsgBaccaratLongHuSettleNtf{
+    interface MsgBaccaratLongHuSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖类型ID */
-        open_id? : baccarat.LHOpenAward;
+        open_id?: baccarat.LHOpenAward;
         /**  开奖牌列表 */
-        open_data : number[];
+        open_data: number[];
         /**  我的开奖数据 */
-        my_data? : MyWinDataShort;
+        my_data?: MyWinDataShort;
         /**  左边的排行榜 */
-        left_rank : PlayerInfo[];
+        left_rank: PlayerInfo[];
         /**  右边的排行榜 */
-        right_rank : PlayerInfo[];
+        right_rank: PlayerInfo[];
         /**  big win列表 */
-        big_win : WinPlayer[];
+        big_win: WinPlayer[];
         /**  mega win列表 */
-        mega_win : WinPlayer[];
+        mega_win: WinPlayer[];
         /**  super win列表 */
-        super_win : WinPlayer[];
+        super_win: WinPlayer[];
         /**  我的下注列表 */
-        my_bets : BetData[];
+        my_bets: BetData[];
     }
 
     /** BaccaratRedBlackSettleNtf HH结算通知消息 */
-    interface MsgBaccaratRedBlackSettleNtf{
+    interface MsgBaccaratRedBlackSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖类型ID */
-        open_id? : baccarat.RBOpenAward;
+        open_id?: baccarat.RBOpenAward;
         /**  开奖红黑牌型 */
-        card_type : baccarat.RBCardType[];
+        card_type: baccarat.RBCardType[];
         /**  开奖牌列表 */
-        open_data : number[];
+        open_data: number[];
         /**  我的开奖数据 */
-        my_data? : MyWinDataShort;
+        my_data?: MyWinDataShort;
         /**  左边的排行榜 */
-        left_rank : PlayerInfo[];
+        left_rank: PlayerInfo[];
         /**  右边的排行榜 */
-        right_rank : PlayerInfo[];
+        right_rank: PlayerInfo[];
         /**  big win列表 */
-        big_win : WinPlayer[];
+        big_win: WinPlayer[];
         /**  mega win列表 */
-        mega_win : WinPlayer[];
+        mega_win: WinPlayer[];
         /**  super win列表 */
-        super_win : WinPlayer[];
+        super_win: WinPlayer[];
         /**  我的下注列表 */
-        my_bets : BetData[];
+        my_bets: BetData[];
     }
 
     /** RocketCashOutReq 小飞机下车请求 */
-    interface MsgRocketCashOutReq{
+    interface MsgRocketCashOutReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 下车那次下注 */
-        bet_id? : number;
+        bet_id?: number;
     }
 
     /** RocketCashOutRsp 小火箭下车请求响应 */
-    interface MsgRocketCashOutRsp{
+    interface MsgRocketCashOutRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /** 下车那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /**  赢取金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  赢倍数 */
-        win_rate? : string;
+        win_rate?: string;
     }
 
     /** RocketSettleNtf 小飞机爆炸结算通知消息 */
-    interface MsgRocketSettleNtf{
+    interface MsgRocketSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  爆炸倍率 */
-        open_rate? : string;
+        open_rate?: string;
         /**  是否开jackpot */
-        open_jackpot? : boolean;
+        open_jackpot?: boolean;
         /**  jacket pot最大赢家 */
-        jack_top? : WinPlayer;
+        jack_top?: WinPlayer;
         /**  jacket pot 我赢的金币 */
-        jack_my? : MyWinDataShort;
+        jack_my?: MyWinDataShort;
         /**  爆炸时的毫秒数 */
-        open_seconds? : number;
+        open_seconds?: number;
         /**  爆炸时的unix毫秒时间戳 */
-        open_unix? : number;
+        open_unix?: number;
         /**  jackpot奖池总金币 */
-        jack_pool? : string;
+        jack_pool?: string;
         /**  本次瓜分 jackpot奖池金币 */
-        jack_award? : string;
+        jack_award?: string;
     }
 
     /** RocketFlyNtf 小火箭 起飞通知消息 */
-    interface MsgRocketFlyNtf{
+    interface MsgRocketFlyNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  小火箭起飞毫秒时间戳 */
-        start_time? : number;
+        start_time?: number;
     }
 
     /** RocketCashOutNtf 小火箭下车通知消息 */
-    interface MsgRocketCashOutNtf{
+    interface MsgRocketCashOutNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  最新的小火箭下车玩家 */
-        players : CashOutPlayer[];
+        players: CashOutPlayer[];
     }
 
     /** 小火箭进度通知 */
-    interface MsgRocketRateNtf{
+    interface MsgRocketRateNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  小火箭起飞毫秒时间戳 */
-        start_time? : number;
+        start_time?: number;
         /** 当前跑到多少时间了 */
-        progress_time? : number;
+        progress_time?: number;
         /** 当前倍率 */
-        rate_time? : string;
+        rate_time?: string;
     }
 
     /** 玩家取消自动下车请求 */
-    interface MsgRocketAutoCashOutReq{
+    interface MsgRocketAutoCashOutReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /** 是否自动 */
-        isAuto? : boolean;
+        isAuto?: boolean;
         /** 只有isAuto 是true的时候才有意义 */
-        out_rate? : string;
+        out_rate?: string;
     }
 
     /** 玩家取消自动下车请求返回 */
-    interface MsgRocketAutoCashOutRsp{
+    interface MsgRocketAutoCashOutRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /** 是否自动 */
-        isAuto? : boolean;
+        isAuto?: boolean;
         /** 只有isAuto 是true的时候才有意义 */
-        out_rate? : string;
+        out_rate?: string;
     }
 
     /** 小火箭下注记录列表请求 */
-    interface MsgRocketPlayerHistoryReq{
+    interface MsgRocketPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
     }
 
     /** 小火箭下注记录列表返回 */
-    interface MsgRocketPlayerHistoryRsp{
+    interface MsgRocketPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        page_count? : number;
+        page_count?: number;
         /**  历史下注 */
-        history : RocketPlayerHistory[];
+        history: RocketPlayerHistory[];
     }
 
     /** 小火箭下注记录列表返回 */
-    interface RocketData{
+    interface RocketData {
         /**  */
-        bet_id? : number;
+        bet_id?: number;
         /**  */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  */
-        out_rate? : string;
+        out_rate?: string;
         /**  */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 小火箭下注记录列表返回 */
-    interface RocketPlayerHistory{
+    interface RocketPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 时间 */
-        save_time? : number;
+        save_time?: number;
         /** 开奖倍率 */
-        open_rate? : string;
+        open_rate?: string;
         /**  */
-        infos : RocketData[];
+        infos: RocketData[];
     }
 
     /** 小火箭验证消息请求 */
-    interface MsgRocketEncryptedDataReq{
+    interface MsgRocketEncryptedDataReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 桌子id */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** 小火箭验证消息返回 */
-    interface MsgRocketEncryptedDataRsp{
+    interface MsgRocketEncryptedDataRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        period? : string;
+        period?: string;
         /** 明文 */
-        plain_text? : string;
+        plain_text?: string;
         /** 密文 */
-        encrypt_text? : string;
+        encrypt_text?: string;
     }
 
     /** 小火箭对局历史列表请求 */
-    interface MsgRocketDeskHistoryReq{
+    interface MsgRocketDeskHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
     }
 
     /** 小火箭对局历史列表请求 */
-    interface RocketDeskRate{
+    interface RocketDeskRate {
         /**  */
-        period? : string;
+        period?: string;
         /** 时间 */
-        save_time? : number;
+        save_time?: number;
         /** 开奖倍率 */
-        open_rate? : string;
+        open_rate?: string;
     }
 
     /** 小火箭对局历史列表返回 */
-    interface MsgRocketDeskHistoryRsp{
+    interface MsgRocketDeskHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
         /**  */
-        infos : RocketDeskRate[];
+        infos: RocketDeskRate[];
     }
 
     /** //////////////////////////// winGoLottery私有协议  ///////////////////// */
-    interface MsgLotteryPlayerHistoryReq{
+    interface MsgLotteryPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgLotteryPlayerHistoryRsp{
+    interface MsgLotteryPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : LotteryPlayerHistory[];
+        history: LotteryPlayerHistory[];
     }
 
     /** 玩家下注信息 */
-    interface LotteryPlayerHistory{
+    interface LotteryPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  下注位置id */
-        select? : number;
+        select?: number;
         /**  下注金额 */
-        point? : string;
+        point?: string;
         /**  开奖id */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢奖数量 */
-        amount? : string;
+        amount?: string;
         /**  是否开奖 */
-        is_open? : boolean;
+        is_open?: boolean;
     }
 
     /** 玩家下注信息 */
-    interface MsgLotteryEncryptedDataReq{
+    interface MsgLotteryEncryptedDataReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 桌子id */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgLotteryEncryptedDataRsp{
+    interface MsgLotteryEncryptedDataRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        period? : string;
+        period?: string;
         /** 明文 */
-        plain_text? : string;
+        plain_text?: string;
         /** 密文 */
-        encrypt_text? : string;
+        encrypt_text?: string;
     }
 
     /** LotterySettleNtf 结算通知消息 */
-    interface MsgLotterySettleNtf{
+    interface MsgLotterySettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖位置ID */
-        open_pos : number[];
+        open_pos: number[];
         /**  我的开奖数据 */
-        my_data? : SelfWinData;
+        my_data?: SelfWinData;
         /** 开奖期数 */
-        period? : string;
+        period?: string;
         /** 下一期 */
-        next_period? : string;
+        next_period?: string;
         /** 是否最后一期 */
-        is_last? : boolean;
+        is_last?: boolean;
     }
 
     /** SelfWinData 我的赢奖数据 */
-    interface SelfWinData{
+    interface SelfWinData {
         /**  我赢的金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的开奖数据 */
-        open_elem : LotteryOpenData[];
+        open_elem: LotteryOpenData[];
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
     }
 
     /** LotteryOpenData 开奖数据 */
-    interface LotteryOpenData{
+    interface LotteryOpenData {
         /**  位置ID */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢倍数 */
-        win_times? : string;
+        win_times?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface MsgLotteryHistoryReq{
+    interface MsgLotteryHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
         /**  第几页 */
-        page? : number;
+        page?: number;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface MsgLotteryHistoryRsp{
+    interface MsgLotteryHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史开奖 */
-        history : LotteryHistory[];
+        history: LotteryHistory[];
         /** 是否最后一页 */
-        IsLast? : boolean;
+        IsLast?: boolean;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface LotteryHistory{
+    interface LotteryHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  开奖结果 */
-        open_res? : number;
+        open_res?: number;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface MsgEncryptedDataReq{
+    interface MsgEncryptedDataReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 桌子id */
-        desk_id? : number;
+        desk_id?: number;
         /** 桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface MsgEncryptedDataRsp{
+    interface MsgEncryptedDataRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        period? : string;
+        period?: string;
         /** 明文 */
-        plain_text? : string;
+        plain_text?: string;
         /** 密文 */
-        encrypt_text? : string;
+        encrypt_text?: string;
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    interface MsgPlayerHistoryReq{
+    interface MsgPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
         /**  第几页 */
-        page? : number;
+        page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgPlayerHistoryRsp{
+    interface MsgPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : PlayerHistory[];
+        history: PlayerHistory[];
         /** 是否最后一页 */
-        IsLast? : boolean;
+        IsLast?: boolean;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  桌子类型 */
-        desk_type? : number;
+        desk_type?: number;
     }
 
     /** 玩家下注信息 */
-    interface PlayerHistory{
+    interface PlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  下注位置id */
-        select? : number;
+        select?: number;
         /**  下注金额 */
-        point? : string;
+        point?: string;
         /**  开奖id */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢奖数量 */
-        amount? : string;
+        amount?: string;
         /**  是否开奖 */
-        is_open? : boolean;
+        is_open?: boolean;
     }
 
     /** Rocket3DCashOutReq 小飞机下车请求 */
-    interface MsgRocket3DCashOutReq{
+    interface MsgRocket3DCashOutReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 下车那次下注 */
-        bet_id? : number;
+        bet_id?: number;
     }
 
     /** Rocket3DCashOutRsp 小火箭下车请求响应 */
-    interface MsgRocket3DCashOutRsp{
+    interface MsgRocket3DCashOutRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /** 下车那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /**  赢取金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  赢倍数 */
-        win_rate? : string;
+        win_rate?: string;
     }
 
     /** Rocket3DSettleNtf 小飞机爆炸结算通知消息 */
-    interface MsgRocket3DSettleNtf{
+    interface MsgRocket3DSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  爆炸倍率 */
-        open_rate? : string;
+        open_rate?: string;
         /**  是否开jackpot */
-        open_jackpot? : boolean;
+        open_jackpot?: boolean;
         /**  jacket pot最大赢家 */
-        jack_top? : WinPlayer;
+        jack_top?: WinPlayer;
         /**  jacket pot 我赢的金币 */
-        jack_my? : MyWinDataShort;
+        jack_my?: MyWinDataShort;
         /**  爆炸时的毫秒数 */
-        open_seconds? : number;
+        open_seconds?: number;
         /**  爆炸时的unix毫秒时间戳 */
-        open_unix? : number;
+        open_unix?: number;
         /**  jackpot奖池总金币 */
-        jack_pool? : string;
+        jack_pool?: string;
         /**  本次瓜分 jackpot奖池金币 */
-        jack_award? : string;
+        jack_award?: string;
     }
 
     /** Rocket3DFlyNtf 小火箭 起飞通知消息 */
-    interface MsgRocket3DFlyNtf{
+    interface MsgRocket3DFlyNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  小火箭起飞毫秒时间戳 */
-        start_time? : number;
+        start_time?: number;
     }
 
     /** Rocket3DCashOutNtf 小火箭下车通知消息 */
-    interface MsgRocket3DCashOutNtf{
+    interface MsgRocket3DCashOutNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  最新的小火箭下车玩家 */
-        players : CashOutPlayer[];
+        players: CashOutPlayer[];
     }
 
     /** 小火箭进度通知 */
-    interface MsgRocket3DRateNtf{
+    interface MsgRocket3DRateNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  小火箭起飞毫秒时间戳 */
-        start_time? : number;
+        start_time?: number;
         /** 当前跑到多少时间了 */
-        progress_time? : number;
+        progress_time?: number;
         /** 当前倍率 */
-        rate_time? : string;
+        rate_time?: string;
     }
 
     /** 玩家取消自动下车请求 */
-    interface MsgRocket3DAutoCashOutReq{
+    interface MsgRocket3DAutoCashOutReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /** 是否自动 */
-        isAuto? : boolean;
+        isAuto?: boolean;
         /** 只有isAuto 是true的时候才有意义 */
-        out_rate? : string;
+        out_rate?: string;
     }
 
     /** 玩家取消自动下车请求返回 */
-    interface MsgRocket3DAutoCashOutRsp{
+    interface MsgRocket3DAutoCashOutRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 那次下注 */
-        bet_id? : number;
+        bet_id?: number;
         /** 是否自动 */
-        isAuto? : boolean;
+        isAuto?: boolean;
         /** 只有isAuto 是true的时候才有意义 */
-        out_rate? : string;
+        out_rate?: string;
     }
 
     /** 小火箭下注记录列表请求 */
-    interface MsgRocket3DPlayerHistoryReq{
+    interface MsgRocket3DPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
     }
 
     /** 小火箭下注记录列表返回 */
-    interface MsgRocket3DPlayerHistoryRsp{
+    interface MsgRocket3DPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        page_count? : number;
+        page_count?: number;
         /**  历史下注 */
-        history : RocketPlayerHistory[];
+        history: RocketPlayerHistory[];
     }
 
     /** 小火箭下注记录列表返回 */
-    interface MsgRocket3DData{
+    interface MsgRocket3DData {
         /**  */
-        bet_id? : number;
+        bet_id?: number;
         /**  */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  */
-        out_rate? : string;
+        out_rate?: string;
         /**  */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 小火箭下注记录列表返回 */
-    interface MsgRocket3DPlayerHistory{
+    interface MsgRocket3DPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 时间 */
-        save_time? : number;
+        save_time?: number;
         /** 开奖倍率 */
-        open_rate? : string;
+        open_rate?: string;
         /**  */
-        infos : MsgRocket3DData[];
+        infos: MsgRocket3DData[];
     }
 
     /** 小火箭验证消息请求 */
-    interface MsgRocket3DEncryptedDataReq{
+    interface MsgRocket3DEncryptedDataReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 桌子id */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** 小火箭验证消息返回 */
-    interface MsgRocket3DEncryptedDataRsp{
+    interface MsgRocket3DEncryptedDataRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        period? : string;
+        period?: string;
         /** 明文 */
-        plain_text? : string;
+        plain_text?: string;
         /** 密文 */
-        encrypt_text? : string;
+        encrypt_text?: string;
     }
 
     /** 小火箭对局历史列表请求 */
-    interface MsgRocket3DDeskHistoryReq{
+    interface MsgRocket3DDeskHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
     }
 
     /** 小火箭对局历史列表请求 */
-    interface MsgRocket3DDeskRate{
+    interface MsgRocket3DDeskRate {
         /**  */
-        period? : string;
+        period?: string;
         /** 时间 */
-        save_time? : number;
+        save_time?: number;
         /** 开奖倍率 */
-        open_rate? : string;
+        open_rate?: string;
     }
 
     /** 小火箭对局历史列表返回 */
-    interface MsgRocket3DDeskHistoryRsp{
+    interface MsgRocket3DDeskHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
         /**  */
-        infos : MsgRocket3DDeskRate[];
+        infos: MsgRocket3DDeskRate[];
     }
 
     /** 小火箭对局历史列表返回 */
-    interface MsgRocket3DPlayer{
+    interface MsgRocket3DPlayer {
         /**  昵称 */
-        name? : string;
+        name?: string;
         /**  玩家ID */
-        player_id? : number;
+        player_id?: number;
         /**  是否机器人 */
-        is_robot? : boolean;
+        is_robot?: boolean;
         /** 下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  下车倍数 */
-        out_rate? : string;
+        out_rate?: string;
         /**  赢金币 */
-        win_coin? : string;
+        win_coin?: string;
         /** 是否结算 */
-        is_settle? : boolean;
+        is_settle?: boolean;
         /** 下注区域id */
-        bet_id? : number;
+        bet_id?: number;
     }
 
     /** 小火箭本局下注玩家列表查看请求 */
-    interface MsgRocket3DDeskBetsHistoryReq{
+    interface MsgRocket3DDeskBetsHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 多少页 */
-        page_count? : number;
+        page_count?: number;
     }
 
     /** 小火箭本局下注玩家列表查看请求 */
-    interface MsgRocket3DDeskBetsHistoryRsp{
+    interface MsgRocket3DDeskBetsHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  多少页 */
-        page_count? : number;
+        page_count?: number;
         /**  最大页数 */
-        max_page_count? : number;
+        max_page_count?: number;
         /**  用户下注信息 */
-        bet_info : MsgRocket3DPlayer[];
+        bet_info: MsgRocket3DPlayer[];
     }
 
     /** LongHuSettleNtf 结算通知消息 */
-    interface MsgLongHuSettleNtf{
+    interface MsgLongHuSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖位置ID */
-        open_pos : number[];
+        open_pos: number[];
         /**  开奖区域 */
-        win_type? : number;
+        win_type?: number;
         /**  我的开奖数据 */
-        win_data? : MsgLongHuWinData;
+        win_data?: MsgLongHuWinData;
         /** 开奖期数 */
-        period? : string;
+        period?: string;
         /** 下一期 */
-        next_period? : string;
+        next_period?: string;
         /** 是否最后一期 */
-        is_last? : boolean;
+        is_last?: boolean;
     }
 
     /** SelfWinData 我的赢奖数据 */
-    interface MsgLongHuWinData{
+    interface MsgLongHuWinData {
         /**  我赢的金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  我的开奖数据 */
-        open_elem : MsgLongHuOpenData[];
+        open_elem: MsgLongHuOpenData[];
     }
 
     /** LongHuShuffleCardsNtf 洗牌消息 */
-    interface MsgLongHuShuffleCardsNtf{
+    interface MsgLongHuShuffleCardsNtf {
         /**  我赢的金币数 */
-        card_num? : number;
+        card_num?: number;
     }
 
     /** LotteryOpenData 开奖数据 */
-    interface MsgLongHuOpenData{
+    interface MsgLongHuOpenData {
         /**  位置ID */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢倍数 */
-        win_times? : string;
+        win_times?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** } */
-    interface MsgLongHuPlayerHistoryReq{
+    interface MsgLongHuPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  第几页 */
-        page? : number;
+        page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgLongHuPlayerHistoryRsp{
+    interface MsgLongHuPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : MsgLongHuPlayerHistory[];
+        history: MsgLongHuPlayerHistory[];
         /** 是否最后一页 */
-        IsLast? : boolean;
+        IsLast?: boolean;
     }
 
     /** 玩家下注信息 */
-    interface MsgLongHuPlayerHistory{
+    interface MsgLongHuPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  下注区域 */
-        bet_area? : number;
+        bet_area?: number;
         /**  下注金额 */
-        bet? : string;
+        bet?: string;
         /**  开奖id */
-        win_type? : number;
+        win_type?: number;
         /**  赢奖数量 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 玩家下注信息 */
-    interface MsgStockPlayerHistoryReq{
+    interface MsgStockPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  第几页 （从1开始） */
-        page? : number;
+        page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgStockPlayerHistoryRsp{
+    interface MsgStockPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : MsgStockPlayerHistory[];
+        history: MsgStockPlayerHistory[];
         /**  第几页 */
-        page? : number;
+        page?: number;
         /**  最大页数 */
-        max_page? : number;
+        max_page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgStockPlayerHistory{
+    interface MsgStockPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  下注位置id */
-        bet_id? : number;
+        bet_id?: number;
         /**  下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  开奖id */
-        open_id? : number;
+        open_id?: number;
         /**  开奖倍率 */
-        open_rate? : number;
+        open_rate?: number;
         /**  赢奖数量 */
-        win_coin? : string;
+        win_coin?: string;
         /**  是否开奖 */
-        is_open? : boolean;
+        is_open?: boolean;
     }
 
     /** 公平性验证 */
-    interface MsgStockEncryptedDataReq{
+    interface MsgStockEncryptedDataReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  期数 */
-        period? : string;
+        period?: string;
         /** 桌子id */
-        desk_id? : number;
+        desk_id?: number;
     }
 
     /** 公平性验证 */
-    interface MsgStockEncryptedDataRsp{
+    interface MsgStockEncryptedDataRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  */
-        period? : string;
+        period?: string;
         /** 明文 */
-        plain_text? : string;
+        plain_text?: string;
         /** 密文 */
-        encrypt_text? : string;
+        encrypt_text?: string;
     }
 
     /** StockSettleNtf 结算通知消息 */
-    interface MsgStockSettleNtf{
+    interface MsgStockSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖位置ID */
-        open_id? : number;
+        open_id?: number;
         /**  赢倍数 */
-        win_rate? : string;
+        win_rate?: string;
         /**  我的开奖数据 */
-        my_data? : MsgStockSettleData;
+        my_data?: MsgStockSettleData;
         /**  开奖期数 */
-        period? : string;
+        period?: string;
         /**  赢钱玩家列表 */
-        win_list : MsgStockWinData[];
+        win_list: MsgStockWinData[];
     }
 
     /** StockSettleData 结算数据 */
-    interface MsgStockSettleData{
+    interface MsgStockSettleData {
         /**  位置ID */
-        bet_pos? : number;
+        bet_pos?: number;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
     }
 
     /** StockWinData 胜利者数据 */
-    interface MsgStockWinData{
+    interface MsgStockWinData {
         /**  赢金币数 */
-        name? : string;
+        name?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 股票历史列表请求 */
-    interface MsgStockDeskHistoryReq{
+    interface MsgStockDeskHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 第几页 （从1开始） */
-        page? : number;
+        page?: number;
     }
 
     /** 股票历史列表请求 */
-    interface MsgStockDeskHistory{
+    interface MsgStockDeskHistory {
         /**  */
-        period? : string;
+        period?: string;
         /** 股票曲线点位 */
-        stock_info? : StockInfo;
+        stock_info?: StockInfo;
     }
 
     /** 股票历史列表请求 */
-    interface MsgStockDeskHistoryRsp{
+    interface MsgStockDeskHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  历史信息 */
-        infos : MsgStockDeskHistory[];
+        infos: MsgStockDeskHistory[];
         /**  第几页 */
-        page? : number;
+        page?: number;
         /**  最大页数 */
-        max_page? : number;
+        max_page?: number;
     }
 
     /** SevenUpDownSettleNtf 结算通知消息 */
-    interface MsgSevenUpDownSettleNtf{
+    interface MsgSevenUpDownSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  开奖位置ID */
-        open_pos : number[];
+        open_pos: number[];
         /**  开奖区域 */
-        win_type? : number;
+        win_type?: number;
         /**  我的开奖数据 */
-        win_data? : MsgSevenUpDownWinData;
+        win_data?: MsgSevenUpDownWinData;
         /** 开奖期数 */
-        period? : string;
+        period?: string;
         /** 下一期 */
-        next_period? : string;
+        next_period?: string;
         /** 是否最后一期 */
-        is_last? : boolean;
+        is_last?: boolean;
     }
 
     /** SelfWinData 我的赢奖数据 */
-    interface MsgSevenUpDownWinData{
+    interface MsgSevenUpDownWinData {
         /**  我赢的金币数 */
-        win_coin? : string;
+        win_coin?: string;
         /**  我的最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
         /**  我的开奖数据 */
-        open_elem : MsgSevenUpDownOpenData[];
+        open_elem: MsgSevenUpDownOpenData[];
     }
 
     /** LotteryOpenData 开奖数据 */
-    interface MsgSevenUpDownOpenData{
+    interface MsgSevenUpDownOpenData {
         /**  位置ID */
-        pos_id? : number;
+        pos_id?: number;
         /**  赢倍数 */
-        win_times? : string;
+        win_times?: string;
         /**  赢金币数 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** LotteryOpenData 开奖数据 */
-    interface MsgSevenUpDownPlayerHistoryReq{
+    interface MsgSevenUpDownPlayerHistoryReq {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /**  第几页 */
-        page? : number;
+        page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgSevenUpDownPlayerHistoryRsp{
+    interface MsgSevenUpDownPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : MsgSevenUpDownPlayerHistory[];
+        history: MsgSevenUpDownPlayerHistory[];
         /** 是否最后一页 */
-        IsLast? : boolean;
+        IsLast?: boolean;
     }
 
     /** 玩家下注信息 */
-    interface MsgSevenUpDownPlayerHistory{
+    interface MsgSevenUpDownPlayerHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  下注区域 */
-        bet_area? : number;
+        bet_area?: number;
         /**  下注金额 */
-        bet? : string;
+        bet?: string;
         /**  开奖id */
-        win_type? : number;
+        win_type?: number;
         /**  赢奖数量 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 玩家下注信息 */
-    interface MsgAndarBaharSettleNtf{
+    interface MsgAndarBaharSettleNtf {
         /**  主题ID */
-        theme_id? : number;
+        theme_id?: number;
         /**  桌子ID */
-        desk_id? : number;
+        desk_id?: number;
         /** 开奖期数 */
-        period? : string;
+        period?: string;
         /**  开奖结果数据 */
-        result_data? : OpenRecord;
+        result_data?: OpenRecord;
         /**  开奖结果 */
-        result? : number;
+        result?: number;
         /**  玩家下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  玩家赢奖金额 */
-        win_coin? : string;
+        win_coin?: string;
         /**  玩家最新金币余额 */
-        new_coin? : string;
+        new_coin?: string;
     }
 
     /** 玩家下注信息 */
-    interface AndarBaharHistory{
+    interface AndarBaharHistory {
         /**  期数 */
-        period? : string;
+        period?: string;
         /**  开奖结果数据 */
-        result_data? : OpenRecord;
+        result_data?: OpenRecord;
         /**  结果 1 左边 3 右边 */
-        result? : number;
+        result?: number;
         /**  玩家下注数据 */
-        bets : BetData[];
+        bets: BetData[];
         /**  玩家下注金额 */
-        bet_coin? : string;
+        bet_coin?: string;
         /**  玩家赢奖金额 */
-        win_coin? : string;
+        win_coin?: string;
     }
 
     /** 玩家下注信息 */
-    interface MsgAndarBaharPlayerHistoryReq{
+    interface MsgAndarBaharPlayerHistoryReq {
         /**  */
-        theme_id? : number;
+        theme_id?: number;
         /**  第几页 */
-        page? : number;
+        page?: number;
     }
 
     /** 玩家下注信息 */
-    interface MsgAndarBaharPlayerHistoryRsp{
+    interface MsgAndarBaharPlayerHistoryRsp {
         /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+        result?: commonrummy.RummyResult;
         /**  历史下注 */
-        history : AndarBaharHistory[];
+        history: AndarBaharHistory[];
         /**  是否最后一页 */
-        is_last? : boolean;
+        is_last?: boolean;
         /**  最大页数 */
-        max_page_num? : number;
+        max_page_num?: number;
     }
 
     /** 进入游戏请求 */
-    interface MsgGameEnterReq{
+    interface MsgGameEnterReq {
     }
 
     /** 进入游戏回复 */
-    interface MsgGameEnterAck{
+    interface MsgGameEnterAck {
         /** 错误码 */
-        code? : number;
+        code?: number;
         /** 游戏编号 */
-        game_code? : string;
+        game_code?: string;
         /** 游戏玩家信息 */
-        player? : PlayerInfo;
+        player?: PlayerInfo;
         /**  钱包列表 */
-        wallets : WalletInfo[];
+        wallets: WalletInfo[];
         /**  */
-        bet_config : { [key : string] : BetConfig};
+        bet_config: { [key: string]: BetConfig };
     }
 
     /** spin请求消息 */
-    interface MsgGameSpinReq{
+    interface MsgGameSpinReq {
         /** 币种 */
-        currency : string;
+        currency: string;
         /** 底注列表 */
-        bet_size? : number;
+        bet_size?: number;
         /** 基础值-投注倍数 */
-        bet_multiple? : number;
+        bet_multiple?: number;
         /** 控制开奖结果(测试阶段) */
-        debug_info : number[];
+        debug_info: number[];
     }
 
     /** spin回复消息 */
-    interface MsgGameSpinAck{
+    interface MsgGameSpinAck {
         /** 错误码 */
-        code? : number;
+        code?: number;
         /** 交易订单号 */
-        sn? : string;
+        sn?: string;
         /** 时间戳 */
-        utc_time? : number;
+        utc_time?: number;
         /** 币种 */
-        currency : string;
+        currency: string;
         /** 底注列表 */
-        bet_size? : number;
+        bet_size?: number;
         /** 基础值-投注倍数 */
-        bet_multiple? : number;
+        bet_multiple?: number;
         /** 投注总金额 */
-        bet? : number;
+        bet?: number;
         /** 中奖总金额 */
-        win_gold? : number;
+        win_gold?: number;
         /** 最新拥有总金额 */
-        own_gold? : number;
+        own_gold?: number;
         /** 旋转类型 1 普通旋转 2 免费旋转 */
-        spin_type? : number;
+        spin_type?: number;
         /** 是否中scatter游戏 */
-        is_scatter? : boolean;
+        is_scatter?: boolean;
         /** 本次旋转获得的免费次数 */
-        win_free? : number;
+        win_free?: number;
         /** 当前最新剩余的免费次数 */
-        free_count? : number;
+        free_count?: number;
         /** 旋转矩阵和中奖详情 */
-        spin_data? : SpinInfo;
+        spin_data?: SpinInfo;
     }
 
     /** 转轴数据 */
-    interface SpinInfo{
+    interface SpinInfo {
         /** 转轴矩阵 */
-        matrix : number[];
+        matrix: number[];
         /** 总奖励 */
-        award : number;
+        award: number;
         /** 线条奖励数据 */
-        info : SloAwardItemInfo[];
+        info: SloAwardItemInfo[];
     }
 
     /** 单条线奖励数据 */
-    interface SloAwardItemInfo{
+    interface SloAwardItemInfo {
         /** 线奖励金额 */
-        award : number;
+        award: number;
         /** 中奖线路坐标 -1代表没中奖 >0对应每一列的图标位置索引 */
-        line : number[];
+        line: number[];
         /** 中奖图标符号ID */
-        symbol : number;
+        symbol: number;
         /** 中奖倍率 */
-        multiple : number;
+        multiple: number;
     }
 
     /** 投注数据 */
-    interface BetConfig{
+    interface BetConfig {
         /** 币种 */
-        currency : string;
+        currency: string;
         /** 底注列表 */
-        bet_size : number[];
+        bet_size: number[];
         /** 自动局数 */
-        auto_times : number[];
+        auto_times: number[];
         /** 倍数列表 */
-        multiple : number[];
+        multiple: number[];
         /** 底注倍数列表 */
-        bet_index_rule : number[];
+        bet_index_rule: number[];
         /** 最小下注 */
-        min_bet? : number;
+        min_bet?: number;
         /** 最大下注 */
-        max_bet? : number;
+        max_bet?: number;
         /** 自动最小局数 */
-        auto_min_round : number[];
+        auto_min_round: number[];
         /** 自动最大局数 */
-        auto_max_round : number[];
+        auto_max_round: number[];
     }
 
     /** 游戏玩家结构 */
-    interface PlayerInfo{
+    interface PlayerInfo {
         /** 最后一次的货币code */
-        last_currency? : string;
+        last_currency?: string;
         /** 最后一次的投注大小 */
-        last_bet_size? : number;
+        last_bet_size?: number;
         /** 最后一次的投注倍数 */
-        last_bet_multiple? : number;
+        last_bet_multiple?: number;
         /** 最后一次的投注总金额 */
-        last_bet? : number;
+        last_bet?: number;
         /** 免费游戏剩余次数 */
-        free_count? : number;
+        free_count?: number;
         /** 已经完成的免费游戏次数 */
-        free_finished_times? : number;
+        free_finished_times?: number;
         /** 触发免费游戏那一局赢的分数 */
-        free_trigger_win_gold? : number;
+        free_trigger_win_gold?: number;
         /** 触发免费游戏那一局赢的分数 */
-        free_win_gold? : number;
+        free_win_gold?: number;
     }
 
 }

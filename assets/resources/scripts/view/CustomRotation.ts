@@ -5,12 +5,19 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomList from 'db://assets/resources/scripts/view/CustomList';
+import BaseGlobal from '../core/message/base-global';
+import { GameEvent } from '../define';
+import SuperSevenManager from '../manager/ss-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-
+export enum Column {
+    Left = 1,
+    Middle,
+    Right
+}
 @ccclass('CustomRotation')
 export default class CustomRotation extends ViewBase {
 
@@ -26,8 +33,20 @@ export default class CustomRotation extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    _executeCount: number = 0;
+    _rIndex: number = 0;
+    _startIdx: number = 0;
+    _matrix: number[] = [];
+    _data: supersevenbaccarat.SpinInfo | null = null;
+    _lineArr: number[][] = [];
+    _flashArr: number[][][] = [];
     buildUi() {
         this.reset();
+        BaseGlobal.registerListeners(this, {
+            [GameEvent.UPDATE_ROTATION]: this._updateRotation,
+            [GameEvent.STOP_ROTATION]: this._stopRotation,
+            [GameEvent.ROTATION_END]: this._rotationEnd,
+        });
     }
 
     reset() {
@@ -36,6 +55,73 @@ export default class CustomRotation extends ViewBase {
         this.spjzlunzi.node.active = false;
     }
 
+    _updateRotation() {
+        this._data = SuperSevenManager.SpinInfo;
+        this._rIndex++;
+        this._startIdx = this._rIndex % 2 == 1 ? 3 : 0;
+        this._matrix = this._data.matrix;
+        this._lineArr = [];
+        this._flashArr = [];
+        for (let i = 0; i < this._matrix.length; i++) {
+            let idx = i % 3;
+            if (!this._lineArr[idx]) this._lineArr[idx] = [];
+            if (this._matrix[i] != -1) {
+                this._lineArr[idx].push(this._matrix[i]);
+            }
+        }
+        if (this._data.info && this._data.info.length) {
+            let idx = 0;
+            this._flashArr[0] = [[], [], []];
+            for (let j = 0; j < this._data.info.length; j++) {
+                idx++;
+                if (!this._flashArr[idx]) this._flashArr[idx] = [];
+                const line = this._data.info[j].line;
+                for (let k = 0; k < line.length; k++) {
+                    let _idx = line[k] < 7 ? this._startIdx : this._startIdx + 1
+                    if (this._flashArr[0][k].indexOf(_idx) == -1) {
+                        this._flashArr[0][k].push(_idx);
+                    }
+                    this._flashArr[idx][k] = [_idx];
+                }
+            }
+        }
+        console.log(this._flashArr, '---------------------------this._flashArr')
+        this._executeCount = 0;
+        this.schedule(this.callback, 0.1, 3);
+    }
+    callback() {
+        switch (this._executeCount) {
+            case 0:
+                this.list0_node.setData(this._lineArr[0], this._startIdx, Column.Left); break;
+            case 1:
+                this.list1_node.setData(this._lineArr[1], this._startIdx, Column.Middle); break;
+            case 2:
+                let free = this._lineArr[0].indexOf(2) != -1 && this._lineArr[1].indexOf(2) != -1;
+                this.list2_node.setData(this._lineArr[2], this._startIdx, Column.Right, free); break;
+        }
+        this._executeCount++;
+        if (this._executeCount >= 3) this.unschedule(this.callback);
+    }
+
+    _stopRotation() {
+        this.rotation_list_node.children.forEach(child => {
+            child.getComponent(CustomList).stopImmediately()
+        });
+    }
+
+    _rotationEnd() {
+        if (this._data.award && this._data.award > 0) {
+            let arr = [[], [], []];
+            for (let i = 0; i < this._flashArr.length; i++) {
+                arr[0].push(this._flashArr[i][0]);
+                arr[1].push(this._flashArr[i][1]);
+                arr[2].push(this._flashArr[i][2])
+            }
+            this.rotation_list_node.children.forEach((child, idx) => {
+                child.getComponent(CustomList).flashAnimation(arr[idx])
+            });
+        }
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -51,42 +137,42 @@ export default class CustomRotation extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_list0_node    : [CustomList],
-            cc_list1_node    : [CustomList],
-            cc_list2_node    : [CustomList],
-            cc_rotation_list_node    : [cc.Node],
-            cc_spRotation    : [cc.sp.Skeleton],
-            cc_spStar    : [cc.sp.Skeleton],
-            cc_spjzlunzi    : [cc.sp.Skeleton],
-            cc_star_node    : [cc.Node],
+            cc_list0_node: [CustomList],
+            cc_list1_node: [CustomList],
+            cc_list2_node: [CustomList],
+            cc_rotation_list_node: [cc.Node],
+            cc_spRotation: [cc.sp.Skeleton],
+            cc_spStar: [cc.sp.Skeleton],
+            cc_spjzlunzi: [cc.sp.Skeleton],
+            cc_star_node: [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected list0_node: CustomList    = null;
-   protected list1_node: CustomList    = null;
-   protected list2_node: CustomList    = null;
-   protected rotation_list_node: cc.Node    = null;
-   protected spRotation: cc.sp.Skeleton    = null;
-   protected spStar: cc.sp.Skeleton    = null;
-   protected spjzlunzi: cc.sp.Skeleton    = null;
-   protected star_node: cc.Node    = null;
+    protected list0_node: CustomList = null;
+    protected list1_node: CustomList = null;
+    protected list2_node: CustomList = null;
+    protected rotation_list_node: cc.Node = null;
+    protected spRotation: cc.sp.Skeleton = null;
+    protected spStar: cc.sp.Skeleton = null;
+    protected spjzlunzi: cc.sp.Skeleton = null;
+    protected star_node: cc.Node = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomRotation';
+    public static readonly VIEW_NAME = 'CustomRotation';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomRotation.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomRotation.VIEW_NAME;
     }
     // @view export resource end

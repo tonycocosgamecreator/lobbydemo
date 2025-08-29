@@ -36,6 +36,12 @@
     }
 ],
 'datas': {
+    "CustomAuto": {
+        "viewName": "CustomAuto",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001011
+    },
     "CustomButtom": {
         "viewName": "CustomButtom",
         "bundleName": "resources",
@@ -101,6 +107,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001004
+    },
+    "PanelAuto": {
+        "viewName": "PanelAuto",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001012
     },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",

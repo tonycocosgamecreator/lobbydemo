@@ -31,13 +31,16 @@ export default class CustomDetail extends ViewBase {
     }
     //------------------------ 内部逻辑 ------------------------//
     _fadeDuration: number = 1;
-    _displayDuration: number = 5;
+    _displayDuration: number = 10;
     _currentIndex: number = 0;
     buildUi() {
         this._updateBet();
+        this._updateState()
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_BET]: this._updateBet,
+             [GameEvent.UPDATE_STATE]: this._updateState,
         });
+
     }
 
     _updateBet() {
@@ -79,6 +82,10 @@ export default class CustomDetail extends ViewBase {
         let free = SuperSevenManager.Free;
         this.item_free_node.active = free;
         this.item_pay_node.active = !free;
+        // if(){
+        //       this.labelfreeGame.string = SuperSevenManager.FreeCount + '';
+        //                 this.labelfreeTotal.string = (SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount).toString();
+        // }
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

@@ -8,7 +8,28 @@ import SuperSevenManager from '../manager/ss-manager';
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-
+export enum ShowSpineName {
+    '10109_symbols_wild_3' = '3xwild_win',
+    '10109_symbols_wild_2' = '2xwild_win',
+    '10109_symbols_scatter' = 'scatter_win',
+    '10109_symbols_7_red' = 'M1',
+    '10109_symbols_7_blue' = 'M2',
+    '10109_symbols_bar_3' = 'M3',
+    '10109_symbols_bar_2' = 'M4',
+    '10109_symbols_bar_1' = 'M5',
+    '10109_symbols_cherry' = 'M6',
+}
+export enum DisableSpineName {
+    '10109_symbols_wild_3' = '3xwild_win',
+    '10109_symbols_wild_2' = '2xwild_win',
+    '10109_symbols_scatter' = 'scatter_jili',
+    '10109_symbols_7_red' = 'M1',
+    '10109_symbols_7_blue' = 'M2',
+    '10109_symbols_bar_3' = 'M3',
+    '10109_symbols_bar_2' = 'M4',
+    '10109_symbols_bar_1' = 'M5',
+    '10109_symbols_cherry' = 'M6',
+}
 @ccclass('CustomItem')
 export default class CustomItem extends ViewBase {
 
@@ -23,28 +44,66 @@ export default class CustomItem extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    @ViewBase.requireResourceLoaded
+    _name: string = '';
+    _idx: number = -1;
+    set Index(value: number) {
+        this._idx = value;
+    }
+    // @ViewBase.requireResourceLoaded
     setData(name: string) {
         this.reset()
+        this._name = name;
         this.sprImg.spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/10109_symbols', name);
     }
 
-    flashAnimation(name: string) {
+    flashAnimation(arr: number[]) {
+        if (this._name == '' || this._idx == -1) return;
+        let inclue = arr.indexOf(this._idx) != -1;
+        let name = inclue ? ShowSpineName[this._name] : DisableSpineName[this._name];
+        this.reset()
+        this.sprImg.node.active = false;
         if (name.includes('M')) {
-            this.spSkeleton.setAnimation(0, name, true);
+            if (inclue) {
+                this.spSkeleton.setAnimation(0, name, false);
+                this.spSkeleton.setCompleteListener(() => {
+                    this.spSkeleton.setCompleteListener(null);
+                    this.spSkeleton.setAnimation(0, name, false);
+                    this.spSkeleton.setCompleteListener(() => {
+                        this.reset()
+                    })
+                    this.reset();
+                });
+            } else {
+                const trackEntry = this.spSkeleton.setAnimation(0, name, false);
+                trackEntry.trackTime = trackEntry.animationEnd;
+            }
             this.spSkeleton.node.active = true;
         } else {
-            this.spSymbol.setAnimation(0, name, true);
+            if (inclue) {
+                this.spSymbol.setAnimation(0, name, false);
+                this.spSymbol.setCompleteListener(() => {
+                    this.spSymbol.setCompleteListener(null);
+                    this.spSymbol.setAnimation(0, name, false);
+                    this.spSymbol.setCompleteListener(() => {
+                        this.reset()
+                    })
+                });
+            } else {
+                const trackEntry = this.spSymbol.setAnimation(0, name, false);
+                trackEntry.trackTime = trackEntry.animationEnd;
+            }
             this.spSymbol.node.active = true;
         }
-        this.scheduleOnce(() => {
-            this.reset();
-        }, 0.2)
     }
 
     reset() {
+        this.spSkeleton.setCompleteListener(null);
+        this.spSymbol.setCompleteListener(null);
+        this.spSkeleton.clearTracks();
+        this.spSymbol.clearTracks();
         this.spSkeleton.node.active = false;
         this.spSymbol.node.active = false;
+        this.sprImg.node.active = true;
     }
 
     //------------------------ 网络消息 ------------------------//

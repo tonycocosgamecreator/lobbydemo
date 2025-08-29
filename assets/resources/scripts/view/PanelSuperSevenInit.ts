@@ -49,6 +49,9 @@ export default class PanelSuperSevenInit extends ViewBase {
             WalletManager.bets = msg.bet_config;
             WalletManager.walletInfos = msg.wallets || [];
             SuperSevenManager.PlayInfo = msg.player || null;
+            SuperSevenManager.Free = msg.player?.free_count > 0 || false;
+            SuperSevenManager.FreeCount = msg.player?.free_count || 0;
+            SuperSevenManager.FinishedCount = msg.player?.free_finished_times || 0
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
             this.close();
         }
@@ -72,19 +75,19 @@ export default class PanelSuperSevenInit extends ViewBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'PanelSuperSevenInit';
+    public static readonly VIEW_NAME = 'PanelSuperSevenInit';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return PanelSuperSevenInit.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return PanelSuperSevenInit.VIEW_NAME;
     }
     // @view export resource end

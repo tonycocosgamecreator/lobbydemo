@@ -9,6 +9,8 @@ import { SpriteAtlas } from 'cc';
 import { resources } from 'cc';
 import { SpriteFrame } from 'cc';
 import { Sprite } from 'cc';
+import UIHelper from '../network/helper/ui-helper';
+import { MessageSender } from '../network/net/message-sender';
 const { ccclass, property } = _decorator;
 
 export enum gameType {
@@ -21,7 +23,8 @@ export enum gameType {
 }
 
 export enum gameState {
-
+    Ing,
+    End,
 }
 export default class SuperSevenManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -65,9 +68,27 @@ export default class SuperSevenManager extends BaseManager {
     public static onNetMessage(msgType: string, data: any): boolean {
         if (msgType == supersevenbaccarat.Message.MsgGameSpinAck) {
             const msg = data as supersevenbaccarat.MsgGameSpinAck;
-            console.log(data, '--------------')
+            if (msg && msg.code != commonrummy.RummyErrCode.EC_SUCCESS) {
+                //如果有错误码，说明进入spin失败了
+                console.error(`enter Game Failed: ${msg.code}`);
+                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.Error,
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.Error
+                );
+                return true; //拦截消息，不继续传递
+            }
             //更新客户端下注金币
             WalletManager.updatePlayerCoin(msg.own_gold);
+            this.SpinInfo = msg.spin_data || null;
+            this.State = gameState.Ing;
+            this.Free = msg.free_count > 0;
+            if (msg.free_count == 0) {
+                this.FinishedCount = 0;
+            } else {
+                this.FinishedCount++;
+            }
+            this.FreeCount = msg.free_count;
+            this._curFreeCount = msg.win_free || 0;
         }
         return false;
     }
@@ -77,7 +98,7 @@ export default class SuperSevenManager extends BaseManager {
     /**是否是自动下注 */
     private static _auto: boolean = false;
     /**当前游戏状态 */
-    private static _state: gameState = null;
+    private static _state: gameState = gameState.End;
     /**当前转动倍数 */
     private static _times: number = 1;
     /**当前下注金额 */
@@ -86,11 +107,27 @@ export default class SuperSevenManager extends BaseManager {
     private static _playInfo: supersevenbaccarat.PlayerInfo | null = null;
     /**是否是免费游戏 */
     private static _free: boolean = false;
-
+    /**转轴数据 */
+    private static _spinInfo: supersevenbaccarat.SpinInfo | null = null;
+    /**剩余免费次数 */
+    private static _freeCount: number = 0;
+    /**已完成的免费次数 */
+    private static _finishedCount: number = 0;
+    /**本局获得免费次数 */
+    private static _curFreeCount: number = 0;
+    /**剩余自动转动局数 */
+    private static _autoNum: number = 0;
 
     /**----------------绑定界面-------------------*/
     private static _view: IPanelSuperSevenMainView | null = null;
 
+    public static set FreeCount(value: number) {
+        this._freeCount = value;
+    }
+
+    public static set FinishedCount(value: number) {
+        this._finishedCount = value;
+    }
 
     public static set BetCoin(value: number) {
         this._betCoin = value;
@@ -99,10 +136,25 @@ export default class SuperSevenManager extends BaseManager {
 
     public static set Times(value: number) {
         this._times = value;
+        Global.sendMsg(GameEvent.UPDATE_TIMES);
+    }
+
+    public static set State(value: gameState) {
+        this._state = value;
+        Global.sendMsg(GameEvent.UPDATE_STATE);
     }
 
     public static set Auto(value: boolean) {
+        if (this._auto == value) return;
         this._auto = value;
+        if (this._auto == false) {
+            this.AutoNum = 0;
+        }
+    }
+
+    public static set AutoNum(value: number) {
+        this._autoNum = value;
+        Global.sendMsg(GameEvent.UPDATE_AUTO);
     }
 
     public static set PlayInfo(value: supersevenbaccarat.PlayerInfo | null) {
@@ -117,7 +169,12 @@ export default class SuperSevenManager extends BaseManager {
         this._free = value;
     }
 
-
+    public static set SpinInfo(value: supersevenbaccarat.SpinInfo | null) {
+        this._spinInfo = value;
+        if (value) {
+            Global.sendMsg(GameEvent.UPDATE_ROTATION);
+        }
+    }
 
     public static get BetCoin(): number { return this._betCoin; }
     public static get Times(): number { return this._times; }
@@ -126,9 +183,40 @@ export default class SuperSevenManager extends BaseManager {
     public static get Bets(): Number[] { return this._bets; }
     public static get PlayInfo(): supersevenbaccarat.PlayerInfo | null { return this._playInfo; }
     public static get Free(): boolean { return this._free; }
+    public static get SpinInfo(): supersevenbaccarat.SpinInfo | null { return this._spinInfo; }
     public static get View(): IPanelSuperSevenMainView | null { return this._view; }
+    public static get CurFreeCount(): number { return this._curFreeCount; }
+    public static get FreeCount(): number { return this._freeCount; }
+    public static get FinishedCount(): number { return this._finishedCount; }
+    public static get AutoNum(): number { return this._autoNum; }
 
-
+    public static setAuto(value: number) {
+        if (value <= 0) {
+            this.Auto = false;
+            this.AutoNum = 0;
+            return;
+        }
+        let gold = WalletManager.balance;
+        if (gold < this.BetCoin) {
+            UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
+                resourcesDb.I18N_RESOURCES_DB_INDEX.Error
+            );
+            this.Auto = false;
+            this.AutoNum = 0;
+            return;
+        }
+        this.Auto = true;
+        let data = {
+            currency: WalletManager.currency,
+            bet_size: this.BetCoin
+        }
+        if (value <= 500) {
+            value--;
+        }
+        this.AutoNum = value;
+        MessageSender.SendMessage(supersevenbaccarat.Message.MsgGameSpinReq, data);
+    }
     public static Text(value: number): string {
         let strText = Formater.splitNumber(value.toFixed(2), ',', 3);
         if (strText.endsWith('.00')) {
