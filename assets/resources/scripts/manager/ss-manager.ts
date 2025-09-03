@@ -86,18 +86,18 @@ export default class SuperSevenManager extends BaseManager {
             //     bet_size: 5,
             //     code: 0,
             //     currency: "USD",
-            //     free_count: 6,
+            //     free_count: 12,
             //     is_scatter: false,
             //     own_gold: 1004372.25,
             //     sn: "202509021342391970157",
             //     spin_data: {
-            //         award: 0,
-            //         info: null,
-            //         matrix: [3, -1, -1, -1, 3, 8, 7, -1, -1]
+            //         award: 150,
+            //         info: [{ award: 150, line: [0, 5, 7], multiple: 300000, symbol: 4 }],
+            //         matrix: [3, 2, -1, -1, -1, 7, 4, 3, -1]
             //     },
             //     spin_type: 2,
             //     utc_time: 1756791759,
-            //     win_free: 0,
+            //     win_free: 12,
             //     win_gold: 0,
             // }
             //更新客户端下注金币

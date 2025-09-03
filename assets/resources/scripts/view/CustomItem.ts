@@ -4,6 +4,8 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import SuperSevenManager from '../manager/ss-manager';
+import { Tween } from 'cc';
+import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -46,12 +48,15 @@ export default class CustomItem extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
     _name: string = '';
     _idx: number = -1;
+    _show: boolean = false;
     set Index(value: number) {
         this._idx = value;
     }
     // @ViewBase.requireResourceLoaded
-    setData(name: string) {
-        this.reset()
+    setData(name: string, show: boolean = false) {
+        this.reset();
+        this.init();
+        this._show = show;
         this._name = name;
         this.sprImg.spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/10109_symbols', name);
     }
@@ -98,6 +103,22 @@ export default class CustomItem extends ViewBase {
         }
     }
 
+    showFeeAnimation() {
+        if (this._name == '' || this._idx == -1) return;
+        if (this._name != '10109_symbols_scatter') return;
+        if (!this._show) return;
+        const node = this.sprImg.node.parent;
+        cc.tween(node).to(0.1, {
+            scale: v3(1.2, 1.2, 1.2)
+        }).to(.1, {
+            scale: v3(1, 1, 1)
+        }).start();
+    }
+
+    init() {
+        Tween.stopAllByTarget(this.sprImg.node.parent);
+        this.sprImg.node.parent.scale = v3(1, 1, 1);
+    }
     reset() {
         this.spSkeleton.setCompleteListener(null);
         this.spSymbol.setCompleteListener(null);

@@ -12,9 +12,10 @@ import { IPanelSuperSevenMainView } from '../define/ipanel-ss-main-view';
 import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
-import { MessageSender } from '../network/net/message-sender';
-import WalletManager from '../manager/wallet-manager';
 import { GoldCounter } from './GoldCounter';
+import { v3 } from 'cc';
+import { GButtonTouchStyle } from '../core/view/view-define';
+import { Tween } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -43,6 +44,10 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     _free: boolean = false;
     buildUi() {
         this._reset();
+        this._updateFree();
+        this.spGuangQuan.node.active = this._free;
+        this.spGuangQuan.setAnimation(0, 'daiji', true);
+        this.buttonStart.touchEffectStyle = GButtonTouchStyle.SCALE_LARGER;
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_STATE]: this._updateState,
             [GameEvent.UPDATE_FREE]: this._updateFree,
@@ -60,9 +65,13 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spine_node.active = true;
             this.spFree.node.active = true;
             let first = sy == count;
-            this.buttonStart.node.active = first;
+            let buttonNode = this.buttonStart.node;
+            buttonNode.active = first;
+            Tween.stopAllByTarget(buttonNode)
+            buttonNode.scale = v3(0, 0, 0);
             this.spFree.setAnimation(0, 'chuxian', false);
             this.scheduleOnce(() => {
+                cc.tween(buttonNode).to(0.5, { scale: v3(1, 1, 1) }, { easing: "backOut" }).start();
                 this.spFree.setAnimation(0, 'daiji', true);
                 if (!first) {
                     this.scheduleOnce(() => {
@@ -93,12 +102,19 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             } else {
                 //强转游戏状态
                 SuperSevenManager.Free = false;
+                this._free = false;
                 this.detail_node._updateChange(1);
                 SuperSevenManager.State = gameState.End;
             }
-
         }
         const gold = SuperSevenManager.Gold;
+        if (gold != Gold.None) {
+            this.spGuangQuan.setAnimation(0, 'baozha', false);
+            this.spGuangQuan.setCompleteListener(() => {
+                this.spGuangQuan.setCompleteListener(null);
+                this.spGuangQuan.setAnimation(0, 'daiji', true);
+            });
+        }
         const show = gold == Gold.Big;
         if (show) {
             const award = SuperSevenManager.SpinInfo.award;
@@ -165,12 +181,21 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     // @view export event begin
 
     private onClickButtonStart(event: cc.EventTouch) {
-        this.spFree.setAnimation(0, 'xiaoshi', false);
+        this.buttonStart.node.active = false;
+        this.spFree.setAnimation(0, 'xiaosi', false);
         SuperSevenManager.Free = true;
         this.detail_node._updateChange(1);
-        SuperSevenManager.State = gameState.End;
         this.rotation_node._playXingGuang();
-        this.scheduleOnce(() => { this._reset(); }, 0.5);
+        this.scheduleOnce(() => {
+            this._reset();
+            this.spGuangQuan.node.active = true;
+            this.spGuangQuan.setAnimation(0, 'baozha', false);
+            this.spGuangQuan.setCompleteListener(() => {
+                this.spGuangQuan.setCompleteListener(null);
+                this.spGuangQuan.setAnimation(0, 'daiji', true);
+                SuperSevenManager.State = gameState.End;
+            });
+        }, 1);
         // let data = {
         //     currency: WalletManager.currency,
         //     bet_size: SuperSevenManager.BetCoin
@@ -206,6 +231,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             cc_spFont: [cc.sp.Skeleton],
             cc_spFree: [cc.sp.Skeleton],
             cc_spFreeWin: [cc.sp.Skeleton],
+            cc_spGuangQuan: [cc.sp.Skeleton],
             cc_spKuang: [cc.sp.Skeleton],
             cc_sphandShank: [cc.sp.Skeleton],
             cc_spine_node: [cc.Node],
@@ -224,6 +250,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     protected spFont: cc.sp.Skeleton = null;
     protected spFree: cc.sp.Skeleton = null;
     protected spFreeWin: cc.sp.Skeleton = null;
+    protected spGuangQuan: cc.sp.Skeleton = null;
     protected spKuang: cc.sp.Skeleton = null;
     protected sphandShank: cc.sp.Skeleton = null;
     protected spine_node: cc.Node = null;

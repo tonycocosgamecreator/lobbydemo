@@ -43,10 +43,17 @@ export default class CustomRotation extends ViewBase {
     _flashArr: number[][][] = [];
     buildUi() {
         this._reset();
+        this._init();
         BaseGlobal.registerListeners(this, {
             [GameEvent.STOP_ROTATION]: this._stopRotation,
             [GameEvent.UPDATE_STATE]: this._updateState,
         });
+    }
+
+    _init() {
+        this.list0_node.setColumn(Column.Left);
+        this.list1_node.setColumn(Column.Middle);
+        this.list2_node.setColumn(Column.Right);
     }
 
     _updateState() {
@@ -57,8 +64,6 @@ export default class CustomRotation extends ViewBase {
                 this.spRotation.node.active = true;
                 this.spRotation.timeScale = 1.8;
                 this.spRotation.setAnimation(0, 'daiji', true);
-                this.spjzlunzi.node.active = true;
-                this.spjzlunzi.setAnimation(0, 'daiji', true);
                 this._updateRotation();
                 break;
             case gameState.Result:
@@ -72,9 +77,9 @@ export default class CustomRotation extends ViewBase {
     _reset() {
         this.spStar.node.active = false;
         this.spRotation.node.active = false;
-        this.spjzlunzi.node.active = false;
         this.spZhou.node.active = false;
         this.spXingGuang.node.active = false;
+        this.spjzlunzi.setAnimation(0, 'daiji', true);
     }
 
     _stopRotation() {
@@ -107,13 +112,9 @@ export default class CustomRotation extends ViewBase {
         }
         const data = SuperSevenManager.LineArr;
         this._executeCount = 0;
-        this.list0_node.setData(data[0], this._startIdx, Column.Left);
-        this.scheduleOnce(() => {
-            this.list1_node.setData(data[1], this._startIdx, Column.Middle);
-        }, 0.1);
-        this.scheduleOnce(() => {
-            this.list2_node.setData(data[2], this._startIdx, Column.Right);
-        }, 0.2);
+        this.list0_node.setData(data[0], this._startIdx);
+        this.list1_node.setData(data[1], this._startIdx);
+        this.list2_node.setData(data[2], this._startIdx);
         if (SuperSevenManager.FreeGame) {
             this.scheduleOnce(() => {
                 this.spZhou.node.active = true;
@@ -137,11 +138,13 @@ export default class CustomRotation extends ViewBase {
         const show = gold == Gold.Big;
         this.spStar.node.active = show;
         this.spRotation.node.active = show;
-        this.spjzlunzi.node.active = show;
         if (show) {
             this.spRotation.timeScale = 1;
-            this.spjzlunzi.setAnimation(0, 'caihong', true);
+            // this.spjzlunzi.setAnimation(0, 'caihong', true);
             this.spRotation.setAnimation(0, 'caihong', true);
+        }
+        if (gold != Gold.None) {
+            this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
         }
         this.spZhou.node.active = false;
     }

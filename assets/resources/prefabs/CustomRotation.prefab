@@ -37,20 +37,20 @@
         "__id__": 266
       },
       {
-        "__id__": 332
+        "__id__": 334
       },
       {
-        "__id__": 338
+        "__id__": 340
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 344
+        "__id__": 346
       }
     ],
     "_prefab": {
-      "__id__": 346
+      "__id__": 348
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -3394,7 +3394,7 @@
     },
     "defaultSkin": "default",
     "defaultAnimation": "juanzhou2",
-    "_premultipliedAlpha": true,
+    "_premultipliedAlpha": false,
     "_timeScale": 1,
     "_preCacheMode": 0,
     "_cacheMode": 0,
@@ -6196,11 +6196,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 329
+        "__id__": 331
       }
     ],
     "_prefab": {
-      "__id__": 331
+      "__id__": 333
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -6371,7 +6371,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 250,
       "height": 352
     }
   },
@@ -6620,7 +6620,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 250,
       "height": 352
     }
   },
@@ -6796,6 +6796,9 @@
       },
       {
         "__id__": 327
+      },
+      {
+        "__id__": 329
       }
     ],
     "removedComponents": []
@@ -6872,7 +6875,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 250,
       "height": 352
     }
   },
@@ -7003,6 +7006,28 @@
     ]
   },
   {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 330
+    },
+    "propertyPath": [
+      "_lscale"
+    ],
+    "value": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1e0+wDnvNPRrtjZ/4GWItD",
+      "71ZD5TRihEEZVjKZgChOPy"
+    ]
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -7012,7 +7037,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 330
+      "__id__": 332
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -7052,17 +7077,17 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
-        "__id__": 333
+        "__id__": 335
       },
       {
-        "__id__": 335
+        "__id__": 337
       }
     ],
     "_prefab": {
-      "__id__": 337
+      "__id__": 339
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -7099,11 +7124,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 332
+      "__id__": 334
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 334
+      "__id__": 336
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -7127,11 +7152,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 332
+      "__id__": 334
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 336
+      "__id__": 338
     },
     "_customMaterial": null,
     "_srcBlendFactor": 2,
@@ -7191,14 +7216,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 339
+        "__id__": 341
       },
       {
-        "__id__": 341
+        "__id__": 343
       }
     ],
     "_prefab": {
-      "__id__": 343
+      "__id__": 345
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -7235,11 +7260,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 338
+      "__id__": 340
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 340
+      "__id__": 342
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -7263,11 +7288,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 338
+      "__id__": 340
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 342
+      "__id__": 344
     },
     "_customMaterial": null,
     "_srcBlendFactor": 2,
@@ -7325,7 +7350,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 345
+      "__id__": 347
     },
     "_contentSize": {
       "__type__": "cc.Size",

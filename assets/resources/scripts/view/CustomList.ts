@@ -76,18 +76,22 @@ export default class CustomList extends ViewBase {
         }
     }
 
+    setColumn(value: Column) {
+        this._column = value;
+    }
+
     updateTimes() {
         let _t = SuperSevenManager.Times;
         if (_t == 1) {
-            this.acceleration = 6000;
-            this.deceleration = 12000;
-            this.maxSpeed = 3000;
-            this.currentSpeed = 2500
-        } else {
             this.acceleration = 8000;
-            this.deceleration = 16000;
+            this.deceleration = 10000;
             this.maxSpeed = 4000;
-            this.currentSpeed = 3500;
+            this.currentSpeed = 3500
+        } else {
+            this.acceleration = 12000;
+            this.deceleration = 16000;
+            this.maxSpeed = 6000;
+            this.currentSpeed = 5500;
         }
         this.freeGame = SuperSevenManager.FreeGame;
         this.maxSpinTime = 1;
@@ -113,19 +117,23 @@ export default class CustomList extends ViewBase {
         }, 2000);
     }
 
-    setData(line: number[], startIdx: number, column: Column) {
+
+    setData(line: number[], startIdx: number) {
         this.clearTimer();
         this.updateTimes();
         this.isBouncing = false;
-        this._column = column;
+        this.maxSpinTime = this._column == Column.Right ? 0.8 : this._column == Column.Middle ? 0.7 : 0.6;
         const childrens = this.node.children;
+        childrens.forEach(child => {
+            child.getComponent(CustomItem).init();
+        })
         let randomNum = Math.floor(Math.random() * this._listName.length);
         if (line.length == 1) {
-            childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[0] - 1]);
+            childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[0] - 1], true);
             childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[randomNum]);
         } else {
-            childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[1] - 1]);
-            childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[line[0] - 1]);
+            childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[1] - 1], true);
+            childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[line[0] - 1], true);
         }
         childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[randomNum]);
         childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[randomNum]);
@@ -179,9 +187,29 @@ export default class CustomList extends ViewBase {
             } else {
                 this.isBouncing = false;
                 this.updatePosition(-distance);
-                if (this._column == Column.Right) {
-                    SuperSevenManager.State = gameState.Result;
-                }
+                const originalPos = this.node.position.clone();
+                cc.tween(this.node)
+                    .to(0.01, { position: cc.v3(originalPos.x, originalPos.y - 6, 0) })
+                    .to(0.06, { position: cc.v3(originalPos.x, originalPos.y + 6, 0) })
+                    .to(0.1, { position: cc.v3(originalPos.x, originalPos.y, 0) }).call(() => {
+                        switch (this._column) {
+                            case Column.Right: SuperSevenManager.State = gameState.Result; break;
+                            case Column.Left:
+                                this.node.children.forEach(child => {
+                                    child.getComponent(CustomItem).showFeeAnimation();
+                                })
+                                break;
+                            case Column.Middle:
+                                if (this.freeGame) {
+                                    this.node.children.forEach(child => {
+                                        child.getComponent(CustomItem).showFeeAnimation();
+                                    });
+                                }
+                                break;
+
+
+                        }
+                    }).start()
             }
         }
     }
@@ -274,13 +302,16 @@ export default class CustomList extends ViewBase {
         this.currentSpeed = 0;
         this._isStopping = false;
         this.spinState = SPIN_STATES.STOPPED;
-        this.targetPosition += 40;
         const remainingDistance = this.getRemainingDistance();
         let distance = remainingDistance;
         this.updatePosition(distance);
-        if (this._column == Column.Right) {
-            SuperSevenManager.State = gameState.Result;
-        }
+        this.targetPosition += 40;
+        this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
+        this.BouncingMinSpeed = this.maxSpeed * 0.1;
+        this.isBouncing = true;
+        // if (this._column == Column.Right) {
+        //     SuperSevenManager.State = gameState.Result;
+        // }
         console.log("立即停止完成");
 
     }
