@@ -5,26 +5,29 @@ import { Global } from '../global';
 import { GameEvent } from '../define';
 import Formater from '../core/utils/formater';
 import WalletManager from './wallet-manager';
-import { SpriteAtlas } from 'cc';
-import { resources } from 'cc';
-import { SpriteFrame } from 'cc';
-import { Sprite } from 'cc';
 import UIHelper from '../network/helper/ui-helper';
 import { MessageSender } from '../network/net/message-sender';
 const { ccclass, property } = _decorator;
-
-export enum gameType {
-    /**默认状态 */
-    none,
-    /**免费 */
-    free,
-    /**付费 */
-    pay
+export enum itemElement {
+    TRIPLE = 1,
+    DOUBLE,
+    FREEGAMES,
+    REDSEVEN,
+    BULESEVEN,
+    BIGBAR,
+    MIDDLEBAR,
+    SMALLBAR,
+    CHERRY
 }
-
 export enum gameState {
     Ing,
+    Result,
     End,
+}
+export enum Gold {
+    None,
+    Big,
+    Small
 }
 export default class SuperSevenManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -67,7 +70,7 @@ export default class SuperSevenManager extends BaseManager {
      */
     public static onNetMessage(msgType: string, data: any): boolean {
         if (msgType == supersevenbaccarat.Message.MsgGameSpinAck) {
-            const msg = data as supersevenbaccarat.MsgGameSpinAck;
+            let msg = data as supersevenbaccarat.MsgGameSpinAck;
             if (msg && msg.code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入spin失败了
                 console.error(`enter Game Failed: ${msg.code}`);
@@ -77,22 +80,62 @@ export default class SuperSevenManager extends BaseManager {
                 );
                 return true; //拦截消息，不继续传递
             }
+            // msg = {
+            //     bet: 5,
+            //     bet_multiple: 0,
+            //     bet_size: 5,
+            //     code: 0,
+            //     currency: "USD",
+            //     free_count: 6,
+            //     is_scatter: false,
+            //     own_gold: 1004372.25,
+            //     sn: "202509021342391970157",
+            //     spin_data: {
+            //         award: 0,
+            //         info: null,
+            //         matrix: [3, -1, -1, -1, 3, 8, 7, -1, -1]
+            //     },
+            //     spin_type: 2,
+            //     utc_time: 1756791759,
+            //     win_free: 0,
+            //     win_gold: 0,
+            // }
             //更新客户端下注金币
             WalletManager.updatePlayerCoin(msg.own_gold);
+            this._lineArr = [];
+            this._freeGame = false;
+            this._gold = Gold.None;
             this.SpinInfo = msg.spin_data || null;
-            this.State = gameState.Ing;
-            this.Free = msg.free_count > 0;
-            if (msg.free_count == 0) {
-                this.FinishedCount = 0;
-            } else {
-                this.FinishedCount++;
+            if (this.SpinInfo) {
+                const award = this.SpinInfo.award || 0;
+                const matrix = this.SpinInfo.matrix;
+                this._gold = award == 0 ? Gold.None : award / this._betCoin > 2 ? Gold.Big : Gold.Small;
+                for (let i = 0; i < matrix.length; i++) {
+                    let idx = i % 3;
+                    if (!this._lineArr[idx]) this._lineArr[idx] = [];
+                    if (matrix[i] != -1) {
+                        this._lineArr[idx].push(matrix[i]);
+                    }
+                }
+                this._freeGame = this._lineArr[0].indexOf(itemElement.FREEGAMES) != -1 && this._lineArr[1].indexOf(itemElement.FREEGAMES) != -1;
             }
-            this.FreeCount = msg.free_count;
+            if (this.Free) {
+                this._finishedCount++;
+                this._finishedWin += msg.spin_data?.award || 0;
+            } else {
+                this._finishedCount = 0;
+                this._finishedWin = 0;
+            }
+            this._freeCount = msg.free_count;
             this._curFreeCount = msg.win_free || 0;
+            this.Free = msg.spin_type == 2;
+            this.State = gameState.Ing;
         }
         return false;
     }
     /**----------------游戏结果相关-------------------*/
+    /**本局奖励金额属于什么类型的奖励 */
+    private static _gold: Gold = Gold.None;
     /**下注档次 */
     private static _bets: number[] = [];
     /**是否是自动下注 */
@@ -102,7 +145,7 @@ export default class SuperSevenManager extends BaseManager {
     /**当前转动倍数 */
     private static _times: number = 1;
     /**当前下注金额 */
-    private static _betCoin: number = 1;
+    private static _betCoin: number = 0;
     /**游戏玩家信息 */
     private static _playInfo: supersevenbaccarat.PlayerInfo | null = null;
     /**是否是免费游戏 */
@@ -113,6 +156,8 @@ export default class SuperSevenManager extends BaseManager {
     private static _freeCount: number = 0;
     /**已完成的免费次数 */
     private static _finishedCount: number = 0;
+    /**已完成的免费次数获得的奖励 */
+    private static _finishedWin: number = 0;
     /**本局获得免费次数 */
     private static _curFreeCount: number = 0;
     /**剩余自动转动局数 */
@@ -124,7 +169,9 @@ export default class SuperSevenManager extends BaseManager {
     public static set FreeCount(value: number) {
         this._freeCount = value;
     }
-
+    public static set FinishedWin(value: number) {
+        this._finishedWin = value;
+    }
     public static set FinishedCount(value: number) {
         this._finishedCount = value;
     }
@@ -167,15 +214,18 @@ export default class SuperSevenManager extends BaseManager {
 
     public static set Free(value: boolean) {
         this._free = value;
+        Global.sendMsg(GameEvent.UPDATE_FREE);
     }
 
+    public static _lineArr: number[][] = [];
+    /** 前俩列是否是freeGame图标 用于前端显示*/
+    public static _freeGame: boolean = false;
     public static set SpinInfo(value: supersevenbaccarat.SpinInfo | null) {
         this._spinInfo = value;
-        if (value) {
-            Global.sendMsg(GameEvent.UPDATE_ROTATION);
-        }
     }
-
+    public static get Gold(): Gold { return this._gold; }
+    public static get FreeGame(): boolean { return this._freeGame; }
+    public static get LineArr(): number[][] { return this._lineArr; }
     public static get BetCoin(): number { return this._betCoin; }
     public static get Times(): number { return this._times; }
     public static get State(): gameState { return this._state; }
@@ -188,6 +238,7 @@ export default class SuperSevenManager extends BaseManager {
     public static get CurFreeCount(): number { return this._curFreeCount; }
     public static get FreeCount(): number { return this._freeCount; }
     public static get FinishedCount(): number { return this._finishedCount; }
+    public static get FinishedWin(): number { return this._finishedWin; }
     public static get AutoNum(): number { return this._autoNum; }
 
     public static setAuto(value: number) {

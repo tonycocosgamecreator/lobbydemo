@@ -2237,7 +2237,7 @@ declare namespace supersevenbaccarat {
         free_finished_times?: number;
         /** 触发免费游戏那一局赢的分数 */
         free_trigger_win_gold?: number;
-        /** 触发免费游戏那一局赢的分数 */
+        /** 免费游戏累计赢的分数(不包含触发局) */
         free_win_gold?: number;
     }
 

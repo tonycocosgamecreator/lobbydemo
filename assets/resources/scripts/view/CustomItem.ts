@@ -80,6 +80,8 @@ export default class CustomItem extends ViewBase {
             this.spSkeleton.node.active = true;
         } else {
             if (inclue) {
+                const count = SuperSevenManager.CurFreeCount;
+                this.spGuang.node.active = count > 0;
                 this.spSymbol.setAnimation(0, name, false);
                 this.spSymbol.setCompleteListener(() => {
                     this.spSymbol.setCompleteListener(null);
@@ -104,6 +106,7 @@ export default class CustomItem extends ViewBase {
         this.spSkeleton.node.active = false;
         this.spSymbol.node.active = false;
         this.sprImg.node.active = true;
+        this.spGuang.node.active = false;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -121,12 +124,14 @@ export default class CustomItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
+            cc_spGuang: [cc.sp.Skeleton],
             cc_spSkeleton: [cc.sp.Skeleton],
             cc_spSymbol: [cc.sp.Skeleton],
             cc_sprImg: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
+    protected spGuang: cc.sp.Skeleton = null;
     protected spSkeleton: cc.sp.Skeleton = null;
     protected spSymbol: cc.sp.Skeleton = null;
     protected sprImg: cc.Sprite = null;

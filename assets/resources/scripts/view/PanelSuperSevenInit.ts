@@ -49,9 +49,14 @@ export default class PanelSuperSevenInit extends ViewBase {
             WalletManager.bets = msg.bet_config;
             WalletManager.walletInfos = msg.wallets || [];
             SuperSevenManager.PlayInfo = msg.player || null;
-            SuperSevenManager.Free = msg.player?.free_count > 0 || false;
-            SuperSevenManager.FreeCount = msg.player?.free_count || 0;
-            SuperSevenManager.FinishedCount = msg.player?.free_finished_times || 0
+            let free = msg.player?.free_count > 0 || false;
+            SuperSevenManager.Free = free;
+            if (free) {
+                SuperSevenManager.FreeCount = msg.player?.free_count || 0;
+                SuperSevenManager.FinishedCount = msg.player?.free_finished_times || 0;
+                SuperSevenManager.FinishedWin = msg.player?.free_win_gold || 0;
+            }
+            SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
             this.close();
         }

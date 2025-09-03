@@ -6,7 +6,7 @@ import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import TextUtils from '../core/utils/text-utils';
-import SuperSevenManager from '../manager/ss-manager';
+import SuperSevenManager, { gameState } from '../manager/ss-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -33,14 +33,17 @@ export default class CustomDetail extends ViewBase {
     _fadeDuration: number = 1;
     _displayDuration: number = 10;
     _currentIndex: number = 0;
+    _free: boolean = false;
     buildUi() {
         this._updateBet();
-        this._updateState()
+        this._updateFree();
+        this._updateState();
+        this._updateChange();
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_BET]: this._updateBet,
-             [GameEvent.UPDATE_STATE]: this._updateState,
+            [GameEvent.UPDATE_FREE]: this._updateFree,
+            [GameEvent.UPDATE_STATE]: this._updateState,
         });
-
     }
 
     _updateBet() {
@@ -63,7 +66,6 @@ export default class CustomDetail extends ViewBase {
             this._nextAnimation();
         }).start();
     }
-
     _nextAnimation() {
         const _childrens = this.detail_right_node.children;
         let node = _childrens[this._currentIndex];
@@ -78,14 +80,25 @@ export default class CustomDetail extends ViewBase {
             .start();
     }
 
+    _updateFree() {
+        this._free = SuperSevenManager.Free;
+    }
+
     _updateState() {
+        if (this._free) {
+            let all = SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount;
+            this.labelCurrent.string = SuperSevenManager.FinishedCount + '';
+            this.labelTotal.string = all + '';
+        }
+    }
+
+    _updateChange(time = 0) {
         let free = SuperSevenManager.Free;
-        this.item_free_node.active = free;
-        this.item_pay_node.active = !free;
-        // if(){
-        //       this.labelfreeGame.string = SuperSevenManager.FreeCount + '';
-        //                 this.labelfreeTotal.string = (SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount).toString();
-        // }
+        if (free) {
+            this.scrollView.scrollToBottom(time);
+        } else {
+            this.scrollView.scrollToTop(time);
+        }
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -102,50 +115,50 @@ export default class CustomDetail extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_detail_right_node    : [cc.Node],
-            cc_item_free_node    : [cc.Node],
-            cc_item_pay_node    : [cc.Node],
-            cc_label1    : [cc.Label],
-            cc_label2    : [cc.Label],
-            cc_label3    : [cc.Label],
-            cc_label4    : [cc.Label],
-            cc_labelCurrent    : [cc.Label],
-            cc_labelMax    : [cc.Label],
-            cc_labelTotal    : [cc.Label],
-            cc_scrollView    : [cc.ScrollView],
-            cc_spPaytable    : [cc.Sprite],
+            cc_detail_right_node: [cc.Node],
+            cc_item_free_node: [cc.Node],
+            cc_item_pay_node: [cc.Node],
+            cc_label1: [cc.Label],
+            cc_label2: [cc.Label],
+            cc_label3: [cc.Label],
+            cc_label4: [cc.Label],
+            cc_labelCurrent: [cc.Label],
+            cc_labelMax: [cc.Label],
+            cc_labelTotal: [cc.Label],
+            cc_scrollView: [cc.ScrollView],
+            cc_spPaytable: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected detail_right_node: cc.Node    = null;
-   protected item_free_node: cc.Node    = null;
-   protected item_pay_node: cc.Node    = null;
-   protected label1: cc.Label    = null;
-   protected label2: cc.Label    = null;
-   protected label3: cc.Label    = null;
-   protected label4: cc.Label    = null;
-   protected labelCurrent: cc.Label    = null;
-   protected labelMax: cc.Label    = null;
-   protected labelTotal: cc.Label    = null;
-   protected scrollView: cc.ScrollView    = null;
-   protected spPaytable: cc.Sprite    = null;
+    protected detail_right_node: cc.Node = null;
+    protected item_free_node: cc.Node = null;
+    protected item_pay_node: cc.Node = null;
+    protected label1: cc.Label = null;
+    protected label2: cc.Label = null;
+    protected label3: cc.Label = null;
+    protected label4: cc.Label = null;
+    protected labelCurrent: cc.Label = null;
+    protected labelMax: cc.Label = null;
+    protected labelTotal: cc.Label = null;
+    protected scrollView: cc.ScrollView = null;
+    protected spPaytable: cc.Sprite = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomDetail';
+    public static readonly VIEW_NAME = 'CustomDetail';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomDetail.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomDetail.VIEW_NAME;
     }
     // @view export resource end

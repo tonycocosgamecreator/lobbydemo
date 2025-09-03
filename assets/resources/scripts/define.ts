@@ -25,10 +25,6 @@ export enum GameEvent {
      */
     UPDATE_BET = 'UPDATE_BET',
     /**
-     *spin
-     */
-    UPDATE_ROTATION = 'UPDATE_ROTATION',
-    /**
      *停止旋转
      */
     STOP_ROTATION = 'STOP_ROTATION',
@@ -40,10 +36,6 @@ export enum GameEvent {
      *转轴倍数
      */
     UPDATE_TIMES = 'UPDATE_TIMES',
-    /**
-     *结束旋转
-     */
-    ROTATION_END = 'ROTATION_END',
     /**
      *免费游戏
      */

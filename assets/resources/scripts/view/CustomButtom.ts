@@ -3,7 +3,7 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import SuperSevenManager, { gameState, gameType } from '../manager/ss-manager';
+import SuperSevenManager, { gameState } from '../manager/ss-manager';
 import WalletManager from '../manager/wallet-manager';
 import { GButtonDisableStyle, GButtonState, GButtonTouchStyle } from '../core/view/view-define';
 import { MessageSender } from '../network/net/message-sender';
@@ -12,6 +12,7 @@ import { GameEvent } from '../define';
 import BaseGlobal from '../core/message/base-global';
 import UIHelper from '../network/helper/ui-helper';
 import ViewManager from '../core/manager/view-manager';
+import { GoldCounter } from './GoldCounter';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -32,11 +33,8 @@ export default class CustomButtom extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    // _type: gameType = gameType.none;
-
     _timer: number = 0;
 
-    // _state:
     _auto: boolean = false;
 
     _bets: number[] = [];
@@ -76,19 +74,18 @@ export default class CustomButtom extends ViewBase {
         this.buttonSpin.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.buttonSpin.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/bottom/anniu_00'),
         this.getSpriteFrame('textures/bottom/anniu_00'), this.getSpriteFrame('textures/bottom/anniu_00B')];
-        this._init();
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_STATE]: this._updateState,
             [GameEvent.UPDATE_BET]: this._updateBet,
             [GameEvent.UPDATE_TIMES]: this._updateTimes,
             [GameEvent.UPDATE_AUTO]: this._updateAuto,
+            [GameEvent.UPDATE_FREE]: this._updateFree,
         });
+        this._init();
     }
 
 
     reset() {
-        this._gameState = gameState.End;
-        this._auto = false;
         this.pay_node.active = false;
         this.free_node.active = false;
         this.labelWin.string = '';
@@ -102,21 +99,35 @@ export default class CustomButtom extends ViewBase {
 
     _init() {
         this.reset()
-        this._timer = SuperSevenManager.Times;
-        this.labelTimes.string = this._timer + '.0X';
-        this._gameState = SuperSevenManager.State;
-        this._bets = WalletManager.getCurrencyBetSize();
-        if (!this._bets || this._bets.length == 0) {
-            return this.labelTotal.string = '';
-        }
-        this._index = 0;
-        SuperSevenManager.BetCoin = this._bets[this._index];
+        this._updateTimes();
+        this._updateFree();
         this._updateAuto();
-        this._updateButton();
+        this._bets = WalletManager.getCurrencyBetSize();
+        const _bet = SuperSevenManager.BetCoin;
+        if (_bet) {
+            if (!this._bets || this._bets.length == 0) {
+                this._index = 0;
+                return this.labelTotal.string = '';
+            } else {
+                this._bets.forEach((t, idx) => {
+                    if (t == _bet) {
+                        this._index = idx;
+                    }
+                })
+            }
+        } else {
+            this._index = 0;
+            if (!this._bets || this._bets.length == 0) {
+                return this.labelTotal.string = '';
+            }
+        }
+        SuperSevenManager.BetCoin = this._bets[this._index];
+        this._updateState(true);
     }
 
     _updateBet() {
         this.labelTotal.string = SuperSevenManager.BetCoin + '';
+        this.labelfreeTotal.string = SuperSevenManager.BetCoin + '';
     }
 
     _updateTimes() {
@@ -130,35 +141,57 @@ export default class CustomButtom extends ViewBase {
         this.labelResidue.node.parent.active = this._auto;
         this.labelResidue.string = autoNum > 500 ? '∞' : autoNum + '';
         this.labelResidue.fontSize = autoNum > 500 ? 40 : 20;
+        this.buttonAuto.state = (this._auto || this._free || this._gameState == gameState.Ing) ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
     }
 
-    _updateState() {
-        this._gameState = SuperSevenManager.State;
-        this.labelWin.string = this._gameState == gameState.End ? SuperSevenManager.SpinInfo.award + '' : '';
-        if (this.labelWin.string == '0') {
-            this.labelWin.string = '';
-        }
-        this._updateButton();
-    }
-
-    _updateButton() {
+    _updateFree() {
         this._free = SuperSevenManager.Free;
-        const Ing = this._gameState == gameState.Ing;
-        this.buttonAuto.state = (this._auto || this._free || Ing) ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
-        this.buttonSpin.node.active = Ing ? false : true;
-        this.buttonStop.node.active = Ing;
-        if (this._free) {
-            this.pay_node.active = false;
-            this.free_node.active = true;
-            this.labelfreeGame.string = SuperSevenManager.FreeCount + '';
-            this.labelfreeTotal.string = (SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount).toString();
-        } else {
-            this.pay_node.active = true;
-            this.free_node.active = false;
-            this.buttonAdd.state = Ing ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
-            this.buttonSub.state = Ing ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
-            this.buttonTimes.state = Ing ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
+        this.pay_node.active = !this._free;
+        this.free_node.active = this._free;
+        let all = SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount;
+        this.labelfreeGame.string = SuperSevenManager.FinishedCount + '/' + all;
+        this.buttonAuto.state = (this._auto || this._free || this._gameState == gameState.Ing) ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
+    }
+
+    _updateState(first: boolean = false) {
+        this._gameState = SuperSevenManager.State;
+        let award = SuperSevenManager.SpinInfo?.award || 0;
+        this.labelWin.string = '';
+        switch (this._gameState) {
+            case gameState.Ing:
+                this.labelWin.node.getComponent(GoldCounter).reset();
+                this.buttonAdd.state = GButtonState.SHOW_DISABLE;
+                this.buttonSub.state = GButtonState.SHOW_DISABLE;
+                this.buttonTimes.state = GButtonState.SHOW_DISABLE;
+                this.buttonStop.node.active = true;
+                this.buttonSpin.node.active = false;
+                this.buttonAuto.state = GButtonState.SHOW_DISABLE;
+                break;
+            case gameState.Result:
+                if (award) {
+                    this.labelWin.node.getComponent(GoldCounter).setGold(0);
+                    this.labelWin.node.getComponent(GoldCounter).setAnimationDuration(award * 0.05);
+                    this.labelWin.node.getComponent(GoldCounter).addGold(award);
+                }
+                this.buttonStop.node.active = false;
+                this.buttonSpin.node.active = true;
+                break;
+            case gameState.End:
+                if (award) {
+                    this.labelWin.node.getComponent(GoldCounter).completeAnimation();
+                    this.labelWin.string = award + '';
+                }
+                this.buttonAdd.state = GButtonState.SHOW_ENABLE;
+                this.buttonSub.state = GButtonState.SHOW_ENABLE;
+                this.buttonTimes.state = GButtonState.SHOW_ENABLE;
+                this.buttonStop.node.active = false;
+                this.buttonSpin.node.active = true;
+                if (!first && this._free) {
+                    this.onClickButtonSpin(null)
+                }
+                break;
         }
+        this.buttonAuto.state = (this._auto || this._free || this._gameState == gameState.Ing) ? GButtonState.SHOW_DISABLE : GButtonState.SHOW_ENABLE;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -171,15 +204,19 @@ export default class CustomButtom extends ViewBase {
     // @view export event begin
     private onClickButtonSpin(event: cc.EventTouch) {
         cc.log('on click event cc_buttonSpin');
+        if (this._gameState != gameState.End) return;
         let gold = WalletManager.balance;
-        if (this._free == false && gold < this._bets[this._index]) {
-            UIHelper.showConfirmOfOneButtonToRefreshBrowser(
-                resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
-                resourcesDb.I18N_RESOURCES_DB_INDEX.Error
-            );
+        if (this._free) {
             SuperSevenManager.Auto = false;
-            this._updateButton();
-            return;
+        } else {
+            if (gold < this._bets[this._index]) {
+                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.Error
+                );
+                SuperSevenManager.Auto = false;
+                return;
+            }
         }
         let data = {
             currency: WalletManager.currency,
@@ -188,6 +225,7 @@ export default class CustomButtom extends ViewBase {
         MessageSender.SendMessage(supersevenbaccarat.Message.MsgGameSpinReq, data);
     }
     private onClickButtonAuto(event: cc.EventTouch) {
+        if (this._gameState != gameState.End) return;
         ViewManager.OpenPanel(this.module, 'PanelAuto');
     }
 
@@ -196,23 +234,27 @@ export default class CustomButtom extends ViewBase {
             SuperSevenManager.Auto = false;
             return;
         }
+        if (this._gameState != gameState.Ing) return;
         Global.sendMsg(GameEvent.STOP_ROTATION);
     }
 
     private onClickButtonAdd(event: cc.EventTouch) {
+        if (this._gameState != gameState.End) return;
         if (this._index == this._bets.length - 1) return;
         this._index++;
         SuperSevenManager.BetCoin = this._bets[this._index];
     }
 
     private onClickButtonTimes(event: cc.EventTouch) {
+        if (this._gameState != gameState.End) return;
         if (this._free) return;
-        if (SuperSevenManager.Auto) return;
+        if (this._auto) return;
         let _t = SuperSevenManager.Times;
         SuperSevenManager.Times = _t == 1 ? 2 : 1;
     }
 
     private onClickButtonSub(event: cc.EventTouch) {
+        if (this._gameState != gameState.End) return;
         if (this._index == 0) return;
         this._index--;
         SuperSevenManager.BetCoin = this._bets[this._index];

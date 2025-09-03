@@ -9,8 +9,7 @@ import { UITransform } from 'cc';
 import { Column } from './CustomRotation';
 import { Global } from '../global';
 import { GameEvent } from '../define';
-import BaseGlobal from '../core/message/base-global';
-import SuperSevenManager from '../manager/ss-manager';
+import SuperSevenManager, { gameState } from '../manager/ss-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -19,7 +18,7 @@ enum SPIN_STATES {
     ACCELERATING = 'accelerating',
     CRUISING = 'cruising',
     DECELERATING = 'decelerating',
-    STOPPED = 'stopped'
+    STOPPED = 'stopped',
 };
 const { ccclass, property } = cc._decorator;
 @ccclass('CustomList')
@@ -53,6 +52,8 @@ export default class CustomList extends ViewBase {
 
     maxSpinTime: number = 1; // 最大旋转时间(秒)
 
+    freeGame: boolean = false;//前两个转轴是否是free
+
     currentSpeed: number = 0;
     spinState: string = SPIN_STATES.IDLE;
     spinStartTime: number = 0;
@@ -79,13 +80,16 @@ export default class CustomList extends ViewBase {
         let _t = SuperSevenManager.Times;
         if (_t == 1) {
             this.acceleration = 6000;
-            this.deceleration = 6000;
+            this.deceleration = 12000;
             this.maxSpeed = 3000;
+            this.currentSpeed = 2500
         } else {
             this.acceleration = 8000;
-            this.deceleration = 8000;
+            this.deceleration = 16000;
             this.maxSpeed = 4000;
+            this.currentSpeed = 3500;
         }
+        this.freeGame = SuperSevenManager.FreeGame;
         this.maxSpinTime = 1;
     }
 
@@ -109,16 +113,16 @@ export default class CustomList extends ViewBase {
         }, 2000);
     }
 
-    setData(line: number[], startIdx: number, column: Column, accelerate: boolean = false) {
+    setData(line: number[], startIdx: number, column: Column) {
         this.clearTimer();
         this.updateTimes();
+        this.isBouncing = false;
         this._column = column;
-        this.maxSpinTime = column;
         const childrens = this.node.children;
         let randomNum = Math.floor(Math.random() * this._listName.length);
         if (line.length == 1) {
             childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[0] - 1]);
-               childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[randomNum]);
+            childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[randomNum]);
         } else {
             childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[1] - 1]);
             childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[line[0] - 1]);
@@ -129,7 +133,8 @@ export default class CustomList extends ViewBase {
         this.targetNode = childrens[startIdx];
         // 计算目标位置（让目标节点停在顶部）
         this.targetPosition = line.length == 1 ? 0 : -(this._itemHight * this._anchorY);
-        if (accelerate) {
+        this.targetPosition -= 40;
+        if (this._column == Column.Right && this.freeGame) {
             this.maxSpinTime += 1;
             this.acceleration *= 2;
             this.deceleration *= 2;
@@ -143,23 +148,41 @@ export default class CustomList extends ViewBase {
         this.spinState = SPIN_STATES.ACCELERATING;
         this._isStopping = true;
         this.spinStartTime = Date.now();
-        this.currentSpeed = 0;
+        // this.currentSpeed = 0;
     }
 
     protected update(deltaTime: number): void {
-        if (this._isStopping == false) return;
-        const currentTime = Date.now();
-        const elapsedTime = (currentTime - this.spinStartTime) / 1000;
-        switch (this.spinState) {
-            case SPIN_STATES.ACCELERATING:
-                this.handleAccelerating(deltaTime, elapsedTime);
-                break;
-            case SPIN_STATES.CRUISING:
-                this.handleCruising(deltaTime, elapsedTime);
-                break;
-            case SPIN_STATES.DECELERATING:
-                this.handleDecelerating(deltaTime);
-                break;
+        if (this._isStopping) {
+            const currentTime = Date.now();
+            const elapsedTime = (currentTime - this.spinStartTime) / 1000;
+            switch (this.spinState) {
+                case SPIN_STATES.ACCELERATING:
+                    this.handleAccelerating(deltaTime, elapsedTime);
+                    break;
+                case SPIN_STATES.CRUISING:
+                    this.handleCruising(deltaTime, elapsedTime);
+                    break;
+                case SPIN_STATES.DECELERATING:
+                    this.handleDecelerating(deltaTime);
+                    break;
+            }
+        }
+        if (this.isBouncing) {
+            let distance = this.targetPosition - this.targetNode.y;
+            let curdistance = this.BouncingCurrentSpeed * deltaTime;
+            if (this.BouncingCurrentSpeed > this.BouncingMinSpeed) {
+                this.BouncingCurrentSpeed -= 50;
+            }
+            let diff = distance - curdistance;
+            if (diff > 0) {
+                this.updatePosition(-curdistance);
+            } else {
+                this.isBouncing = false;
+                this.updatePosition(-distance);
+                if (this._column == Column.Right) {
+                    SuperSevenManager.State = gameState.Result;
+                }
+            }
         }
     }
 
@@ -190,7 +213,10 @@ export default class CustomList extends ViewBase {
         this.updatePosition(deltaTime * this.currentSpeed);
         // 检查是否达到最大旋转时间
         if (elapsedTime >= this.maxSpinTime) {
+            const remainingDistance = this.getRemainingDistance();
+            this.updatePosition(remainingDistance);
             this.spinState = SPIN_STATES.DECELERATING;
+
         }
     }
 
@@ -202,36 +228,39 @@ export default class CustomList extends ViewBase {
             // 远距离：正常速度
             this.currentSpeed = this.maxSpeed;
         }
-        else if (remainingDistance > 50) {
-            // 中距离：开始减速
-            this.currentSpeed = Math.max(200, this.currentSpeed - this.deceleration * deltaTime);
-        }
-        else if (remainingDistance > 10) {
-            // 近距离：中等速度
-            this.currentSpeed = 150;
-        }
-        else {
-            // 精细调整：按距离比例减速
-            this.currentSpeed = remainingDistance * 10;
-        }
+        else
+            if (remainingDistance > 50) {
+                // 中距离：开始减速
+                this.currentSpeed = Math.max(200, this.currentSpeed - this.deceleration * deltaTime);
+            }
+            else if (remainingDistance > 10) {
+                // 近距离：中等速度
+                this.currentSpeed = this.maxSpeed * 0.2;
+            }
+            else {
+                // 精细调整：按距离比例减速
+                this.currentSpeed = remainingDistance * 10;
+            }
 
         // 检查是否到达
         if (remainingDistance < 1) {
             // 精确对齐
             let distance = Math.abs(this.targetNode.y - this.targetPosition);
             this.updatePosition(distance);
-            this.currentSpeed = 0;
             this._isStopping = false;
             this.spinState = SPIN_STATES.STOPPED;
-            if (this._column == Column.Right) {
-                Global.sendMsg(GameEvent.ROTATION_END);
-            }
+            this.targetPosition += 40;
+            this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
+            this.BouncingMinSpeed = this.maxSpeed * 0.1;
+            this.isBouncing = true;
         } else {
             // 更新位置（始终向下移动）
             this.updatePosition(this.currentSpeed * deltaTime);
         }
     }
-
+    isBouncing = false;
+    BouncingMinSpeed = 0;
+    BouncingCurrentSpeed = 0;
     getRemainingDistance(): number {
         const currentY = this.targetNode.y;
         if (currentY >= this.targetPosition) {
@@ -242,15 +271,15 @@ export default class CustomList extends ViewBase {
     }
     stopImmediately(): void {
         if (!this._isStopping) return;
-        // 立即停止所有运动
         this.currentSpeed = 0;
         this._isStopping = false;
         this.spinState = SPIN_STATES.STOPPED;
+        this.targetPosition += 40;
         const remainingDistance = this.getRemainingDistance();
         let distance = remainingDistance;
         this.updatePosition(distance);
         if (this._column == Column.Right) {
-            Global.sendMsg(GameEvent.ROTATION_END);
+            SuperSevenManager.State = gameState.Result;
         }
         console.log("立即停止完成");
 

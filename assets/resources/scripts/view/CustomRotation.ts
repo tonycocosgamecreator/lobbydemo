@@ -7,7 +7,7 @@ import * as cc from 'cc';
 import CustomList from 'db://assets/resources/scripts/view/CustomList';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
-import SuperSevenManager from '../manager/ss-manager';
+import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -33,6 +33,7 @@ export default class CustomRotation extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    _gameState: gameState = gameState.End;
     _executeCount: number = 0;
     _rIndex: number = 0;
     _startIdx: number = 0;
@@ -41,18 +42,45 @@ export default class CustomRotation extends ViewBase {
     _lineArr: number[][] = [];
     _flashArr: number[][][] = [];
     buildUi() {
-        this.reset();
+        this._reset();
         BaseGlobal.registerListeners(this, {
-            [GameEvent.UPDATE_ROTATION]: this._updateRotation,
             [GameEvent.STOP_ROTATION]: this._stopRotation,
-            [GameEvent.ROTATION_END]: this._rotationEnd,
+            [GameEvent.UPDATE_STATE]: this._updateState,
         });
     }
 
-    reset() {
+    _updateState() {
+        this._gameState = SuperSevenManager.State;
+        switch (this._gameState) {
+            case gameState.Ing:
+                this._reset();
+                this.spRotation.node.active = true;
+                this.spRotation.timeScale = 1.8;
+                this.spRotation.setAnimation(0, 'daiji', true);
+                this.spjzlunzi.node.active = true;
+                this.spjzlunzi.setAnimation(0, 'daiji', true);
+                this._updateRotation();
+                break;
+            case gameState.Result:
+                this._rotationEnd();
+                break;
+            case gameState.End:
+                break;
+        }
+    }
+
+    _reset() {
         this.spStar.node.active = false;
         this.spRotation.node.active = false;
         this.spjzlunzi.node.active = false;
+        this.spZhou.node.active = false;
+        this.spXingGuang.node.active = false;
+    }
+
+    _stopRotation() {
+        this.rotation_list_node.children.forEach(child => {
+            child.getComponent(CustomList).stopImmediately()
+        });
     }
 
     _updateRotation() {
@@ -60,15 +88,7 @@ export default class CustomRotation extends ViewBase {
         this._rIndex++;
         this._startIdx = this._rIndex % 2 == 1 ? 3 : 0;
         this._matrix = this._data.matrix;
-        this._lineArr = [];
         this._flashArr = [];
-        for (let i = 0; i < this._matrix.length; i++) {
-            let idx = i % 3;
-            if (!this._lineArr[idx]) this._lineArr[idx] = [];
-            if (this._matrix[i] != -1) {
-                this._lineArr[idx].push(this._matrix[i]);
-            }
-        }
         if (this._data.info && this._data.info.length) {
             let idx = 0;
             this._flashArr[0] = [[], [], []];
@@ -77,7 +97,7 @@ export default class CustomRotation extends ViewBase {
                 if (!this._flashArr[idx]) this._flashArr[idx] = [];
                 const line = this._data.info[j].line;
                 for (let k = 0; k < line.length; k++) {
-                    let _idx = line[k] < 7 ? this._startIdx : this._startIdx + 1
+                    let _idx = line[k] > 2 ? this._startIdx : this._startIdx + 1
                     if (this._flashArr[0][k].indexOf(_idx) == -1) {
                         this._flashArr[0][k].push(_idx);
                     }
@@ -85,28 +105,20 @@ export default class CustomRotation extends ViewBase {
                 }
             }
         }
-        console.log(this._flashArr, '---------------------------this._flashArr')
+        const data = SuperSevenManager.LineArr;
         this._executeCount = 0;
-        this.schedule(this.callback, 0.1, 3);
-    }
-    callback() {
-        switch (this._executeCount) {
-            case 0:
-                this.list0_node.setData(this._lineArr[0], this._startIdx, Column.Left); break;
-            case 1:
-                this.list1_node.setData(this._lineArr[1], this._startIdx, Column.Middle); break;
-            case 2:
-                let free = this._lineArr[0].indexOf(2) != -1 && this._lineArr[1].indexOf(2) != -1;
-                this.list2_node.setData(this._lineArr[2], this._startIdx, Column.Right, free); break;
+        this.list0_node.setData(data[0], this._startIdx, Column.Left);
+        this.scheduleOnce(() => {
+            this.list1_node.setData(data[1], this._startIdx, Column.Middle);
+        }, 0.1);
+        this.scheduleOnce(() => {
+            this.list2_node.setData(data[2], this._startIdx, Column.Right);
+        }, 0.2);
+        if (SuperSevenManager.FreeGame) {
+            this.scheduleOnce(() => {
+                this.spZhou.node.active = true;
+            }, 1.1);
         }
-        this._executeCount++;
-        if (this._executeCount >= 3) this.unschedule(this.callback);
-    }
-
-    _stopRotation() {
-        this.rotation_list_node.children.forEach(child => {
-            child.getComponent(CustomList).stopImmediately()
-        });
     }
 
     _rotationEnd() {
@@ -121,6 +133,22 @@ export default class CustomRotation extends ViewBase {
                 child.getComponent(CustomList).flashAnimation(arr[idx])
             });
         }
+        const gold = SuperSevenManager.Gold;
+        const show = gold == Gold.Big;
+        this.spStar.node.active = show;
+        this.spRotation.node.active = show;
+        this.spjzlunzi.node.active = show;
+        if (show) {
+            this.spRotation.timeScale = 1;
+            this.spjzlunzi.setAnimation(0, 'caihong', true);
+            this.spRotation.setAnimation(0, 'caihong', true);
+        }
+        this.spZhou.node.active = false;
+    }
+
+    _playXingGuang() {
+        this.spXingGuang.node.active = true;
+        this.spXingGuang.setAnimation(0, 'animation', false);
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -143,6 +171,8 @@ export default class CustomRotation extends ViewBase {
             cc_rotation_list_node: [cc.Node],
             cc_spRotation: [cc.sp.Skeleton],
             cc_spStar: [cc.sp.Skeleton],
+            cc_spXingGuang: [cc.sp.Skeleton],
+            cc_spZhou: [cc.sp.Skeleton],
             cc_spjzlunzi: [cc.sp.Skeleton],
             cc_star_node: [cc.Node],
         };
@@ -154,6 +184,8 @@ export default class CustomRotation extends ViewBase {
     protected rotation_list_node: cc.Node = null;
     protected spRotation: cc.sp.Skeleton = null;
     protected spStar: cc.sp.Skeleton = null;
+    protected spXingGuang: cc.sp.Skeleton = null;
+    protected spZhou: cc.sp.Skeleton = null;
     protected spjzlunzi: cc.sp.Skeleton = null;
     protected star_node: cc.Node = null;
     /**
