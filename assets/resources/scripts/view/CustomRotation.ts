@@ -33,7 +33,7 @@ export default class CustomRotation extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    _gameState: gameState = gameState.End;
+    _gameState: gameState = gameState.None;
     _executeCount: number = 0;
     _rIndex: number = 0;
     _startIdx: number = 0;
@@ -42,8 +42,8 @@ export default class CustomRotation extends ViewBase {
     _lineArr: number[][] = [];
     _flashArr: number[][][] = [];
     buildUi() {
-        this._reset();
         this._init();
+        this._reset();
         BaseGlobal.registerListeners(this, {
             [GameEvent.STOP_ROTATION]: this._stopRotation,
             [GameEvent.UPDATE_STATE]: this._updateState,
@@ -83,6 +83,7 @@ export default class CustomRotation extends ViewBase {
     }
 
     _stopRotation() {
+        this.unschedule(this.onCountdownComplete);
         this.rotation_list_node.children.forEach(child => {
             child.getComponent(CustomList).stopImmediately()
         });
@@ -102,11 +103,12 @@ export default class CustomRotation extends ViewBase {
                 if (!this._flashArr[idx]) this._flashArr[idx] = [];
                 const line = this._data.info[j].line;
                 for (let k = 0; k < line.length; k++) {
-                    let _idx = line[k] > 2 ? this._startIdx : this._startIdx + 1
+                    let _idx = line[k] == -1 ? -1 : line[k] > 2 ? this._startIdx : this._startIdx + 1
                     if (this._flashArr[0][k].indexOf(_idx) == -1) {
                         this._flashArr[0][k].push(_idx);
                     }
                     this._flashArr[idx][k] = [_idx];
+
                 }
             }
         }
@@ -115,11 +117,15 @@ export default class CustomRotation extends ViewBase {
         this.list0_node.setData(data[0], this._startIdx);
         this.list1_node.setData(data[1], this._startIdx);
         this.list2_node.setData(data[2], this._startIdx);
-        if (SuperSevenManager.FreeGame) {
-            this.scheduleOnce(() => {
-                this.spZhou.node.active = true;
-            }, 1.1);
+        if (SuperSevenManager.FreeGame || SuperSevenManager.Wild) {
+            this.scheduleOnce(this.onCountdownComplete, 1.1);
         }
+    }
+
+    onCountdownComplete() {
+        this.spZhou.node.active = true;
+        let name = SuperSevenManager.FreeGame ? 'mipai_lan' : 'mipai_huang'
+        this.spZhou.setAnimation(0, name, true);
     }
 
     _rotationEnd() {

@@ -9,7 +9,7 @@ import { UITransform } from 'cc';
 import { Column } from './CustomRotation';
 import { Global } from '../global';
 import { GameEvent } from '../define';
-import SuperSevenManager, { gameState } from '../manager/ss-manager';
+import SuperSevenManager, { gameState, itemElement } from '../manager/ss-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -53,6 +53,7 @@ export default class CustomList extends ViewBase {
     maxSpinTime: number = 1; // 最大旋转时间(秒)
 
     freeGame: boolean = false;//前两个转轴是否是free
+    wild: boolean = false;//前两个转轴是否是wild
 
     currentSpeed: number = 0;
     spinState: string = SPIN_STATES.IDLE;
@@ -94,6 +95,7 @@ export default class CustomList extends ViewBase {
             this.currentSpeed = 5500;
         }
         this.freeGame = SuperSevenManager.FreeGame;
+        this.wild = SuperSevenManager.Wild;
         this.maxSpinTime = 1;
     }
 
@@ -114,9 +116,9 @@ export default class CustomList extends ViewBase {
         cb();
         this.timerId = setInterval(() => {
             cb && cb()
-        }, 2000);
+        }, 1800);
     }
-
+    _shake: boolean = true;
 
     setData(line: number[], startIdx: number) {
         this.clearTimer();
@@ -139,10 +141,23 @@ export default class CustomList extends ViewBase {
         childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[randomNum]);
         // 设置目标结果
         this.targetNode = childrens[startIdx];
+        this._shake = true;
         // 计算目标位置（让目标节点停在顶部）
         this.targetPosition = line.length == 1 ? 0 : -(this._itemHight * this._anchorY);
         this.targetPosition -= 40;
-        if (this._column == Column.Right && this.freeGame) {
+        if (this._column == Column.Left) {
+            if (line.indexOf(itemElement.FREEGAMES) != -1 || line.indexOf(itemElement.TRIPLE) != -1) {
+                this.targetPosition += 40;
+                this._shake = false;
+            }
+
+        } else if (this._column == Column.Middle) {
+            if (this.freeGame || this.wild) {
+                this.targetPosition += 40;
+                this._shake = false;
+            }
+        }
+        if (this._column == Column.Right && (this.freeGame || this.wild)) {
             this.maxSpinTime += 1;
             this.acceleration *= 2;
             this.deceleration *= 2;
@@ -192,22 +207,8 @@ export default class CustomList extends ViewBase {
                     .to(0.01, { position: cc.v3(originalPos.x, originalPos.y - 6, 0) })
                     .to(0.06, { position: cc.v3(originalPos.x, originalPos.y + 6, 0) })
                     .to(0.1, { position: cc.v3(originalPos.x, originalPos.y, 0) }).call(() => {
-                        switch (this._column) {
-                            case Column.Right: SuperSevenManager.State = gameState.Result; break;
-                            case Column.Left:
-                                this.node.children.forEach(child => {
-                                    child.getComponent(CustomItem).showFeeAnimation();
-                                })
-                                break;
-                            case Column.Middle:
-                                if (this.freeGame) {
-                                    this.node.children.forEach(child => {
-                                        child.getComponent(CustomItem).showFeeAnimation();
-                                    });
-                                }
-                                break;
-
-
+                        if (this._column == Column.Right) {
+                            SuperSevenManager.State = gameState.Result;
                         }
                     }).start()
             }
@@ -277,10 +278,19 @@ export default class CustomList extends ViewBase {
             this.updatePosition(distance);
             this._isStopping = false;
             this.spinState = SPIN_STATES.STOPPED;
-            this.targetPosition += 40;
-            this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
-            this.BouncingMinSpeed = this.maxSpeed * 0.1;
-            this.isBouncing = true;
+            if (this._shake) {
+                this.targetPosition += 40;
+                this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
+                this.BouncingMinSpeed = this.maxSpeed * 0.1;
+                this.isBouncing = true;
+            } else {
+                this.node.children.forEach(child => {
+                    child.getComponent(CustomItem).showFeeAnimation();
+                })
+                if (this._column == Column.Right) {
+                    SuperSevenManager.State = gameState.Result;
+                }
+            }
         } else {
             // 更新位置（始终向下移动）
             this.updatePosition(this.currentSpeed * deltaTime);
@@ -305,13 +315,19 @@ export default class CustomList extends ViewBase {
         const remainingDistance = this.getRemainingDistance();
         let distance = remainingDistance;
         this.updatePosition(distance);
-        this.targetPosition += 40;
-        this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
-        this.BouncingMinSpeed = this.maxSpeed * 0.1;
-        this.isBouncing = true;
-        // if (this._column == Column.Right) {
-        //     SuperSevenManager.State = gameState.Result;
-        // }
+        if (this._shake) {
+            this.targetPosition += 40;
+            this.BouncingCurrentSpeed = this.maxSpeed * 0.2;
+            this.BouncingMinSpeed = this.maxSpeed * 0.1;
+            this.isBouncing = true;
+        } else {
+            this.node.children.forEach(child => {
+                child.getComponent(CustomItem).showFeeAnimation();
+            })
+            if (this._column == Column.Right) {
+                SuperSevenManager.State = gameState.Result;
+            }
+        }
         console.log("立即停止完成");
 
     }

@@ -20,14 +20,15 @@ export enum itemElement {
     CHERRY
 }
 export enum gameState {
+    None,
     Ing,
     Result,
     End,
 }
 export enum Gold {
     None,
+    Small,
     Big,
-    Small
 }
 export default class SuperSevenManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -88,22 +89,24 @@ export default class SuperSevenManager extends BaseManager {
             //     currency: "USD",
             //     free_count: 12,
             //     is_scatter: false,
-            //     own_gold: 1004372.25,
-            //     sn: "202509021342391970157",
+            //     own_gold: 1441119.25,
+            //     sn: "202509051049121970193",
             //     spin_data: {
-            //         award: 150,
-            //         info: [{ award: 150, line: [0, 5, 7], multiple: 300000, symbol: 4 }],
-            //         matrix: [3, 2, -1, -1, -1, 7, 4, 3, -1]
+            //         award: 5,
+            //         info: [{ award: 4, line: [0, 1, 2], symbol: 9, multiple: 8000},{ award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }, { award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }],
+            //         matrix: [9, 2, 2, -1, -1, -1, 3, 3, 3]
             //     },
-            //     spin_type: 2,
-            //     utc_time: 1756791759,
+            //     spin_type: 1,
+            //     utc_time: 1757040553,
             //     win_free: 12,
-            //     win_gold: 0,
+            //     win_gold: 5
             // }
             //更新客户端下注金币
             WalletManager.updatePlayerCoin(msg.own_gold);
             this._lineArr = [];
+            this._awardLine = [];
             this._freeGame = false;
+            this._wild = false;
             this._gold = Gold.None;
             this.SpinInfo = msg.spin_data || null;
             if (this.SpinInfo) {
@@ -118,7 +121,19 @@ export default class SuperSevenManager extends BaseManager {
                     }
                 }
                 this._freeGame = this._lineArr[0].indexOf(itemElement.FREEGAMES) != -1 && this._lineArr[1].indexOf(itemElement.FREEGAMES) != -1;
+                this._wild = this._lineArr[0].indexOf(itemElement.TRIPLE) != -1 && this._lineArr[1].indexOf(itemElement.TRIPLE) != -1;
+                if (award) {
+                    const lineInfo = this.SpinInfo.info;
+                    lineInfo.forEach((t, idx) => {
+                        const lineArr = t.line;
+                        if (!this._awardLine[idx]) this._awardLine[idx] = [];
+                        lineArr.forEach(l => {
+                            this._awardLine[idx].push(matrix[l]);
+                        })
+                    })
+                }
             }
+
             if (this.Free) {
                 this._finishedCount++;
                 this._finishedWin += msg.spin_data?.award || 0;
@@ -129,19 +144,21 @@ export default class SuperSevenManager extends BaseManager {
             this._freeCount = msg.free_count;
             this._curFreeCount = msg.win_free || 0;
             this.Free = msg.spin_type == 2;
+            this._curFree = msg.spin_type == 2;
             this.State = gameState.Ing;
+
         }
         return false;
     }
     /**----------------游戏结果相关-------------------*/
+    /**本局中奖的元素 */
+    private static _awardLine: number[][] = [];
     /**本局奖励金额属于什么类型的奖励 */
     private static _gold: Gold = Gold.None;
     /**下注档次 */
     private static _bets: number[] = [];
-    /**是否是自动下注 */
-    private static _auto: boolean = false;
     /**当前游戏状态 */
-    private static _state: gameState = gameState.End;
+    private static _state: gameState = gameState.None;
     /**当前转动倍数 */
     private static _times: number = 1;
     /**当前下注金额 */
@@ -162,6 +179,8 @@ export default class SuperSevenManager extends BaseManager {
     private static _curFreeCount: number = 0;
     /**剩余自动转动局数 */
     private static _autoNum: number = 0;
+
+    private static _curFree: boolean = false;
 
     /**----------------绑定界面-------------------*/
     private static _view: IPanelSuperSevenMainView | null = null;
@@ -191,14 +210,6 @@ export default class SuperSevenManager extends BaseManager {
         Global.sendMsg(GameEvent.UPDATE_STATE);
     }
 
-    public static set Auto(value: boolean) {
-        if (this._auto == value) return;
-        this._auto = value;
-        if (this._auto == false) {
-            this.AutoNum = 0;
-        }
-    }
-
     public static set AutoNum(value: number) {
         this._autoNum = value;
         Global.sendMsg(GameEvent.UPDATE_AUTO);
@@ -220,16 +231,19 @@ export default class SuperSevenManager extends BaseManager {
     public static _lineArr: number[][] = [];
     /** 前俩列是否是freeGame图标 用于前端显示*/
     public static _freeGame: boolean = false;
+    /** 前俩列是否是trlple图标 用于前端显示*/
+    public static _wild: boolean = false;
     public static set SpinInfo(value: supersevenbaccarat.SpinInfo | null) {
         this._spinInfo = value;
     }
+    public static get AwardLine(): number[][] { return this._awardLine; }
     public static get Gold(): Gold { return this._gold; }
     public static get FreeGame(): boolean { return this._freeGame; }
+    public static get Wild(): boolean { return this._wild; }
     public static get LineArr(): number[][] { return this._lineArr; }
     public static get BetCoin(): number { return this._betCoin; }
     public static get Times(): number { return this._times; }
     public static get State(): gameState { return this._state; }
-    public static get Auto(): boolean { return this._auto; }
     public static get Bets(): Number[] { return this._bets; }
     public static get PlayInfo(): supersevenbaccarat.PlayerInfo | null { return this._playInfo; }
     public static get Free(): boolean { return this._free; }
@@ -240,10 +254,10 @@ export default class SuperSevenManager extends BaseManager {
     public static get FinishedCount(): number { return this._finishedCount; }
     public static get FinishedWin(): number { return this._finishedWin; }
     public static get AutoNum(): number { return this._autoNum; }
+    public static get CurFree(): boolean { return this._curFree; }
 
     public static setAuto(value: number) {
         if (value <= 0) {
-            this.Auto = false;
             this.AutoNum = 0;
             return;
         }
@@ -253,11 +267,9 @@ export default class SuperSevenManager extends BaseManager {
                 resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
                 resourcesDb.I18N_RESOURCES_DB_INDEX.Error
             );
-            this.Auto = false;
             this.AutoNum = 0;
             return;
         }
-        this.Auto = true;
         let data = {
             currency: WalletManager.currency,
             bet_size: this.BetCoin

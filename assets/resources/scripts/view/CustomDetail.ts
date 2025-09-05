@@ -34,6 +34,7 @@ export default class CustomDetail extends ViewBase {
     _displayDuration: number = 10;
     _currentIndex: number = 0;
     _free: boolean = false;
+    _gameState: gameState = gameState.None;
     buildUi() {
         this._updateBet();
         this._updateFree();
@@ -85,16 +86,30 @@ export default class CustomDetail extends ViewBase {
     }
 
     _updateState() {
-        if (this._free) {
-            let all = SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount;
-            this.labelCurrent.string = SuperSevenManager.FinishedCount + '';
-            this.labelTotal.string = all + '';
+        this._gameState = SuperSevenManager.State;
+        switch (this._gameState) {
+            case gameState.None: break;
+            case gameState.Ing:
+                if (this._free) {
+                    this.labelCurrent.string = SuperSevenManager.FinishedCount + '';
+                } break;
+            case gameState.End:
+                if (this._free) {
+                    let all = SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount;
+                    // this.labelCurrent.string = SuperSevenManager.FinishedCount + '';
+                    this.labelTotal.string = all + '';
+                }
+                break;
         }
+
     }
 
     _updateChange(time = 0) {
         let free = SuperSevenManager.Free;
         if (free) {
+            let all = SuperSevenManager.FreeCount + SuperSevenManager.FinishedCount;
+            this.labelCurrent.string = SuperSevenManager.FinishedCount + '';
+            this.labelTotal.string = all + '';
             this.scrollView.scrollToBottom(time);
         } else {
             this.scrollView.scrollToTop(time);

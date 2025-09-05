@@ -40,8 +40,7 @@ export class GoldCounter extends Component {
      * @param amount 增加的数量
      */
     addGold(amount: number) {
-        this._targetGold += amount;
-
+        this._targetGold = amount;
         if (!this._isAnimating) {
             this.startAnimation();
         }
@@ -123,13 +122,16 @@ export class GoldCounter extends Component {
         requestAnimationFrame(updateGold);
     }
     private animObj = null;
- 
+
 
     /**
      * 更新金币显示
      */
     private updateGoldDisplay() {
         if (this.goldLabel) {
+            if (this._currentGold == 0) {
+                this.goldLabel.string = ''; return;
+            }
             this.goldLabel.string = this.formatNumber(this._currentGold);
         }
     }

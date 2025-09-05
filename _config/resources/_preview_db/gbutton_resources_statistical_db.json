@@ -617,6 +617,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001901
+        },
+        "cc_buttonCloseWin": {
+            "viewName": "PanelSuperSevenMain",
+            "buttonName": "cc_buttonCloseWin",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001902
         }
     },
     "PanelThirdGame": {

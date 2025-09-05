@@ -55,7 +55,6 @@ export default class CustomItem extends ViewBase {
     // @ViewBase.requireResourceLoaded
     setData(name: string, show: boolean = false) {
         this.reset();
-        this.init();
         this._show = show;
         this._name = name;
         this.sprImg.spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/10109_symbols', name);
@@ -69,32 +68,20 @@ export default class CustomItem extends ViewBase {
         this.sprImg.node.active = false;
         if (name.includes('M')) {
             if (inclue) {
-                this.spSkeleton.setAnimation(0, name, false);
-                this.spSkeleton.setCompleteListener(() => {
-                    this.spSkeleton.setCompleteListener(null);
-                    this.spSkeleton.setAnimation(0, name, false);
-                    this.spSkeleton.setCompleteListener(() => {
-                        this.reset()
-                    })
-                    this.reset();
-                });
+                this.spSkeleton.setAnimation(0, name, true);
             } else {
                 const trackEntry = this.spSkeleton.setAnimation(0, name, false);
                 trackEntry.trackTime = trackEntry.animationEnd;
             }
+            this.spSkeleton.node.scale = name == 'M6' ? v3(1.36, 1.36, 1.36) : v3(1.24, 1.24, 1.24);
             this.spSkeleton.node.active = true;
         } else {
             if (inclue) {
-                const count = SuperSevenManager.CurFreeCount;
-                this.spGuang.node.active = count > 0;
-                this.spSymbol.setAnimation(0, name, false);
-                this.spSymbol.setCompleteListener(() => {
-                    this.spSymbol.setCompleteListener(null);
-                    this.spSymbol.setAnimation(0, name, false);
-                    this.spSymbol.setCompleteListener(() => {
-                        this.reset()
-                    })
-                });
+                if (name == 'scatter_win') {
+                    const count = SuperSevenManager.CurFreeCount;
+                    this.spGuang.node.active = count > 0;
+                }
+                this.spSymbol.setAnimation(0, name, true);
             } else {
                 const trackEntry = this.spSymbol.setAnimation(0, name, false);
                 trackEntry.trackTime = trackEntry.animationEnd;
@@ -105,12 +92,12 @@ export default class CustomItem extends ViewBase {
 
     showFeeAnimation() {
         if (this._name == '' || this._idx == -1) return;
-        if (this._name != '10109_symbols_scatter') return;
         if (!this._show) return;
+        if (this._name != '10109_symbols_scatter' && this._name != '10109_symbols_wild_3') return;
         const node = this.sprImg.node.parent;
-        cc.tween(node).to(0.1, {
+        cc.tween(node).to(0.05, {
             scale: v3(1.2, 1.2, 1.2)
-        }).to(.1, {
+        }).to(0.05, {
             scale: v3(1, 1, 1)
         }).start();
     }
@@ -119,14 +106,15 @@ export default class CustomItem extends ViewBase {
         Tween.stopAllByTarget(this.sprImg.node.parent);
         this.sprImg.node.parent.scale = v3(1, 1, 1);
     }
+
     reset() {
         this.spSkeleton.setCompleteListener(null);
         this.spSymbol.setCompleteListener(null);
         this.spSkeleton.clearTracks();
         this.spSymbol.clearTracks();
+        this.sprImg.node.active = true;
         this.spSkeleton.node.active = false;
         this.spSymbol.node.active = false;
-        this.sprImg.node.active = true;
         this.spGuang.node.active = false;
     }
 

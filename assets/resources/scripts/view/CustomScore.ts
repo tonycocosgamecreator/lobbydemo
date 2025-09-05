@@ -27,7 +27,7 @@ export default class CustomScore extends ViewBase {
     }
 
     //------------------------ 内部逻辑 ------------------------//
-    _gameState: gameState = gameState.End;
+    _gameState: gameState = gameState.None;
     maxScale: number = 1.1;
     time: number = 0.8;
     buildUi() {
@@ -62,42 +62,148 @@ export default class CustomScore extends ViewBase {
                 break;
         }
     }
+    _listName = ['', 'tr', 'do', '', '7h', '7l', 'b3', 'b2', 'b1', '']
     _rotationEnd() {
         let bbar = 0;
-        let sbar = 0;
+        let bItem = [];
         let mbar = 0;
+        let mItem = [];
+        let sbar = 0;
+        let sItem = [];
         let rs = 0;
+        let rsItem = [];
         let bs = 0;
+        let bsItem = [];
         let seven = 0;
+        let sevenItem = [];
         let bar = 0;
-        const data = SuperSevenManager.LineArr;
+        let barItem = [];
+        const data = SuperSevenManager.AwardLine;
         for (let i = 0; i < data.length; i++) {
             const arr = data[i];
-            if (arr.indexOf(itemElement.BIGBAR) != -1) {
-                bbar++;
-                bar++;
+            if (bbar != 3) {
+                bbar = arr.filter(item => item === itemElement.BIGBAR).length;
+                if (bbar < 3) {
+                    let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                    bbar += t
+                    if (bbar < 3) {
+                        let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                        bbar += d;
+                    }
+                }
+                if (bbar >= 3) {
+                    bbar = 3;
+                    bItem = arr.slice(0);
+                }
             }
-            if (arr.indexOf(itemElement.MIDDLEBAR) != -1) {
-                mbar++;
-                bar++;
+            if (mbar != 3) {
+                mbar = arr.filter(item => item === itemElement.MIDDLEBAR).length;
+                if (mbar < 3) {
+                    let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                    mbar += t
+                    if (mbar < 3) {
+                        let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                        mbar += d
+                    }
+                }
+                if (mbar >= 3) {
+                    mbar = 3;
+                    mItem = arr.slice(0);
+                }
             }
-            if (arr.indexOf(itemElement.SMALLBAR) != -1) {
-                sbar++;
-                bar++;
+            if (sbar != 3) {
+                sbar = arr.filter(item => item === itemElement.SMALLBAR).length;
+                if (sbar < 3) {
+                    let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                    sbar += t
+                    if (sbar < 3) {
+                        let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                        sbar += d;
+                    }
+                }
+                if (sbar >= 3) {
+                    sbar = 3;
+                    sItem = arr.slice(0);
+                }
             }
-            if (arr.indexOf(itemElement.REDSEVEN) != -1) {
-                rs++;
-                seven++
+            if (rs != 3) {
+                rs = arr.filter(item => item === itemElement.REDSEVEN).length;
+                if (rs < 3) {
+                    let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                    rs += t
+                    if (rs < 3) {
+                        let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                        rs += d
+                    }
+                }
+                if (rs >= 3) {
+                    rs = 3;
+                    rsItem = arr.slice(0);
+                }
             }
-            if (arr.indexOf(itemElement.BULESEVEN) != -1) {
-                bs++;
-                seven++;
+            if (bs != 3) {
+                bs = arr.filter(item => item === itemElement.BULESEVEN).length;
+                if (bs < 3) {
+                    let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                    bs += t
+                    if (bs < 3) {
+                        let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                        bs += d
+                    }
+                }
+                if (bs >= 3) {
+                    bs = 3;
+                    bsItem = arr.slice(0);
+                }
+            }
+            if (seven != 3) {
+                let r = arr.filter(item => item === itemElement.REDSEVEN).length;
+                let b = arr.filter(item => item === itemElement.BULESEVEN).length;
+                if (r > 0 && b > 0) {
+                    seven = r + b;
+                    if (seven < 3) {
+                        let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                        seven += t;
+                        if (seven < 3) {
+                            let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                            seven += d;
+                        }
+                    }
+                    if (seven >= 3) {
+                        seven = 3;
+                        sevenItem = arr.slice(0);
+                    }
+                }
+            }
+            if (bar != 3) {
+                let b = arr.filter(item => item === itemElement.BIGBAR).length;
+                let m = arr.filter(item => item === itemElement.MIDDLEBAR).length;
+                let s = arr.filter(item => item === itemElement.SMALLBAR).length;
+                if (b != 3 && m != 3 && s != 3) {
+                    if (b + m + s >= 3) {
+                        bar = 3;
+                        barItem = arr.slice(0);
+                    } else if ((b + m + s == 2) && (b != 2 && m != 2 && s != 2)) {
+                        bar = 2;
+                        let t = arr.filter(item => item === itemElement.TRIPLE).length;
+                        bar += t;
+                        if (bar < 3) {
+                            let d = arr.filter(item => item === itemElement.DOUBLE).length;
+                            bar += d;
+                        }
+                    }
+                    if (bar >= 3) {
+                        bar = 3;
+                        barItem = arr.slice(0);
+                    }
+                }
             }
         }
         if (bbar == 3) {
-            this.b3_img_node.children.forEach(child => {
+            this.b3_img_node.children.forEach((child, idx) => {
                 Tween.stopAllByTarget(child);
                 child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[bItem[idx]]);
                 cc.tween(child)
                     .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
                     .to(this.time, { scale: new Vec3(1, 1, 1) })
@@ -107,9 +213,10 @@ export default class CustomScore extends ViewBase {
             });
         }
         if (mbar == 3) {
-            this.b2_img_node.children.forEach(child => {
+            this.b2_img_node.children.forEach((child, idx) => {
                 Tween.stopAllByTarget(child);
                 child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[mItem[idx]]);
                 cc.tween(child)
                     .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
                     .to(this.time, { scale: new Vec3(1, 1, 1) })
@@ -119,9 +226,10 @@ export default class CustomScore extends ViewBase {
             });
         }
         if (sbar == 3) {
-            this.b1_img_node.children.forEach(child => {
+            this.b1_img_node.children.forEach((child, idx) => {
                 Tween.stopAllByTarget(child);
                 child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[sItem[idx]]);
                 cc.tween(child)
                     .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
                     .to(this.time, { scale: new Vec3(1, 1, 1) })
@@ -131,9 +239,10 @@ export default class CustomScore extends ViewBase {
             });
         }
         if (rs == 3) {
-            this.b5_img_node.children.forEach(child => {
+            this.b5_img_node.children.forEach((child, idx) => {
                 Tween.stopAllByTarget(child);
                 child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[rsItem[idx]]);
                 cc.tween(child)
                     .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
                     .to(this.time, { scale: new Vec3(1, 1, 1) })
@@ -142,10 +251,11 @@ export default class CustomScore extends ViewBase {
                     .start();
             });
         }
-        if (bs == 7) {
-            this.b6_img_node.children.forEach(child => {
+        if (bs == 3) {
+            this.b6_img_node.children.forEach((child, idx) => {
                 Tween.stopAllByTarget(child);
                 child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[bsItem[idx]]);
                 cc.tween(child)
                     .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
                     .to(this.time, { scale: new Vec3(1, 1, 1) })
@@ -154,10 +264,33 @@ export default class CustomScore extends ViewBase {
                     .start();
             });
         }
-        if (seven >= 2) {
+        if (seven == 3) {
+            this.b4_img_node.children.forEach((child, idx) => {
+                Tween.stopAllByTarget(child);
+                child.scale = new Vec3(1, 1, 1);
+                child.active = true;
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[sevenItem[idx]]);
+                cc.tween(child)
+                    .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
+                    .to(this.time, { scale: new Vec3(1, 1, 1) })
+                    .union()
+                    .repeatForever()
+                    .start();
+            });
+        }
 
-        }
-        if (bar >= 2) {
+        if (bar == 3) {
+            this.b7_img_node.children.forEach((child, idx) => {
+                Tween.stopAllByTarget(child);
+                child.scale = new Vec3(1, 1, 1);
+                child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[barItem[idx]]);
+                cc.tween(child)
+                    .to(this.time, { scale: new Vec3(this.maxScale, this.maxScale, this.maxScale) })
+                    .to(this.time, { scale: new Vec3(1, 1, 1) })
+                    .union()
+                    .repeatForever()
+                    .start();
+            });
 
         }
     }
@@ -166,35 +299,40 @@ export default class CustomScore extends ViewBase {
         this.b3_img_node.children.forEach(child => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[itemElement.BIGBAR]);
         });
         this.b2_img_node.children.forEach(child => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[itemElement.MIDDLEBAR]);
         });
         this.b1_img_node.children.forEach(child => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[itemElement.SMALLBAR]);
         });
         this.b4_img_node.children.forEach((child, idx) => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
             child.active = idx < 2;
             let name = idx % 2 == 0 ? '7h' : '7l';
-            child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', name);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', name);
         });
         this.b5_img_node.children.forEach(child => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[itemElement.REDSEVEN]);
         });
         this.b6_img_node.children.forEach((child, idx) => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', this._listName[itemElement.BULESEVEN]);
         });
         this.b7_img_node.children.forEach((child, idx) => {
             Tween.stopAllByTarget(child);
             child.scale = new Vec3(1, 1, 1);
             let name = idx == 0 ? 'b3' : idx == 1 ? 'b2' : 'b1';
-            child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', name);
+            child.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrameBySpriteAtlas('plists/small_symbols', name);
         });
     }
     //------------------------ 网络消息 ------------------------//
