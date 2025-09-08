@@ -80,6 +80,7 @@ export default class CustomItem extends ViewBase {
                 if (name == 'scatter_win') {
                     const count = SuperSevenManager.CurFreeCount;
                     this.spGuang.node.active = count > 0;
+                    this.node.setSiblingIndex(this.node.parent.children.length - 1);
                 }
                 this.spSymbol.setAnimation(0, name, true);
             } else {

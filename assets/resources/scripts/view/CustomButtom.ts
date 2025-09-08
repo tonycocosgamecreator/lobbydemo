@@ -13,6 +13,8 @@ import BaseGlobal from '../core/message/base-global';
 import UIHelper from '../network/helper/ui-helper';
 import ViewManager from '../core/manager/view-manager';
 import { GoldCounter } from './GoldCounter';
+import { Tween } from 'cc';
+import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -98,7 +100,8 @@ export default class CustomButtom extends ViewBase {
     }
 
     _init() {
-        this.reset()
+        this.reset();
+        this._resetSpine();
         this._updateTimes();
         this._updateFree();
         this._updateAuto();
@@ -188,28 +191,14 @@ export default class CustomButtom extends ViewBase {
                 // }
                 break;
             case gameState.End:
+                this._resetSpine();
                 let award = SuperSevenManager.SpinInfo?.award || 0;
                 if (award) {
+                    GC.completeAnimation();
                     if (SuperSevenManager.CurFree) {
                         let all = SuperSevenManager.FinishedWin;
-                        if (this._free) {
-                            GC.completeAnimation();
-                            let diff = all - award;
-                            GC.setGold(diff);
-                            let time = 0;
-                            if (diff == 0) {
-                                time = Math.abs(all) * 0.05;
-                            } else {
-                                time = Math.abs(diff) * 0.05;
-                            }
-                            GC.setAnimationDuration(time > 1 ? 1 : time);
-                            GC.addGold(all);
-                        } else {
-                            GC.completeAnimation();
-                            GC.setGold(all);
-                        }
+                        GC.setGold(all);
                     } else {
-                        GC.completeAnimation();
                         GC.setGold(award);
                     }
                 }
@@ -231,6 +220,83 @@ export default class CustomButtom extends ViewBase {
         }
     }
 
+    playNiceAnimation() {
+        let LNode = this.labelNiceWin.node;
+        LNode.active = true;
+        this.spNiceWin.node.active = true;
+        this.spNiceWinFont.node.active = true;
+        let GC = LNode.getComponent(GoldCounter);
+        let award = SuperSevenManager.SpinInfo?.award || 0;
+        GC.setAnimationDuration(3);
+        if (SuperSevenManager.CurFree) {
+            let all = SuperSevenManager.FinishedWin;
+            let diff = all - award;
+            GC.setGold(diff);
+            GC.addGold(all);
+        } else {
+            GC.setGold(0);
+            GC.addGold(award);
+        }
+        LNode.opacity = 100;
+        cc.tween(LNode).to(0.2, { opacity: 180, position: v3(LNode.position.x, 206, LNode.position.z), scale: v3(1.2, 1.2, 1.2) })
+            .to(0.1, { opacity: 255, position: v3(LNode.position.x, 146, LNode.position.z), scale: v3(1, 1, 1) }).start();
+        this.spNiceWin.setAnimation(0, 'guang_chuxian', false);
+        this.spNiceWinFont.setAnimation(0, 'nice_chuxian', false);
+        this.spNiceWin.setCompleteListener(() => {
+            this.spNiceWin.setCompleteListener(null)
+            this.spNiceWin.setAnimation(0, 'guang_daiji', true);
+            this.scheduleOnce(() => {
+                cc.tween(LNode).to(0.08, { opacity: 180, position: v3(LNode.position.x, 206, LNode.position.z), scale: v3(1.1, 1.1, 1.1) }).call(() => {
+                    this.spNiceWinFont.setAnimation(0, 'guang_xiaoshi', false);
+                    this.spNiceWin.setAnimation(0, 'nice_xiaoshi', false);
+                })
+                    .to(0.3, { opacity: 50, position: v3(LNode.position.x, 46, LNode.position.z), scale: v3(0.7, 0.7, 0.7) }, { easing: "sineOut" }).call(() => {
+                        SuperSevenManager.State = gameState.End;
+                    }).start();
+            }, 3)
+        })
+        this.spNiceWinFont.setCompleteListener(() => {
+            this.spNiceWinFont.setCompleteListener(null)
+            this.spNiceWinFont.setAnimation(0, 'nice_daiji', true);
+        })
+    }
+
+    playWinAnimation() {
+        let award = SuperSevenManager.SpinInfo?.award || 0;
+        if (!award) return;
+        const GC = this.labelWin.node.getComponent(GoldCounter);
+        let time = 0;
+        GC.completeAnimation();
+        let win = 0;
+        if (SuperSevenManager.CurFree) {
+            let all = SuperSevenManager.FinishedWin;
+            let diff = all - award;
+            GC.setGold(diff);
+            time = Math.abs(diff) * 0.05;
+            win = all;
+        } else {
+            GC.setGold(1);
+            time = Math.abs(award) * 0.05;
+            win = award;
+        }
+        if (time > 1) time = 1;
+        GC.setAnimationDuration(time);
+        GC.addGold(win);
+        this.scheduleOnce(() => {
+            SuperSevenManager.State = gameState.End;
+        }, time)
+
+    }
+    _resetSpine() {
+        this.spNiceWin.node.active = false;
+        this.spNiceWinFont.node.active = false;
+        let LNode = this.labelNiceWin.node;
+        Tween.stopAllByTarget(LNode);
+        LNode.active = false;
+        LNode.opacity = 255;
+        LNode.position = v3(LNode.position.x, 46, LNode.position.z);
+        LNode.scale = v3(0.8, 0.8, 0.8);
+    }
     _updateFont() {
         const GC = this.labelWin.node.getComponent(GoldCounter);
         let award = SuperSevenManager.FinishedWin;
@@ -316,6 +382,7 @@ export default class CustomButtom extends ViewBase {
             cc_buttonSub: [GButton, this.onClickButtonSub.bind(this)],
             cc_buttonTimes: [GButton, this.onClickButtonTimes.bind(this)],
             cc_free_node: [cc.Node],
+            cc_labelNiceWin: [cc.Label],
             cc_labelResidue: [cc.Label],
             cc_labelTimes: [cc.Label],
             cc_labelTotal: [cc.Label],
@@ -323,6 +390,8 @@ export default class CustomButtom extends ViewBase {
             cc_labelfreeGame: [cc.Label],
             cc_labelfreeTotal: [cc.Label],
             cc_pay_node: [cc.Node],
+            cc_spNiceWin: [cc.sp.Skeleton],
+            cc_spNiceWinFont: [cc.sp.Skeleton],
             cc_spbottom: [cc.sp.Skeleton],
         };
     }
@@ -334,6 +403,7 @@ export default class CustomButtom extends ViewBase {
     protected buttonSub: GButton = null;
     protected buttonTimes: GButton = null;
     protected free_node: cc.Node = null;
+    protected labelNiceWin: cc.Label = null;
     protected labelResidue: cc.Label = null;
     protected labelTimes: cc.Label = null;
     protected labelTotal: cc.Label = null;
@@ -341,6 +411,8 @@ export default class CustomButtom extends ViewBase {
     protected labelfreeGame: cc.Label = null;
     protected labelfreeTotal: cc.Label = null;
     protected pay_node: cc.Node = null;
+    protected spNiceWin: cc.sp.Skeleton = null;
+    protected spNiceWinFont: cc.sp.Skeleton = null;
     protected spbottom: cc.sp.Skeleton = null;
     /**
      * 当前界面的名字

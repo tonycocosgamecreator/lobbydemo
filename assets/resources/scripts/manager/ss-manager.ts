@@ -27,8 +27,12 @@ export enum gameState {
 }
 export enum Gold {
     None,
-    Small,
+    Win,
+    Nice,
     Big,
+    Huge,
+    Legendary,
+    Massive
 }
 export default class SuperSevenManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -110,9 +114,26 @@ export default class SuperSevenManager extends BaseManager {
             this._gold = Gold.None;
             this.SpinInfo = msg.spin_data || null;
             if (this.SpinInfo) {
-                const award = this.SpinInfo.award || 0;
+                let award = this.SpinInfo.award || 0;
                 const matrix = this.SpinInfo.matrix;
-                this._gold = award == 0 ? Gold.None : award / this._betCoin > 2 ? Gold.Big : Gold.Small;
+                //客户端随便写写 后面策划改
+                if (award > 0) {
+                    let bs = award / this._betCoin;
+                    if (bs > 50) {
+                        this._gold = Gold.Massive;
+                    } else if (bs > 40) {
+                        this._gold = Gold.Legendary;
+                    } else if (bs > 30) {
+                        this._gold = Gold.Huge;
+                    } else if (bs > 20) {
+                        this._gold = Gold.Big;
+                    } else if (bs > 2) {
+                        this._gold = Gold.Nice;
+                    } else {
+                        this._gold = Gold.Win;
+                    }
+                    // this._gold = Gold.Huge;
+                }
                 for (let i = 0; i < matrix.length; i++) {
                     let idx = i % 3;
                     if (!this._lineArr[idx]) this._lineArr[idx] = [];

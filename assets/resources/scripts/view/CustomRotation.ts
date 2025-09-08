@@ -141,7 +141,7 @@ export default class CustomRotation extends ViewBase {
             });
         }
         const gold = SuperSevenManager.Gold;
-        const show = gold == Gold.Big;
+        const show = gold >= Gold.Big;
         this.spStar.node.active = show;
         this.spRotation.node.active = show;
         if (show) {
@@ -149,9 +149,9 @@ export default class CustomRotation extends ViewBase {
             // this.spjzlunzi.setAnimation(0, 'caihong', true);
             this.spRotation.setAnimation(0, 'caihong', true);
         }
-        if (gold != Gold.None) {
+        // if (gold != Gold.None) {
             this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
-        }
+        // }
         this.spZhou.node.active = false;
     }
 

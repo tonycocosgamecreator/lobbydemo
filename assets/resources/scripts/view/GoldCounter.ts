@@ -71,7 +71,7 @@ export class GoldCounter extends Component {
         const originalScale = this.goldLabel.node.scale.clone();
 
         // 计算动画持续时间
-        const duration = Math.min(this._animationDuration, 0.5 + (endValue - startValue) / 1000 * 0.5);
+        const duration = this._animationDuration
 
         let startTime = Date.now();
 
@@ -105,7 +105,7 @@ export class GoldCounter extends Component {
                 requestAnimationFrame(updateGold);
             } else {
                 // 动画完成
-                this.goldLabel.node.setScale(originalScale);
+                // this.goldLabel.node.setScale(originalScale);
                 this._currentGold = endValue;
                 this.updateGoldDisplay();
 
