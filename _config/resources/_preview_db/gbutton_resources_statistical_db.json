@@ -166,9 +166,9 @@
             "desc": "",
             "statisticalId": 100003105
         },
-        "cc_buttonSub": {
+        "cc_buttonAdd": {
             "viewName": "CustomButtom",
-            "buttonName": "cc_buttonSub",
+            "buttonName": "cc_buttonAdd",
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003106
@@ -180,9 +180,9 @@
             "desc": "",
             "statisticalId": 100003106
         },
-        "cc_buttonAdd": {
+        "cc_buttonSub": {
             "viewName": "CustomButtom",
-            "buttonName": "cc_buttonAdd",
+            "buttonName": "cc_buttonSub",
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003106

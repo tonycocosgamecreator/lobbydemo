@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "f743dd43-7010-44a9-8f22-ff534db19871",
+  "uuid": "033397a9-6efe-467d-9182-5c00a1a78e3d",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "coin_win"
+    "syncNodeName": "coin_win-002"
   }
 }

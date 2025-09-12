@@ -36,7 +36,7 @@
         "_value": true
       },
       "physics": {
-        "_value": true,
+        "_value": false,
         "_option": "physics-ammo"
       },
       "physics-ammo": {
@@ -65,19 +65,19 @@
         "_value": false
       },
       "primitive": {
-        "_value": true
+        "_value": false
       },
       "profiler": {
         "_value": true
       },
       "occlusion-query": {
-        "_value": true
+        "_value": false
       },
       "geometry-renderer": {
-        "_value": true
+        "_value": false
       },
       "debug-renderer": {
-        "_value": true
+        "_value": false
       },
       "particle-2d": {
         "_value": true
@@ -107,7 +107,7 @@
         "_value": false
       },
       "tiled-map": {
-        "_value": true
+        "_value": false
       },
       "spine": {
         "_value": true
@@ -137,21 +137,15 @@
       "animation",
       "audio",
       "base",
-      "debug-renderer",
       "dragon-bones",
-      "geometry-renderer",
       "gfx-webgl",
       "marionette",
       "meshopt",
-      "occlusion-query",
       "particle",
       "particle-2d",
-      "physics-ammo",
-      "primitive",
       "profiler",
       "skeletal-animation",
       "spine",
-      "tiled-map",
       "tween",
       "ui",
       "video",

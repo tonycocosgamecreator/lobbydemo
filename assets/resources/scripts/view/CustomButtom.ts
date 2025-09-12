@@ -13,8 +13,6 @@ import BaseGlobal from '../core/message/base-global';
 import UIHelper from '../network/helper/ui-helper';
 import ViewManager from '../core/manager/view-manager';
 import { GoldCounter } from './GoldCounter';
-import { Tween } from 'cc';
-import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -183,13 +181,7 @@ export default class CustomButtom extends ViewBase {
                 this.buttonSpin.node.active = false;
                 this.buttonAuto.state = GButtonState.SHOW_DISABLE;
                 break;
-            case gameState.Result:
-                // if (award) {
-                //     this.labelWin.node.getComponent(GoldCounter).setGold(0);
-                //     this.labelWin.node.getComponent(GoldCounter).setAnimationDuration(award * 0.05);
-                //     this.labelWin.node.getComponent(GoldCounter).addGold(award);
-                // }
-                break;
+            case gameState.Result: break;
             case gameState.End:
                 this._resetSpine();
                 let award = SuperSevenManager.SpinInfo?.award || 0;
@@ -221,43 +213,52 @@ export default class CustomButtom extends ViewBase {
     }
 
     playNiceAnimation() {
-        let LNode = this.labelNiceWin.node;
-        LNode.active = true;
         this.spNiceWin.node.active = true;
         this.spNiceWinFont.node.active = true;
-        let GC = LNode.getComponent(GoldCounter);
+        let GC = this.labelNiceWin.getComponent(GoldCounter);
         let award = SuperSevenManager.SpinInfo?.award || 0;
-        GC.setAnimationDuration(3);
+        GC.completeAnimation();
+        let time = 0;
+        let win = 0;
         if (SuperSevenManager.CurFree) {
             let all = SuperSevenManager.FinishedWin;
             let diff = all - award;
             GC.setGold(diff);
-            GC.addGold(all);
+            time = Math.abs(diff) * 0.05;
+            win = all;
         } else {
-            GC.setGold(0);
-            GC.addGold(award);
+            GC.setGold(1);
+            time = Math.abs(award) * 0.05;
+            win = award;
         }
-        LNode.opacity = 100;
-        cc.tween(LNode).to(0.2, { opacity: 180, position: v3(LNode.position.x, 206, LNode.position.z), scale: v3(1.2, 1.2, 1.2) })
-            .to(0.1, { opacity: 255, position: v3(LNode.position.x, 146, LNode.position.z), scale: v3(1, 1, 1) }).start();
+        if (time > 1) time = 1;
+        GC.setAnimationDuration(time);
+        GC.addGold(win);
+        this.spCoin.active = true;
         this.spNiceWin.setAnimation(0, 'guang_chuxian', false);
         this.spNiceWinFont.setAnimation(0, 'nice_chuxian', false);
         this.spNiceWin.setCompleteListener(() => {
             this.spNiceWin.setCompleteListener(null)
             this.spNiceWin.setAnimation(0, 'guang_daiji', true);
-            this.scheduleOnce(() => {
-                cc.tween(LNode).to(0.08, { opacity: 180, position: v3(LNode.position.x, 206, LNode.position.z), scale: v3(1.1, 1.1, 1.1) }).call(() => {
-                    this.spNiceWinFont.setAnimation(0, 'guang_xiaoshi', false);
-                    this.spNiceWin.setAnimation(0, 'nice_xiaoshi', false);
-                })
-                    .to(0.3, { opacity: 50, position: v3(LNode.position.x, 46, LNode.position.z), scale: v3(0.7, 0.7, 0.7) }, { easing: "sineOut" }).call(() => {
-                        SuperSevenManager.State = gameState.End;
-                    }).start();
-            }, 3)
         })
         this.spNiceWinFont.setCompleteListener(() => {
             this.spNiceWinFont.setCompleteListener(null)
             this.spNiceWinFont.setAnimation(0, 'nice_daiji', true);
+            this.scheduleOnce(() => {
+                this.spNiceWinFont.setAnimation(0, 'nice_xiaoshi', false);
+                this.spNiceWin.setAnimation(0, 'guang_xiaoshi', false);
+                let ps = this.spCoin.getComponent(cc.ParticleSystem);
+                ps.stop();
+                ps.clear();
+                this.scheduleOnce(() => {
+                    ps.play();
+                    this.spCoin.active = false;
+                });
+                this.spNiceWinFont.setCompleteListener(() => {
+                    this.spNiceWinFont.setCompleteListener(null)
+                    SuperSevenManager.State = gameState.End;
+                })
+            }, 3)
         })
     }
 
@@ -265,8 +266,8 @@ export default class CustomButtom extends ViewBase {
         let award = SuperSevenManager.SpinInfo?.award || 0;
         if (!award) return;
         const GC = this.labelWin.node.getComponent(GoldCounter);
-        let time = 0;
         GC.completeAnimation();
+        let time = 0;
         let win = 0;
         if (SuperSevenManager.CurFree) {
             let all = SuperSevenManager.FinishedWin;
@@ -290,12 +291,7 @@ export default class CustomButtom extends ViewBase {
     _resetSpine() {
         this.spNiceWin.node.active = false;
         this.spNiceWinFont.node.active = false;
-        let LNode = this.labelNiceWin.node;
-        Tween.stopAllByTarget(LNode);
-        LNode.active = false;
-        LNode.opacity = 255;
-        LNode.position = v3(LNode.position.x, 46, LNode.position.z);
-        LNode.scale = v3(0.8, 0.8, 0.8);
+        this.spCoin.active = false;
     }
     _updateFont() {
         const GC = this.labelWin.node.getComponent(GoldCounter);
@@ -390,6 +386,7 @@ export default class CustomButtom extends ViewBase {
             cc_labelfreeGame: [cc.Label],
             cc_labelfreeTotal: [cc.Label],
             cc_pay_node: [cc.Node],
+            cc_spCoin: [cc.Node],
             cc_spNiceWin: [cc.sp.Skeleton],
             cc_spNiceWinFont: [cc.sp.Skeleton],
             cc_spbottom: [cc.sp.Skeleton],
@@ -411,6 +408,7 @@ export default class CustomButtom extends ViewBase {
     protected labelfreeGame: cc.Label = null;
     protected labelfreeTotal: cc.Label = null;
     protected pay_node: cc.Node = null;
+    protected spCoin: cc.Node = null;
     protected spNiceWin: cc.sp.Skeleton = null;
     protected spNiceWinFont: cc.sp.Skeleton = null;
     protected spbottom: cc.sp.Skeleton = null;

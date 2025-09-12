@@ -123,7 +123,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.timerId = null;
         }
     }
-    _spinWinName = ['big', 'huge', 'legendary', 'massive'];
+    _spinWinName = ['big', 'huge', 'massive', 'legendary'];
     _playNum = 0;
     bigWinAnimation() {
         this.spine_node.active = true;
@@ -289,7 +289,6 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         this.animation_node.node.active = false;
         this.clearTimer();
         this._playWinAnimation = false;
-        this.nicewin_node.active = false;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -332,7 +331,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         cc.tween(N1).to(0.2, { opacity: 0 }).start();
         this.spFreeWin.setAnimation(0, 'xiaosi', false);
         let bgNode = this.animation_node.node;
-        cc.tween(bgNode).to(0.5, { opacity: 0 }).call(() => {
+        cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
             this.spFreeWin.node.active = false;
             this.spGuangQuan.setCompleteListener(null);
             this.spGuangQuan.node.active = false;
@@ -371,7 +370,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spKuang.setAnimation(0, 'xiaoshi', false);
             this.spGuang.setAnimation(0, 'xiaoshi', false);
             let bgNode = this.animation_node.node;
-            cc.tween(bgNode).to(0.5, { opacity: 0 }).call(() => {
+            cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
                 SuperSevenManager.State = gameState.End;
             }).start();
         }, 2);
@@ -384,76 +383,68 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_animation_node: [cc.Sprite],
-            cc_buttom_node: [CustomButtom],
-            cc_buttonCloseWin: [GButton, this.onClickButtonCloseWin.bind(this)],
-            cc_buttonCollect: [GButton, this.onClickButtonCollect.bind(this)],
-            cc_buttonStart: [GButton, this.onClickButtonStart.bind(this)],
-            cc_content_node: [cc.Node],
-            cc_detail_node: [CustomDetail],
-            cc_labelFreeWin: [cc.Label],
-            cc_labelNiceWin: [cc.Label],
-            cc_labelSpineWin: [cc.Label],
-            cc_nicewin_node: [cc.Node],
-            cc_rotation_node: [CustomRotation],
-            cc_score_node: [CustomScore],
-            cc_spFont: [cc.sp.Skeleton],
-            cc_spFree: [cc.sp.Skeleton],
-            cc_spFreeWin: [cc.sp.Skeleton],
-            cc_spGuang: [cc.sp.Skeleton],
-            cc_spGuangQuan: [cc.sp.Skeleton],
-            cc_spKuang: [cc.sp.Skeleton],
-            cc_spNiceWin: [cc.sp.Skeleton],
-            cc_spNiceWinFont: [cc.sp.Skeleton],
-            cc_sphandShank: [cc.sp.Skeleton],
-            cc_spine_node: [cc.Node],
-            cc_top_node: [cc.Node],
-            cc_win_node: [cc.Node],
+            cc_animation_node    : [cc.Sprite],
+            cc_buttom_node    : [CustomButtom],
+            cc_buttonCloseWin    : [GButton,this.onClickButtonCloseWin.bind(this)],
+            cc_buttonCollect    : [GButton,this.onClickButtonCollect.bind(this)],
+            cc_buttonStart    : [GButton,this.onClickButtonStart.bind(this)],
+            cc_content_node    : [cc.Node],
+            cc_detail_node    : [CustomDetail],
+            cc_labelFreeWin    : [cc.Label],
+            cc_labelSpineWin    : [cc.Label],
+            cc_rotation_node    : [CustomRotation],
+            cc_score_node    : [CustomScore],
+            cc_spFont    : [cc.sp.Skeleton],
+            cc_spFree    : [cc.sp.Skeleton],
+            cc_spFreeWin    : [cc.sp.Skeleton],
+            cc_spGuang    : [cc.sp.Skeleton],
+            cc_spGuangQuan    : [cc.sp.Skeleton],
+            cc_spKuang    : [cc.sp.Skeleton],
+            cc_sphandShank    : [cc.sp.Skeleton],
+            cc_spine_node    : [cc.Node],
+            cc_top_node    : [cc.Node],
+            cc_win_node    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected animation_node: cc.Sprite = null;
-    protected buttom_node: CustomButtom = null;
-    protected buttonCloseWin: GButton = null;
-    protected buttonCollect: GButton = null;
-    protected buttonStart: GButton = null;
-    protected content_node: cc.Node = null;
-    protected detail_node: CustomDetail = null;
-    protected labelFreeWin: cc.Label = null;
-    protected labelNiceWin: cc.Label = null;
-    protected labelSpineWin: cc.Label = null;
-    protected nicewin_node: cc.Node = null;
-    protected rotation_node: CustomRotation = null;
-    protected score_node: CustomScore = null;
-    protected spFont: cc.sp.Skeleton = null;
-    protected spFree: cc.sp.Skeleton = null;
-    protected spFreeWin: cc.sp.Skeleton = null;
-    protected spGuang: cc.sp.Skeleton = null;
-    protected spGuangQuan: cc.sp.Skeleton = null;
-    protected spKuang: cc.sp.Skeleton = null;
-    protected spNiceWin: cc.sp.Skeleton = null;
-    protected spNiceWinFont: cc.sp.Skeleton = null;
-    protected sphandShank: cc.sp.Skeleton = null;
-    protected spine_node: cc.Node = null;
-    protected top_node: cc.Node = null;
-    protected win_node: cc.Node = null;
+   protected animation_node: cc.Sprite    = null;
+   protected buttom_node: CustomButtom    = null;
+   protected buttonCloseWin: GButton    = null;
+   protected buttonCollect: GButton    = null;
+   protected buttonStart: GButton    = null;
+   protected content_node: cc.Node    = null;
+   protected detail_node: CustomDetail    = null;
+   protected labelFreeWin: cc.Label    = null;
+   protected labelSpineWin: cc.Label    = null;
+   protected rotation_node: CustomRotation    = null;
+   protected score_node: CustomScore    = null;
+   protected spFont: cc.sp.Skeleton    = null;
+   protected spFree: cc.sp.Skeleton    = null;
+   protected spFreeWin: cc.sp.Skeleton    = null;
+   protected spGuang: cc.sp.Skeleton    = null;
+   protected spGuangQuan: cc.sp.Skeleton    = null;
+   protected spKuang: cc.sp.Skeleton    = null;
+   protected sphandShank: cc.sp.Skeleton    = null;
+   protected spine_node: cc.Node    = null;
+   protected top_node: cc.Node    = null;
+   protected win_node: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelSuperSevenMain';
+   public static readonly VIEW_NAME    = 'PanelSuperSevenMain';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelSuperSevenMain.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelSuperSevenMain.VIEW_NAME;
     }
     // @view export resource end

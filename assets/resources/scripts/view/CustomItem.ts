@@ -106,6 +106,7 @@ export default class CustomItem extends ViewBase {
     init() {
         Tween.stopAllByTarget(this.sprImg.node.parent);
         this.sprImg.node.parent.scale = v3(1, 1, 1);
+        this._show = false;
     }
 
     reset() {
