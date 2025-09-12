@@ -256,7 +256,7 @@
       "startSpeed",
       "constant"
     ],
-    "value": 300
+    "value": 320
   },
   {
     "__type__": "CCPropertyOverrideInfo",

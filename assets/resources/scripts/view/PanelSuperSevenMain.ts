@@ -147,6 +147,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     commonWin() {
         let idx = 0;
         this.win_node.active = true;
+        this.win_lizi_node.active = true;
         this.labelSpineWin.node.getComponent(GoldCounter).setGold(0);
         let time = this._playNum * 3 - 2;
         this.labelSpineWin.node.getComponent(GoldCounter).setAnimationDuration(time);
@@ -166,6 +167,11 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spFont.setSkin(name);
             this.spFont.setAnimation(0, 'wz_chuxian', true);
             this.spFont.setCompleteListener(() => {
+                this.win_lizi_node.children.forEach(child => {
+                    let ps = child.getComponent(cc.ParticleSystem);
+                    ps.rateOverTime.constant = 30 + 20 * idx;
+                    ps.play();
+                })
                 this._playWinAnimation = true;
                 this.spFont.setCompleteListener(null);
                 this.spFont.setAnimation(0, 'wz_daiji', true);
@@ -177,8 +183,21 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
                         this.spKuang.setAnimation(0, 'xiaoshi', false);
                         this.spGuang.setAnimation(0, 'xiaoshi', false);
                         let bgNode = this.animation_node.node;
-                        cc.tween(bgNode).to(0.5, { opacity: 0 }).call(() => {
-                            SuperSevenManager.State = gameState.End;
+                        cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
+                            this.win_lizi_node.children.forEach((child, idx) => {
+                                let ps = child.getComponent(cc.ParticleSystem);
+                                ps.stop();
+                                const originalSpeed = ps.simulationSpeed;
+                                ps.simulationSpeed = 1000;
+                                this.scheduleOnce(() => {
+                                    ps.rateOverTime.constant = 30;
+                                    ps.simulationSpeed = originalSpeed;
+                                    ps.duration = ps.duration;
+                                    if (idx == 1) {
+                                        SuperSevenManager.State = gameState.End;
+                                    }
+                                }, 0)
+                            })
                         }).start();
                     }, 2);
                 }
@@ -289,6 +308,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         this.animation_node.node.active = false;
         this.clearTimer();
         this._playWinAnimation = false;
+        this.win_lizi_node.active = false;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -360,6 +380,11 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         const gold = SuperSevenManager.Gold;
         let idx = gold - 3;
         let name = this._spinWinName[idx];
+        this.win_lizi_node.children.forEach(child => {
+            let ps = child.getComponent(cc.ParticleSystem);
+            ps.rateOverTime.constant = 30 + 20 * idx;
+            ps.play();
+        })
         this.spFont.setSkin(name);
         this.spFont.setAnimation(0, 'wz_daiji', true);
         this.labelSpineWin.node.getComponent(GoldCounter).completeAnimation()
@@ -371,7 +396,20 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spGuang.setAnimation(0, 'xiaoshi', false);
             let bgNode = this.animation_node.node;
             cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
-                SuperSevenManager.State = gameState.End;
+                this.win_lizi_node.children.forEach((child, idx) => {
+                    let ps = child.getComponent(cc.ParticleSystem);
+                    ps.stop();
+                    const originalSpeed = ps.simulationSpeed;
+                    ps.simulationSpeed = 1000;
+                    this.scheduleOnce(() => {
+                        ps.rateOverTime.constant = 30;
+                        ps.simulationSpeed = originalSpeed;
+                        ps.duration = ps.duration;
+                        if (idx == 1) {
+                            SuperSevenManager.State = gameState.End;
+                        }
+                    }, 0)
+                })
             }).start();
         }, 2);
 
@@ -383,68 +421,74 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_animation_node    : [cc.Sprite],
-            cc_buttom_node    : [CustomButtom],
-            cc_buttonCloseWin    : [GButton,this.onClickButtonCloseWin.bind(this)],
-            cc_buttonCollect    : [GButton,this.onClickButtonCollect.bind(this)],
-            cc_buttonStart    : [GButton,this.onClickButtonStart.bind(this)],
-            cc_content_node    : [cc.Node],
-            cc_detail_node    : [CustomDetail],
-            cc_labelFreeWin    : [cc.Label],
-            cc_labelSpineWin    : [cc.Label],
-            cc_rotation_node    : [CustomRotation],
-            cc_score_node    : [CustomScore],
-            cc_spFont    : [cc.sp.Skeleton],
-            cc_spFree    : [cc.sp.Skeleton],
-            cc_spFreeWin    : [cc.sp.Skeleton],
-            cc_spGuang    : [cc.sp.Skeleton],
-            cc_spGuangQuan    : [cc.sp.Skeleton],
-            cc_spKuang    : [cc.sp.Skeleton],
-            cc_sphandShank    : [cc.sp.Skeleton],
-            cc_spine_node    : [cc.Node],
-            cc_top_node    : [cc.Node],
-            cc_win_node    : [cc.Node],
+            cc_animation_node: [cc.Sprite],
+            cc_buttom_node: [CustomButtom],
+            cc_buttonCloseWin: [GButton, this.onClickButtonCloseWin.bind(this)],
+            cc_buttonCollect: [GButton, this.onClickButtonCollect.bind(this)],
+            cc_buttonStart: [GButton, this.onClickButtonStart.bind(this)],
+            cc_content_node: [cc.Node],
+            cc_detail_node: [CustomDetail],
+            cc_labelFreeWin: [cc.Label],
+            cc_labelSpineWin: [cc.Label],
+            cc_rotation_node: [CustomRotation],
+            cc_score_node: [CustomScore],
+            cc_spFont: [cc.sp.Skeleton],
+            cc_spFree: [cc.sp.Skeleton],
+            cc_spFreeWin: [cc.sp.Skeleton],
+            cc_spGuang: [cc.sp.Skeleton],
+            cc_spGuangQuan: [cc.sp.Skeleton],
+            cc_spKuang: [cc.sp.Skeleton],
+            cc_sphandShank: [cc.sp.Skeleton],
+            cc_spine_node: [cc.Node],
+            cc_top_node: [cc.Node],
+            cc_win_lizi1: [cc.UIMeshRenderer],
+            cc_win_lizi2: [cc.UIMeshRenderer],
+            cc_win_lizi_node: [cc.Node],
+            cc_win_node: [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected animation_node: cc.Sprite    = null;
-   protected buttom_node: CustomButtom    = null;
-   protected buttonCloseWin: GButton    = null;
-   protected buttonCollect: GButton    = null;
-   protected buttonStart: GButton    = null;
-   protected content_node: cc.Node    = null;
-   protected detail_node: CustomDetail    = null;
-   protected labelFreeWin: cc.Label    = null;
-   protected labelSpineWin: cc.Label    = null;
-   protected rotation_node: CustomRotation    = null;
-   protected score_node: CustomScore    = null;
-   protected spFont: cc.sp.Skeleton    = null;
-   protected spFree: cc.sp.Skeleton    = null;
-   protected spFreeWin: cc.sp.Skeleton    = null;
-   protected spGuang: cc.sp.Skeleton    = null;
-   protected spGuangQuan: cc.sp.Skeleton    = null;
-   protected spKuang: cc.sp.Skeleton    = null;
-   protected sphandShank: cc.sp.Skeleton    = null;
-   protected spine_node: cc.Node    = null;
-   protected top_node: cc.Node    = null;
-   protected win_node: cc.Node    = null;
+    protected animation_node: cc.Sprite = null;
+    protected buttom_node: CustomButtom = null;
+    protected buttonCloseWin: GButton = null;
+    protected buttonCollect: GButton = null;
+    protected buttonStart: GButton = null;
+    protected content_node: cc.Node = null;
+    protected detail_node: CustomDetail = null;
+    protected labelFreeWin: cc.Label = null;
+    protected labelSpineWin: cc.Label = null;
+    protected rotation_node: CustomRotation = null;
+    protected score_node: CustomScore = null;
+    protected spFont: cc.sp.Skeleton = null;
+    protected spFree: cc.sp.Skeleton = null;
+    protected spFreeWin: cc.sp.Skeleton = null;
+    protected spGuang: cc.sp.Skeleton = null;
+    protected spGuangQuan: cc.sp.Skeleton = null;
+    protected spKuang: cc.sp.Skeleton = null;
+    protected sphandShank: cc.sp.Skeleton = null;
+    protected spine_node: cc.Node = null;
+    protected top_node: cc.Node = null;
+    protected win_lizi1: cc.UIMeshRenderer = null;
+    protected win_lizi2: cc.UIMeshRenderer = null;
+    protected win_lizi_node: cc.Node = null;
+    protected win_node: cc.Node = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'PanelSuperSevenMain';
+    public static readonly VIEW_NAME = 'PanelSuperSevenMain';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return PanelSuperSevenMain.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return PanelSuperSevenMain.VIEW_NAME;
     }
     // @view export resource end

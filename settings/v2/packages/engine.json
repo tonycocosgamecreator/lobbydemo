@@ -113,7 +113,7 @@
         "_value": true
       },
       "dragon-bones": {
-        "_value": true
+        "_value": false
       },
       "marionette": {
         "_value": true
@@ -137,7 +137,6 @@
       "animation",
       "audio",
       "base",
-      "dragon-bones",
       "gfx-webgl",
       "marionette",
       "meshopt",

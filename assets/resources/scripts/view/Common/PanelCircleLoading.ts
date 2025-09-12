@@ -51,7 +51,7 @@ export default class PanelCircleLoading extends ViewBase {
         if (this.context) {
             this.context.info = info;
         }
-        if (info) {
+        if (this.info && info) {
             this.info.string = info;
         }
     }

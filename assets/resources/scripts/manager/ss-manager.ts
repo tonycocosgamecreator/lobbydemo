@@ -119,21 +119,19 @@ export default class SuperSevenManager extends BaseManager {
                 //客户端随便写写 后面策划改
                 if (award > 0) {
                     let bs = award / this._betCoin;
-                    if (bs > 30) {
+                    if (bs >= 30) {
                         this._gold = Gold.Legendary;
-                    } else if (bs > 20) {
+                    } else if (bs >= 20) {
                         this._gold = Gold.Massive;
-                    } else if (bs > 10) {
+                    } else if (bs >= 10) {
                         this._gold = Gold.Huge;
-                    } else if (bs > 5) {
+                    } else if (bs >= 5) {
                         this._gold = Gold.Big;
-                    } else if (bs > 2) {
+                    } else if (bs >= 2) {
                         this._gold = Gold.Nice;
                     } else {
                         this._gold = Gold.Win;
                     }
-                    this._gold = Gold.Nice;
-                    this.SpinInfo.award = 30
                 }
                 for (let i = 0; i < matrix.length; i++) {
                     let idx = i % 3;
