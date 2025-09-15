@@ -57,6 +57,7 @@ export default class PanelSuperSevenInit extends ViewBase {
                 SuperSevenManager.FinishedWin = msg.player?.free_win_gold || 0;
             }
             SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
+            SuperSevenManager.AutoNum = 0;
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
             this.close();
         }

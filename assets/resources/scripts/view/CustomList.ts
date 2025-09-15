@@ -6,9 +6,6 @@ import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomItem from 'db://assets/resources/scripts/view/CustomItem';
 import { UITransform } from 'cc';
-import { Column } from './CustomRotation';
-import { Global } from '../global';
-import { GameEvent } from '../define';
 import SuperSevenManager, { gameState, itemElement } from '../manager/ss-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
@@ -20,6 +17,11 @@ enum SPIN_STATES {
     DECELERATING = 'decelerating',
     STOPPED = 'stopped',
 };
+export enum Column {
+    Left = 1,
+    Middle,
+    Right
+}
 const { ccclass, property } = cc._decorator;
 @ccclass('CustomList')
 export default class CustomList extends ViewBase {

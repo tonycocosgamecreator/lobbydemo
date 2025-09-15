@@ -15,7 +15,7 @@
         "_value": true
       },
       "skeletal-animation": {
-        "_value": true
+        "_value": false
       },
       "3d": {
         "_value": true
@@ -68,7 +68,7 @@
         "_value": false
       },
       "profiler": {
-        "_value": true
+        "_value": false
       },
       "occlusion-query": {
         "_value": false
@@ -86,10 +86,10 @@
         "_value": true
       },
       "video": {
-        "_value": true
+        "_value": false
       },
       "webview": {
-        "_value": true
+        "_value": false
       },
       "tween": {
         "_value": true
@@ -113,10 +113,10 @@
         "_value": true
       },
       "dragon-bones": {
-        "_value": false
+        "_value": true
       },
       "marionette": {
-        "_value": true
+        "_value": false
       },
       "procedural-animation": {
         "_value": false
@@ -137,18 +137,14 @@
       "animation",
       "audio",
       "base",
+      "dragon-bones",
       "gfx-webgl",
-      "marionette",
       "meshopt",
       "particle",
       "particle-2d",
-      "profiler",
-      "skeletal-animation",
       "spine",
       "tween",
-      "ui",
-      "video",
-      "webview"
+      "ui"
     ],
     "noDeprecatedFeatures": {
       "value": false,

@@ -68,7 +68,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         this._playNum = gold - 2;
         if (count) {
             SuperSevenManager.Free = true;
-            this.startFreeAnimation(count == freeCount);
+            let curType = SuperSevenManager.CurFree;
+            this.startFreeAnimation(count == freeCount && !curType);
             return;
         }
         if (this._free) {
@@ -315,6 +316,9 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
+        if (msgType == supersevenbaccarat.Message.MsgGameEnterAck) {
+            SuperSevenManager.AutoNum = 0;
+        }
         return false;
     }
 

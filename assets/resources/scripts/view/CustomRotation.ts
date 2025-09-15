@@ -4,7 +4,7 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
-import CustomList from 'db://assets/resources/scripts/view/CustomList';
+import CustomList, { Column } from 'db://assets/resources/scripts/view/CustomList';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
@@ -13,11 +13,7 @@ import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-export enum Column {
-    Left = 1,
-    Middle,
-    Right
-}
+
 @ccclass('CustomRotation')
 export default class CustomRotation extends ViewBase {
 

@@ -96,11 +96,12 @@ export default class SuperSevenManager extends BaseManager {
             //     own_gold: 1441119.25,
             //     sn: "202509051049121970193",
             //     spin_data: {
-            //         award: 5,
-            //         info: [{ award: 4, line: [0, 1, 2], symbol: 9, multiple: 8000},{ award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }, { award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }],
-            //         matrix: [9, 2, 2, -1, -1, -1, 3, 3, 3]
+            //         award: 0,
+            //         info: null,
+            //         // info: [{ award: 4, line: [0, 1, 2], symbol: 9, multiple: 8000},{ award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }, { award: 0.5, line: [0, -1, -1], symbol: 9, multiple: 1000 }],
+            //         matrix: [3, 3, 8, -1, -1, -1, 4, 4, 3]
             //     },
-            //     spin_type: 1,
+            //     spin_type: 2,
             //     utc_time: 1757040553,
             //     win_free: 12,
             //     win_gold: 5

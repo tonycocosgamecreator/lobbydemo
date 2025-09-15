@@ -235,6 +235,7 @@ export default class CustomButtom extends ViewBase {
         GC.setAnimationDuration(time);
         GC.addGold(win);
         this.spCoin.active = true;
+        this.spCoin.getComponent(cc.ParticleSystem).play();
         this.spNiceWin.setAnimation(0, 'guang_chuxian', false);
         this.spNiceWinFont.setAnimation(0, 'nice_chuxian', false);
         this.spNiceWin.setCompleteListener(() => {
@@ -249,9 +250,11 @@ export default class CustomButtom extends ViewBase {
                 this.spNiceWin.setAnimation(0, 'guang_xiaoshi', false);
                 let ps = this.spCoin.getComponent(cc.ParticleSystem);
                 ps.stop();
-                ps.clear();
+                const originalSpeed = ps.simulationSpeed;
+                ps.simulationSpeed = 1000;
                 this.scheduleOnce(() => {
-                    ps.play();
+                    ps.simulationSpeed = originalSpeed;
+                    ps.duration = ps.duration;
                     this.spCoin.active = false;
                 });
                 this.spNiceWinFont.setCompleteListener(() => {
