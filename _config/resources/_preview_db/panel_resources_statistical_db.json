@@ -54,6 +54,12 @@
         "desc": "",
         "statisticalId": 100001001
     },
+    "CustomHistoryItem": {
+        "viewName": "CustomHistoryItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001014
+    },
     "CustomHistory": {
         "viewName": "CustomHistory",
         "bundleName": "resources",
@@ -108,6 +114,12 @@
         "desc": "",
         "statisticalId": 100001004
     },
+    "CustomTop": {
+        "viewName": "CustomTop",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001013
+    },
     "PanelAuto": {
         "viewName": "PanelAuto",
         "bundleName": "resources",
@@ -119,6 +131,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001002
+    },
+    "PanelHistory": {
+        "viewName": "PanelHistory",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001015
     },
     "PanelSuperSevenInit": {
         "viewName": "PanelSuperSevenInit",

@@ -70,6 +70,7 @@ declare module resourcesDb {
         ['CustomAuto']: 'CustomAuto',
         ['CustomButtom']: 'CustomButtom',
         ['CustomDetail']: 'CustomDetail',
+        ['CustomHistoryItem']: 'CustomHistoryItem',
         ['CustomHistory']: 'CustomHistory',
         ['CustomItem']: 'CustomItem',
         ['CustomList']: 'CustomList',
@@ -79,8 +80,10 @@ declare module resourcesDb {
         ['CustomSystemMenuBase']: 'CustomSystemMenuBase',
         ['CustomSystemMenuHistory']: 'CustomSystemMenuHistory',
         ['CustomToast']: 'CustomToast',
+        ['CustomTop']: 'CustomTop',
         ['PanelAuto']: 'PanelAuto',
         ['PanelCircleLoading']: 'PanelCircleLoading',
+        ['PanelHistory']: 'PanelHistory',
         ['PanelSuperSevenInit']: 'PanelSuperSevenInit',
         ['PanelSuperSevenMain']: 'PanelSuperSevenMain',
 }
@@ -186,11 +189,11 @@ declare module resourcesDb {
     /** 游戏ID */
     export const GAME_THEMEID_BUNDLE: {
         ['0']: 'lobby',
-        ['1025']: 'Jhandimunda',
+        ['1040']: 'SuperSeven',
 }
     /** 游戏id（bundleId） */
     export const GAME_ENTRANCE_CONFIG_DB_ID: {
-        ['Jhandimunda']: 'Jhandimunda',
+        ['SuperSeven']: 'SuperSeven',
         ['lobby']: 'lobby',
 }
     type game_config_db_data = {

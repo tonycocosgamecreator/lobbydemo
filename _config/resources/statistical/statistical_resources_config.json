@@ -50,5 +50,17 @@
     "PanelAuto": {
         "statisticalId": 100001012,
         "panelId": 12
+    },
+    "CustomTop": {
+        "statisticalId": 100001013,
+        "panelId": 13
+    },
+    "CustomHistoryItem": {
+        "statisticalId": 100001014,
+        "panelId": 14
+    },
+    "PanelHistory": {
+        "statisticalId": 100001015,
+        "panelId": 15
     }
 }

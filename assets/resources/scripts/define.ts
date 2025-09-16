@@ -44,6 +44,10 @@ export enum GameEvent {
      *自动游戏
      */
     UPDATE_AUTO = 'UPDATE_AUTO',
+    /**
+     *更换头像
+     */
+    PLAYER_CHANGE_AVATAR='PLAYER_CHANGE_AVATAR'
 
 }
 

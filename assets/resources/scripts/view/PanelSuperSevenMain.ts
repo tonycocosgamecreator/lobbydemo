@@ -8,6 +8,7 @@ import CustomButtom from 'db://assets/resources/scripts/view/CustomButtom';
 import CustomDetail from 'db://assets/resources/scripts/view/CustomDetail';
 import CustomRotation from 'db://assets/resources/scripts/view/CustomRotation';
 import CustomScore from 'db://assets/resources/scripts/view/CustomScore';
+import CustomTop from 'db://assets/resources/scripts/view/CustomTop';
 import { IPanelSuperSevenMainView } from '../define/ipanel-ss-main-view';
 import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
 import BaseGlobal from '../core/message/base-global';
@@ -148,7 +149,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     commonWin() {
         let idx = 0;
         this.win_node.active = true;
-        this.win_lizi_node.active = true;
+        this.win_lizi_node.node.active = true;
         this.labelSpineWin.node.getComponent(GoldCounter).setGold(0);
         let time = this._playNum * 3 - 2;
         this.labelSpineWin.node.getComponent(GoldCounter).setAnimationDuration(time);
@@ -168,7 +169,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spFont.setSkin(name);
             this.spFont.setAnimation(0, 'wz_chuxian', true);
             this.spFont.setCompleteListener(() => {
-                this.win_lizi_node.children.forEach(child => {
+                this.win_lizi_node.node.children.forEach(child => {
                     let ps = child.getComponent(cc.ParticleSystem);
                     ps.rateOverTime.constant = 30 + 20 * idx;
                     ps.play();
@@ -185,7 +186,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
                         this.spGuang.setAnimation(0, 'xiaoshi', false);
                         let bgNode = this.animation_node.node;
                         cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
-                            this.win_lizi_node.children.forEach((child, idx) => {
+                            this.win_lizi_node.node.children.forEach((child, idx) => {
                                 let ps = child.getComponent(cc.ParticleSystem);
                                 ps.stop();
                                 const originalSpeed = ps.simulationSpeed;
@@ -309,7 +310,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         this.animation_node.node.active = false;
         this.clearTimer();
         this._playWinAnimation = false;
-        this.win_lizi_node.active = false;
+        this.win_lizi_node.node.active = false;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -384,7 +385,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         const gold = SuperSevenManager.Gold;
         let idx = gold - 3;
         let name = this._spinWinName[idx];
-        this.win_lizi_node.children.forEach(child => {
+        this.win_lizi_node.node.children.forEach(child => {
             let ps = child.getComponent(cc.ParticleSystem);
             ps.rateOverTime.constant = 30 + 20 * idx;
             ps.play();
@@ -400,7 +401,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             this.spGuang.setAnimation(0, 'xiaoshi', false);
             let bgNode = this.animation_node.node;
             cc.tween(bgNode).to(0.33, { opacity: 0 }).call(() => {
-                this.win_lizi_node.children.forEach((child, idx) => {
+                this.win_lizi_node.node.children.forEach((child, idx) => {
                     let ps = child.getComponent(cc.ParticleSystem);
                     ps.stop();
                     const originalSpeed = ps.simulationSpeed;
@@ -444,10 +445,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             cc_spKuang: [cc.sp.Skeleton],
             cc_sphandShank: [cc.sp.Skeleton],
             cc_spine_node: [cc.Node],
-            cc_top_node: [cc.Node],
-            cc_win_lizi1: [cc.UIMeshRenderer],
-            cc_win_lizi2: [cc.UIMeshRenderer],
-            cc_win_lizi_node: [cc.Node],
+            cc_top_node: [CustomTop],
+            cc_win_lizi_node: [cc.Mask],
             cc_win_node: [cc.Node],
         };
     }
@@ -471,10 +470,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     protected spKuang: cc.sp.Skeleton = null;
     protected sphandShank: cc.sp.Skeleton = null;
     protected spine_node: cc.Node = null;
-    protected top_node: cc.Node = null;
-    protected win_lizi1: cc.UIMeshRenderer = null;
-    protected win_lizi2: cc.UIMeshRenderer = null;
-    protected win_lizi_node: cc.Node = null;
+    protected top_node: CustomTop = null;
+    protected win_lizi_node: cc.Mask = null;
     protected win_node: cc.Node = null;
     /**
      * 当前界面的名字

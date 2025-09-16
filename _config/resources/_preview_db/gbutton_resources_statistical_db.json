@@ -264,6 +264,29 @@
             "statisticalId": 100002502
         }
     },
+    "CustomTop": {
+        "cc_buttonHistory": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002400
+        },
+        "cc_buttonSet": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonSet",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002401
+        },
+        "cc_buttonCloseSet": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonCloseSet",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002402
+        }
+    },
     "PanelAuto": {
         "cc_buttonClose": {
             "viewName": "PanelAuto",
@@ -471,6 +494,15 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001708
+        }
+    },
+    "PanelHistory": {
+        "cc_buttonCloseHistory": {
+            "viewName": "PanelHistory",
+            "buttonName": "cc_buttonCloseHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002600
         }
     },
     "PanelJMMainView": {

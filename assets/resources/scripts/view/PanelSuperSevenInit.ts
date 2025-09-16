@@ -8,6 +8,8 @@ import Managers from '../core/manager/managers';
 import SuperSevenManager from '../manager/ss-manager';
 import JsonLoginManager from '../network/managers/json-login-manager';
 import WalletManager from '../manager/wallet-manager';
+import SsHistoryManager from '../manager/ss-history-manager';
+import SsPlayerManager from '../manager/ss-player-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -34,6 +36,8 @@ export default class PanelSuperSevenInit extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
+        Managers.registe(SsHistoryManager);
+        Managers.registe(SsPlayerManager);
         Managers.registe(SuperSevenManager);
         JsonLoginManager.Login();
 
@@ -58,6 +62,7 @@ export default class PanelSuperSevenInit extends ViewBase {
             }
             SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
             SuperSevenManager.AutoNum = 0;
+            SsPlayerManager.Icon = msg.player_data?.icon || 1;
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
             this.close();
         }

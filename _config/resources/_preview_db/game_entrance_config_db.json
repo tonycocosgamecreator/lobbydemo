@@ -60,22 +60,22 @@
     }
 ],
 'datas': {
-    "Jhandimunda": {
-        "id": "Jhandimunda",
-        "entrancePanelName": "PanelJmInit",
+    "SuperSeven": {
+        "id": "SuperSeven",
+        "entrancePanelName": "PanelSuperSevenInit",
         "systemMenus": [
             0,
             1,
             2
         ],
         "enterMode": 0,
-        "themeId": 1025,
+        "themeId": 1040,
         "enterReq": "MsgEnterBaccaratReq",
         "isOverrideEnterMsg": 0
     },
     "lobby": {
         "id": "lobby",
-        "entrancePanelName": "PanelLobbyMain",
+        "entrancePanelName": "PanelSuperSevenMain",
         "systemMenus": [],
         "enterMode": 0,
         "themeId": 0,

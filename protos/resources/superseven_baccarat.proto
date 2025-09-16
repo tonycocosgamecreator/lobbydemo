@@ -821,19 +821,23 @@ message MsgEncryptedDataRsp{
 }
 
 
-message MsgPlayerHistoryReq {
-    optional int32 theme_id = 1;                      // 主题ID
-    optional int64  desk_id = 2;                      // 桌子ID
-    optional int32  desk_type = 3;                      // 桌子类型
-    optional int32  page = 4;                      // 第几页
+message MsgGameRecordListReq {
+    optional int64 start_time = 1;           // 开始时间
+    optional int64  end_time = 2;            // 结束时间
+    optional string  currency = 3;           // 币种
+    optional int32  page = 4;                // 第几页
+    optional int32  limit = 4;               // 每页限制条数
 }
 // 玩家下注信息
-message MsgPlayerHistoryRsp {
-    optional common.RummyResult result = 1;           // 请求结果信息
-    repeated PlayerHistory history = 2;          // 历史下注
-    optional bool IsLast = 3;   //是否最后一页
-    optional int64  desk_id = 4;                      // 桌子ID
-    optional int32  desk_type = 5;                      // 桌子类型
+message MsgGameRecordListAck  {
+    optional int32 code = 1;               //错误码
+    repeated string currency = 2;          // 查询币种
+    optional int32 page = 3;               //翻页查询使用-当前查询的是第几页-从0开始
+    optional int32 page_count = 4;         // 翻页查询使用-只有page=0时才有值
+    optional int32 total_count = 5;        //总条数-只有page=0时才有值
+    optional double total_bet = 6;         //总投注
+    optional double total_win = 7;         //总盈利
+    repeated MsgBetRecord infos = 2;          // 历史下注
 }
 
 message PlayerHistory {
@@ -1192,32 +1196,13 @@ message MsgSevenUpDownWinData {
     repeated MsgSevenUpDownOpenData  open_elem = 2;                    // 我的开奖数据
 }
 
-// LotteryOpenData 开奖数据
-message MsgSevenUpDownOpenData {
-    optional int32 pos_id = 1;                          // 位置ID
-    optional string win_times = 2;                      // 赢倍数
-    optional string win_coin = 3;                       // 赢金币数
-}
-
-message MsgSevenUpDownPlayerHistoryReq {
-    optional int32 theme_id = 1;                      // 主题ID
-    optional int64  desk_id = 2;                      // 桌子ID
-    optional int32  page = 4;                      // 第几页
-}
-
-// 玩家下注信息
-message MsgSevenUpDownPlayerHistoryRsp {
-    optional common.RummyResult result = 1;           // 请求结果信息
-    repeated MsgSevenUpDownPlayerHistory history = 2;          // 历史下注
-    optional bool IsLast = 3;   //是否最后一页
-}
-
-message MsgSevenUpDownPlayerHistory {
-    optional string period = 1;                       // 期数
-    optional int32 bet_area = 2;                    // 下注区域
-    optional string bet = 3;                     // 下注金额
-    optional int32 win_type = 4;                     // 开奖id
-    optional string win_coin = 5;                     // 赢奖数量
+message MsgBetRecord {
+    optional string sn = 1;                       // 订单号
+    optional int64 utc_time = 2;                  // 时间戳
+    optional double bet = 3;                      // 投注金额
+    optional double win_gold = 4;                 // 赢分金额
+    optional bool trigger_free = 5;               // 是否触发free游戏
+    optional SpinInfo spin_data = 14;             //旋转矩阵和中奖详情
 }
 
 message MsgAndarBaharSettleNtf {
@@ -1262,6 +1247,7 @@ message MsgGameEnterAck{
   optional PlayerInfo player = 3;//游戏玩家信息
   repeated WalletInfo wallets = 4;// 钱包列表
   map<string,BetConfig> bet_config = 5;// 投注配置
+  optional PlayerData player_data = 4;//游戏玩家头像信息
 }
 // spin请求消息
 message MsgGameSpinReq{
@@ -1322,4 +1308,17 @@ message PlayerInfo {
     optional int32 free_finished_times = 6;//已经完成的免费游戏次数
     optional double free_trigger_win_gold = 7;//触发免费游戏那一局赢的分数
     optional double free_win_gold = 8;//免费游戏累计赢的分数(不包含触发局)
+}
+// 游戏玩家信息
+message PlayerData{
+     optional int32 icon = 1;//头像id
+}
+// 请求更换头像
+message MsgUpdatePlayerDataReq {
+    optional int32 icon = 1;
+}
+// 请求更换头像回复
+message MsgUpdatePlayerDataRsp {
+    required common.RummyResult result = 1;           // 请求结果信息
+    optional int32 icon = 2;
 }

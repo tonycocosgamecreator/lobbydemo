@@ -1,0 +1,295 @@
+{
+    "skeleton": {
+        "hash": "L0Rbbo3xLZnjUiNo+FLCD5ZB2r8",
+        "spine": "3.8.99",
+        "x": -35,
+        "y": -33,
+        "width": 70,
+        "height": 68,
+        "images": "./images_lobby2/",
+        "audio": ""
+    },
+    "bones": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "mc_1",
+            "parent": "root",
+            "length": 50,
+            "x": -25,
+            "y": 24
+        },
+        {
+            "name": "mc_2",
+            "parent": "root",
+            "length": 50,
+            "x": -25
+        },
+        {
+            "name": "mc_3",
+            "parent": "root",
+            "length": 50,
+            "x": -25,
+            "y": -24
+        }
+    ],
+    "slots": [
+        {
+            "name": "mc_1",
+            "bone": "mc_1",
+            "attachment": "mc"
+        },
+        {
+            "name": "mc_2",
+            "bone": "mc_2",
+            "attachment": "mc"
+        },
+        {
+            "name": "mc_3",
+            "bone": "mc_3",
+            "attachment": "mc"
+        }
+    ],
+    "skins": [
+        {
+            "name": "default",
+            "attachments": {
+                "mc_1": {
+                    "mc": {
+                        "x": 25,
+                        "y": 1,
+                        "width": 70,
+                        "height": 20
+                    }
+                },
+                "mc_2": {
+                    "mc": {
+                        "x": 25,
+                        "y": 1,
+                        "width": 70,
+                        "height": 20
+                    }
+                },
+                "mc_3": {
+                    "mc": {
+                        "x": 25,
+                        "y": 1,
+                        "width": 70,
+                        "height": 20
+                    }
+                }
+            }
+        }
+    ],
+    "animations": {
+        "animation_1": {
+            "bones": {
+                "mc_1": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        }
+                    ]
+                },
+                "mc_2": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        }
+                    ]
+                },
+                "mc_3": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        }
+                    ]
+                }
+            }
+        },
+        "animation_2": {
+            "slots": {
+                "mc_2": {
+                    "color": [
+                        {
+                            "color": "ffffff00"
+                        }
+                    ]
+                }
+            },
+            "bones": {
+                "mc_3": {
+                    "rotate": [
+                        {
+                            "angle": 45
+                        }
+                    ],
+                    "translate": [
+                        {
+                            "x": 10.59,
+                            "y": 8.72
+                        }
+                    ]
+                },
+                "mc_1": {
+                    "rotate": [
+                        {
+                            "angle": -45
+                        }
+                    ],
+                    "translate": [
+                        {
+                            "x": 4.5,
+                            "y": -4.9
+                        }
+                    ]
+                }
+            }
+        },
+        "animation_3": {
+            "slots": {
+                "mc_2": {
+                    "color": [
+                        {
+                            "color": "ffffffff"
+                        },
+                        {
+                            "time": 0.4,
+                            "color": "ffffff00",
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 0.6667,
+                            "color": "ffffff00"
+                        }
+                    ]
+                }
+            },
+            "bones": {
+                "mc_3": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": 44.7
+                        }
+                    ],
+                    "translate": [
+                        {},
+                        {
+                            "time": 0.4,
+                            "x": 10.59,
+                            "y": 8.72
+                        }
+                    ]
+                },
+                "mc_1": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": -45.3
+                        }
+                    ],
+                    "translate": [
+                        {},
+                        {
+                            "time": 0.4,
+                            "x": 4.5,
+                            "y": -4.9
+                        }
+                    ]
+                },
+                "mc_2": {
+                    "rotate": [
+                        {
+                            "angle": -0.13
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": -0.3
+                        }
+                    ]
+                }
+            }
+        },
+        "animation_4": {
+            "slots": {
+                "mc_2": {
+                    "color": [
+                        {
+                            "color": "ffffff00"
+                        },
+                        {
+                            "time": 0.4,
+                            "color": "ffffffff",
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 0.6667,
+                            "color": "ffffffff"
+                        }
+                    ]
+                }
+            },
+            "bones": {
+                "mc_3": {
+                    "rotate": [
+                        {
+                            "angle": 44.7
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": -0.13
+                        }
+                    ],
+                    "translate": [
+                        {
+                            "x": 10.59,
+                            "y": 8.72
+                        },
+                        {
+                            "time": 0.4
+                        }
+                    ]
+                },
+                "mc_1": {
+                    "rotate": [
+                        {
+                            "angle": -45.3
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": -0.13
+                        }
+                    ],
+                    "translate": [
+                        {
+                            "x": 4.5,
+                            "y": -4.9
+                        },
+                        {
+                            "time": 0.4
+                        }
+                    ]
+                },
+                "mc_2": {
+                    "rotate": [
+                        {
+                            "angle": -0.3
+                        },
+                        {
+                            "time": 0.4,
+                            "angle": -0.13
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

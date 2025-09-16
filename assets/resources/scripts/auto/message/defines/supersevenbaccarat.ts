@@ -304,9 +304,9 @@ export namespace supersevenbaccarat{
         /** //////////////////////////// 5d   ///////////////////// */
         MsgEncryptedDataRsp = 'MsgEncryptedDataRsp',
         /** //////////////////////////// 5d   ///////////////////// */
-        MsgPlayerHistoryReq = 'MsgPlayerHistoryReq',
+        MsgGameRecordListReq = 'MsgGameRecordListReq',
         /** 玩家下注信息 */
-        MsgPlayerHistoryRsp = 'MsgPlayerHistoryRsp',
+        MsgGameRecordListAck = 'MsgGameRecordListAck',
         /** 玩家下注信息 */
         PlayerHistory = 'PlayerHistory',
         /** Rocket3DCashOutReq 小飞机下车请求 */
@@ -389,21 +389,15 @@ export namespace supersevenbaccarat{
         MsgSevenUpDownSettleNtf = 'MsgSevenUpDownSettleNtf',
         /** SelfWinData 我的赢奖数据 */
         MsgSevenUpDownWinData = 'MsgSevenUpDownWinData',
-        /** LotteryOpenData 开奖数据 */
-        MsgSevenUpDownOpenData = 'MsgSevenUpDownOpenData',
-        /** LotteryOpenData 开奖数据 */
-        MsgSevenUpDownPlayerHistoryReq = 'MsgSevenUpDownPlayerHistoryReq',
-        /** 玩家下注信息 */
-        MsgSevenUpDownPlayerHistoryRsp = 'MsgSevenUpDownPlayerHistoryRsp',
-        /** 玩家下注信息 */
-        MsgSevenUpDownPlayerHistory = 'MsgSevenUpDownPlayerHistory',
-        /** 玩家下注信息 */
+        /** SelfWinData 我的赢奖数据 */
+        MsgBetRecord = 'MsgBetRecord',
+        /** SelfWinData 我的赢奖数据 */
         MsgAndarBaharSettleNtf = 'MsgAndarBaharSettleNtf',
-        /** 玩家下注信息 */
+        /** SelfWinData 我的赢奖数据 */
         AndarBaharHistory = 'AndarBaharHistory',
-        /** 玩家下注信息 */
+        /** SelfWinData 我的赢奖数据 */
         MsgAndarBaharPlayerHistoryReq = 'MsgAndarBaharPlayerHistoryReq',
-        /** 玩家下注信息 */
+        /** SelfWinData 我的赢奖数据 */
         MsgAndarBaharPlayerHistoryRsp = 'MsgAndarBaharPlayerHistoryRsp',
         /** 进入游戏请求 */
         MsgGameEnterReq = 'MsgGameEnterReq',
@@ -421,6 +415,12 @@ export namespace supersevenbaccarat{
         BetConfig = 'BetConfig',
         /** 游戏玩家结构 */
         PlayerInfo = 'PlayerInfo',
+        /** 游戏玩家信息 */
+        PlayerData = 'PlayerData',
+        /** 请求更换头像 */
+        MsgUpdatePlayerDataReq = 'MsgUpdatePlayerDataReq',
+        /** 请求更换头像回复 */
+        MsgUpdatePlayerDataRsp = 'MsgUpdatePlayerDataRsp',
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
@@ -1474,29 +1474,37 @@ export namespace supersevenbaccarat{
     }
 
     /** //////////////////////////// 5d   ///////////////////// */
-    export interface MsgPlayerHistoryReq{
-        /**  主题ID */
-        theme_id? : number;
-        /**  桌子ID */
-        desk_id? : number;
-        /**  桌子类型 */
-        desk_type? : number;
+    export interface MsgGameRecordListReq{
+        /**  开始时间 */
+        start_time? : number;
+        /**  结束时间 */
+        end_time? : number;
+        /**  币种 */
+        currency? : string;
         /**  第几页 */
         page? : number;
+        /**  每页限制条数 */
+        limit? : number;
     }
 
     /** 玩家下注信息 */
-    export interface MsgPlayerHistoryRsp{
-        /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
+    export interface MsgGameRecordListAck{
+        /** 错误码 */
+        code? : number;
+        /**  查询币种 */
+        currency : string[];
+        /** 翻页查询使用-当前查询的是第几页-从0开始 */
+        page? : number;
+        /**  翻页查询使用-只有page=0时才有值 */
+        page_count? : number;
+        /** 总条数-只有page=0时才有值 */
+        total_count? : number;
+        /** 总投注 */
+        total_bet? : number;
+        /** 总盈利 */
+        total_win? : number;
         /**  历史下注 */
-        history : PlayerHistory[];
-        /** 是否最后一页 */
-        IsLast? : boolean;
-        /**  桌子ID */
-        desk_id? : number;
-        /**  桌子类型 */
-        desk_type? : number;
+        infos : MsgBetRecord[];
     }
 
     /** 玩家下注信息 */
@@ -2012,54 +2020,26 @@ export namespace supersevenbaccarat{
         /**  我的最新金币余额 */
         new_coin? : string;
         /**  我的开奖数据 */
-        open_elem : MsgSevenUpDownOpenData[];
+        open_elem : baccarat.MsgSevenUpDownOpenData[];
     }
 
-    /** LotteryOpenData 开奖数据 */
-    export interface MsgSevenUpDownOpenData{
-        /**  位置ID */
-        pos_id? : number;
-        /**  赢倍数 */
-        win_times? : string;
-        /**  赢金币数 */
-        win_coin? : string;
+    /** SelfWinData 我的赢奖数据 */
+    export interface MsgBetRecord{
+        /**  订单号 */
+        sn? : string;
+        /**  时间戳 */
+        utc_time? : number;
+        /**  投注金额 */
+        bet? : number;
+        /**  赢分金额 */
+        win_gold? : number;
+        /**  是否触发free游戏 */
+        trigger_free? : boolean;
+        /** 旋转矩阵和中奖详情 */
+        spin_data? : SpinInfo;
     }
 
-    /** LotteryOpenData 开奖数据 */
-    export interface MsgSevenUpDownPlayerHistoryReq{
-        /**  主题ID */
-        theme_id? : number;
-        /**  桌子ID */
-        desk_id? : number;
-        /**  第几页 */
-        page? : number;
-    }
-
-    /** 玩家下注信息 */
-    export interface MsgSevenUpDownPlayerHistoryRsp{
-        /**  请求结果信息 */
-        result? : commonrummy.RummyResult;
-        /**  历史下注 */
-        history : MsgSevenUpDownPlayerHistory[];
-        /** 是否最后一页 */
-        IsLast? : boolean;
-    }
-
-    /** 玩家下注信息 */
-    export interface MsgSevenUpDownPlayerHistory{
-        /**  期数 */
-        period? : string;
-        /**  下注区域 */
-        bet_area? : number;
-        /**  下注金额 */
-        bet? : string;
-        /**  开奖id */
-        win_type? : number;
-        /**  赢奖数量 */
-        win_coin? : string;
-    }
-
-    /** 玩家下注信息 */
+    /** SelfWinData 我的赢奖数据 */
     export interface MsgAndarBaharSettleNtf{
         /**  主题ID */
         theme_id? : number;
@@ -2079,7 +2059,7 @@ export namespace supersevenbaccarat{
         new_coin? : string;
     }
 
-    /** 玩家下注信息 */
+    /** SelfWinData 我的赢奖数据 */
     export interface AndarBaharHistory{
         /**  期数 */
         period? : string;
@@ -2095,7 +2075,7 @@ export namespace supersevenbaccarat{
         win_coin? : string;
     }
 
-    /** 玩家下注信息 */
+    /** SelfWinData 我的赢奖数据 */
     export interface MsgAndarBaharPlayerHistoryReq{
         /**  */
         theme_id? : number;
@@ -2103,7 +2083,7 @@ export namespace supersevenbaccarat{
         page? : number;
     }
 
-    /** 玩家下注信息 */
+    /** SelfWinData 我的赢奖数据 */
     export interface MsgAndarBaharPlayerHistoryRsp{
         /**  请求结果信息 */
         result? : commonrummy.RummyResult;
@@ -2131,6 +2111,8 @@ export namespace supersevenbaccarat{
         wallets : WalletInfo[];
         /**  */
         bet_config : { [key : string] : BetConfig};
+        /** 游戏玩家头像信息 */
+        player_data? : PlayerData;
     }
 
     /** spin请求消息 */
@@ -2237,8 +2219,28 @@ export namespace supersevenbaccarat{
         free_finished_times? : number;
         /** 触发免费游戏那一局赢的分数 */
         free_trigger_win_gold? : number;
-        /** 触发免费游戏那一局赢的分数 */
+        /** 免费游戏累计赢的分数(不包含触发局) */
         free_win_gold? : number;
+    }
+
+    /** 游戏玩家信息 */
+    export interface PlayerData{
+        /** 头像id */
+        icon? : number;
+    }
+
+    /** 请求更换头像 */
+    export interface MsgUpdatePlayerDataReq{
+        /**  */
+        icon? : number;
+    }
+
+    /** 请求更换头像回复 */
+    export interface MsgUpdatePlayerDataRsp{
+        /**  请求结果信息 */
+        result : commonrummy.RummyResult;
+        /**  */
+        icon? : number;
     }
 
 }

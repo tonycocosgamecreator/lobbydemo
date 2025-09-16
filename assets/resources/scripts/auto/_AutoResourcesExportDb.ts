@@ -21,6 +21,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomAuto': 'CustomAuto',
     'CustomButtom': 'CustomButtom',
     'CustomDetail': 'CustomDetail',
+    'CustomHistoryItem': 'CustomHistoryItem',
     'CustomHistory': 'CustomHistory',
     'CustomItem': 'CustomItem',
     'CustomList': 'CustomList',
@@ -30,8 +31,10 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomSystemMenuBase': 'CustomSystemMenuBase',
     'CustomSystemMenuHistory': 'CustomSystemMenuHistory',
     'CustomToast': 'CustomToast',
+    'CustomTop': 'CustomTop',
     'PanelAuto': 'PanelAuto',
     'PanelCircleLoading': 'PanelCircleLoading',
+    'PanelHistory': 'PanelHistory',
     'PanelSuperSevenInit': 'PanelSuperSevenInit',
     'PanelSuperSevenMain': 'PanelSuperSevenMain',
 }
@@ -69,11 +72,11 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     /** 游戏ID */
 resourcesDb.GAME_THEMEID_BUNDLE = {
     '0': 'lobby',
-    '1025': 'Jhandimunda',
+    '1040': 'SuperSeven',
 }
     /** 游戏id（bundleId） */
 resourcesDb.GAME_ENTRANCE_CONFIG_DB_ID = {
-    'Jhandimunda': 'Jhandimunda',
+    'SuperSeven': 'SuperSeven',
     'lobby': 'lobby',
 }
 
