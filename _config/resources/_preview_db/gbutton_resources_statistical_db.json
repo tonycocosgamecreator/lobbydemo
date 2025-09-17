@@ -285,6 +285,34 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002402
+        },
+        "cc_buttonIcon": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonIcon",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002403
+        },
+        "cc_buttonRule": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonRule",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002404
+        },
+        "cc_buttonMusic": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonMusic",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002404
+        },
+        "cc_buttonSound": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonSound",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002404
         }
     },
     "PanelAuto": {
@@ -364,6 +392,22 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002310
+        }
+    },
+    "PanelChangeIcon": {
+        "cc_buttonVerifty": {
+            "viewName": "PanelChangeIcon",
+            "buttonName": "cc_buttonVerifty",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002700
+        },
+        "cc_buttonLogout": {
+            "viewName": "PanelChangeIcon",
+            "buttonName": "cc_buttonLogout",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002701
         }
     },
     "PanelGame": {
@@ -633,6 +677,29 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001908
+        }
+    },
+    "PanelRule": {
+        "cc_buttonLeft": {
+            "viewName": "PanelRule",
+            "buttonName": "cc_buttonLeft",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002900
+        },
+        "cc_buttonClose": {
+            "viewName": "PanelRule",
+            "buttonName": "cc_buttonClose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002901
+        },
+        "cc_buttonRight": {
+            "viewName": "PanelRule",
+            "buttonName": "cc_buttonRight",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002902
         }
     },
     "PanelSuperSevenMain": {

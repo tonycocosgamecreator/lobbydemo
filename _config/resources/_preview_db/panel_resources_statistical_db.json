@@ -66,6 +66,12 @@
         "desc": "",
         "statisticalId": 100001014
     },
+    "CustomIconItem": {
+        "viewName": "CustomIconItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001017
+    },
     "CustomItem": {
         "viewName": "CustomItem",
         "bundleName": "resources",
@@ -126,6 +132,12 @@
         "desc": "",
         "statisticalId": 100001012
     },
+    "PanelChangeIcon": {
+        "viewName": "PanelChangeIcon",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001016
+    },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",
         "bundleName": "resources",
@@ -137,6 +149,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001015
+    },
+    "PanelRule": {
+        "viewName": "PanelRule",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001018
     },
     "PanelSuperSevenInit": {
         "viewName": "PanelSuperSevenInit",

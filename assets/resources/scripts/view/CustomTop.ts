@@ -75,6 +75,26 @@ export default class CustomTop extends ViewBase {
         this.menu_node.active = false;
     }
 
+
+    private onClickButtonIcon(event: cc.EventTouch) {
+        ViewManager.OpenPanel(this.module, 'PanelChangeIcon');
+    }
+
+
+    private onClickButtonRule(event: cc.EventTouch) {
+      ViewManager.OpenPanel(this.module, 'PanelRule');
+    }
+
+
+    private onClickButtonMusic(event: cc.EventTouch) {
+        cc.log('on click event cc_buttonMusic');
+    }
+
+
+    private onClickButtonSound(event: cc.EventTouch) {
+        cc.log('on click event cc_buttonSound');
+    }
+
     // @view export event end
 
 
@@ -83,7 +103,11 @@ export default class CustomTop extends ViewBase {
         return {
             cc_buttonCloseSet: [GButton, this.onClickButtonCloseSet.bind(this)],
             cc_buttonHistory: [GButton, this.onClickButtonHistory.bind(this)],
+            cc_buttonIcon: [GButton, this.onClickButtonIcon.bind(this)],
+            cc_buttonMusic: [GButton, this.onClickButtonMusic.bind(this)],
+            cc_buttonRule: [GButton, this.onClickButtonRule.bind(this)],
             cc_buttonSet: [GButton, this.onClickButtonSet.bind(this)],
+            cc_buttonSound: [GButton, this.onClickButtonSound.bind(this)],
             cc_labelbalance: [cc.Label],
             cc_menu_node: [cc.Node],
             cc_sprIcon: [cc.Sprite],
@@ -92,7 +116,11 @@ export default class CustomTop extends ViewBase {
     //------------------------ 所有可用变量 ------------------------//
     protected buttonCloseSet: GButton = null;
     protected buttonHistory: GButton = null;
+    protected buttonIcon: GButton = null;
+    protected buttonMusic: GButton = null;
+    protected buttonRule: GButton = null;
     protected buttonSet: GButton = null;
+    protected buttonSound: GButton = null;
     protected labelbalance: cc.Label = null;
     protected menu_node: cc.Node = null;
     protected sprIcon: cc.Sprite = null;

@@ -23,6 +23,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomDetail': 'CustomDetail',
     'CustomHistoryItem': 'CustomHistoryItem',
     'CustomHistory': 'CustomHistory',
+    'CustomIconItem': 'CustomIconItem',
     'CustomItem': 'CustomItem',
     'CustomList': 'CustomList',
     'CustomMenuHistoryItem': 'CustomMenuHistoryItem',
@@ -33,8 +34,10 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',
     'PanelAuto': 'PanelAuto',
+    'PanelChangeIcon': 'PanelChangeIcon',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelHistory': 'PanelHistory',
+    'PanelRule': 'PanelRule',
     'PanelSuperSevenInit': 'PanelSuperSevenInit',
     'PanelSuperSevenMain': 'PanelSuperSevenMain',
 }

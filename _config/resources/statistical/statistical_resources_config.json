@@ -62,5 +62,17 @@
     "PanelHistory": {
         "statisticalId": 100001015,
         "panelId": 15
+    },
+    "PanelChangeIcon": {
+        "statisticalId": 100001016,
+        "panelId": 16
+    },
+    "CustomIconItem": {
+        "statisticalId": 100001017,
+        "panelId": 17
+    },
+    "PanelRule": {
+        "statisticalId": 100001018,
+        "panelId": 18
     }
 }

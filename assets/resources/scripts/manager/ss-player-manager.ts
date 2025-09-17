@@ -45,8 +45,7 @@ export default class SsPlayerManager extends BaseManager {
         if (msgType == supersevenbaccarat.Message.MsgUpdatePlayerDataRsp) {
             const msg = data as supersevenbaccarat.MsgUpdatePlayerDataRsp;
             bDebug && console.log('Change Avatar : ', msg);
-            const result = msg.result;
-            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+            if (msg && msg.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //更新失败了
                 Global.sendMsg(GameEvent.PLAYER_CHANGE_AVATAR, [false, -1]);
                 return;

@@ -72,6 +72,7 @@ declare module resourcesDb {
         ['CustomDetail']: 'CustomDetail',
         ['CustomHistoryItem']: 'CustomHistoryItem',
         ['CustomHistory']: 'CustomHistory',
+        ['CustomIconItem']: 'CustomIconItem',
         ['CustomItem']: 'CustomItem',
         ['CustomList']: 'CustomList',
         ['CustomMenuHistoryItem']: 'CustomMenuHistoryItem',
@@ -82,8 +83,10 @@ declare module resourcesDb {
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',
         ['PanelAuto']: 'PanelAuto',
+        ['PanelChangeIcon']: 'PanelChangeIcon',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelHistory']: 'PanelHistory',
+        ['PanelRule']: 'PanelRule',
         ['PanelSuperSevenInit']: 'PanelSuperSevenInit',
         ['PanelSuperSevenMain']: 'PanelSuperSevenMain',
 }

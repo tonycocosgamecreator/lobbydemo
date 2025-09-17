@@ -2237,8 +2237,12 @@ export namespace supersevenbaccarat{
 
     /** 请求更换头像回复 */
     export interface MsgUpdatePlayerDataRsp{
-        /**  请求结果信息 */
-        result : commonrummy.RummyResult;
+        /**  错误码 */
+        err_code? : commonrummy.RummyErrCode;
+        /**  错误描述 */
+        err_desc? : string;
+        /**  图片地址 */
+        pic_url? : string;
         /**  */
         icon? : number;
     }
