@@ -18,19 +18,14 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
-    'CustomAuto': 'CustomAuto',
     'CustomButtom': 'CustomButtom',
     'CustomDetail': 'CustomDetail',
     'CustomHistoryItem': 'CustomHistoryItem',
-    'CustomHistory': 'CustomHistory',
     'CustomIconItem': 'CustomIconItem',
     'CustomItem': 'CustomItem',
     'CustomList': 'CustomList',
-    'CustomMenuHistoryItem': 'CustomMenuHistoryItem',
     'CustomRotation': 'CustomRotation',
     'CustomScore': 'CustomScore',
-    'CustomSystemMenuBase': 'CustomSystemMenuBase',
-    'CustomSystemMenuHistory': 'CustomSystemMenuHistory',
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',
     'PanelAuto': 'PanelAuto',

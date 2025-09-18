@@ -1571,7 +1571,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "icon_shuomin1",
+    "_name": "icon",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -2009,7 +2009,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "icon_shuomin1",
+    "_name": "icon",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -2030,7 +2030,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -8,
+      "x": -5,
       "y": 18,
       "z": 0
     },
@@ -2447,7 +2447,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "icon_shuomin1",
+    "_name": "icon",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {

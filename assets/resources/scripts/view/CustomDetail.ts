@@ -130,50 +130,50 @@ export default class CustomDetail extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_detail_right_node: [cc.Node],
-            cc_item_free_node: [cc.Node],
-            cc_item_pay_node: [cc.Node],
-            cc_label1: [cc.Label],
-            cc_label2: [cc.Label],
-            cc_label3: [cc.Label],
-            cc_label4: [cc.Label],
-            cc_labelCurrent: [cc.Label],
-            cc_labelMax: [cc.Label],
-            cc_labelTotal: [cc.Label],
-            cc_scrollView: [cc.ScrollView],
-            cc_spPaytable: [cc.Sprite],
+            cc_detail_right_node    : [cc.Node],
+            cc_item_free_node    : [cc.Node],
+            cc_item_pay_node    : [cc.Node],
+            cc_label1    : [cc.Label],
+            cc_label2    : [cc.Label],
+            cc_label3    : [cc.Label],
+            cc_label4    : [cc.Label],
+            cc_labelCurrent    : [cc.Label],
+            cc_labelMax    : [cc.Label],
+            cc_labelTotal    : [cc.Label],
+            cc_scrollView    : [cc.ScrollView],
+            cc_spPaytable    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected detail_right_node: cc.Node = null;
-    protected item_free_node: cc.Node = null;
-    protected item_pay_node: cc.Node = null;
-    protected label1: cc.Label = null;
-    protected label2: cc.Label = null;
-    protected label3: cc.Label = null;
-    protected label4: cc.Label = null;
-    protected labelCurrent: cc.Label = null;
-    protected labelMax: cc.Label = null;
-    protected labelTotal: cc.Label = null;
-    protected scrollView: cc.ScrollView = null;
-    protected spPaytable: cc.Sprite = null;
+   protected detail_right_node: cc.Node    = null;
+   protected item_free_node: cc.Node    = null;
+   protected item_pay_node: cc.Node    = null;
+   protected label1: cc.Label    = null;
+   protected label2: cc.Label    = null;
+   protected label3: cc.Label    = null;
+   protected label4: cc.Label    = null;
+   protected labelCurrent: cc.Label    = null;
+   protected labelMax: cc.Label    = null;
+   protected labelTotal: cc.Label    = null;
+   protected scrollView: cc.ScrollView    = null;
+   protected spPaytable: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomDetail';
+   public static readonly VIEW_NAME    = 'CustomDetail';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomDetail.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomDetail.VIEW_NAME;
     }
     // @view export resource end

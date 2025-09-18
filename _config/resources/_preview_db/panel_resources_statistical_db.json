@@ -36,12 +36,6 @@
     }
 ],
 'datas': {
-    "CustomAuto": {
-        "viewName": "CustomAuto",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001011
-    },
     "CustomButtom": {
         "viewName": "CustomButtom",
         "bundleName": "resources",
@@ -56,12 +50,6 @@
     },
     "CustomHistoryItem": {
         "viewName": "CustomHistoryItem",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001014
-    },
-    "CustomHistory": {
-        "viewName": "CustomHistory",
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001014
@@ -84,12 +72,6 @@
         "desc": "",
         "statisticalId": 100001010
     },
-    "CustomMenuHistoryItem": {
-        "viewName": "CustomMenuHistoryItem",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001002
-    },
     "CustomRotation": {
         "viewName": "CustomRotation",
         "bundleName": "resources",
@@ -102,23 +84,11 @@
         "desc": "",
         "statisticalId": 100001004
     },
-    "CustomSystemMenuBase": {
-        "viewName": "CustomSystemMenuBase",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001005
-    },
-    "CustomSystemMenuHistory": {
-        "viewName": "CustomSystemMenuHistory",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001006
-    },
     "CustomToast": {
         "viewName": "CustomToast",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001004
+        "statisticalId": 100001019
     },
     "CustomTop": {
         "viewName": "CustomTop",
@@ -142,7 +112,7 @@
         "viewName": "PanelCircleLoading",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001002
+        "statisticalId": 100001020
     },
     "PanelHistory": {
         "viewName": "PanelHistory",

@@ -135,34 +135,34 @@ export default class CustomItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_spGuang: [cc.sp.Skeleton],
-            cc_spSkeleton: [cc.sp.Skeleton],
-            cc_spSymbol: [cc.sp.Skeleton],
-            cc_sprImg: [cc.Sprite],
+            cc_spGuang    : [cc.sp.Skeleton],
+            cc_spSkeleton    : [cc.sp.Skeleton],
+            cc_spSymbol    : [cc.sp.Skeleton],
+            cc_sprImg    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected spGuang: cc.sp.Skeleton = null;
-    protected spSkeleton: cc.sp.Skeleton = null;
-    protected spSymbol: cc.sp.Skeleton = null;
-    protected sprImg: cc.Sprite = null;
+   protected spGuang: cc.sp.Skeleton    = null;
+   protected spSkeleton: cc.sp.Skeleton    = null;
+   protected spSymbol: cc.sp.Skeleton    = null;
+   protected sprImg: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomItem';
+   public static readonly VIEW_NAME    = 'CustomItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomItem.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomItem.VIEW_NAME;
     }
     // @view export resource end

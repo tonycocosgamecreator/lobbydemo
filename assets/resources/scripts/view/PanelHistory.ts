@@ -11,6 +11,7 @@ import { GameEvent } from '../define';
 import UIHelper from '../network/helper/ui-helper';
 import CustomHistoryItem from './CustomHistoryItem';
 import ViewManager from '../core/manager/view-manager';
+import { GButtonTouchStyle, PanelLayer, ViewOpenAnimationType } from '../core/view/view-define';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -32,10 +33,14 @@ export default class PanelHistory extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    public panelLayer: PanelLayer = PanelLayer.Dialog;
+    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.CENTER_SCALE_IN;
     private _callRequest: BooleanCallback = null;
     private _getCount: () => number;
     private _isLastPage: BooleanCallback = null;
+
     buildUi() {
+        this.buttonCloseHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         SsHistoryManager.clear();
         this._callRequest = () => {
             //请求更多历史记录
@@ -92,7 +97,7 @@ export default class PanelHistory extends ViewBase {
 
     private _refreshList() {
         const count = this._getCount();
-        this.noHistory.node.active = count == 0;
+        // this.noHistory.node.active = count == 0;
         this.list.numItems = count;
     }
 

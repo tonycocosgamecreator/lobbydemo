@@ -8,6 +8,9 @@ import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
 import ViewManager from '../core/manager/view-manager';
 import SsPlayerManager from '../manager/ss-player-manager';
+import { BaseMessage } from '../core/message/base-message';
+import AudioManager from '../core/manager/audio-manager';
+import { GButtonTouchStyle } from '../core/view/view-define';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -31,16 +34,39 @@ export default class CustomTop extends ViewBase {
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
-            [GameEvent.PLAYER_CHANGE_AVATAR]: this._updateIcon
+            [GameEvent.PLAYER_CHANGE_AVATAR]: this._updateIcon,
+            [BaseMessage.MUSIC_STATUS_CHANGED]: this._initSoundButton,
+            [BaseMessage.SOUND_STATUS_CHANGED]: this._initSoundButton,
         });
         this._updateTotalBalance();
         this.menu_node.active = false;
-        this.buttonCloseSet.useDefaultEffect();
-        this.buttonSet.useDefaultEffect();
-        this.buttonHistory.useDefaultEffect();
+        this.buttonCloseSet.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonSet.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonIcon.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonRule.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonMusic.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonSound.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this._updateIcon([true, SsPlayerManager.Icon]);
-    }
+        this.buttonSound.spriteFramesOfIconWithSelected = [
+            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinxiao2'),
+            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinxiao1'),
 
+        ];
+        this.buttonMusic.spriteFramesOfIconWithSelected = [
+            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinyue2'),
+            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinyue1'),
+
+        ];
+    }
+    //初始化音乐音效按钮
+    private _initSoundButton() {
+        const isMusicEnabled = AudioManager.isMusicEnabled;
+        const isSoundEnabled = AudioManager.isSoundEnabled;
+        this.buttonMusic.isSelected = isMusicEnabled;
+        this.buttonSound.isSelected = isSoundEnabled;
+        bDebug && console.log('The music button is selected:', isMusicEnabled);
+    }
     _updateTotalBalance() {
         this.labelbalance.string = WalletManager.balance.toFixed(2) + ' ' + WalletManager.currency;
     }
@@ -82,17 +108,18 @@ export default class CustomTop extends ViewBase {
 
 
     private onClickButtonRule(event: cc.EventTouch) {
-      ViewManager.OpenPanel(this.module, 'PanelRule');
+        this.menu_node.active = false;
+        ViewManager.OpenPanel(this.module, 'PanelRule');
     }
 
 
     private onClickButtonMusic(event: cc.EventTouch) {
-        cc.log('on click event cc_buttonMusic');
+        AudioManager.isMusicEnabled = !AudioManager.isMusicEnabled;
     }
 
 
     private onClickButtonSound(event: cc.EventTouch) {
-        cc.log('on click event cc_buttonSound');
+        AudioManager.isSoundEnabled = !AudioManager.isSoundEnabled;
     }
 
     // @view export event end

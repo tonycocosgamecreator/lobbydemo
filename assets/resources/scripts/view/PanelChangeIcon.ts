@@ -12,6 +12,7 @@ import ViewManager from '../core/manager/view-manager';
 import { MessageSender } from '../network/net/message-sender';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
+import { GButtonTouchStyle, PanelLayer, ViewOpenAnimationType } from '../core/view/view-define';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -33,8 +34,12 @@ export default class PanelChangeIcon extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    public panelLayer: PanelLayer = PanelLayer.Dialog;
+    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.CENTER_SCALE_IN;
 
     buildUi() {
+        this.buttonLogout.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+        this.buttonVerifty.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.labelbalance.string = WalletManager.balance.toFixed(2) + ' ' + WalletManager.currency;
         this.list.itemRender = (node: cc.Node, index: number) => {
             //渲染逻辑

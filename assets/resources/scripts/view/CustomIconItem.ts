@@ -43,30 +43,30 @@ export default class CustomIconItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_select: [cc.Sprite],
-            cc_sprIcon: [cc.Sprite],
+            cc_select    : [cc.Sprite],
+            cc_sprIcon    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected select: cc.Sprite = null;
-    protected sprIcon: cc.Sprite = null;
+   protected select: cc.Sprite    = null;
+   protected sprIcon: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomIconItem';
+   public static readonly VIEW_NAME    = 'CustomIconItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomIconItem.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomIconItem.VIEW_NAME;
     }
     // @view export resource end

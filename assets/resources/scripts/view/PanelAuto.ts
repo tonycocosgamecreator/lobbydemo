@@ -123,59 +123,57 @@ export default class PanelAuto extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonAdd: [GButton, this.onClickButtonAdd.bind(this)],
-            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
-            cc_buttonSub: [GButton, this.onClickButtonSub.bind(this)],
-            cc_button_auto: [GButton, this.onClickButton_auto.bind(this)],
-            cc_buttonauto1: [GButton, this.onClickButtonauto1.bind(this)],
-            cc_buttonauto2: [GButton, this.onClickButtonauto2.bind(this)],
-            cc_buttonauto3: [GButton, this.onClickButtonauto3.bind(this)],
-            cc_buttonauto4: [GButton, this.onClickButtonauto4.bind(this)],
-            cc_buttonauto5: [GButton, this.onClickButtonauto5.bind(this)],
-            cc_buttonspeed1: [GButton, this.onClickButtonspeed1.bind(this)],
-            cc_buttonspeed2: [GButton, this.onClickButtonspeed2.bind(this)],
-            cc_labelTotal: [cc.Label],
-            cc_tabGroupAuto: [GButtonGroup],
-            cc_tabGroupSpeed: [GButtonGroup],
+            cc_buttonAdd    : [GButton,this.onClickButtonAdd.bind(this)],
+            cc_buttonClose    : [GButton,this.onClickButtonClose.bind(this)],
+            cc_buttonSub    : [GButton,this.onClickButtonSub.bind(this)],
+            cc_button_auto    : [GButton,this.onClickButton_auto.bind(this)],
+            cc_buttonauto1    : [GButton,this.onClickButtonauto1.bind(this)],
+            cc_buttonauto2    : [GButton,this.onClickButtonauto2.bind(this)],
+            cc_buttonauto3    : [GButton,this.onClickButtonauto3.bind(this)],
+            cc_buttonauto4    : [GButton,this.onClickButtonauto4.bind(this)],
+            cc_buttonauto5    : [GButton,this.onClickButtonauto5.bind(this)],
+            cc_buttonspeed1    : [GButton,this.onClickButtonspeed1.bind(this)],
+            cc_buttonspeed2    : [GButton,this.onClickButtonspeed2.bind(this)],
+            cc_labelTotal    : [cc.Label],
+            cc_tabGroupAuto    : [GButtonGroup],
+            cc_tabGroupSpeed    : [GButtonGroup],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected buttonAdd: GButton = null;
-    protected buttonClose: GButton = null;
-    protected buttonSub: GButton = null;
-    protected button_auto: GButton = null;
-    protected buttonauto1: GButton = null;
-    protected buttonauto2: GButton = null;
-    protected buttonauto3: GButton = null;
-    protected buttonauto4: GButton = null;
-    protected buttonauto5: GButton = null;
-    protected buttonspeed1: GButton = null;
-    protected buttonspeed2: GButton = null;
-    protected labelTotal: cc.Label = null;
-    protected tabGroupAuto: GButtonGroup = null;
-    protected tabGroupSpeed: GButtonGroup = null;
+   protected buttonAdd: GButton    = null;
+   protected buttonClose: GButton    = null;
+   protected buttonSub: GButton    = null;
+   protected button_auto: GButton    = null;
+   protected buttonauto1: GButton    = null;
+   protected buttonauto2: GButton    = null;
+   protected buttonauto3: GButton    = null;
+   protected buttonauto4: GButton    = null;
+   protected buttonauto5: GButton    = null;
+   protected buttonspeed1: GButton    = null;
+   protected buttonspeed2: GButton    = null;
+   protected labelTotal: cc.Label    = null;
+   protected tabGroupAuto: GButtonGroup    = null;
+   protected tabGroupSpeed: GButtonGroup    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelAuto';
+   public static readonly VIEW_NAME    = 'PanelAuto';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelAuto.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelAuto.VIEW_NAME;
     }
-
     // @view export resource end
 }

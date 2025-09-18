@@ -50,7 +50,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         if (this._free) {
             this.spGuangQuan.setAnimation(0, 'daiji', true);
         }
-        this.buttonStart.touchEffectStyle = GButtonTouchStyle.SCALE_LARGER;
+        this.buttonStart.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_STATE]: this._updateState,
             [GameEvent.UPDATE_FREE]: this._updateFree,

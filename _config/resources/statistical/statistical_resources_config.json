@@ -74,5 +74,13 @@
     "PanelRule": {
         "statisticalId": 100001018,
         "panelId": 18
+    },
+    "CustomToast": {
+        "statisticalId": 100001019,
+        "panelId": 19
+    },
+    "PanelCircleLoading": {
+        "statisticalId": 100001020,
+        "panelId": 20
     }
 }

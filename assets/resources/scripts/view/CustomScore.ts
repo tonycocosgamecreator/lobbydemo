@@ -350,72 +350,72 @@ export default class CustomScore extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_b1_img_node: [cc.Node],
-            cc_b1_node: [cc.Node],
-            cc_b2_img_node: [cc.Node],
-            cc_b2_node: [cc.Node],
-            cc_b3_img_node: [cc.Node],
-            cc_b3_node: [cc.Node],
-            cc_b4_any_node: [cc.Sprite],
-            cc_b4_img_node: [cc.Node],
-            cc_b4_node: [cc.Node],
-            cc_b5_img_node: [cc.Node],
-            cc_b5_node: [cc.Node],
-            cc_b6_img_node: [cc.Node],
-            cc_b6_node: [cc.Node],
-            cc_b7_any_node: [cc.Sprite],
-            cc_b7_img_node: [cc.Node],
-            cc_b7_node: [cc.Node],
-            cc_labelb1: [cc.Label],
-            cc_labelb2: [cc.Label],
-            cc_labelb3: [cc.Label],
-            cc_labelb4: [cc.Label],
-            cc_labelb5: [cc.Label],
-            cc_labelb6: [cc.Label],
-            cc_labelb7: [cc.Label],
+            cc_b1_img_node    : [cc.Node],
+            cc_b1_node    : [cc.Node],
+            cc_b2_img_node    : [cc.Node],
+            cc_b2_node    : [cc.Node],
+            cc_b3_img_node    : [cc.Node],
+            cc_b3_node    : [cc.Node],
+            cc_b4_any_node    : [cc.Sprite],
+            cc_b4_img_node    : [cc.Node],
+            cc_b4_node    : [cc.Node],
+            cc_b5_img_node    : [cc.Node],
+            cc_b5_node    : [cc.Node],
+            cc_b6_img_node    : [cc.Node],
+            cc_b6_node    : [cc.Node],
+            cc_b7_any_node    : [cc.Sprite],
+            cc_b7_img_node    : [cc.Node],
+            cc_b7_node    : [cc.Node],
+            cc_labelb1    : [cc.Label],
+            cc_labelb2    : [cc.Label],
+            cc_labelb3    : [cc.Label],
+            cc_labelb4    : [cc.Label],
+            cc_labelb5    : [cc.Label],
+            cc_labelb6    : [cc.Label],
+            cc_labelb7    : [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected b1_img_node: cc.Node = null;
-    protected b1_node: cc.Node = null;
-    protected b2_img_node: cc.Node = null;
-    protected b2_node: cc.Node = null;
-    protected b3_img_node: cc.Node = null;
-    protected b3_node: cc.Node = null;
-    protected b4_any_node: cc.Sprite = null;
-    protected b4_img_node: cc.Node = null;
-    protected b4_node: cc.Node = null;
-    protected b5_img_node: cc.Node = null;
-    protected b5_node: cc.Node = null;
-    protected b6_img_node: cc.Node = null;
-    protected b6_node: cc.Node = null;
-    protected b7_any_node: cc.Sprite = null;
-    protected b7_img_node: cc.Node = null;
-    protected b7_node: cc.Node = null;
-    protected labelb1: cc.Label = null;
-    protected labelb2: cc.Label = null;
-    protected labelb3: cc.Label = null;
-    protected labelb4: cc.Label = null;
-    protected labelb5: cc.Label = null;
-    protected labelb6: cc.Label = null;
-    protected labelb7: cc.Label = null;
+   protected b1_img_node: cc.Node    = null;
+   protected b1_node: cc.Node    = null;
+   protected b2_img_node: cc.Node    = null;
+   protected b2_node: cc.Node    = null;
+   protected b3_img_node: cc.Node    = null;
+   protected b3_node: cc.Node    = null;
+   protected b4_any_node: cc.Sprite    = null;
+   protected b4_img_node: cc.Node    = null;
+   protected b4_node: cc.Node    = null;
+   protected b5_img_node: cc.Node    = null;
+   protected b5_node: cc.Node    = null;
+   protected b6_img_node: cc.Node    = null;
+   protected b6_node: cc.Node    = null;
+   protected b7_any_node: cc.Sprite    = null;
+   protected b7_img_node: cc.Node    = null;
+   protected b7_node: cc.Node    = null;
+   protected labelb1: cc.Label    = null;
+   protected labelb2: cc.Label    = null;
+   protected labelb3: cc.Label    = null;
+   protected labelb4: cc.Label    = null;
+   protected labelb5: cc.Label    = null;
+   protected labelb6: cc.Label    = null;
+   protected labelb7: cc.Label    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomScore';
+   public static readonly VIEW_NAME    = 'CustomScore';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomScore.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomScore.VIEW_NAME;
     }
     // @view export resource end

@@ -53,34 +53,34 @@ export default class CustomHistoryItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_labelAmount: [cc.Label],
-            cc_labelGameTime: [cc.Label],
-            cc_labelOrderId: [cc.Label],
-            cc_labelPrize: [cc.Label],
+            cc_labelAmount    : [cc.Label],
+            cc_labelGameTime    : [cc.Label],
+            cc_labelOrderId    : [cc.Label],
+            cc_labelPrize    : [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected labelAmount: cc.Label = null;
-    protected labelGameTime: cc.Label = null;
-    protected labelOrderId: cc.Label = null;
-    protected labelPrize: cc.Label = null;
+   protected labelAmount: cc.Label    = null;
+   protected labelGameTime: cc.Label    = null;
+   protected labelOrderId: cc.Label    = null;
+   protected labelPrize: cc.Label    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomHistoryItem';
+   public static readonly VIEW_NAME    = 'CustomHistoryItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomHistoryItem.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomHistoryItem.VIEW_NAME;
     }
     // @view export resource end
