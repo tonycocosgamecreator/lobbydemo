@@ -133,7 +133,8 @@ export default class CustomMenu extends ViewBase {
         this.show(false, 0.35);
     }
     private onClickButtonGameRule(event: cc.EventTouch) {
-        cc.log('on click event cc_buttonGameRule');
+
+        ViewManager.OpenPanel(this.module, 'PanelRule');
         this.show(false, 0.35);
     }
     // @view export event end

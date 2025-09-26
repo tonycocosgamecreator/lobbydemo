@@ -25,7 +25,9 @@ export default class CustomHistoryItem extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     @ViewBase.requireResourceLoaded
-    public fillData(data: supersevenbaccarat.MsgBetRecord) {
+    public fillData(data: supersevenbaccarat.MsgBetRecord, index: number) {
+        const urls1 = ['textures/history/icon_tc_bz_02/spriteFrame', 'textures/system/XFJ_Img_9/spriteFrame'];
+        this.itemBg.spriteFrame = this.getSpriteFrame(urls1[index % 2]);
         this.labelOrderId.string = data.sn;
         this.labelAmount.string = data.bet + '';
         if (data.win_gold > 0) {
@@ -53,6 +55,7 @@ export default class CustomHistoryItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
+            cc_itemBg: [cc.Sprite],
             cc_labelAmount: [cc.Label],
             cc_labelGameTime: [cc.Label],
             cc_labelOrderId: [cc.Label],
@@ -60,6 +63,7 @@ export default class CustomHistoryItem extends ViewBase {
         };
     }
     //------------------------ 所有可用变量 ------------------------//
+    protected itemBg: cc.Sprite = null;
     protected labelAmount: cc.Label = null;
     protected labelGameTime: cc.Label = null;
     protected labelOrderId: cc.Label = null;

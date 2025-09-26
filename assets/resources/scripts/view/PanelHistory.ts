@@ -58,7 +58,7 @@ export default class PanelHistory extends ViewBase {
                 comp.bindResourceConfig();
             }
             const data = SsHistoryManager.getIndex(index);
-            comp.fillData(data);
+            comp.fillData(data,index);
         }
         this.list.on(
             ListViewEvent.SCROLL_END,
