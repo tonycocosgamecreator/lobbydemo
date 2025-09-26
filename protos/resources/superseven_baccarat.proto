@@ -1311,7 +1311,8 @@ message PlayerInfo {
 }
 // 游戏玩家信息
 message PlayerData{
-     optional int32 icon = 1;//头像id
+    optional int32 icon = 1;//头像id
+    optional int32 player_id;//playerId
 }
 // 请求更换头像
 message MsgUpdatePlayerDataReq {

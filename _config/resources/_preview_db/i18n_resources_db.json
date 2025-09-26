@@ -327,6 +327,16 @@
         "en_us": "Exit",
         "hi_in": "Sair",
         "en_in": "निकास"
+    },
+    "AVATAR_CHANGED_FAILED": {
+        "index": "AVATAR_CHANGED_FAILED",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "Avatar change failed",
+        "en_us": "Avatar change failed",
+        "hi_in": "",
+        "en_in": ""
     }
 }
 }

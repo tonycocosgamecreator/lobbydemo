@@ -63,6 +63,7 @@ export default class PanelSuperSevenInit extends ViewBase {
             SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
             SuperSevenManager.AutoNum = 0;
             SsPlayerManager.Icon = msg.player_data?.icon || 1;
+            SsPlayerManager.PlayId = msg.player_data?.player_id || 1;
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');
             this.close();
         }
@@ -86,19 +87,19 @@ export default class PanelSuperSevenInit extends ViewBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'PanelSuperSevenInit';
+    public static readonly VIEW_NAME = 'PanelSuperSevenInit';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return PanelSuperSevenInit.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return PanelSuperSevenInit.VIEW_NAME;
     }
     // @view export resource end

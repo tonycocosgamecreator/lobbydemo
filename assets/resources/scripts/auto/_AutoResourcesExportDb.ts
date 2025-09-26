@@ -21,7 +21,6 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomButtom': 'CustomButtom',
     'CustomDetail': 'CustomDetail',
     'CustomHistoryItem': 'CustomHistoryItem',
-    'CustomIconItem': 'CustomIconItem',
     'CustomItem': 'CustomItem',
     'CustomList': 'CustomList',
     'CustomRotation': 'CustomRotation',
@@ -29,7 +28,6 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',
     'PanelAuto': 'PanelAuto',
-    'PanelChangeIcon': 'PanelChangeIcon',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelHistory': 'PanelHistory',
     'PanelRule': 'PanelRule',
@@ -65,6 +63,7 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     'PanelSystemMenu_title_i18n_button_rules': 'PanelSystemMenu_title_i18n_button_rules',
     'PanelSystemMenu_title_i18n_button_sound': 'PanelSystemMenu_title_i18n_button_sound',
     'PanelSystemMenu_title_i18n_button_exit': 'PanelSystemMenu_title_i18n_button_exit',
+    'AVATAR_CHANGED_FAILED': 'AVATAR_CHANGED_FAILED',
 }
 
     /** 游戏ID */

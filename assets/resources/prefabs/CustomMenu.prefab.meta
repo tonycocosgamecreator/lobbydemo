@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "4360705e-80bf-4e17-9c2c-444f435b0b8c",
+  "uuid": "e076a599-ca84-48ec-bdea-fd625e370291",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "CustomIconItem"
+    "syncNodeName": "CustomMenu"
   }
 }

@@ -137,6 +137,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002406
+        },
+        "cc_buttonMenu": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonMenu",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002407
         }
     },
     "PanelAuto": {
@@ -216,22 +223,6 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002310
-        }
-    },
-    "PanelChangeIcon": {
-        "cc_buttonVerifty": {
-            "viewName": "PanelChangeIcon",
-            "buttonName": "cc_buttonVerifty",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002700
-        },
-        "cc_buttonLogout": {
-            "viewName": "PanelChangeIcon",
-            "buttonName": "cc_buttonLogout",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002701
         }
     },
     "PanelHistory": {

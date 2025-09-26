@@ -72,4 +72,13 @@ export default class SsPlayerManager extends BaseManager {
     static set Icon(value: number) {
         this._icon = value;
     }
+
+    private static _playid: number = 1;
+    static get PlayId(): number {
+        return this._playid;
+    }
+
+    static set PlayId(value: number) {
+        this._playid = value;
+    }
 }

@@ -3,14 +3,12 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+//------------------------特殊引用开始----------------------------//
+import CustomMenu from 'db://assets/resources/scripts/view/CustomMenu';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
-import ViewManager from '../core/manager/view-manager';
-import SsPlayerManager from '../manager/ss-player-manager';
-import { BaseMessage } from '../core/message/base-message';
-import AudioManager from '../core/manager/audio-manager';
-import { GButtonTouchStyle } from '../core/view/view-define';
+//------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -33,49 +31,16 @@ export default class CustomTop extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
     buildUi() {
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
-            [GameEvent.PLAYER_CHANGE_AVATAR]: this._updateIcon,
-            [BaseMessage.MUSIC_STATUS_CHANGED]: this._initSoundButton,
-            [BaseMessage.SOUND_STATUS_CHANGED]: this._initSoundButton,
+            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance
         });
-        this._updateTotalBalance();
-        this.menu_node.active = false;
-        this.buttonCloseSet.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonSet.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonIcon.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonRule.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonMusic.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.buttonSound.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this._updateIcon([true, SsPlayerManager.Icon]);
-        this.buttonSound.spriteFramesOfIconWithSelected = [
-            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinxiao2'),
-            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinxiao1'),
-
-        ];
-        this.buttonMusic.spriteFramesOfIconWithSelected = [
-            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinyue2'),
-            this.getSpriteFrameBySpriteAtlas('plists/LMSlots_Common_TOP', 'icon_yinyue1'),
-
-        ];
-    }
-    //初始化音乐音效按钮
-    private _initSoundButton() {
-        const isMusicEnabled = AudioManager.isMusicEnabled;
-        const isSoundEnabled = AudioManager.isSoundEnabled;
-        this.buttonMusic.isSelected = isMusicEnabled;
-        this.buttonSound.isSelected = isSoundEnabled;
-        bDebug && console.log('The music button is selected:', isMusicEnabled);
-    }
-    _updateTotalBalance() {
-        this.labelbalance.string = WalletManager.balance.toFixed(2) + ' ' + WalletManager.currency;
+        this.labelGameTitle.string = 'Super777';
+        this.menu.show(false, 0);
     }
 
-    _updateIcon(data: [boolean, number]) {
-        if (data[0] == false) {
-            return;
-        }
-        this.sprIcon.spriteFrame = this.getSpriteFrame("textures/avatars/av-" + data[1] + "/spriteFrame");
+    _updateTotalBalance(balance: number): void {
+        const currency = WalletManager.currency;
+        this.labelCoin.string = balance.toFixed(2);
+        this.labelCurrency.string = currency;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -86,40 +51,8 @@ export default class CustomTop extends ViewBase {
 
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
-
-    private onClickButtonHistory(event: cc.EventTouch) {
-        ViewManager.OpenPanel(this.module, 'PanelHistory');
-    }
-
-
-    private onClickButtonSet(event: cc.EventTouch) {
-        this.menu_node.active = true;
-    }
-
-
-    private onClickButtonCloseSet(event: cc.EventTouch) {
-        this.menu_node.active = false;
-    }
-
-
-    private onClickButtonIcon(event: cc.EventTouch) {
-        ViewManager.OpenPanel(this.module, 'PanelChangeIcon');
-    }
-
-
-    private onClickButtonRule(event: cc.EventTouch) {
-        this.menu_node.active = false;
-        ViewManager.OpenPanel(this.module, 'PanelRule');
-    }
-
-
-    private onClickButtonMusic(event: cc.EventTouch) {
-        AudioManager.isMusicEnabled = !AudioManager.isMusicEnabled;
-    }
-
-
-    private onClickButtonSound(event: cc.EventTouch) {
-        AudioManager.isSoundEnabled = !AudioManager.isSoundEnabled;
+    private onClickButtonMenu(event: cc.EventTouch) {
+        this.menu.show(true, 0.35);
     }
 
     // @view export event end
@@ -128,29 +61,21 @@ export default class CustomTop extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonCloseSet: [GButton, this.onClickButtonCloseSet.bind(this)],
-            cc_buttonHistory: [GButton, this.onClickButtonHistory.bind(this)],
-            cc_buttonIcon: [GButton, this.onClickButtonIcon.bind(this)],
-            cc_buttonMusic: [GButton, this.onClickButtonMusic.bind(this)],
-            cc_buttonRule: [GButton, this.onClickButtonRule.bind(this)],
-            cc_buttonSet: [GButton, this.onClickButtonSet.bind(this)],
-            cc_buttonSound: [GButton, this.onClickButtonSound.bind(this)],
-            cc_labelbalance: [cc.Label],
-            cc_menu_node: [cc.Node],
-            cc_sprIcon: [cc.Sprite],
+            cc_bg: [cc.Sprite],
+            cc_buttonMenu: [GButton, this.onClickButtonMenu.bind(this)],
+            cc_labelCoin: [cc.Label],
+            cc_labelCurrency: [cc.Label],
+            cc_labelGameTitle: [cc.Label],
+            cc_menu: [CustomMenu],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected buttonCloseSet: GButton = null;
-    protected buttonHistory: GButton = null;
-    protected buttonIcon: GButton = null;
-    protected buttonMusic: GButton = null;
-    protected buttonRule: GButton = null;
-    protected buttonSet: GButton = null;
-    protected buttonSound: GButton = null;
-    protected labelbalance: cc.Label = null;
-    protected menu_node: cc.Node = null;
-    protected sprIcon: cc.Sprite = null;
+    protected bg: cc.Sprite = null;
+    protected buttonMenu: GButton = null;
+    protected labelCoin: cc.Label = null;
+    protected labelCurrency: cc.Label = null;
+    protected labelGameTitle: cc.Label = null;
+    protected menu: CustomMenu = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

@@ -70,7 +70,6 @@ declare module resourcesDb {
         ['CustomButtom']: 'CustomButtom',
         ['CustomDetail']: 'CustomDetail',
         ['CustomHistoryItem']: 'CustomHistoryItem',
-        ['CustomIconItem']: 'CustomIconItem',
         ['CustomItem']: 'CustomItem',
         ['CustomList']: 'CustomList',
         ['CustomRotation']: 'CustomRotation',
@@ -78,7 +77,6 @@ declare module resourcesDb {
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',
         ['PanelAuto']: 'PanelAuto',
-        ['PanelChangeIcon']: 'PanelChangeIcon',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelHistory']: 'PanelHistory',
         ['PanelRule']: 'PanelRule',
@@ -159,6 +157,7 @@ declare module resourcesDb {
         ['PanelSystemMenu_title_i18n_button_rules']: 'PanelSystemMenu_title_i18n_button_rules',
         ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
         ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
+        ['AVATAR_CHANGED_FAILED']: 'AVATAR_CHANGED_FAILED',
 }
     type game_entrance_config_db_data = {
         /** 游戏id（bundleId） */

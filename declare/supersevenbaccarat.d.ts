@@ -2227,6 +2227,8 @@ declare namespace supersevenbaccarat{
     interface PlayerData{
         /** 头像id */
         icon? : number;
+        /** playerId */
+        player_id? : number;
     }
 
     /** 请求更换头像 */
