@@ -10,6 +10,7 @@ import JsonLoginManager from '../network/managers/json-login-manager';
 import WalletManager from '../manager/wallet-manager';
 import SsHistoryManager from '../manager/ss-history-manager';
 import SsPlayerManager from '../manager/ss-player-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -36,6 +37,7 @@ export default class PanelSuperSevenInit extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
+        AudioManager.playBgm(this.bundleName, 'bgm');
         Managers.registe(SsHistoryManager);
         Managers.registe(SsPlayerManager);
         Managers.registe(SuperSevenManager);
@@ -59,6 +61,7 @@ export default class PanelSuperSevenInit extends ViewBase {
                 SuperSevenManager.FreeCount = msg.player?.free_count || 0;
                 SuperSevenManager.FinishedCount = msg.player?.free_finished_times || 0;
                 SuperSevenManager.FinishedWin = msg.player?.free_win_gold || 0;
+                AudioManager.playBgm(this.bundleName, 'free_bgm');
             }
             SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
             SuperSevenManager.AutoNum = 0;

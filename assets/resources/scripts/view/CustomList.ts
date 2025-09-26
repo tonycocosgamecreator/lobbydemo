@@ -7,6 +7,7 @@ import * as cc from 'cc';
 import SuperSevenManager, { gameState, itemElement } from '../manager/ss-manager';
 import CustomItem from 'db://assets/resources/scripts/view/CustomItem';
 import { UITransform } from 'cc';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -167,13 +168,13 @@ export default class CustomList extends ViewBase {
         }
         this.startSpinning();
     }
-
+    private sid = 0;
     // 开始旋转
     startSpinning() {
         this.spinState = SPIN_STATES.ACCELERATING;
         this._isStopping = true;
         this.spinStartTime = Date.now();
-        // this.currentSpeed = 0;
+        this.sid = AudioManager.playStopEnabledSound(this.bundleName, `10109_base_spin${this._column}`);
     }
 
     protected update(deltaTime: number): void {
@@ -202,6 +203,8 @@ export default class CustomList extends ViewBase {
             if (diff > 0) {
                 this.updatePosition(-curdistance);
             } else {
+                AudioManager.stopStopEnabledSound(this.sid);
+                AudioManager.playSound(this.bundleName, `10109_reel_stop1`);
                 this.isBouncing = false;
                 this.updatePosition(-distance);
                 const originalPos = this.node.position.clone();
@@ -360,38 +363,38 @@ export default class CustomList extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_item1_node    : [CustomItem],
-            cc_item2_node    : [CustomItem],
-            cc_item3_node    : [CustomItem],
-            cc_item4_node    : [CustomItem],
-            cc_item5_node    : [CustomItem],
-            cc_item6_node    : [CustomItem],
+            cc_item1_node: [CustomItem],
+            cc_item2_node: [CustomItem],
+            cc_item3_node: [CustomItem],
+            cc_item4_node: [CustomItem],
+            cc_item5_node: [CustomItem],
+            cc_item6_node: [CustomItem],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected item1_node: CustomItem    = null;
-   protected item2_node: CustomItem    = null;
-   protected item3_node: CustomItem    = null;
-   protected item4_node: CustomItem    = null;
-   protected item5_node: CustomItem    = null;
-   protected item6_node: CustomItem    = null;
+    protected item1_node: CustomItem = null;
+    protected item2_node: CustomItem = null;
+    protected item3_node: CustomItem = null;
+    protected item4_node: CustomItem = null;
+    protected item5_node: CustomItem = null;
+    protected item6_node: CustomItem = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomList';
+    public static readonly VIEW_NAME = 'CustomList';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomList.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomList.VIEW_NAME;
     }
     // @view export resource end

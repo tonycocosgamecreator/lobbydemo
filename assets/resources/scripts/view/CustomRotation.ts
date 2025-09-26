@@ -8,6 +8,7 @@ import CustomList, { Column } from 'db://assets/resources/scripts/view/CustomLis
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import SuperSevenManager, { gameState, Gold } from '../manager/ss-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -120,8 +121,10 @@ export default class CustomRotation extends ViewBase {
 
     onCountdownComplete() {
         this.spZhou.node.active = true;
-        let name = SuperSevenManager.FreeGame ? 'mipai_lan' : 'mipai_huang'
+        let free = SuperSevenManager.FreeGame;
+        let name = free ? 'mipai_lan' : 'mipai_huang'
         this.spZhou.setAnimation(0, name, true);
+        AudioManager.playSound(this.bundleName, free ? '10109_scatter_notify' : '10109_3xwild_notify');
     }
 
     _rotationEnd() {
@@ -146,7 +149,7 @@ export default class CustomRotation extends ViewBase {
             this.spRotation.setAnimation(0, 'caihong', true);
         }
         // if (gold != Gold.None) {
-            this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
+        this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
         // }
         this.spZhou.node.active = false;
     }
@@ -170,46 +173,46 @@ export default class CustomRotation extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_list0_node    : [CustomList],
-            cc_list1_node    : [CustomList],
-            cc_list2_node    : [CustomList],
-            cc_rotation_list_node    : [cc.Node],
-            cc_spRotation    : [cc.sp.Skeleton],
-            cc_spStar    : [cc.sp.Skeleton],
-            cc_spXingGuang    : [cc.sp.Skeleton],
-            cc_spZhou    : [cc.sp.Skeleton],
-            cc_spjzlunzi    : [cc.sp.Skeleton],
-            cc_star_node    : [cc.Node],
+            cc_list0_node: [CustomList],
+            cc_list1_node: [CustomList],
+            cc_list2_node: [CustomList],
+            cc_rotation_list_node: [cc.Node],
+            cc_spRotation: [cc.sp.Skeleton],
+            cc_spStar: [cc.sp.Skeleton],
+            cc_spXingGuang: [cc.sp.Skeleton],
+            cc_spZhou: [cc.sp.Skeleton],
+            cc_spjzlunzi: [cc.sp.Skeleton],
+            cc_star_node: [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected list0_node: CustomList    = null;
-   protected list1_node: CustomList    = null;
-   protected list2_node: CustomList    = null;
-   protected rotation_list_node: cc.Node    = null;
-   protected spRotation: cc.sp.Skeleton    = null;
-   protected spStar: cc.sp.Skeleton    = null;
-   protected spXingGuang: cc.sp.Skeleton    = null;
-   protected spZhou: cc.sp.Skeleton    = null;
-   protected spjzlunzi: cc.sp.Skeleton    = null;
-   protected star_node: cc.Node    = null;
+    protected list0_node: CustomList = null;
+    protected list1_node: CustomList = null;
+    protected list2_node: CustomList = null;
+    protected rotation_list_node: cc.Node = null;
+    protected spRotation: cc.sp.Skeleton = null;
+    protected spStar: cc.sp.Skeleton = null;
+    protected spXingGuang: cc.sp.Skeleton = null;
+    protected spZhou: cc.sp.Skeleton = null;
+    protected spjzlunzi: cc.sp.Skeleton = null;
+    protected star_node: cc.Node = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomRotation';
+    public static readonly VIEW_NAME = 'CustomRotation';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomRotation.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomRotation.VIEW_NAME;
     }
     // @view export resource end

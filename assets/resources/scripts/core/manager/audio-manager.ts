@@ -257,7 +257,7 @@ export default class AudioManager extends BaseManager {
      * @param fileName
      */
     public static playSound(moduleName: string, fileName: string) {
-        if (!this.isSoundEnabled || this.isPausing) {
+        if (!this.isSoundEnabled) {
             //不支持或者暂停状态下，不再加载资源
             return;
         }
@@ -276,7 +276,7 @@ export default class AudioManager extends BaseManager {
         }
 
         //因为异步加载，所有这个地方还需要做安全检查，防止中途玩家关闭音效，导致加载完毕后又播放出来了
-        if (!this.isSoundEnabled || this.isPausing) {
+        if (!this.isSoundEnabled) {
             return;
         }
         bDebug && warn('play sound : ', fileName);
@@ -290,7 +290,7 @@ export default class AudioManager extends BaseManager {
      * @param bLoop 是否循环播放
      */
     public static playStopEnabledSound(moduleName: string, fileName: string, bLoop: boolean = false) {
-        if (!this.isSoundEnabled || this.isPausing) {
+        if (!this.isSoundEnabled) {
             //不支持或者暂停状态下，不再加载资源
             return -1;
         }

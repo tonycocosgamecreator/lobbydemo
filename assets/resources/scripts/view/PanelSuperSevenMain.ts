@@ -17,6 +17,7 @@ import { GoldCounter } from './GoldCounter';
 import { v3 } from 'cc';
 import { GButtonTouchStyle } from '../core/view/view-define';
 import { Tween } from 'cc';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -166,6 +167,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         })
         let cb = (play: number) => {
             let name = this._spinWinName[idx];
+            let soundName = `human_${name}_win`;
+            AudioManager.playSound(this.bundleName, soundName);
             this.spFont.setSkin(name);
             this.spFont.setAnimation(0, 'wz_chuxian', true);
             this.spFont.setCompleteListener(() => {
@@ -228,6 +231,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     }
 
     startFreeAnimation(show: boolean) {
+        AudioManager.playBgm(this.bundleName, 'free_bgm');
+        AudioManager.playSound(this.bundleName, 'extra_free_games');
         this.spine_node.active = true;
         let bgNode = this.animation_node.node;
         Tween.stopAllByTarget(bgNode);
@@ -258,6 +263,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     }
 
     endFreeAnimation() {
+        AudioManager.playSound(this.bundleName, 'congratulations');
         this.spine_node.active = true;
         let bgNode = this.animation_node.node;
         Tween.stopAllByTarget(bgNode);
@@ -371,6 +377,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
                     return;
                 }
                 SuperSevenManager.State = gameState.End;
+                AudioManager.playBgm(this.bundleName, 'bgm');
             }, 1);
         }).start();
     }
