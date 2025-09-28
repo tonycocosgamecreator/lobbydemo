@@ -65,6 +65,7 @@ export default class PanelSuperSevenInit extends ViewBase {
             }
             SuperSevenManager.BetCoin = msg.player?.last_bet || 0;
             SuperSevenManager.AutoNum = 0;
+            SuperSevenManager.SendMsg = false;
             SsPlayerManager.Icon = msg.player_data?.icon || 1;
             SsPlayerManager.PlayId = msg.player_data?.player_id || 1;
             ViewManager.OpenPanel(this.module, 'PanelSuperSevenMain');

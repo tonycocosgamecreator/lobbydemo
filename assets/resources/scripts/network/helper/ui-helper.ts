@@ -196,7 +196,7 @@ export default class UIHelper {
     public static showMoneyNotEnough() {
         this.showToastId(
             resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH
-        );
+        );2
     }
 
     /**

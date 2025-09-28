@@ -145,12 +145,11 @@ export default class CustomRotation extends ViewBase {
         this.spRotation.node.active = show;
         if (show) {
             this.spRotation.timeScale = 1;
-            // this.spjzlunzi.setAnimation(0, 'caihong', true);
             this.spRotation.setAnimation(0, 'caihong', true);
         }
-        // if (gold != Gold.None) {
-        this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
-        // }
+        if (gold != Gold.None) {
+            this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
+        }
         this.spZhou.node.active = false;
     }
 

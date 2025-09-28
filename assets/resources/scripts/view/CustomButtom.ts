@@ -316,13 +316,11 @@ export default class CustomButtom extends ViewBase {
     private onClickButtonSpin(event: cc.EventTouch) {
         cc.log('on click event cc_buttonSpin');
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
+        if (SuperSevenManager.SendMsg) return;
         let gold = WalletManager.balance;
         if (!this._free) {
             if (gold < this._bets[this._index]) {
-                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
-                    resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
-                    resourcesDb.I18N_RESOURCES_DB_INDEX.Error
-                );
+                UIHelper.showMoneyNotEnough();
                 return;
             }
         }
@@ -330,6 +328,7 @@ export default class CustomButtom extends ViewBase {
             currency: WalletManager.currency,
             bet_size: this._bets[this._index]
         }
+        SuperSevenManager.SendMsg = true;
         MessageSender.SendMessage(supersevenbaccarat.Message.MsgGameSpinReq, data);
     }
     private onClickButtonAuto(event: cc.EventTouch) {
@@ -376,64 +375,64 @@ export default class CustomButtom extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonAdd    : [GButton,this.onClickButtonAdd.bind(this)],
-            cc_buttonAuto    : [GButton,this.onClickButtonAuto.bind(this)],
-            cc_buttonSpin    : [GButton,this.onClickButtonSpin.bind(this)],
-            cc_buttonStop    : [GButton,this.onClickButtonStop.bind(this)],
-            cc_buttonSub    : [GButton,this.onClickButtonSub.bind(this)],
-            cc_buttonTimes    : [GButton,this.onClickButtonTimes.bind(this)],
-            cc_free_node    : [cc.Node],
-            cc_labelNiceWin    : [cc.Label],
-            cc_labelResidue    : [cc.Label],
-            cc_labelTimes    : [cc.Label],
-            cc_labelTotal    : [cc.Label],
-            cc_labelWin    : [cc.Label],
-            cc_labelfreeGame    : [cc.Label],
-            cc_labelfreeTotal    : [cc.Label],
-            cc_pay_node    : [cc.Node],
-            cc_spCoin    : [cc.Node],
-            cc_spNiceWin    : [cc.sp.Skeleton],
-            cc_spNiceWinFont    : [cc.sp.Skeleton],
-            cc_spbottom    : [cc.sp.Skeleton],
+            cc_buttonAdd: [GButton, this.onClickButtonAdd.bind(this)],
+            cc_buttonAuto: [GButton, this.onClickButtonAuto.bind(this)],
+            cc_buttonSpin: [GButton, this.onClickButtonSpin.bind(this)],
+            cc_buttonStop: [GButton, this.onClickButtonStop.bind(this)],
+            cc_buttonSub: [GButton, this.onClickButtonSub.bind(this)],
+            cc_buttonTimes: [GButton, this.onClickButtonTimes.bind(this)],
+            cc_free_node: [cc.Node],
+            cc_labelNiceWin: [cc.Label],
+            cc_labelResidue: [cc.Label],
+            cc_labelTimes: [cc.Label],
+            cc_labelTotal: [cc.Label],
+            cc_labelWin: [cc.Label],
+            cc_labelfreeGame: [cc.Label],
+            cc_labelfreeTotal: [cc.Label],
+            cc_pay_node: [cc.Node],
+            cc_spCoin: [cc.Node],
+            cc_spNiceWin: [cc.sp.Skeleton],
+            cc_spNiceWinFont: [cc.sp.Skeleton],
+            cc_spbottom: [cc.sp.Skeleton],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected buttonAdd: GButton    = null;
-   protected buttonAuto: GButton    = null;
-   protected buttonSpin: GButton    = null;
-   protected buttonStop: GButton    = null;
-   protected buttonSub: GButton    = null;
-   protected buttonTimes: GButton    = null;
-   protected free_node: cc.Node    = null;
-   protected labelNiceWin: cc.Label    = null;
-   protected labelResidue: cc.Label    = null;
-   protected labelTimes: cc.Label    = null;
-   protected labelTotal: cc.Label    = null;
-   protected labelWin: cc.Label    = null;
-   protected labelfreeGame: cc.Label    = null;
-   protected labelfreeTotal: cc.Label    = null;
-   protected pay_node: cc.Node    = null;
-   protected spCoin: cc.Node    = null;
-   protected spNiceWin: cc.sp.Skeleton    = null;
-   protected spNiceWinFont: cc.sp.Skeleton    = null;
-   protected spbottom: cc.sp.Skeleton    = null;
+    protected buttonAdd: GButton = null;
+    protected buttonAuto: GButton = null;
+    protected buttonSpin: GButton = null;
+    protected buttonStop: GButton = null;
+    protected buttonSub: GButton = null;
+    protected buttonTimes: GButton = null;
+    protected free_node: cc.Node = null;
+    protected labelNiceWin: cc.Label = null;
+    protected labelResidue: cc.Label = null;
+    protected labelTimes: cc.Label = null;
+    protected labelTotal: cc.Label = null;
+    protected labelWin: cc.Label = null;
+    protected labelfreeGame: cc.Label = null;
+    protected labelfreeTotal: cc.Label = null;
+    protected pay_node: cc.Node = null;
+    protected spCoin: cc.Node = null;
+    protected spNiceWin: cc.sp.Skeleton = null;
+    protected spNiceWinFont: cc.sp.Skeleton = null;
+    protected spbottom: cc.sp.Skeleton = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomButtom';
+    public static readonly VIEW_NAME = 'CustomButtom';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomButtom.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomButtom.VIEW_NAME;
     }
     // @view export resource end

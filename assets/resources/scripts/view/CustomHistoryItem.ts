@@ -37,7 +37,7 @@ export default class CustomHistoryItem extends ViewBase {
             this.labelPrize.string = data.win_gold.toFixed(2);
             this.labelPrize.color = cc.color(255, 255, 255);
         }
-        this.labelGameTime.string = Timer.formateDate(data.utc_time, 'yyyy/MM/dd\nHH:mm:ss')
+        this.labelGameTime.string = Timer.formateDate(data.utc_time * 1000, 'yyyy/MM/dd\nHH:mm:ss')
     }
 
     //------------------------ 网络消息 ------------------------//

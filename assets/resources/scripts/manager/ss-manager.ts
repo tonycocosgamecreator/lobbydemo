@@ -75,6 +75,7 @@ export default class SuperSevenManager extends BaseManager {
      */
     public static onNetMessage(msgType: string, data: any): boolean {
         if (msgType == supersevenbaccarat.Message.MsgGameSpinAck) {
+            this._sendMsg = false;
             let msg = data as supersevenbaccarat.MsgGameSpinAck;
             if (msg && msg.code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入spin失败了
@@ -172,6 +173,7 @@ export default class SuperSevenManager extends BaseManager {
         return false;
     }
     /**----------------游戏结果相关-------------------*/
+    private static _sendMsg: boolean = false;
     /**本局中奖的元素 */
     private static _awardLine: number[][] = [];
     /**本局奖励金额属于什么类型的奖励 */
@@ -249,6 +251,10 @@ export default class SuperSevenManager extends BaseManager {
         Global.sendMsg(GameEvent.UPDATE_FREE);
     }
 
+    public static set SendMsg(value: boolean) {
+        this._sendMsg = value;
+    }
+
     public static _lineArr: number[][] = [];
     /** 前俩列是否是freeGame图标 用于前端显示*/
     public static _freeGame: boolean = false;
@@ -257,6 +263,7 @@ export default class SuperSevenManager extends BaseManager {
     public static set SpinInfo(value: supersevenbaccarat.SpinInfo | null) {
         this._spinInfo = value;
     }
+    public static get SendMsg(): boolean { return this._sendMsg; }
     public static get AwardLine(): number[][] { return this._awardLine; }
     public static get Gold(): Gold { return this._gold; }
     public static get FreeGame(): boolean { return this._freeGame; }
@@ -284,10 +291,7 @@ export default class SuperSevenManager extends BaseManager {
         }
         let gold = WalletManager.balance;
         if (gold < this.BetCoin) {
-            UIHelper.showConfirmOfOneButtonToRefreshBrowser(
-                resourcesDb.I18N_RESOURCES_DB_INDEX.EC_COIN_NO_ENOUGH,
-                resourcesDb.I18N_RESOURCES_DB_INDEX.Error
-            );
+            UIHelper.showMoneyNotEnough();
             this.AutoNum = 0;
             return;
         }

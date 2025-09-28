@@ -18,6 +18,7 @@ import { v3 } from 'cc';
 import { GButtonTouchStyle } from '../core/view/view-define';
 import { Tween } from 'cc';
 import AudioManager from '../core/manager/audio-manager';
+import { view } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -40,6 +41,13 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         SuperSevenManager.View = null;
     }
 
+    protected start(): void {
+        const screenSize = view.getVisibleSize();
+        this.top_node.node.getComponent(cc.UITransform).height = screenSize.height;
+        this.scheduleOnce(() => {
+            this.top_node.updateAllWidgets();
+        }, 1)
+    }
 
     //------------------------ 内部逻辑 ------------------------//
     _gameState: gameState = gameState.None;
@@ -324,6 +332,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
 
     public onNetworkMessage(msgType: string, data: any): boolean {
         if (msgType == supersevenbaccarat.Message.MsgGameEnterAck) {
+            SuperSevenManager.SendMsg = false;
             SuperSevenManager.AutoNum = 0;
         }
         return false;

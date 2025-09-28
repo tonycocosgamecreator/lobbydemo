@@ -6,12 +6,14 @@ import * as cc from 'cc';
 import SsPlayerManager from '../manager/ss-player-manager';
 import AudioManager from '../core/manager/audio-manager';
 import ViewManager from '../core/manager/view-manager';
+import { v3 } from 'cc';
+import { Widget } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
-const NORMAL_POS = cc.v3(540, 926.5, 0);
-const OUT_POS = cc.v3(1482, 926.5, 0);
+const NORMAL_POS = 540
+const OUT_POS = 1482
 
 const TOGGLE_ICON_POS_OFF = cc.v3(-20, 0, 0);
 const TOGGLE_ICON_POS_ON = cc.v3(20, 0, 0);
@@ -65,24 +67,25 @@ export default class CustomMenu extends ViewBase {
             this.LabelNickName.string = "aviator_" + SsPlayerManager.PlayId;
             this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SsPlayerManager.Icon}`);
         }
+        let y = this.root.position.y;
         if (duration <= 0) {
             this.node.active = bShow;
             if (!bShow) {
-                this.root.position = OUT_POS;
+                this.root.position = v3(OUT_POS, y, 0);
             } else {
-                this.root.position = NORMAL_POS;
+                this.root.position = v3(NORMAL_POS, y, 0);
             }
             return;
         }
         if (bShow) {
             this.node.active = true;
-            this.root.position = OUT_POS;
+            this.root.position = v3(OUT_POS, y, 0);
             cc.tween(this.root)
-                .to(duration, { position: NORMAL_POS }, { easing: cc.easing.backOut })
+                .to(duration, { position: v3(NORMAL_POS, y, 0) }, { easing: cc.easing.backOut })
                 .start();
         } else {
             cc.tween(this.root)
-                .to(duration, { position: OUT_POS }, { easing: cc.easing.backIn })
+                .to(duration, { position: v3(OUT_POS, y, 0) }, { easing: cc.easing.backIn })
                 .call(() => {
                     this.node.active = false;
                 })
@@ -94,7 +97,14 @@ export default class CustomMenu extends ViewBase {
         return this.node.active;
     }
 
-
+    updateAllWidgets() {
+        this.node.children.forEach(child => {
+            const widget = child.getComponent(Widget);
+            if (widget && widget.enabled) {
+                widget.updateAlignment();
+            }
+        });
+    }
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

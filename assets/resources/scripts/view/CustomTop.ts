@@ -8,6 +8,7 @@ import CustomMenu from 'db://assets/resources/scripts/view/CustomMenu';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
+import { Widget } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -31,16 +32,28 @@ export default class CustomTop extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
     buildUi() {
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance
+            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
+            [GameEvent.PLAYER_INFO_UPDATE]: this._updateTotalBalance,
         });
         this.labelGameTitle.string = 'Super777';
         this.menu.show(false, 0);
+        this._updateTotalBalance();
     }
 
-    _updateTotalBalance(balance: number): void {
+    _updateTotalBalance(): void {
         const currency = WalletManager.currency;
-        this.labelCoin.string = balance.toFixed(2);
+        this.labelCoin.string = WalletManager.balance.toFixed(2);
         this.labelCurrency.string = currency;
+    }
+
+    updateAllWidgets() {
+        this.node.children.forEach(child => {
+            const widget = child.getComponent(Widget);
+            if (widget && widget.enabled) {
+                widget.updateAlignment();
+            }
+        });
+        this.menu.updateAllWidgets();
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
