@@ -19,6 +19,7 @@ import { GButtonTouchStyle } from '../core/view/view-define';
 import { Tween } from 'cc';
 import AudioManager from '../core/manager/audio-manager';
 import { view } from 'cc';
+import WalletManager from '../manager/wallet-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -304,6 +305,8 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             case gameState.Result: this._rotationEnd(); break;
             case gameState.End:
                 this._reset();
+                const balance = WalletManager.balance;
+                this.top_node.updateTotalBalance(balance);
                 break;
         }
     }

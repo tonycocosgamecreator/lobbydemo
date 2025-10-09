@@ -32,17 +32,17 @@ export default class CustomTop extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
     buildUi() {
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this._updateTotalBalance,
-            [GameEvent.PLAYER_INFO_UPDATE]: this._updateTotalBalance,
+            [GameEvent.PLAYER_CURRENCY_UPDATE]: this.updateTotalBalance,
         });
         this.labelGameTitle.string = 'Super777';
         this.menu.show(false, 0);
-        this._updateTotalBalance();
+        const balance = WalletManager.balance;
+        this.updateTotalBalance(balance);
     }
 
-    _updateTotalBalance(): void {
+    updateTotalBalance(balance: number): void {
+        this.labelCoin.string = balance.toFixed(2);
         const currency = WalletManager.currency;
-        this.labelCoin.string = WalletManager.balance.toFixed(2);
         this.labelCurrency.string = currency;
     }
 

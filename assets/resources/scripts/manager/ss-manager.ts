@@ -108,6 +108,9 @@ export default class SuperSevenManager extends BaseManager {
             //     win_gold: 5
             // }
             //更新客户端下注金币
+            const bet = msg.bet || 0;
+            const balance = WalletManager.balance;
+            Global.sendMsg(GameEvent.PLAYER_CURRENCY_UPDATE, balance - bet);
             WalletManager.updatePlayerCoin(msg.own_gold);
             this._lineArr = [];
             this._awardLine = [];
@@ -134,6 +137,8 @@ export default class SuperSevenManager extends BaseManager {
                     } else {
                         this._gold = Gold.Win;
                     }
+                    //  this._gold = Gold.Legendary;
+                    //   this.SpinInfo.award =300
                 }
                 for (let i = 0; i < matrix.length; i++) {
                     let idx = i % 3;
