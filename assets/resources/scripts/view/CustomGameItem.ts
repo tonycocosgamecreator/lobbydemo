@@ -37,7 +37,7 @@ export default class CustomGameItem extends ReusableBase {
     setData(data: lobbyhttp.ICateGame) {
         this._data = data;
         this.labelName.string = data.game_code;
-        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/${data.game_code}`);
+        this.buttonIcon.node.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/icon/${data.game_code}`);
     }
 
     clear() {
