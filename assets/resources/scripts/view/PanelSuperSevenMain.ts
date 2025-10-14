@@ -64,7 +64,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_STATE]: this._updateState,
             [GameEvent.UPDATE_FREE]: this._updateFree,
-        });
+        });4
     }
 
     _updateFree() {

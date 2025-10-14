@@ -195,8 +195,10 @@ export default class CustomButtom extends ViewBase {
                         GC.setGold(award);
                     }
                 }
-                this.buttonStop.node.active = false;
-                this.buttonSpin.node.active = true;
+                if (this._autoNum <= 0) {
+                    this.buttonStop.node.active = false;
+                    this.buttonSpin.node.active = true;
+                }
                 if (this._free) {
                     this.onClickButtonSpin(null);
                     return;
@@ -333,6 +335,7 @@ export default class CustomButtom extends ViewBase {
     }
     private onClickButtonAuto(event: cc.EventTouch) {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
+        if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
         ViewManager.OpenPanel(this.module, 'PanelAuto');
     }
@@ -340,6 +343,7 @@ export default class CustomButtom extends ViewBase {
     private onClickButtonStop(event: cc.EventTouch) {
         if (this._autoNum > 0) {
             SuperSevenManager.AutoNum = 0;
+            this.labelResidue.node.parent.active = false;
             return;
         }
         if (this._gameState != gameState.Ing) return;
@@ -348,6 +352,7 @@ export default class CustomButtom extends ViewBase {
 
     private onClickButtonAdd(event: cc.EventTouch) {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
+        if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
         if (this._index == this._bets.length - 1) return;
         this._index++;
@@ -356,6 +361,7 @@ export default class CustomButtom extends ViewBase {
 
     private onClickButtonTimes(event: cc.EventTouch) {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
+        if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
         let _t = SuperSevenManager.Times;
         SuperSevenManager.Times = _t == 1 ? 2 : 1;
@@ -363,6 +369,7 @@ export default class CustomButtom extends ViewBase {
 
     private onClickButtonSub(event: cc.EventTouch) {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
+        if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
         if (this._index == 0) return;
         this._index--;

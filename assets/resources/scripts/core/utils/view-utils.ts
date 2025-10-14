@@ -61,7 +61,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 0;
         node.x = pWidth / 2 + node.width;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: 0, opacity: 255 }, { easing: cc.easing.backOut }).call(() => {
             complete && complete();
         }).start();
@@ -78,7 +78,7 @@ export default class ViewUtils {
         const sy = -height;
         node.opacity = 0;
         node.y = sy;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { y: 0, opacity: 255 }, { easing: cc.easing.backOut }).call(() => {
             complete && complete();
         }).start();
@@ -94,7 +94,7 @@ export default class ViewUtils {
         node.opacity = 0;
         const sy = -Constant.height / 2;
         node.y = sy - height;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { y: sy, opacity: 255 }).call(() => {
             complete && complete();
         }).start();
@@ -110,7 +110,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 0;
         node.x = pWidth + node.width;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: pWidth / 2, opacity: 255 }).call(() => {
             complete && complete();
         }).start();
@@ -126,7 +126,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 0;
         node.x = -(node.width + pWidth); // 从左侧外部开始
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: -pWidth / 2, opacity: 255 }).call(() => {
             complete && complete();
         }).start();
@@ -142,7 +142,7 @@ export default class ViewUtils {
         const parent = node.parent;
         node.opacity = 0;
         node.x = -node.width; // 从左侧外部开始
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: 0, opacity: 255 }, { easing: cc.easing.backOut }).call(() => {
             complete && complete();
         }).start();
@@ -170,7 +170,7 @@ export default class ViewUtils {
         const sy = -height;
         node.opacity = 255;
         node.y = 0;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { y: sy, opacity: 0 }, { easing: cc.easing.backIn }).call(() => {
             complete && complete();
         }).start();
@@ -181,7 +181,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 255;
         node.x = pWidth / 2;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: pWidth + node.width, opacity: 0 }).call(() => {
             complete && complete();
         }).start();
@@ -191,7 +191,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 255;
         node.x = 0;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: pWidth / 2 + node.width, opacity: 0 }).call(() => {
             complete && complete();
         }).start();
@@ -203,7 +203,7 @@ export default class ViewUtils {
         const pWidth = parent.width;
         node.opacity = 255;
         node.x = -pWidth / 2;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: -pWidth - node.width, opacity: 0 }).call(() => {
             complete && complete();
         }).start();
@@ -213,7 +213,7 @@ export default class ViewUtils {
         // 关闭动画与进入动画方向相反：从中间划出到左侧外部
         node.opacity = 255;
         node.x = 0;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { x: -node.width, opacity: 0 }, { easing: cc.easing.backIn }).call(() => {
             complete && complete();
         }).start();
@@ -225,7 +225,7 @@ export default class ViewUtils {
         const sy = -Constant.height / 2;
         node.opacity = 255;
         node.y = sy;
-        AudioManager.playSound('resources', 'sidetocenter');
+        //AudioManager.playSound('resources', 'sidetocenter');
         cc.tween(node).to(duration, { y: sy - height, opacity: 0 }).call(() => {
             complete && complete();
         }).start();
