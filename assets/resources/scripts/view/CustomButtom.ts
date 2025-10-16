@@ -118,9 +118,11 @@ export default class CustomButtom extends ViewBase {
                 })
             }
         } else {
-            this._index = 0;
             if (!this._bets || this._bets.length == 0) {
+                this._index = 0;
                 return this.labelTotal.string = '';
+            } else {
+                this._index = WalletManager.getCurrencyBetIndex() || 0;
             }
         }
         SuperSevenManager.BetCoin = this._bets[this._index];
@@ -354,8 +356,11 @@ export default class CustomButtom extends ViewBase {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
         if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
-        if (this._index == this._bets.length - 1) return;
-        this._index++;
+        if (this._index == this._bets.length - 1) {
+            this._index = 0;
+        } else {
+            this._index++;
+        }
         SuperSevenManager.BetCoin = this._bets[this._index];
     }
 
@@ -371,8 +376,11 @@ export default class CustomButtom extends ViewBase {
         if (this._gameState != gameState.End && this._gameState != gameState.None) return;
         if (SuperSevenManager.SendMsg) return;
         if (this._free || this._autoNum > 0) return;
-        if (this._index == 0) return;
-        this._index--;
+        if (this._index == 0) {
+            this._index = this._bets.length - 1;
+        } else {
+            this._index--;
+        }
         SuperSevenManager.BetCoin = this._bets[this._index];
     }
 

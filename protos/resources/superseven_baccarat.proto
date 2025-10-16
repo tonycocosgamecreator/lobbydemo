@@ -1298,6 +1298,7 @@ message BetConfig {
     optional double max_bet = 7; //最大下注
     repeated int64 auto_min_round = 8; //自动最小局数
     repeated int64 auto_max_round = 9; //自动最大局数
+    required int64 default_index = 10; //默认显示选中底注位置
 }
 // 游戏玩家结构
 message PlayerInfo {

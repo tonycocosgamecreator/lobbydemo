@@ -56,7 +56,16 @@ export default class PanelAuto extends ViewBase {
         this.tabGroupSpeed.selectIndex = _t == 1 ? 0 : 1;
         this.tabGroupAuto.selectIndex = 0;
         this._bets = WalletManager.getCurrencyBetSize();
-        this._index = 0;
+        const _bet = SuperSevenManager.BetCoin;
+        if (_bet) {
+            this._bets.forEach((t, idx) => {
+                if (t == _bet) {
+                    this._index = idx;
+                }
+            })
+        } else {
+            this._index = WalletManager.getCurrencyBetIndex() || 0;
+        }
         this.labelTotal.string = this._bets[this._index] + '';
     }
     //------------------------ 网络消息 ------------------------//
@@ -95,14 +104,19 @@ export default class PanelAuto extends ViewBase {
         this.tabGroupAuto.selectIndex = 4;
     }
     private onClickButtonAdd(event: cc.EventTouch) {
-        if (this._index == this._bets.length - 1) return;
-        this._index++;
+        if (this._index == this._bets.length - 1) {
+            this._index = 0;
+        } else {
+            this._index++;
+        }
         this.labelTotal.string = this._bets[this._index] + '';
     }
     private onClickButtonSub(event: cc.EventTouch) {
-
-        if (this._index == 0) return;
-        this._index--;
+        if (this._index == 0) {
+            this._index = this._bets.length - 1;
+        } else {
+            this._index--;
+        }
         this.labelTotal.string = this._bets[this._index] + '';
     }
     private onClickButton_auto(event: cc.EventTouch) {

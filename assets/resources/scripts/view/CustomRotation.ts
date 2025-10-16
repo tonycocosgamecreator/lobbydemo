@@ -58,6 +58,7 @@ export default class CustomRotation extends ViewBase {
         switch (this._gameState) {
             case gameState.Ing:
                 this._reset();
+                this.spjzlunzi.node.active = false;
                 this.spRotation.node.active = true;
                 this.spRotation.timeScale = 1.8;
                 this.spRotation.setAnimation(0, 'daiji', true);
@@ -67,6 +68,9 @@ export default class CustomRotation extends ViewBase {
                 this._rotationEnd();
                 break;
             case gameState.End:
+                this.spStar.node.active = false;
+                this.spRotation.node.active = false;
+                this.spjzlunzi.setAnimation(0, 'daiji', true);
                 break;
         }
     }
@@ -147,9 +151,10 @@ export default class CustomRotation extends ViewBase {
             this.spRotation.timeScale = 1;
             this.spRotation.setAnimation(0, 'caihong', true);
         }
-        if (gold != Gold.None) {
+        if (gold >= Gold.Nice) {
             this.spjzlunzi.setAnimation(0, 'juanzhou2', true);
         }
+        this.spjzlunzi.node.active = true;
         this.spZhou.node.active = false;
     }
 

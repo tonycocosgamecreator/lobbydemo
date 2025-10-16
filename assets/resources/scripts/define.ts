@@ -47,7 +47,7 @@ export enum GameEvent {
     /**
      *更换头像
      */
-    PLAYER_CHANGE_AVATAR='PLAYER_CHANGE_AVATAR'
+    PLAYER_CHANGE_AVATAR = 'PLAYER_CHANGE_AVATAR'
 
 }
 
@@ -71,6 +71,8 @@ export interface BetInfo {
     multiple: number[];
     /** 底注倍数列表 */
     bet_index_rule: number[];
+    /** 默认选中位置 */
+    default_index: number;
 }
 
 /**

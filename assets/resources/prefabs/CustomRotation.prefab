@@ -3312,7 +3312,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 2,
-      "y": -13,
+      "y": -21,
       "z": 0
     },
     "_lrot": {
@@ -3325,7 +3325,7 @@
     "_lscale": {
       "__type__": "cc.Vec3",
       "x": 0.88,
-      "y": 0.94,
+      "y": 0.88,
       "z": 1
     },
     "_mobility": 0,
@@ -6170,8 +6170,6 @@
       "__id__": 0
     },
     "fileId": "431RoGid9JGa//UhkjTbfB",
-    "instance": null,
-    "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {

@@ -167,6 +167,15 @@ export default class WalletManager extends BaseManager {
         }
         return [];
     }
+
+    public static getCurrencyBetIndex(currency?: string): number {
+        currency = currency || this._currency;
+        const betInfo = this.getCurrencyBetInfo(currency);
+        if (betInfo) {
+            return betInfo.default_index;
+        }
+        return 0;
+    }
     /**
      * 获取指定币种的倍数列表
      * @param currency 

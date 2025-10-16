@@ -2203,6 +2203,8 @@ declare namespace supersevenbaccarat{
         auto_min_round : number[];
         /** 自动最大局数 */
         auto_max_round : number[];
+        /** 默认显示选中底注位置 */
+        default_index : number;
     }
 
     /** 游戏玩家结构 */

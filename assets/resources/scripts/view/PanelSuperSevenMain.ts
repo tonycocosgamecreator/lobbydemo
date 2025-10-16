@@ -64,7 +64,21 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_STATE]: this._updateState,
             [GameEvent.UPDATE_FREE]: this._updateFree,
-        });4
+        });
+        this.sptankuang.node.parent.active = true;
+        this.sptankuang.setAnimation(0, 'chuxian', false);
+        this.sptankuang.setCompleteListener(() => {
+            this.sptankuang.setCompleteListener(null);
+            this.sptankuang.setAnimation(0, 'daiji', false);
+            this.sptankuang.setCompleteListener(() => {
+                this.sptankuang.setCompleteListener(null);
+                this.sptankuang.setAnimation(0, 'xiaosi', false);
+                this.sptankuang.setCompleteListener(() => {
+                    this.sptankuang.setCompleteListener(null);
+                    this.sptankuang.node.parent.active = false;
+                })
+            })
+        })
     }
 
     _updateFree() {
@@ -301,7 +315,9 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     _updateState() {
         this._gameState = SuperSevenManager.State;
         switch (this._gameState) {
-            case gameState.Ing: break;
+            case gameState.Ing:
+                this.sphandShank.setAnimation(0, 'animation', false);
+                break;
             case gameState.Result: this._rotationEnd(); break;
             case gameState.End:
                 this._reset();
@@ -464,6 +480,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
             cc_spKuang: [cc.sp.Skeleton],
             cc_sphandShank: [cc.sp.Skeleton],
             cc_spine_node: [cc.Node],
+            cc_sptankuang: [cc.sp.Skeleton],
             cc_top_node: [CustomTop],
             cc_win_lizi_node: [cc.Mask],
             cc_win_node: [cc.Node],
@@ -489,6 +506,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     protected spKuang: cc.sp.Skeleton = null;
     protected sphandShank: cc.sp.Skeleton = null;
     protected spine_node: cc.Node = null;
+    protected sptankuang: cc.sp.Skeleton = null;
     protected top_node: CustomTop = null;
     protected win_lizi_node: cc.Mask = null;
     protected win_node: cc.Node = null;
