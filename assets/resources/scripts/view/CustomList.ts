@@ -133,15 +133,17 @@ export default class CustomList extends ViewBase {
             child.getComponent(CustomItem).init();
         })
         let randomNum = Math.floor(Math.random() * this._listName.length);
+        const arr = SuperSevenManager.ShowArr || [];
         if (line.length == 1) {
             childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[0] - 1], true);
-            childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[randomNum]);
+            let value = arr[0][this._column - 1];
+            childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[value != -1 ? value - 1 : randomNum]);
         } else {
             childrens[startIdx].getComponent(CustomItem).setData(this._listName[line[1] - 1], true);
             childrens[startIdx + 1].getComponent(CustomItem).setData(this._listName[line[0] - 1], true);
         }
-        childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[randomNum]);
-        childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[randomNum]);
+        let value = arr[1][this._column - 1];
+        childrens[startIdx == 0 ? childrens.length - 1 : startIdx - 1].getComponent(CustomItem).setData(this._listName[value != -1 ? value - 1 : randomNum]);
         // 设置目标结果
         this.targetNode = childrens[startIdx];
         this._shake = true;

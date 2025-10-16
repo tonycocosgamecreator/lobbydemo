@@ -1278,6 +1278,7 @@ message SpinInfo {
     repeated int32 matrix = 1;//转轴矩阵
     required double award = 2;//总奖励
     repeated SloAwardItemInfo info = 3;//线条奖励数据
+    repeated int32 play = 1;//需要前端展示的转轴矩阵
 }
 // 单条线奖励数据
 message SloAwardItemInfo {

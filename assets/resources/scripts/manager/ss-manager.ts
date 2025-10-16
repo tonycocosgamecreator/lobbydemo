@@ -86,6 +86,7 @@ export default class SuperSevenManager extends BaseManager {
                 );
                 return true; //拦截消息，不继续传递
             }
+            this._showArr = [];
             // msg = {
             //     bet: 5,
             //     bet_multiple: 0,
@@ -119,6 +120,9 @@ export default class SuperSevenManager extends BaseManager {
             this._gold = Gold.None;
             this.SpinInfo = msg.spin_data || null;
             if (this.SpinInfo) {
+                if (this.SpinInfo.play) {
+                    this._showArr = [this.SpinInfo.play.slice(0, 3), this.SpinInfo.play.slice(-3)];
+                }
                 let award = this.SpinInfo.award || 0;
                 const matrix = this.SpinInfo.matrix;
                 //客户端随便写写 后面策划改
@@ -261,6 +265,7 @@ export default class SuperSevenManager extends BaseManager {
     }
 
     public static _lineArr: number[][] = [];
+    public static _showArr: number[][] = [];
     /** 前俩列是否是freeGame图标 用于前端显示*/
     public static _freeGame: boolean = false;
     /** 前俩列是否是trlple图标 用于前端显示*/
@@ -274,6 +279,7 @@ export default class SuperSevenManager extends BaseManager {
     public static get FreeGame(): boolean { return this._freeGame; }
     public static get Wild(): boolean { return this._wild; }
     public static get LineArr(): number[][] { return this._lineArr; }
+    public static get ShowArr(): number[][] { return this._showArr; }
     public static get BetCoin(): number { return this._betCoin; }
     public static get Times(): number { return this._times; }
     public static get State(): gameState { return this._state; }

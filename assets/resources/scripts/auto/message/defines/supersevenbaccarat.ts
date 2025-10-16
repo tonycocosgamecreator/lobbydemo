@@ -2167,6 +2167,8 @@ export namespace supersevenbaccarat{
         award : number;
         /** 线条奖励数据 */
         info : SloAwardItemInfo[];
+        /** 需要前端展示的转轴矩阵 */
+        play : number[];
     }
 
     /** 单条线奖励数据 */
