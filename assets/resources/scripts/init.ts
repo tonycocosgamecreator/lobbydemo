@@ -21,6 +21,7 @@ import { EnterGameManager } from "./network/managers/enter-game-manager";
 import WalletManager from "./manager/wallet-manager";
 import { ReconnectManager } from "./network/managers/reconnect-manager";
 import AudioManager from "./core/manager/audio-manager";
+import { MessageSender } from "./network/net/message-sender";
 export default class Initializer {
 
 
@@ -87,6 +88,7 @@ export default class Initializer {
         CoreOnLateUpdate(dt);
         //GameOnLateUpdate(dt);
         ViewManager.OnLateUpdate(dt);
+        MessageSender.onLateUpdate(dt);
     }
     /**
      * 在这里加载resources模块的所有资源
