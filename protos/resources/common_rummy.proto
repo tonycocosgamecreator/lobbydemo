@@ -1,0 +1,155 @@
+syntax = "proto2";
+
+// rummy产品
+package common;
+
+option go_package = "back-end/common/client_pb/common";
+
+// ProductID 产品 ID
+enum ProductID{
+    ProductID_RUMMY = 1;        //印度rummy产品
+    ProductID_NETMONEY = 2;     //网赚产品
+    ProductID_BTC = 3;          //二元涨跌产品
+    ProductID_BATTERY = 4;      //共享充电宝产品
+    ProductID_SLOTS = 5;        //slots产品
+}
+
+// 玩家VIP等级: 0=普通，1=主播，2=网红，3=明星，4=奥斯卡，5=影帝，6=巨星。
+enum VIPLevel {
+    VIPMember = 0;                  // 普通
+    VIPAnchor = 1;                  // 主播
+    VIPIntenetRed = 2;              // 网红
+    VIPStar = 3;                    // 明星
+    VIPOscar = 4;                   // 奥斯卡
+    VIPStarKing = 5;                // 影帝
+    VIPSuperStar = 6;               // 巨星
+}
+
+
+// 银行卡种类
+enum BCKind {
+  CARD = 0;       // 银行卡
+  UPI = 1;        // UPI
+  IMPS = 2;       // 印度移动支付
+}
+
+// RummyGameId 游戏 ID
+enum RummyGameId{
+    // 国外棋牌
+    GAMEID_RUMMY = 3000; //印度rummy游戏
+    GAMEID_TP = 3001;    //印度tp游戏
+    GAMEID_RB = 3002;    //印度红蓝游戏
+    GAMEID_SLOTS = 3003;  //slots游戏
+}
+
+
+// ErrCode 错误码
+enum RummyErrCode {
+    EC_SUCCESS = 0x00;          // 无错误
+    EC_FAIL = 0x01;             // 失败
+    EC_SERVER_STOP = 0x02;      // 服务器已停服
+    EC_NOT_IDLE = 0x03;         // 非空闲状态
+    EC_UNEXPECTED_OP = 0x04;    // 非法操作
+    EC_COIN_NO_ENOUGH = 0x05;   // 金币不足
+    EC_USER_NO_EXIST = 0x06;    // 用户不存在
+    EC_DESK_NO_EXIST = 0x07;    // 桌子不存在
+    EC_DB_ERROR = 0x08;         // DB错误
+    EC_REDIS_ERROR = 0x09;      // REDIS错误
+    EC_UP_LIMIT = 0x0A;         // 达到上限
+    EC_NO_PERMISSION = 0x0B;    // 没有权限
+    EC_CLOSE_THEME = 0x0C;    // 关闭主题
+
+    // 匹配错误
+    EC_MATCH_ALREADY_GAMEING = 0x101;  // 已经在游戏中了
+
+    // 身份认证
+    EC_INVALID_ID_CARD_OR_NAME = 0x120; // 身份信息错误
+    EC_REAL_NAME_ALREADY = 0x121;       // 已认证
+
+    // 发送验证码
+    EC_PHONE_EXIST = 0x130;           // 手机已存在
+    EC_PHONE_NOT_EXIST = 0x131;       // 手机不存在
+
+    EC_NICKNAME_NON_STANDARD = 0x142; // 昵称不符合规范
+    EC_NICKNAME_IS_NIL =  0x143;      // 昵称为空
+
+    EC_USED = 0x202;                //已经使用了
+    EC_ALREADY_EXIST = 0x203;       //已经存在
+
+    EC_DESK_NoT_ON_StartBetStage = 0x205;//不在下注状态
+    EC_DESK_CashOut_Timeout      = 0x206;//小火箭cashout失败
+}
+
+// RummyPlayerState 玩家状态
+enum RummyPlayerState {
+    PS_IDLE = 1;       // 空闲
+    PS_GAMEING = 2;    // 游戏中
+    PS_MATCHING = 3;   // 匹配中
+    PS_DESK = 4;       // 在牌桌上，但是未处于游戏中 (目前客户端不用关心此状态)
+    PS_TOURNAMENT = 5; // 正在参加锦标赛
+    PS_CHASING = 6;    // 参加闯关赛中
+}
+
+// Result 通用处理结果
+message RummyResult {
+    optional RummyErrCode err_code = 1; // 错误码
+    optional string err_desc = 2;       // 错误描述
+    optional string pic_url = 3;        // 图片地址
+}
+
+
+// RummyClientType 终端类型
+enum RummyClientType{
+    Rummy_CLIENT_TYPE_WEB = 1;      // web html5
+    Rummy_CLIENT_TYPE_APP = 2;      // app
+}
+
+//RummyDeskType:桌子类型
+enum RummyDeskType{
+    Rummy_DESK_TYPE_NONE = 0;       // NONE类型
+    Rummy_DESK_TYPE_POINT = 1;      // RUMMY底分类型
+    Rummy_DESK_TYPE_POOL = 2;       // RUMMY奖池类型
+    Rummy_DESK_TYPE_DEALS = 3;      // RUMMY定局类型
+    Rummy_DESK_TYPE_TP = 4;         // TP类型
+    Rummy_DESK_TYPE_TP5 = 5;         // TP类型: 只使用10、J、Q、K、A来进行玩牌，去掉所有2~9
+    Rummy_DESK_TYPE_TP6 = 6;         // TP类型: 8.0、固定发2张暗牌和1张癞子牌（大王）
+    Rummy_DESK_TYPE_TP7 = 7;         // TP类型: 3.0、AK47作为癞子牌，癞子牌可以变化为任意牌型
+
+    Rummy_DESK_TYPE_Card10 = 21;      // RUMMY 10张牌类型
+}
+
+//RummyPlayMode:玩法模式
+enum RummyPlayMode{
+    Rummy_PLAY_MODE_CASH = 1;      // 真金模式，消耗金币和绑金
+    Rummy_PLAY_MODE_PRACTICE = 2;  // 练习模式, 无消耗
+    Rummy_PLAY_MODE_FREE = 3;      // 免费模式，消耗筹码
+}
+
+// RummyMoneyType 操作牌类型
+enum RummyMoneyType{
+    Rummy_OPR_TYPE_COIN = 1;        // 金币
+    Rummy_OPR_TYPE_BIND_COIN = 2;   // 绑定金币
+    Rummy_OPR_TYPE_GIFT_CARD = 3;   // 礼券或房卡，bonus
+    Rummy_OPR_TYPE_TONE = 6;        // 筹码或钻石
+}
+
+// RummySmsTempl 短信模板类型
+enum RummySmsTempl{
+    Rummy_SMS_VERIFY = 0;          // 普通验证码模板
+    Rummy_SMS_KYC = 1;             // KYC模板
+    Rummy_SMS_REGSITER = 2;        // 注册模板
+    Rummy_SMS_RESET_PASS = 3;      // 找回密码模板
+}
+
+
+enum BoleGameId{
+    //百人场
+    Bct_WinGoLottery = 1001;           // WinGoLottery
+    Bct_FiveD = 1002;           // 5D
+
+
+    //小游戏
+    Games_Mines = 2001;  //mines
+
+}
+

@@ -7,6 +7,9 @@ import TaskManager from "../utils/task-manager";
 import { AudioClip } from "cc";
 import { BufferAsset } from "cc";
 import LanguageManager from "../manager/language-manager";
+import { Asset } from "cc";
+import { AssetType } from "../define";
+import { SpriteAtlas } from "cc";
 /**
  * 当前bundle状态
  */
@@ -46,6 +49,10 @@ export default class Module {
      */
     protected _spriteframes: { [path: string]: SpriteFrame } = {};
     /**
+     * 当前模块的spriteAtlas
+     */
+    protected _spriteAtlas: { [path: string]: SpriteAtlas } = {};
+    /**
      * 当前模块的audio
      */
     protected _audios: { [path: string]: AudioClip } = {};
@@ -65,6 +72,11 @@ export default class Module {
      */
     protected _prefab_urls: string[] = [];
 
+    /**
+     * 所有预加载的spriteAtlas的路径
+     * 用于加载完成后，从bundle中读出来
+     */
+    protected _spriteAtlas_urls: string[] = [];
 
 
     public get name(): string {
@@ -111,6 +123,7 @@ export default class Module {
         this._prefab_urls = [];
         this._spriteframe_urls = [];
         this._audio_urls = [];
+        this._spriteAtlas = {};
     }
 
     public get isValid(): boolean {
@@ -161,6 +174,26 @@ export default class Module {
     }
 
     /**
+     * 根据路径返回spriteAtlas
+     * @param path 
+     * @returns 
+     */
+    public getSpriteAtlas(path: string): SpriteAtlas | null {
+        if (!this.isValid) {
+            return null;
+        }
+        if (!path || path == '') {
+            console.error('Module.getSpriteAtlas path is empty');
+            return null;
+        }
+        const spriteAtlas = this._spriteAtlas[path];
+        if (!spriteAtlas) {
+            console.error(`Module.getSpriteAtlas ${path} not found`);
+            return null;
+        }
+        return spriteAtlas;
+    }
+    /**
      * 根据路径返回spriteframe
      * @param path 
      * @returns 
@@ -169,11 +202,11 @@ export default class Module {
         if (!this.isValid) {
             return null;
         }
-        if(!path || path == ''){
+        if (!path || path == '') {
             console.error('Module.getSpriteFrame path is empty');
             return null;
         }
-        if(!path.endsWith('spriteFrame')){
+        if (!path.endsWith('spriteFrame')) {
             path += '/spriteFrame';
         }
         const spriteFrame = this._spriteframes[path];
@@ -265,7 +298,7 @@ export default class Module {
         const self = this;
 
         const languageKey = LanguageManager.languageKey;
-        let prefabs : string[] = [];
+        let prefabs: string[] = [];
         Tools.forEachMap(maps, (k, info) => {
             if (k.startsWith('prefabs')) {
                 //预加载所有预制体
@@ -294,10 +327,15 @@ export default class Module {
                     //spine
                     //console.error(`Module.doAnalysisBundle i18n ${k} not support,快找bobo`);
                 }
+            } else if (k.startsWith('plists')) {
+                if (k.split('/').length == 2) {
+                    task.addResource(k, SpriteAtlas, null, true, bundle);
+                    self._spriteAtlas_urls.push(k);
+                }
             }
         });
         //将所有预制体放到最后处理
-        for(let i = 0;i<prefabs.length;i++){
+        for (let i = 0; i < prefabs.length; i++) {
             const url = prefabs[i];
             task.addResource(url, Prefab, null, true, bundle);
         }
@@ -337,6 +375,26 @@ export default class Module {
                 console.error(`Module.onLoadSuccessToInit ${url} not found`);
             }
         }
+        for (let i = 0; i < this._spriteAtlas_urls.length; i++) {
+            let url = this._spriteAtlas_urls[i];
+            const spriteAtlas = bundle.get(url, SpriteAtlas);
+            if (spriteAtlas) {
+                this._spriteAtlas[url] = spriteAtlas;
+            } else {
+                console.error(`Module.onLoadSuccessToInit ${url} not found`);
+            }
+        }
     }
-
+    /**
+     * 直接获取一个已经加载的资源
+     * 调用的时候需要注意你自己要预先加载到内存中
+     * @param url
+     * @param assetType
+     */
+    public getAssetAlreadyExit<T extends Asset>(url: string, assetType: AssetType<T>): T | null {
+        if (!this.isValid) {
+            return null;
+        }
+        return this.bundle.get(url, assetType);
+    }
 }

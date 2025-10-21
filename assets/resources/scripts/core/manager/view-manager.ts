@@ -88,7 +88,7 @@ export default class ViewManager {
      * @param panel 
      * @param context 
      */
-    public static Open<T extends ViewBase>(panel: AssetType<T>, context?: any): ViewBase | null {
+    public static Open<T extends ViewBase>(panel: AssetType<T>, context?: any, subFolder?: string): ViewBase | null {
         const bundleName = panel['BUNDLE_NAME'];
         const viewName = panel['VIEW_NAME'];
         const module = ModuleManager.getModuleAlreadyExist(bundleName);
@@ -96,7 +96,7 @@ export default class ViewManager {
             bDebug && console.error('The module does not exist, unable to open the interface:', bundleName, viewName);
             return null;
         }
-        return this.OpenPanel(module, viewName, context);
+        return this.OpenPanel(module, viewName, context, subFolder);
     }
 
     /**

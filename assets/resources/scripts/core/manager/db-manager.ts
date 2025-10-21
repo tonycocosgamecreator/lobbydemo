@@ -1,74 +1,115 @@
-import { BufferAsset,Asset,JsonAsset,AssetManager } from "cc";
-import DataBase from "../struct/data-base";
-import BaseManager from "./base-manager";
-import Timer from "../utils/timer";
-import { Tools } from "../utils/tools";
-import pako from "pako";
-/**
- * 配置表管理器
- */
-export default class DbManager extends BaseManager {
-    //=============================子类需要自己实现的方法===========================//
-    /**
-     * 存档的KEY,也是管理器的key
-     */
-    public static KEY = 'DbManager';
+import { Asset, BufferAsset, JsonAsset, assetManager, path, resources } from 'cc';
+import DataBase from '../struct/data-base';
+import Timer from '../utils/timer';
+import { Tools } from '../utils/tools';
+import { EDITOR } from 'cc/env';
+import { EmptyCallback, bDebug } from '../define';
+import { AssetManager } from 'cc';
+import I18NManager from './i18n-manager';
 
-    /**
-     * 你属于哪个bundle
-     */
-    public static BundleName = 'resources';
+window['_AutoExportDb_bDisableAutoInit'] = true;
 
-    /**
-     * 清理自己的数据结构
-     * 此方法不会被主动调用，请在自己需要的时候自己调用
-     */
-    public static clear() {}
-
-    //--=============================公共方法===========================//
-    /**
-     * 获取指定名称的数据库
-     * @param dbName 数据库名称
-     */
+export default class DbManager {
     protected static dbs: { [dbName: string]: DataBase } = {};
     /**
-     * 
-     * @param dbName 数据库名称
-     * @param db 数据库实例
-     * @returns 
+     * 配置表是否加载成功了
      */
+    private static _bLoaded = false;
+
     public static getDataBase(dbName: string): DataBase | null {
         return this.dbs[dbName];
     }
-    
     /**
-     * 加载指定bundle的配置表
-     * @param bundleName  bundle名称
-     * @param res 资源
+     * 采用异步方式加载db
      */
-    public static async loadDb(bundleName : string,res : BufferAsset | JsonAsset) : Promise<boolean> {
-        const st = Timer.time();
-        const bSuccess = await this._loadAssetSuccess(bundleName,res);
-        if(!bSuccess){
-            console.error(bundleName + ' load db error,time:',Timer.time() - st);
+    public static async loadDbAsync(bundle : AssetManager.Bundle){
+        const bundleName = bundle.name;
+        this.dbs = this.dbs || {};
+        const beginTime = Timer.time();
+        const res       = await this._loadDbResource(bundle);
+        if(!res){
             return false;
         }
-        console.log(bundleName + ' load db success,time:',Timer.time() - st);
+        const bSuccess  = await this._loadSuccess(res);
+        if(!bSuccess){
+            console.error('[ERROR] INIT Database failed~');
+            return false;
+        }
         this._callInit(bundleName);
+        bDebug && console.log(bundleName + ' -> DbManager load data used ：', Timer.time() - beginTime);
+        this._bLoaded   = true;
         return true;
+    }
+    /**
+     * 直接使用加载好的数据初始化
+     * @param bundleName 
+     * @param res 
+     * @returns 
+     */
+    public static async loadDb(bundleName : string,res : BufferAsset){
+        const beginTime = Timer.time();
+        const bSuccess  = await this._loadSuccess(res);
+        if(!bSuccess){
+            console.error('[ERROR] INIT Database failed~');
+            return false;
+        }
+        this._callInit(bundleName);
+        bDebug && console.log(bundleName + ' -> DbManager load data used ：', Timer.time() - beginTime);
+        this._bLoaded   = true;
     }
 
 
-
-    //--=============================私有方法===========================//
+    //======================================私有方法========================================//
     /**
-     * 加载成功的回调函数
-     * @param bundleName 加载的bundle名称
-     * @param res 加载的资源
+     * 
+     * @returns 内部加载db资源数据
+     */
+    private static async _loadDbResource(bundle : AssetManager.Bundle){
+        return new Promise<Asset | null>(resolve=>{
+            bundle.load('cfg/db',Asset,(err,res)=>{
+                if(err){
+                    resolve(null);
+                    return;
+                }
+                resolve(res);
+            });
+        });
+    }
+
+    /**
+     * 加载完成以后，需要将方法都注册进来
+     */
+    private static _callInit(bundleName : string) {
+        // if(bundleName == AssetManager.BuiltinBundleName.RESOURCES){
+        //     // 初始化配置表getter接口
+        //     if (window['_AutoResourcesExportDb_init'] instanceof Function) {
+        //         window['_AutoResourcesExportDb_init']();
+        //         this._bLoaded = true;
+        //     } else {
+        //         throw new Error('_AutoResourcesExportDb_init not found! ');
+        //     }
+        //     return;
+        // }
+        //其他bundle的配置表
+        //_Auto{bundleName}ExportDb_init bundleName首字母大写
+        const funcStr = `_Auto${bundleName.charAt(0).toUpperCase()}${bundleName.slice(1)}ExportDb_init`;
+        const call = window[funcStr];
+        if(call && call instanceof Function){
+            call();
+            this._bLoaded = true;
+        }else{
+            console.error(`_Auto${bundleName.charAt(0).toUpperCase()}${bundleName.slice(1)}ExportDb_init not found!`);
+        }
+    }
+    /**
+     * 数据记载成功以后，回调，处理数据结构
+     * @param res 
      * @returns 
      */
-    private static async _loadAssetSuccess(bundleName : string,res : BufferAsset | JsonAsset) : Promise<boolean> {
-        if(res instanceof JsonAsset){
+    private static async _loadSuccess(res: any): Promise<boolean> {
+        if (res instanceof JsonAsset) {
+            // resourcesDb.json， 直接提取数据
+
             Tools.forEachMap(res.json, (dbName, dbData) => {
                 const db = new DataBase();
                 db.rule = dbData.rule;
@@ -79,15 +120,19 @@ export default class DbManager extends BaseManager {
                 this.dbs[dbName] = db;
             });
             return true;
-        }
-        if(res instanceof BufferAsset){
-            let data : string = "";
-            const buffer = res.buffer();
-            data = pako.inflate(buffer, { to: 'string' });
-            if (!data) {
-                console.error(bundleName + ' load db error,data is null,BufferAsset module');
+        } else if (res instanceof BufferAsset) {
+            // resourcesDb.bin，二进制数据
+            const JSZip = window['JSZIP'];
+            const zip = new JSZip();
+
+            const datas = await zip.loadAsync(res.buffer()); //pako.inflate(dataChunk, { to: "string" });
+            bDebug && console.log('zip = ', datas);
+            const file = datas.files['database'];
+            if (!file) {
                 return false;
             }
+
+            const data = await file.async('string');
             const jsonData = JSON.parse(data);
 
             Tools.forEachMap(jsonData, (dbName, dbData) => {
@@ -99,23 +144,47 @@ export default class DbManager extends BaseManager {
 
                 this.dbs[dbName] = db;
             });
+
             return true;
         }
-        console.error(bundleName + ' load asset error,res is not BufferAsset or JsonAsset');
-        return false;
     }
 
+    //================================编辑器模式==================================//
+
+    private static _assetInEditor: Asset | null = null;
     /**
-     * 加载完成以后，需要将方法都注册进来
+     * 仅编辑器模式可用
+     * @param call
+     * @returns
      */
-    private static _callInit(bundleName : string) {
-        //_Auto{bundleName}ExportDb_init bundleName首字母大写
-        const funcStr = `_Auto${bundleName.charAt(0).toUpperCase()}${bundleName.slice(1)}ExportDb_init`;
-        const call = window[funcStr];
-        if(call && call instanceof Function){
-            call();
-        }else{
-            console.error(`_Auto${bundleName.charAt(0).toUpperCase()}${bundleName.slice(1)}ExportDb_init not found!`);
+    public static loadDbInEditorMode(call?: EmptyCallback) {
+        if (!EDITOR) {
+            return;
         }
+        if (this._assetInEditor) {
+            assetManager.releaseAsset(this._assetInEditor);
+            this._assetInEditor = null;
+        }
+
+        assetManager.loadAny('7479c4d5-e33c-4aa9-9b8c-139792412543', (err, res) => {
+            if (err || !res) {
+                bDebug && console.log(err);
+                return;
+            }
+            this._assetInEditor = res;
+            this._loadSuccess(res).then((bSuccess) => {
+                if (!bSuccess) {
+                    bDebug && console.error('加载配置文件失败了！');
+                    return;
+                }
+                this._callInit(AssetManager.BuiltinBundleName.RESOURCES);
+
+                const datas = resourcesDb.get_i18n_resources_db();
+                I18NManager.registerI18nResourceDatas(datas);
+
+                this._bLoaded = true;
+                call && call();
+            });
+        });
     }
 }
