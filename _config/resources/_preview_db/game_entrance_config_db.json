@@ -1,0 +1,86 @@
+{
+'name': 'game_entrance_config_db',
+'rule': 'm',
+'fields': [
+    {
+        "originCol": 2,
+        "name": "id",
+        "type": "S",
+        "tsType": "string",
+        "desc": "游戏id（bundleId）",
+        "verifyers": []
+    },
+    {
+        "originCol": 3,
+        "name": "entrancePanelName",
+        "type": "S",
+        "tsType": "string",
+        "desc": "入口Panel名称",
+        "verifyers": []
+    },
+    {
+        "originCol": 4,
+        "name": "systemMenus",
+        "type": "IA",
+        "tsType": "number[]",
+        "desc": "游戏内部菜单",
+        "verifyers": []
+    },
+    {
+        "originCol": 5,
+        "name": "enterMode",
+        "type": "I",
+        "tsType": "number",
+        "desc": "进入模式",
+        "verifyers": []
+    },
+    {
+        "originCol": 6,
+        "name": "themeId",
+        "type": "I",
+        "tsType": "number",
+        "desc": "游戏ID",
+        "verifyers": []
+    },
+    {
+        "originCol": 7,
+        "name": "enterReq",
+        "type": "S",
+        "tsType": "string",
+        "desc": "进入游戏的请求ID",
+        "verifyers": []
+    },
+    {
+        "originCol": 8,
+        "name": "isOverrideEnterMsg",
+        "type": "I",
+        "tsType": "number",
+        "desc": "是否自定义进入游戏得请求",
+        "verifyers": []
+    }
+],
+'datas': {
+    "SevenUpSevenDown": {
+        "id": "SevenUpSevenDown",
+        "entrancePanelName": "PanelSevenUpSevenDownInit",
+        "systemMenus": [
+            0,
+            1,
+            2
+        ],
+        "enterMode": 0,
+        "themeId": 1040,
+        "enterReq": "MsgEnterBaccaratReq",
+        "isOverrideEnterMsg": 0
+    },
+    "lobby": {
+        "id": "lobby",
+        "entrancePanelName": "PanelSevenUpSevenDownMain",
+        "systemMenus": [],
+        "enterMode": 0,
+        "themeId": 0,
+        "enterReq": "",
+        "isOverrideEnterMsg": 0
+    }
+}
+}

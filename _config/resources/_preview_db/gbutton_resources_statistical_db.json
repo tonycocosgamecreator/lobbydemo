@@ -44,22 +44,261 @@
     }
 ],
 'datas': {
-    "CustomGameItem": {
-        "cc_buttonIcon": {
-            "viewName": "CustomGameItem",
-            "buttonName": "cc_buttonIcon",
+    "CustomChip": {
+        "cc_buttonclick": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonclick",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100001200
+            "statisticalId": 100001800
+        },
+        "cc_buttonidx1": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001801
+        },
+        "cc_buttonidx2": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001802
+        },
+        "cc_buttonidx3": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001803
+        },
+        "cc_buttonidx4": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001804
+        },
+        "cc_buttonidx5": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001805
+        },
+        "cc_buttonidx6": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonidx6",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001806
+        },
+        "cc_buttons_node": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttons_node",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001807
+        },
+        "cc_buttonchoose": {
+            "viewName": "CustomChip",
+            "buttonName": "cc_buttonchoose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001808
         }
     },
-    "PanelThirdGame": {
-        "cc_buttonBack": {
-            "viewName": "PanelThirdGame",
-            "buttonName": "cc_buttonBack",
+    "CustomDesk": {
+        "cc_button_click0": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click0",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100001400
+            "statisticalId": 100001900
+        },
+        "cc_button_click1": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click1",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001901
+        },
+        "cc_button_click2": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click2",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001902
+        },
+        "cc_button_click3": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click3",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001903
+        },
+        "cc_button_click4": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click4",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001904
+        },
+        "cc_button_click5": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click5",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001905
+        },
+        "cc_button_click6": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click6",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001906
+        },
+        "cc_button_click7": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click7",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001907
+        },
+        "cc_button_click8": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click8",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001908
+        },
+        "cc_button_click9": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click9",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001909
+        },
+        "cc_button_click10": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click10",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001910
+        },
+        "cc_button_click11": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click11",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001911
+        },
+        "cc_button_click12": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click12",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001912
+        }
+    },
+    "CustomHandle": {
+        "cc_button_auto": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_auto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002000
+        },
+        "cc_button_agail": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_agail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002001
+        },
+        "cc_button_undo": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_undo",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002002
+        },
+        "cc_button_clear": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_clear",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002003
+        },
+        "cc_button_double": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_double",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002004
+        }
+    },
+    "CustomMainHistory": {
+        "cc_buttonCloseDetail": {
+            "viewName": "CustomMainHistory",
+            "buttonName": "cc_buttonCloseDetail",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001700
+        },
+        "cc_buttonHistory": {
+            "viewName": "CustomMainHistory",
+            "buttonName": "cc_buttonHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001701
+        }
+    },
+    "CustomTop": {
+        "cc_button_menu": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_button_menu",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001600
+        },
+        "cc_button_help": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_button_help",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        },
+        "cc_button_histoy": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_button_histoy",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        },
+        "cc_button_record": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_button_record",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        },
+        "cc_button_set": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_button_set",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001601
+        }
+    },
+    "PanelSevenUpSevenDownMain": {
+        "cc_buttonHistory": {
+            "viewName": "PanelSevenUpSevenDownMain",
+            "buttonName": "cc_buttonHistory",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001500
         }
     }
 }

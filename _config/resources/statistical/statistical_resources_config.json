@@ -1,22 +1,58 @@
 {
-    "PanelLobby": {
+    "CustomToast": {
         "statisticalId": 100001000,
         "panelId": 0
     },
-    "CustomGameItem": {
+    "PanelCircleLoading": {
         "statisticalId": 100001001,
         "panelId": 1
     },
-    "PanelCircleLoading": {
+    "PanelMessageBox": {
         "statisticalId": 100001002,
         "panelId": 2
     },
-    "PanelThirdGame": {
+    "PanelSevenUpSevenDownInit": {
         "statisticalId": 100001003,
         "panelId": 3
     },
-    "CustomToast": {
+    "PanelSevenUpSevenDownMain": {
         "statisticalId": 100001004,
         "panelId": 4
+    },
+    "CustomTop": {
+        "statisticalId": 100001005,
+        "panelId": 5
+    },
+    "CustomMainHistory": {
+        "statisticalId": 100001006,
+        "panelId": 6
+    },
+    "CustomChip": {
+        "statisticalId": 100001007,
+        "panelId": 7
+    },
+    "CustomDesk": {
+        "statisticalId": 100001008,
+        "panelId": 8
+    },
+    "CustomHandle": {
+        "statisticalId": 100001009,
+        "panelId": 9
+    },
+    "CustomHead": {
+        "statisticalId": 100001010,
+        "panelId": 10
+    },
+    "CustomOnline": {
+        "statisticalId": 100001011,
+        "panelId": 11
+    },
+    "CustomBigWinner": {
+        "statisticalId": 100001012,
+        "panelId": 12
+    },
+    "CustomTime": {
+        "statisticalId": 100001013,
+        "panelId": 13
     }
 }

@@ -36,35 +36,83 @@
     }
 ],
 'datas': {
-    "CustomGameItem": {
-        "viewName": "CustomGameItem",
+    "CustomBigWinner": {
+        "viewName": "CustomBigWinner",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001001
+        "statisticalId": 100001012
+    },
+    "CustomChip": {
+        "viewName": "CustomChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001007
+    },
+    "CustomDesk": {
+        "viewName": "CustomDesk",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001008
+    },
+    "CustomHandle": {
+        "viewName": "CustomHandle",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001009
+    },
+    "CustomHead": {
+        "viewName": "CustomHead",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001010
+    },
+    "CustomMainHistory": {
+        "viewName": "CustomMainHistory",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001006
+    },
+    "CustomOnline": {
+        "viewName": "CustomOnline",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001011
+    },
+    "CustomTime": {
+        "viewName": "CustomTime",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001013
     },
     "CustomToast": {
         "viewName": "CustomToast",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001004
+        "statisticalId": 100001019
+    },
+    "CustomTop": {
+        "viewName": "CustomTop",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001005
     },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001002
+        "statisticalId": 100001020
     },
-    "PanelLobby": {
-        "viewName": "PanelLobby",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001000
-    },
-    "PanelThirdGame": {
-        "viewName": "PanelThirdGame",
+    "PanelSevenUpSevenDownInit": {
+        "viewName": "PanelSevenUpSevenDownInit",
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001003
+    },
+    "PanelSevenUpSevenDownMain": {
+        "viewName": "PanelSevenUpSevenDownMain",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001004
     }
 }
 }
