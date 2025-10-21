@@ -5,6 +5,7 @@ import Tools from "../utils/tools";
 import { DbBundleConfig, ExportMode } from "./db-bundle-config";
 import { AssetDbUtils } from "../utils/asset-db-utils";
 import JSZip from "jszip";
+import pako from "pako";
 import { DbBundleDatas } from "./db-bundle-datas";
 /**
  * 对某一个指定名字的bundle的配置表进行导出
@@ -122,7 +123,7 @@ export default class DbBundleExporter{
         let text = '';
         let moduleName  = this._bundleName + 'Db';
         text += '/** 配置表数据结构描述文件，本文件由导出器自动生成，请勿手动修改 */\n';
-        text += 'declare module ' + moduleName + ' {\n';
+        text += 'declare namespace ' + moduleName + ' {\n';
         
         text += '    function getDataBase(dbName: string): any;\n';
 
@@ -205,18 +206,18 @@ export default class DbBundleExporter{
             }
 
             case ExportMode.ZIP_JSON: {
-                const zip = new JSZip();
+                //const zip = new JSZip();
                 // 压缩json
                 let text = JSON.stringify(jsonData);
-                //const content = pako.deflate(text,{level:0});
+                const content = pako.deflate(text,{level:0});
                 // 文件头，'pako'
-                let headChunk = this.stringToUint8Array("zip-json");
-                zip.file("database",text);
-                // 压缩后的数据
-                const content = await zip.generateAsync({
-                    type: "uint8array",//nodejs用
-                    compression: "DEFLATE"
-                });
+                // let headChunk = this.stringToUint8Array("zip-json");
+                // zip.file("database",text);
+                // // 压缩后的数据
+                // const content = await zip.generateAsync({
+                //     type: "uint8array",//nodejs用
+                //     compression: "DEFLATE"
+                // });
                 console.log("获取到长度：",content.length);
                 // 输出的二进制，文件头+压缩后的数据
                 await AssetDbUtils.RequestCreateNewAsset(assetBinPath,content as any,true);

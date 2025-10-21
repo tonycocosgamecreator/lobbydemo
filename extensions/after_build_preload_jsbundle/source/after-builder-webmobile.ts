@@ -239,9 +239,6 @@ export default class AfterBuildWebMobile {
                 allBundles += ',';
             }
         }
-        if(allBundles.endsWith(',')){
-            allBundles = allBundles.substring(0, allBundles.length - 1);
-        }
         content = content.replace('%cocos-js%', cocosJsZipName);
         let text = this.makeBundleIdAndNames(bundleNames);
         text += '        const searchs = window.searchs;\n'
@@ -251,11 +248,7 @@ export default class AfterBuildWebMobile {
         text += '            window["bundles"] = [' + allBundles + '];\n';
         text += '        }else{\n';
         text += '            const fileName = bundles[gid];\n';
-        text += '            if(!fileName){\n';
-        text += '               window["bundles"] = [' + allBundles + '];\n';
-        text += '            }else{\n',
-        text += '                window["bundles"] = ["' + resourcesZipName + '" , fileName];\n';
-        text += '            }\n'
+        text += '            window["bundles"] = ["' + resourcesZipName + '" , fileName];\n';
         text += '        }\n';
         //将content中的//BUNDLES DEFINED// 替换成text
         content = content.replace('//BUNDLES DEFINED//', text);

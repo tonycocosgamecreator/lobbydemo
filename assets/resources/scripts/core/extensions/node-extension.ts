@@ -101,7 +101,7 @@ export default class NodeExtensions {
             "ParticleSystem2D"  : ParticleSystem2D,
             "ParticleSystem"    : ParticleSystem,
             //"TiledMap"      : TiledMap,
-            "sp.Skeleton"   : sp.Skeleton,
+            //"sp.Skeleton"   : sp.Skeleton,
             ProgressBar: ProgressBar,
             PageView: PageView,
             ScrollView: ScrollView,

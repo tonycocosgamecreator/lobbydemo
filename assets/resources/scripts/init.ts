@@ -15,29 +15,8 @@ import ModuleManager from "./core/manager/module-manager";
 import DbManager from "./core/manager/db-manager";
 import I18nManager from "./core/manager/i18n-manager";
 import { AsyncWaitInfo } from "./core/coroutine/coroutine-define";
-import Managers from "./core/manager/managers";
-import JsonLoginManager from "./network/managers/json-login-manager";
-import { EnterGameManager } from "./network/managers/enter-game-manager";
-import WalletManager from "./manager/wallet-manager";
-import { ReconnectManager } from "./network/managers/reconnect-manager";
-import AudioManager from "./core/manager/audio-manager";
-import { MessageSender } from "./network/net/message-sender";
+import ProtoManager from "./core/manager/proto-manager";
 export default class Initializer {
-
-
-    protected static registerManagers() {
-        //注册管理器
-        // Managers.registe(ProtoManager);
-        // Managers.registe(StatisticalHelper);
-        // Managers.registe(ProtoLoginManager);
-        Managers.registe(JsonLoginManager);
-        Managers.registe(EnterGameManager);
-        Managers.registe(WalletManager);
-        Managers.registe(ReconnectManager);
-        Managers.registe(AudioManager);
-
-    }
-
     /**
      * 初始化语言
      */
@@ -73,7 +52,6 @@ export default class Initializer {
      */
     public static Init(canvas: cc.Canvas, camera: cc.Camera) {
         BrowserUtils.Init();
-        this.registerManagers();
         const playerId = BrowserUtils.getParam('player_id') || Tools.Uuid;
         CoreInit(BaseDefine.APP_NAME, playerId);
         this.initLanguage();
@@ -88,7 +66,6 @@ export default class Initializer {
         CoreOnLateUpdate(dt);
         //GameOnLateUpdate(dt);
         ViewManager.OnLateUpdate(dt);
-        MessageSender.onLateUpdate(dt);
     }
     /**
      * 在这里加载resources模块的所有资源
@@ -123,15 +100,14 @@ export default class Initializer {
         });
         task.addCall((fnext) => {
             bDebug && console.log('开始注册proto');
-            // const protos = module.bundle.get('protos/proto', cc.BufferAsset);
-            // if (!protos) {
-            //     fnext();
-            //     return;
-            // }
-            // ProtoManager.LoadProtos(Constant.CurrentBundleId, protos).then(() => {
-            //     fnext();
-            // });
-            fnext(); //不需要加载proto了
+            const protos = module.bundle.get('protos/proto', cc.BufferAsset);
+            if (!protos) {
+                fnext();
+                return;
+            }
+            ProtoManager.LoadProtos(Constant.CurrentBundleId, protos).then(() => {
+                fnext();
+            });
         });
         //最后注册多语言包
         task.addCall(async (fnext) => {

@@ -48,7 +48,7 @@ export default abstract class ViewBase extends Component implements ICaller {
      * 默认0.25
      */
     protected _mask_opacity = 160;
-
+    
     /**
      * 界面开启效果
      */
@@ -75,7 +75,7 @@ export default abstract class ViewBase extends Component implements ICaller {
     /**
      * 关闭后的回调函数
      */
-    public onClose: EmptyCallback | null = null;
+    public onClose : EmptyCallback | null   = null;
     /**
      * 完全打开以后的回调函数
      */
@@ -102,15 +102,15 @@ export default abstract class ViewBase extends Component implements ICaller {
     /**
      * 打开的时间，毫秒
      */
-    private _enter_panel_time: number = -1;
+    private _enter_panel_time : number  = -1;
 
     protected onLoad(): void {
-        this._enter_panel_time = Timer.now;
+        this._enter_panel_time  = Timer.now;
         this._isClosing = false;
         this.isCallerValid = true;
         this.bindResourceConfig();
         let i18n = this.getComponent(I18NRoot);
-        if (!i18n) {
+        if(!i18n){
             //如果没有，就主动加上
             i18n = this.node.addComponent(I18NRoot);
         }
@@ -121,8 +121,8 @@ export default abstract class ViewBase extends Component implements ICaller {
         //更新皮肤
         //SkinHelper.changeSkin(this.viewName,this._nodes);
 
-        if (this.context) {
-            if (this.context['onOpenComplete']) {
+        if(this.context) {
+            if(this.context['onOpenComplete']){
                 this.onOpenComplete = this.context['onOpenComplete'];
             }
         }
@@ -139,7 +139,7 @@ export default abstract class ViewBase extends Component implements ICaller {
 
             mask.on(
                 NodeEventType.TOUCH_END,
-                (event: Event) => {
+                (event : Event) => {
                     if (!this._bclick_mask_close) {
                         return true;
                     }
@@ -150,27 +150,27 @@ export default abstract class ViewBase extends Component implements ICaller {
             this.maskNode = mask;
         }
         const bg = this.node.getChildByName('bg') || this.node.getChildByName('cc_bg');
-        if (this.viewName.startsWith('Panel') && this._isSwallowTouch) {
+        if(this.viewName.startsWith('Panel') && this._isSwallowTouch){
             //被BG加上 一个吞噬事件的组件
             if (bg) {
                 const bgb = bg.getComponent(BlockInputEvents);
                 if (!bgb) {
                     bg.addComponent(BlockInputEvents);
                 }
-            } else {
+            }else{
                 //如果没有bg，就在根节点上加
-                const bgb = this.getComponent(BlockInputEvents);
-                if (!bgb) {
+                const bgb   = this.getComponent(BlockInputEvents);
+                if(!bgb){
                     this.addComponent(BlockInputEvents);
                 }
             }
         }
-
+        
 
         if (this._open_animation_type != ViewOpenAnimationType.NONE && bg) {
             //this.showOpenAnimation();
             this.showMaskFadeIn();
-            ViewUtils.showViewOpenEffect(bg, this._open_animation_type, 0.25, () => {
+            ViewUtils.showViewOpenEffect(bg,this._open_animation_type,0.25,()=>{
                 this.onOpenComplete && this.onOpenComplete();
             });
         }
@@ -189,22 +189,22 @@ export default abstract class ViewBase extends Component implements ICaller {
 
     protected onDestroy(): void {
         const time = Timer.now - this._enter_panel_time;
-
-        if (this.viewName.startsWith('Panel')) {
-            bDebug && console.log('界面：', this.viewName, '->停留时间：', time, '打点需要监听->', StatisticalReportMessage.BUTTON_STATISTICAL);
+        
+        if(this.viewName.startsWith('Panel')){
+            bDebug && console.log('界面：',this.viewName,'->停留时间：',time,'打点需要监听->',StatisticalReportMessage.BUTTON_STATISTICAL);
             const info = StatisticalHelper.getPanelStatisticalInfo(this.viewName);
-            if (info) {
+            if(info){
                 const res = Tools.deepClone(info);
                 res['duration'] = time / 1000 + 'S';
                 //StatisticalHelper.report(StatisticalEvent.VIEW_DURATION,res);
-                BaseGlobal.sendMsg(StatisticalReportMessage.BUTTON_STATISTICAL, res);
-            } else {
-                console.warn('Can not find panel statistical info for view -> ', this.viewName);
+                BaseGlobal.sendMsg(StatisticalReportMessage.BUTTON_STATISTICAL,res);
+            }else{
+                console.warn('Can not find panel statistical info for view -> ',this.viewName);
             }
         }
         this.node.targetOff(this);
-        this.isCallerValid = false;
-        this.onClose = null;
+        this.isCallerValid  = false;
+        this.onClose        = null;
         BaseGlobal.removeAllListeners(this);
     }
 
@@ -250,7 +250,7 @@ export default abstract class ViewBase extends Component implements ICaller {
     /**
      * 等待这个界面关闭
      */
-    public async WaitPanelClosed(): Promise<void> {
+    public async WaitPanelClosed() : Promise<void> {
         return new Promise<void>((resolve) => {
             this.onClose = () => {
                 resolve();
@@ -288,7 +288,7 @@ export default abstract class ViewBase extends Component implements ICaller {
             this.node.removeFromParent();
             this.node.destroy();
             this.onClose && this.onClose();
-        } else {
+        }else{
             this.showCloseAnimation().then(() => {
                 this.node.removeFromParent();
                 this.node.destroy();
@@ -325,7 +325,7 @@ export default abstract class ViewBase extends Component implements ICaller {
             .start();
         await Coroutine.WaitTime(tm);
     }
-
+    
     /**
      * 关闭
      */
@@ -361,7 +361,7 @@ export default abstract class ViewBase extends Component implements ICaller {
         return this._isClosing;
     }
 
-
+    
 
     /**
      *
@@ -426,7 +426,7 @@ export default abstract class ViewBase extends Component implements ICaller {
         return new Promise<T>((resolve) => {
             bunlde.load(url, type, (err, data) => {
                 if (err || !data) {
-                    console.error('this.get has error => ', err);
+                    console.error('this.get has error => ',err);
                     resolve(null);
                     return;
                 }
@@ -444,18 +444,18 @@ export default abstract class ViewBase extends Component implements ICaller {
     public getAssets<T extends Asset>(urls: string[], type: AssetType<T>, call: (assets: T[] | null) => void) {
         const bunlde = this.module.bundle;
 
-        let results: T[] = [];
+        let results : T[] = [];
         let bSuccess = true;
-        for (let i = 0; i < urls.length; i++) {
+        for(let i = 0; i < urls.length; i++){
             const data = bunlde.get(urls[i], type);
-            if (data) {
+            if(data){
                 results.push(data);
-            } else {
+            }else{
                 bSuccess = false;
                 break;
             }
         }
-        if (bSuccess) {
+        if(bSuccess){
             call && call(results);
             return;
         }
@@ -467,28 +467,15 @@ export default abstract class ViewBase extends Component implements ICaller {
             }
             call(dats);
         });
-    }
+    }   
     /**
      * 直接获取一个图片，如果没有返回undefined
      * @param url 
      * @returns 
      */
     public getSpriteFrame(url: string): SpriteFrame | undefined {
-        const module = this.module;
-        const spf = module.getSpriteFrame(url);
-        return spf;
-    }
-
-    /**
-     * 获取图集中的一个图片，如果没有返回undefined
-     * @param url 
-     * @returns 
-     */
-    public getSpriteFrameBySpriteAtlas(url: string, name: string): SpriteFrame | undefined {
-        const module = this.module;
-        const atlas = module.getSpriteAtlas(url);
-        if (!atlas) return null;
-        const spf = atlas.getSpriteFrame(name);
+        const module    = this.module;
+        const spf       = module.getSpriteFrame(url);
         return spf;
     }
     /**
@@ -518,11 +505,11 @@ export default abstract class ViewBase extends Component implements ICaller {
      * @param sp 
      * @param url 
      */
-    public changeSpriteFrame(sp: Sprite, url: string, bActive: boolean = true) {
+    public changeSpriteFrame(sp : Sprite,url : string,bActive : boolean = true){
         const data = this.getSpriteFrame(url);
-        if (this && data && this.isValid && sp && sp.isValid) {
-            sp.node.active = bActive;
-            sp.spriteFrame = data;
+        if(this && data && this.isValid && sp && sp.isValid){
+            sp.node.active  = bActive;
+            sp.spriteFrame  = data;
         }
     }
     /**
@@ -543,19 +530,19 @@ export default abstract class ViewBase extends Component implements ICaller {
      */
     public addWidget(top?: number, bottom?: number, left?: number, right?: number) {
         let widget = this.node.getComponent(Widget) || this.node.addComponent(Widget);
-        if (top != undefined) {
+        if(top != undefined){
             widget.isAlignTop = true;
             widget.top = top;
         }
-        if (bottom != undefined) {
+        if(bottom != undefined){
             widget.isAlignBottom = true;
             widget.bottom = bottom;
         }
-        if (left != undefined) {
+        if(left != undefined){
             widget.isAlignLeft = true;
             widget.left = left;
         }
-        if (right != undefined) {
+        if(right != undefined){
             widget.isAlignRight = true;
             widget.right = right;
         }
@@ -572,7 +559,7 @@ export default abstract class ViewBase extends Component implements ICaller {
      * 绑定
      */
     public bindResourceConfig() {
-        if (this._bConfigBinded) {
+        if(this._bConfigBinded){
             return;
         }
         this._nodes = {};
@@ -580,7 +567,7 @@ export default abstract class ViewBase extends Component implements ICaller {
         //console.log("找到当前所有的节点：",this._nodes);
         const config = this._getResourceBindingConfig();
         //console.log("所有配置：",config);
-        Tools.forEachMap(config, (varname: string, v) => {
+        Tools.forEachMap(config, (varname : string, v) => {
             const node = this._nodes[varname];
             if (!node) {
                 bDebug && console.warn('警告，无法找到节点：' + varname + '->' + this.node.name);
@@ -606,7 +593,7 @@ export default abstract class ViewBase extends Component implements ICaller {
                     btn.registerOneClickHandler(call);
                     //=========FOR STATISTICS BEGIN=========//
                     btn.BUNDLE_NAME = this.bundleName;
-                    btn.PANEL_NAME = this.viewName;
+                    btn.PANEL_NAME  = this.viewName;
                     //=========FOR STATISTICS END=========//
                 }
             }
@@ -615,10 +602,10 @@ export default abstract class ViewBase extends Component implements ICaller {
                 if (call) {
                     const btn = node.addComponent(GButton);
                     btn.registerOneClickHandler(call);
-                    this[argName] = btn;
+                    this[argName]   = btn;
                     //=========FOR STATISTICS BEGIN=========//
                     btn.BUNDLE_NAME = this.bundleName;
-                    btn.PANEL_NAME = this.viewName;
+                    btn.PANEL_NAME  = this.viewName;
                     //=========FOR STATISTICS END=========//
                 }
             } else {
@@ -657,8 +644,8 @@ export default abstract class ViewBase extends Component implements ICaller {
      * 重构，当重复打开一个已经存在的界面时，会调用此方法
      * 你可以重写这个方法，来处理自己的逻辑
      */
-    public reBuild() {
-        bDebug && console.log('reBuildView -> ', this.viewName);
+    public reBuild(){
+        bDebug && console.log('reBuildView -> ',this.viewName);
     }
 
     //===========================子类自动重写方法，自动生成，请勿修改=====================//
@@ -675,14 +662,14 @@ export default abstract class ViewBase extends Component implements ICaller {
      * @param data
      * @param connectorType 来自哪个连接器
      */
-    public onNetworkMessage(msgType: string, data: any, connectorType: ConnectorType | string = ConnectorType.Lobby): boolean {
+    public onNetworkMessage(msgType: string, data: any,connectorType : ConnectorType | string = ConnectorType.Lobby): boolean {
         return false;
     };
     /**
      * 子类重写，返回true表示已经处理，不需要继续传递，否则，继续传递
      * @returns 
      */
-    public onNativeBackButtonClicked(): boolean {
+    public onNativeBackButtonClicked() : boolean {
         return false;
     }
 
