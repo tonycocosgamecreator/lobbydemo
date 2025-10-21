@@ -1,5 +1,5 @@
 /** 配置表数据结构描述文件，本文件由导出器自动生成，请勿手动修改 */
-declare namespace resourcesDb {
+declare module resourcesDb {
     function getDataBase(dbName: string): any;
     type customize_resources_statistical_db_data = {
         /** 唯一id */
@@ -67,11 +67,19 @@ declare namespace resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
-        ['CustomGameItem']: 'CustomGameItem',
+        ['CustomBigWinner']: 'CustomBigWinner',
+        ['CustomChip']: 'CustomChip',
+        ['CustomDesk']: 'CustomDesk',
+        ['CustomHandle']: 'CustomHandle',
+        ['CustomHead']: 'CustomHead',
+        ['CustomMainHistory']: 'CustomMainHistory',
+        ['CustomOnline']: 'CustomOnline',
+        ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
+        ['CustomTop']: 'CustomTop',
         ['PanelCircleLoading']: 'PanelCircleLoading',
-        ['PanelLobby']: 'PanelLobby',
-        ['PanelThirdGame']: 'PanelThirdGame',
+        ['PanelSevenUpSevenDownInit']: 'PanelSevenUpSevenDownInit',
+        ['PanelSevenUpSevenDownMain']: 'PanelSevenUpSevenDownMain',
 }
     type protobuf_load_priority_db_data = {
         /** 包体 */
@@ -131,6 +139,57 @@ declare namespace resourcesDb {
         ['Close']: 'Close',
         ['ExitGame']: 'ExitGame',
         ['Retry']: 'Retry',
+        ['Tip_ReconnectFailed']: 'Tip_ReconnectFailed',
+        ['Tip_Reconnecting']: 'Tip_Reconnecting',
+        ['TIP_ENTER_GAME_FAILED']: 'TIP_ENTER_GAME_FAILED',
+        ['TIP_AB_BET_FAILED']: 'TIP_AB_BET_FAILED',
+        ['Tip_No_More_Historys']: 'Tip_No_More_Historys',
+        ['TIP_HISTORY_GET_FAILED']: 'TIP_HISTORY_GET_FAILED',
+        ['CustomSystemTopFoot_totalbet_info_i18n']: 'CustomSystemTopFoot_totalbet_info_i18n',
+        ['CustomSystemTopFoot_balance_info_i18n']: 'CustomSystemTopFoot_balance_info_i18n',
+        ['CustomSystemTopFoot_label_period_i18n_skin']: 'CustomSystemTopFoot_label_period_i18n_skin',
+        ['PanelMessageBox_cc_title_i18n']: 'PanelMessageBox_cc_title_i18n',
+        ['PanelMessageBox_cc_cancelTitle_i18n']: 'PanelMessageBox_cc_cancelTitle_i18n',
+        ['PanelMessageBox_cc_okTitle_i18n']: 'PanelMessageBox_cc_okTitle_i18n',
+        ['PanelSystemMenu_title_i18n_button_records']: 'PanelSystemMenu_title_i18n_button_records',
+        ['PanelSystemMenu_title_i18n_button_rules']: 'PanelSystemMenu_title_i18n_button_rules',
+        ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
+        ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
+        ['AVATAR_CHANGED_FAILED']: 'AVATAR_CHANGED_FAILED',
+}
+    type game_entrance_config_db_data = {
+        /** 游戏id（bundleId） */
+        readonly id: string,
+        /** 入口Panel名称 */
+        readonly entrancePanelName: string,
+        /** 游戏内部菜单 */
+        readonly systemMenus: number[],
+        /** 进入模式 */
+        readonly enterMode: number,
+        /** 游戏ID */
+        readonly themeId: number,
+        /** 进入游戏的请求ID */
+        readonly enterReq: string,
+        /** 是否自定义进入游戏得请求 */
+        readonly isOverrideEnterMsg: number,
+    };
+
+    type game_entrance_config_db = {
+        [id: string]: game_entrance_config_db_data,
+    };
+
+    function get_game_entrance_config_db(): resourcesDb.game_entrance_config_db;
+    function get_from_game_entrance_config_db(id: string, bQuiet?: boolean): resourcesDb.game_entrance_config_db_data;
+    function foreach_from_game_entrance_config_db(callback: (idKey: string, data: resourcesDb.game_entrance_config_db_data) => (void | boolean)): void;
+    /** 游戏ID */
+    export const GAME_THEMEID_BUNDLE: {
+        ['0']: 'lobby',
+        ['1040']: 'SevenUpSevenDown',
+}
+    /** 游戏id（bundleId） */
+    export const GAME_ENTRANCE_CONFIG_DB_ID: {
+        ['SevenUpSevenDown']: 'SevenUpSevenDown',
+        ['lobby']: 'lobby',
 }
     type game_config_db_data = {
         /** 变量的名字 */
@@ -182,6 +241,31 @@ declare namespace resourcesDb {
     function foreach_from_skin_resources_db(callback: (prefabIdKey: string, nodeNameKey: string, data: resourcesDb.skin_resources_db_data) => (void | boolean)): void;
     function getMap_from_skin_resources_db(prefabId: string, bQuiet?: boolean): { [nodeName: string]: resourcesDb.skin_resources_db_data };
     function foreachMap_from_skin_resources_db(callback: (prefabIdKey: string, datas: { [nodeName: string]: resourcesDb.skin_resources_db_data }) => (void | boolean)): void;
+    type system_menu_db_data = {
+        /** 菜单名字 */
+        readonly id: number,
+        /** 顶部菜单名字 */
+        readonly title: string,
+        /** 使用的spriteFrame的地址 */
+        readonly spfUrls: string[],
+        /** 节点名字 */
+        readonly nodeName: string,
+        /** title翻译的key */
+        readonly i18n_key: string,
+    };
+
+    type system_menu_db = system_menu_db_data[];
+
+    function get_system_menu_db(): resourcesDb.system_menu_db;
+    function get_from_system_menu_db(index: number, bQuiet?: boolean): resourcesDb.system_menu_db_data;
+    function foreach_from_system_menu_db(callback: (index: number, data: resourcesDb.system_menu_db_data) => (void | boolean)): void;
+    /** 顶部菜单名字 */
+    export const MENU_TITLE_ID: {
+        ['Records']: 0,
+        ['Rules']: 1,
+        ['Sound']: 2,
+        ['Exit']: 3,
+}
     type prummy_event_message_config_db_data = {
         /** 事件ID */
         readonly id: number,

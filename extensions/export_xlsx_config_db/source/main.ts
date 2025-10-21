@@ -4,7 +4,6 @@ import DbBundleExporterMain from "./db_bundle_exporter/db-bundle-exporter-main";
 import DbMain from "./dbexport/db-main";
 import { ProtoExporter } from "./protos/proto-exporter";
 import DbI18nChecker from "./db_i18n_check/db-i18n-checker";
-import ProtosExporterPackage from "./protos/protos-exporter-package";
 
 /**
  * @en Methods within the extension can be triggered by message
@@ -25,9 +24,8 @@ export const methods: { [key: string]: (...any: any) => any } = {
     },
 
     async export_protos() {
-        await ProtosExporterPackage.exportProtos("resources");
-        //await ProtoExporter.ProcessingExportProtos();
-        //await ProtoExporter.ProcessingExportProtosDTS();
+        await ProtoExporter.ProcessingExportProtos();
+        await ProtoExporter.ProcessingExportProtosDTS();
     },
     
     export_bundle_db(){
@@ -89,9 +87,8 @@ export function onRightClickAssetMenu(assetInfo : AssetInfo){
         {
             label : "导出[" + name+ "]协议与配置",
             async click() {
-                await ProtosExporterPackage.exportProtos(name);
-                //await ProtoExporter.ProcessingExportProtos(name);
-                //await ProtoExporter.ProcessingExportProtosDTS(name);
+                await ProtoExporter.ProcessingExportProtos(name);
+                await ProtoExporter.ProcessingExportProtosDTS(name);
                 //导出配置表
                 DbBundleExporterMain.ProcessingExportDb(name);
             }
