@@ -71,27 +71,24 @@ export default class CustomBigWinner extends ViewBase {
             if (_d) {
                 child.getChildByName('labelcoin').getComponent(cc.Label).string = _d.balance + '';
                 child.getChildByName('labelwin').getComponent(cc.Label).string = '';
-                child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
-                // if (this._ids[idx] && this._ids[idx] == _d.player_id) {
-                const nd = child.getChildByName('head');
-                const startRotation = nd.eulerAngles.clone();
-                // 复制一个背面模型
-                const backFace = cc.instantiate(nd)
-                backFace.parent = nd.parent;
-                backFace.eulerAngles = v3(0, 180, 0); // 初始旋转180度
-                cc.tween(nd)
-                    .by(0.8, { eulerAngles: v3(0, 360, 0) }, { easing: 'cubicInOut' })
-                    .start();
+                if (this._ids[idx] && this._ids[idx] != _d.player_id) {
+                    const nd = child.getChildByName('head');
+                    nd.eulerAngles = v3(0, 0, 0);
+                    cc.tween(nd)
+                        .to(0.2, { eulerAngles: v3(0, 90, 0) }, { easing: 'cubicInOut' })
+                        .call(() => {
+                            nd.eulerAngles = v3(0, -90, 0);
+                            child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                        })
+                        .to(0.2, { eulerAngles: v3(0, 0, 0) }, { easing: 'cubicInOut' })
+                        .start();
 
-                cc.tween(backFace)
-                    .by(0.8, { eulerAngles: v3(0, 360, 0) }, { easing: 'cubicInOut' })
-                    .call(() => {
-                        nd.eulerAngles = v3(0, 0, 0);
-                        backFace.destroy(); // 动画完成后销毁背面模型
-                    })
-                    .start();
-                //     this._ids[idx] = _d.player_id;
-                // }
+
+                    this._ids[idx] = _d.player_id;
+                } else {
+                    this._ids[idx] = _d.player_id;
+                    child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                }
             }
         })
     }
@@ -112,11 +109,11 @@ export default class CustomBigWinner extends ViewBase {
         this.resetBetPlayer();
     }
 
-    getWorldPosByUid(uid: number): cc.Vec3 {
+    getWorldPosByUid(player_id: number): cc.Vec3 {
         let node = this.rest_node;
         let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
         this.head_node.children.forEach((child, idx) => {
-            if (this._ids[idx] && this._ids[idx] == uid) {
+            if (this._ids[idx] && this._ids[idx] == player_id) {
                 node = child;
                 const startPos = cc.v3(0, 0, 0);
                 let target = node.getChildByName('head');

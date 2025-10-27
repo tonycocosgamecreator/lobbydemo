@@ -54,8 +54,13 @@ export default class CustomFlyChip extends ViewBase {
 
     updateGameStage(reconnect: boolean = false) {
         this._stage = SevenUpSevenDownManager.Stage;
-        if (this._stage == baccarat.DeskStage.ReadyStage) {
-            this.reset();
+        switch (this._stage) {
+            case baccarat.DeskStage.ReadyStage:
+                this.reset();
+                break
+            case baccarat.DeskStage.SettleStage:
+                // if ()
+                    break;
         }
     }
 

@@ -66,5 +66,13 @@
     "CustomRecord": {
         "statisticalId": 100001016,
         "panelId": 16
+    },
+    "CustomWinTip": {
+        "statisticalId": 100001017,
+        "panelId": 17
+    },
+    "CustomRank": {
+        "statisticalId": 100001018,
+        "panelId": 18
     }
 }

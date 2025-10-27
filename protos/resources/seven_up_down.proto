@@ -173,8 +173,10 @@ message MsgCancelBetBaccaratNtf {
 message BetPlayer {
     repeated BetData bets = 1;                        // 下注列表
     optional int64 player_id = 2;                      // 玩家ID
-    optional string icon = 3;                         // 头像
+    optional int64 icon = 3;                         // 头像
     optional bool is_first = 4;                       // 是否是第一名下注
+    optional string win_coin = 5;                         // 赢分
+
 }
 // SevenUpDownSettleNtf 结算通知消息
 message MsgSevenUpDownSettleNtf {
@@ -189,6 +191,7 @@ message MsgSevenUpDownSettleNtf {
     repeated SUDBetData bets = 9;                        // 下注列表
     repeated SettleWinData win_list = 10;               // 赢钱玩家列表
     optional SevenUpDownPlayerHistory history = 11;          // 历史下注
+    optional bool is_double = 12;                      //游戏记录显示是否x2
 }
 
 // StockWinData 胜利者数据
@@ -247,4 +250,35 @@ message MsgOddNtf{
 //前三名数据
 message MsgPlayerRankNtf {
     repeated SUDSevenUpDownRankList ranks  = 1;    //前几名信息
+}
+
+//跑马灯
+message MsgLastWinNtf {
+    optional int64 avatar = 1;// 玩家头像
+    optional string countryCode = 2;    
+    optional string currency = 3; //货币类型    
+    optional string username = 4; //玩家名字  
+    optional string winAmount = 5; //赢分     
+}
+//所有玩家下注记录
+message MsgAllBetBaccaratNtf {
+    optional int64 desk_id = 1;                       // 桌子ID
+    repeated BetPlayer players = 3;                   // 下注玩家信息
+}
+//请求排行榜
+message MsgGetRankReq {
+    optional int64 rank_type= 1;                       // 147，日榜，258，月，369，年
+}
+//请求排行榜回复
+message MsgGetRankRsp {
+    optional string save_time = 2; //请求时间 
+    repeated SevenUpDownRankData  rank = 2;                    // 我的开奖数据
+}
+// 排行榜数据
+message SevenUpDownRankData {
+    optional string bet = 1;                      // 下注金额
+    optional string win = 2;                      // 赢金币数
+    optional string name = 3;                     // 名字
+    optional string icon = 4;                     // 玩家头像
+    optional int64 save_time = 5;                 // 时间
 }

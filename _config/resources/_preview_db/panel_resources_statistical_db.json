@@ -96,6 +96,12 @@
         "desc": "",
         "statisticalId": 100001011
     },
+    "CustomRank": {
+        "viewName": "CustomRank",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001018
+    },
     "CustomRecord": {
         "viewName": "CustomRecord",
         "bundleName": "resources",
@@ -119,6 +125,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001005
+    },
+    "CustomWinTip": {
+        "viewName": "CustomWinTip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001017
     },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",

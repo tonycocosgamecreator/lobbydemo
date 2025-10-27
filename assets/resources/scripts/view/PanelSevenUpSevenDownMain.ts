@@ -15,6 +15,7 @@ import CustomOnline from 'db://assets/resources/scripts/view/CustomOnline';
 import CustomRecord from 'db://assets/resources/scripts/view/CustomRecord';
 import CustomTime from 'db://assets/resources/scripts/view/CustomTime';
 import CustomTop from 'db://assets/resources/scripts/view/CustomTop';
+import CustomWinTip from 'db://assets/resources/scripts/view/CustomWinTip';
 import { IPanelSevenUpSevenDownMainView } from '../define/ipanel-sevenupsevendown-main-view';
 import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
 import WalletManager from '../manager/wallet-manager';
@@ -64,7 +65,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.handle_node.updateGameStage();
         this.desk_node.updateGameStage(true);
         this.fly_chip_node.updateGameStage(true);
-        this.record_node.updateGameStage();
+        this.record_node.updateGameStage(true);
         this.bigwinner_node.init();
         switch (this.stage) {
             case baccarat.DeskStage.ReadyStage:
@@ -92,10 +93,10 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this._chipButtons.forEach((value, idx) => {
                     if (+data.bet_coin == value) index = idx;
                 })
-                if (data.uid == SevenUpSevenDownManager.PlayerId) {
+                if (data.player_id == SevenUpSevenDownManager.PlayerId) {
                     start = this.chip_node.getWorldPos();
                 } else {
-                    start = this.bigwinner_node.getWorldPosByUid(data.uid)
+                    start = this.bigwinner_node.getWorldPosByUid(data.player_id)
                 }
                 let end = this.desk_node.getWorldPosByIdx(data.bet_id)
                 this.fly_chip_node.setChipData(data, index, start, end);
@@ -111,7 +112,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.desk_node.updateGameStage();
         this.fly_chip_node.updateGameStage();
         this.record_node.updateGameStage();
-                this.bigwinner_node.updatePlayer();
+        this.bigwinner_node.updatePlayer();
         switch (this.stage) {
             case baccarat.DeskStage.ReadyStage:
                 // this.bigwinner_node.updatePlayer();
@@ -163,10 +164,10 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this._chipButtons.forEach((value, idx) => {
             if (+data.bet_coin == value) index = idx;
         })
-        if (data.uid == SevenUpSevenDownManager.PlayerId) {
+        if (data.player_id == SevenUpSevenDownManager.PlayerId) {
             start = this.head_node.getWorldPos();
         } else {
-            start = this.bigwinner_node.getWorldPosByUid(data.uid)
+            start = this.bigwinner_node.getWorldPosByUid(data.player_id)
         }
         let end = this.desk_node.getWorldPosByIdx(data.bet_id)
         this.fly_chip_node.addFlyChip(data, index, start, end);
@@ -228,6 +229,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
             cc_time_node: [CustomTime],
             cc_top: [CustomTop],
             cc_touzi_node: [cc.Node],
+            cc_wintip_node: [CustomWinTip],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
@@ -248,6 +250,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     protected time_node: CustomTime = null;
     protected top: CustomTop = null;
     protected touzi_node: cc.Node = null;
+    protected wintip_node: CustomWinTip = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

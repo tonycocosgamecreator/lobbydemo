@@ -81,6 +81,16 @@ declare namespace sevenupdown{
         MsgOddNtf = 'MsgOddNtf',
         /** 前三名数据 */
         MsgPlayerRankNtf = 'MsgPlayerRankNtf',
+        /** 跑马灯 */
+        MsgLastWinNtf = 'MsgLastWinNtf',
+        /** 所有玩家下注记录 */
+        MsgAllBetBaccaratNtf = 'MsgAllBetBaccaratNtf',
+        /** 请求排行榜 */
+        MsgGetRankReq = 'MsgGetRankReq',
+        /** 请求排行榜回复 */
+        MsgGetRankRsp = 'MsgGetRankRsp',
+        /** 排行榜数据 */
+        SevenUpDownRankData = 'SevenUpDownRankData',
     }
 
     /** 阶段 */
@@ -328,9 +338,11 @@ declare namespace sevenupdown{
         /**  玩家ID */
         player_id? : number;
         /**  头像 */
-        icon? : string;
+        icon? : number;
         /**  是否是第一名下注 */
         is_first? : boolean;
+        /**  赢分 */
+        win_coin? : string;
     }
 
     /** SevenUpDownSettleNtf 结算通知消息 */
@@ -357,6 +369,8 @@ declare namespace sevenupdown{
         win_list : SettleWinData[];
         /**  历史下注 */
         history? : SevenUpDownPlayerHistory;
+        /** 游戏记录显示是否x2 */
+        is_double? : boolean;
     }
 
     /** StockWinData 胜利者数据 */
@@ -445,6 +459,56 @@ declare namespace sevenupdown{
     interface MsgPlayerRankNtf{
         /** 前几名信息 */
         ranks : SUDSevenUpDownRankList[];
+    }
+
+    /** 跑马灯 */
+    interface MsgLastWinNtf{
+        /**  玩家头像 */
+        avatar? : number;
+        /**  */
+        countryCode? : string;
+        /** 货币类型     */
+        currency? : string;
+        /** 玩家名字   */
+        username? : string;
+        /** 赢分      */
+        winAmount? : string;
+    }
+
+    /** 所有玩家下注记录 */
+    interface MsgAllBetBaccaratNtf{
+        /**  桌子ID */
+        desk_id? : number;
+        /**  下注玩家信息 */
+        players : BetPlayer[];
+    }
+
+    /** 请求排行榜 */
+    interface MsgGetRankReq{
+        /**  147，日榜，258，月，369，年 */
+        rank_type? : number;
+    }
+
+    /** 请求排行榜回复 */
+    interface MsgGetRankRsp{
+        /** 请求时间  */
+        save_time? : string;
+        /**  我的开奖数据 */
+        rank : SevenUpDownRankData[];
+    }
+
+    /** 排行榜数据 */
+    interface SevenUpDownRankData{
+        /**  下注金额 */
+        bet? : string;
+        /**  赢金币数 */
+        win? : string;
+        /**  名字 */
+        name? : string;
+        /**  玩家头像 */
+        icon? : string;
+        /**  时间 */
+        save_time? : number;
     }
 
 }

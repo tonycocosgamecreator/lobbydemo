@@ -4,6 +4,7 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
+import CustomRank from 'db://assets/resources/scripts/view/CustomRank';
 import GButtonGroup from 'db://assets/resources/scripts/core/view/gbutton-group';
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
@@ -43,11 +44,11 @@ export default class CustomRecord extends ViewBase {
             cc.Color.WHITE,
         ];
         this.tabGroup.selectIndex = 0;
-        this.top_node.active = false;
+        this.top_node.node.active = false;
         this.reset();
     }
 
-    updateGameStage() {
+    updateGameStage(reconnect: boolean = false) {
         this._stage = SevenUpSevenDownManager.Stage;
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
@@ -55,14 +56,72 @@ export default class CustomRecord extends ViewBase {
                 break;
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
+            case baccarat.DeskStage.OpenStage:
+            case baccarat.DeskStage.SettleStage:
+                if (reconnect) {
+                    this.reset();
+                }
                 this._list = SevenUpSevenDownManager.AllbetInfo;
                 this.updateRecord();
+                if (this._stage == baccarat.DeskStage.SettleStage) {
+                    let bigD = this.getBigPlayData();
+                    this.head_node.active = true;
+                    let winNum = 0;
+                    let winGold = 0;
+                    bigD.forEach(t => {
+                        if (t.total_win > 0) {
+                            winNum++;
+                            winGold += t.total_win
+                        }
+                    })
+                    this.head_node.children.forEach((child, index) => {
+                        let data = index == 0 ? bigD[2] : index == 2 ? bigD[0] : bigD[1];
+                        child.active = !!data;
+                        if (data) {
+                            child.getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
+                        }
+                    })
+                    this.labelbets.string = winNum + '/' + bigD.length + ' Bets';
+                    this.labelwin.string = winGold + '';
+                    this.labelwin.node.active = true;
+                    console.log(bigD)
+                }
                 break;
         }
     }
 
+    getBigPlayData() {
+        const winMap = new Map<number, { total_win: number; count: number, icon: number }>();
+        this._list.forEach(player => {
+            const playerId = player.player_id;
+            const winCoin = parseFloat(player.win) || 0;
+            const icon = player.icon || 1;
+
+            const existing = winMap.get(playerId);
+            if (existing) {
+                existing.total_win += winCoin;
+                existing.count += 1;
+                existing.icon = icon;
+            } else {
+                winMap.set(playerId, {
+                    total_win: winCoin,
+                    count: 1,
+                    icon: icon
+                });
+            }
+        });
+        return Array.from(winMap.entries())
+            .map(([player_id, data]) => ({
+                player_id,
+                total_win: data.total_win,
+                count: data.count,
+                icon: data.icon
+            }))
+            .sort((a, b) => b.total_win - a.total_win);
+    }
+
     changeState(isAllBet: boolean) {
-        this.top_node.active = !isAllBet;
+        this.top_node.node.active = !isAllBet;
         this.allbet_node.active = isAllBet;
     }
 
@@ -87,9 +146,9 @@ export default class CustomRecord extends ViewBase {
         this.recordList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
             item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
-            item.getChildByName('playId').getComponent(cc.Label).string = data.uid + '';
+            item.getChildByName('playId').getComponent(cc.Label).string = data.player_id + '';
             item.getChildByName('bet').getComponent(cc.Label).string = data.bet_coin;
-            item.getChildByName('win').getComponent(cc.Label).string = '';
+            item.getChildByName('win').getComponent(cc.Label).string = +data.win ? data.win : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
         }
         this.recordList.numItems = this._list.length;
     }
@@ -120,7 +179,6 @@ export default class CustomRecord extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_allbet_node: [cc.Node],
@@ -131,7 +189,7 @@ export default class CustomRecord extends ViewBase {
             cc_labelwin: [cc.Label],
             cc_recordList: [List],
             cc_tabGroup: [GButtonGroup],
-            cc_top_node: [cc.Node],
+            cc_top_node: [CustomRank],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
@@ -143,7 +201,7 @@ export default class CustomRecord extends ViewBase {
     protected labelwin: cc.Label = null;
     protected recordList: List = null;
     protected tabGroup: GButtonGroup = null;
-    protected top_node: cc.Node = null;
+    protected top_node: CustomRank = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
@@ -163,6 +221,5 @@ export default class CustomRecord extends ViewBase {
     public get viewName() {
         return CustomRecord.VIEW_NAME;
     }
-
     // @view export resource end
 }

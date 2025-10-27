@@ -3,7 +3,7 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { GButtonTouchStyle } from '../core/view/view-define';
+import { GButtonDisableStyle, GButtonTouchStyle } from '../core/view/view-define';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { GameEvent, THEME_ID } from '../define';
 import { MessageSender } from '../network/net/message-sender';
@@ -38,10 +38,14 @@ export default class CustomHandle extends ViewBase {
         this.button_clear.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.button_double.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.button_undo.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.button_agail.setSpriteFrameUrlsOfIconWithSelected(this.module.bundle, ['textures/UI/7up_Img_37', 'textures/UI/7up_Img_37', 'textures/UI/7up_Img_33']);
-        this.button_undo.setSpriteFrameUrlsOfIconWithSelected(this.module.bundle, ['textures/UI/7up_Img_38', 'textures/UI/7up_Img_38', 'textures/UI/7up_Img_34']);
-        this.button_clear.setSpriteFrameUrlsOfIconWithSelected(this.module.bundle, ['textures/UI/7up_Img_39', 'textures/UI/7up_Img_39', 'textures/UI/7up_Img_35']);
-        this.button_double.setSpriteFrameUrlsOfIconWithSelected(this.module.bundle, ['textures/UI/7up_Img_40', 'textures/UI/7up_Img_40', 'textures/UI/7up_Img_36']);
+        this.button_agail.disableEffectStyle = GButtonDisableStyle.CHANGE_SPRITE;
+        this.button_undo.disableEffectStyle = GButtonDisableStyle.CHANGE_SPRITE;
+        this.button_clear.disableEffectStyle = GButtonDisableStyle.CHANGE_SPRITE;
+        this.button_double.disableEffectStyle = GButtonDisableStyle.CHANGE_SPRITE;
+        this.button_agail.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_37'), this.getSpriteFrame('textures/ui/7up_Img_37'), this.getSpriteFrame('textures/ui/7up_Img_33')];
+        this.button_undo.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_38'), this.getSpriteFrame('textures/ui/7up_Img_38'), this.getSpriteFrame('textures/ui/7up_Img_34')];
+        this.button_clear.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_39'), this.getSpriteFrame('textures/ui/7up_Img_39'), this.getSpriteFrame('textures/ui/7up_Img_35')];
+        this.button_double.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_40'), this.getSpriteFrame('textures/ui/7up_Img_40'), this.getSpriteFrame('textures/ui/7up_Img_36')];
         this.updateAuto();
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_DOUBEL]: this.updateDoubel,

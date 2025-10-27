@@ -271,6 +271,50 @@
             "statisticalId": 100001701
         }
     },
+    "CustomRank": {
+        "cc_buttonallbets": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonallbets",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002900
+        },
+        "cc_buttontop": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttontop",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002901
+        },
+        "cc_buttontop-001": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttontop-001",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002902
+        },
+        "cc_buttonallday": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonallday",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        },
+        "cc_buttonweek": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonweek",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        },
+        "cc_buttonmonth": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonmonth",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        }
+    },
     "CustomRecord": {
         "cc_buttonallbets": {
             "viewName": "CustomRecord",

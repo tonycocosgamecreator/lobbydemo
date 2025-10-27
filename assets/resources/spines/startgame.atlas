@@ -1,0 +1,111 @@
+
+startgame.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+3di55
+  rotate: false
+  xy: 2, 45
+  size: 705, 162
+  orig: 709, 166
+  offset: 2, 2
+  index: -1
+3guang2
+  rotate: false
+  xy: 2, 14
+  size: 683, 29
+  orig: 689, 33
+  offset: 3, 2
+  index: -1
+3guang4
+  rotate: false
+  xy: 2, 2
+  size: 665, 10
+  orig: 667, 12
+  offset: 1, 1
+  index: -1
+3mask
+  rotate: false
+  xy: 952, 82
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+3xing1
+  rotate: false
+  xy: 899, 398
+  size: 86, 83
+  orig: 94, 91
+  offset: 4, 4
+  index: -1
+3xing2
+  rotate: false
+  xy: 952, 16
+  size: 64, 64
+  orig: 72, 72
+  offset: 4, 4
+  index: -1
+3xing3
+  rotate: true
+  xy: 899, 483
+  size: 107, 103
+  orig: 114, 111
+  offset: 4, 4
+  index: -1
+3xing4
+  rotate: false
+  xy: 874, 70
+  size: 76, 76
+  orig: 83, 83
+  offset: 4, 3
+  index: -1
+3xinggiang1
+  rotate: false
+  xy: 2, 209
+  size: 648, 186
+  orig: 654, 193
+  offset: 4, 3
+  index: -1
+3xinggiang2
+  rotate: false
+  xy: 2, 397
+  size: 647, 193
+  orig: 654, 198
+  offset: 4, 3
+  index: -1
+START GAME
+  rotate: true
+  xy: 709, 164
+  size: 426, 69
+  orig: 432, 74
+  offset: 3, 3
+  index: -1
+g/06
+  rotate: false
+  xy: 780, 372
+  size: 117, 218
+  orig: 129, 221
+  offset: 2, 1
+  index: -1
+g/07
+  rotate: true
+  xy: 780, 256
+  size: 114, 220
+  orig: 129, 221
+  offset: 7, 1
+  index: -1
+g/08
+  rotate: true
+  xy: 780, 148
+  size: 106, 202
+  orig: 129, 221
+  offset: 7, 19
+  index: -1
+g/09
+  rotate: true
+  xy: 709, 79
+  size: 67, 163
+  orig: 67, 163
+  offset: 0, 0
+  index: -1

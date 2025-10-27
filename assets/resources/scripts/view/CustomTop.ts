@@ -3,12 +3,12 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { v3 } from 'cc';
-import { EventTouch } from 'cc';
-import { NodeEventType } from 'cc';
 import { view } from 'cc';
 import { UITransform } from 'cc';
+import { NodeEventType } from 'cc';
+import { EventTouch } from 'cc';
 import { GButtonTouchStyle } from '../core/view/view-define';
+import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -121,42 +121,42 @@ export default class CustomTop extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_button_help: [GButton, this.onClickButton_help.bind(this)],
-            cc_button_histoy: [GButton, this.onClickButton_histoy.bind(this)],
-            cc_button_menu: [GButton, this.onClickButton_menu.bind(this)],
-            cc_button_record: [GButton, this.onClickButton_record.bind(this)],
-            cc_button_set: [GButton, this.onClickButton_set.bind(this)],
-            cc_menu: [cc.Sprite],
-            cc_show_node: [cc.Node],
-            cc_top_node: [cc.Node],
+            cc_button_help    : [GButton,this.onClickButton_help.bind(this)],
+            cc_button_histoy    : [GButton,this.onClickButton_histoy.bind(this)],
+            cc_button_menu    : [GButton,this.onClickButton_menu.bind(this)],
+            cc_button_record    : [GButton,this.onClickButton_record.bind(this)],
+            cc_button_set    : [GButton,this.onClickButton_set.bind(this)],
+            cc_menu    : [cc.Sprite],
+            cc_show_node    : [cc.Node],
+            cc_top_node    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected button_help: GButton = null;
-    protected button_histoy: GButton = null;
-    protected button_menu: GButton = null;
-    protected button_record: GButton = null;
-    protected button_set: GButton = null;
-    protected menu: cc.Sprite = null;
-    protected show_node: cc.Node = null;
-    protected top_node: cc.Node = null;
+   protected button_help: GButton    = null;
+   protected button_histoy: GButton    = null;
+   protected button_menu: GButton    = null;
+   protected button_record: GButton    = null;
+   protected button_set: GButton    = null;
+   protected menu: cc.Sprite    = null;
+   protected show_node: cc.Node    = null;
+   protected top_node: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomTop';
+   public static readonly VIEW_NAME    = 'CustomTop';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomTop.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomTop.VIEW_NAME;
     }
     // @view export resource end

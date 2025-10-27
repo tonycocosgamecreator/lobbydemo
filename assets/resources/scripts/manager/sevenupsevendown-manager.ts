@@ -11,9 +11,9 @@ const { ccclass, property } = _decorator;
 export interface betInfo {
     bet_coin: string,
     bet_id: number,
-    uid: number,
+    player_id: number,
     icon: number,
-    win?: number
+    win?: string
 }
 
 export default class SevenUpSevenDownManager extends BaseManager {
@@ -93,8 +93,9 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         const _d = {
                             bet_coin: bet.bet_coin,
                             bet_id: bet.bet_id,
-                            uid: play.player_id,
-                            icon: +play.icon
+                            player_id: play.player_id,
+                            icon: +play.icon,
+                            win: play.win_coin,
                         }
                         if (isme) {
                             this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
@@ -111,6 +112,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     }
 
                 }
+                this._lastbetInfo = [...this._mybetInfo];
             }
             if (this._chipIdx == -1) {
                 this._chipIdx = WalletManager.getCurrencyBetIndex();
@@ -139,7 +141,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                 const _d = {
                     bet_coin: bet.bet_coin,
                     bet_id: bet.bet_id,
-                    uid: this._playerId,
+                    player_id: this._playerId,
                     icon: this._headId
                 }
                 if (msg.is_first) {
@@ -148,7 +150,6 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     }
                 }
                 this.Before = _d;
-                this._mybetInfo.push(_d);
                 this._allbetInfo.push(_d);
                 this._view?.updateflyChip(_d);
             }
@@ -172,7 +173,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             const _d = {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
-                                uid: play.player_id,
+                                player_id: play.player_id,
                                 icon: +play.icon
                             }
                             if (play.is_first) {
@@ -235,14 +236,13 @@ export default class SevenUpSevenDownManager extends BaseManager {
                 const _d = {
                     bet_coin: bet.bet_coin,
                     bet_id: bet.bet_id,
-                    uid: this._playerId,
+                    player_id: this._playerId,
                     icon: this._headId
                 }
                 info.push(_d);
                 this._view?.updateDeletChip(_d);
             }
-            this._mybetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid']);
-            this._allbetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid']);
+            this._allbetInfo = this.removeObjectsByMultipleProps(this._allbetInfo, info, ['bet_coin', 'bet_id', 'player_id']);
             Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
             return true
         }
@@ -261,7 +261,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             const _d = {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
-                                uid: play.player_id,
+                                player_id: play.player_id,
                                 icon: play.icon
                             }
                             info.push(_d);
@@ -269,7 +269,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         }
                     }
                 }
-                this._allbetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid'])
+                this._allbetInfo = this.removeObjectsByMultipleProps(this._allbetInfo, info, ['bet_coin', 'bet_id', 'player_id'])
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
             }
             return true;
@@ -280,9 +280,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
             return false;
         }
         if (msgType == sevenupdown.Message.MsgSevenUpDownSettleNtf) {
-            const msg = data as baccarat.MsgSevenUpDownSettleNtf;
+            const msg = data as sevenupdown.MsgSevenUpDownSettleNtf;
             if (msg.desk_id != this._deskId) return false;
-            this._lastbetInfo = [...this._mybetInfo];
             if (data.win_data && data.win_data.new_coin) {
                 WalletManager.updatePlayerCoin(parseFloat(data.win_data.new_coin));
             }
@@ -292,6 +291,10 @@ export default class SevenUpSevenDownManager extends BaseManager {
             } else {
                 console.error(`Settle Failed: result_data is null`);
             }
+            //历史记录更新
+            this._records.push({ win_type: msg.open_pos, is_double: msg.is_double });
+            Global.sendMsg(GameEvent.UPDATE_HISTORY);
+            MessageSender.SendMessage(sevenupdown.Message.MsgGetPercentReq, { desk_id: this._deskId });
             return true;
         }
         if (msgType == sevenupdown.Message.MsgPlayerRankNtf) {
@@ -299,9 +302,51 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._bigWinList = msg.ranks || [];
             return true;
         }
+        if (msgType == sevenupdown.Message.MsgLastWinNtf) {
+            const msg = data as sevenupdown.MsgLastWinNtf;
+            if (msg.winAmount) {
+                this._winLedList.push(msg);
+                Global.sendMsg(GameEvent.UPDATE_DOUBEL);
+            }
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgAllBetBaccaratNtf) {
+            //强制更新玩家下注和赢取额度
+            const msg = data as sevenupdown.MsgAllBetBaccaratNtf;
+            this._mybetInfo = [];
+            this._allbetInfo = [];
+            const plays = msg.players || [];
+            if (plays && plays.length) {
+                for (let i = 0; i < plays.length; i++) {
+                    const play = plays[i];
+                    let isme: boolean = this._playerId == play.player_id
+                    for (let j = 0; j < play.bets.length; j++) {
+                        const bet = play.bets[j];
+                        this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                        const _d = {
+                            bet_coin: bet.bet_coin,
+                            bet_id: bet.bet_id,
+                            player_id: play.player_id,
+                            icon: play.icon,
+                            win: play.win_coin
+                        }
+                        if (isme) {
+                            this._mybetInfo.push(_d);
+                        }
+                        this._allbetInfo.push(_d);
+                    }
+                }
+            }
+            this._lastbetInfo = [...this._mybetInfo];
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgGetRankRsp) {
+            const msg = data as sevenupdown.MsgGetRankRsp;
+            Global.sendMsg(GameEvent.UPDATE_RANK, msg.rank);
+            return true;
+        }
         return false;
     }
-
     /**----------------游戏状态相关-------------------*/
     /** 
      * 当前状态
@@ -346,6 +391,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _onlineRoom: number = 0;//房间人数
     private static _bigWinList: sevenupdown.SUDSevenUpDownRankList[] | null = null;//前三名玩家的信息
     private static _auto: boolean = false;
+    private static _winLedList: sevenupdown.MsgLastWinNtf[] = [];
     // private static 
     /**----------------绑定界面-------------------*/
     private static _view: IPanelSevenUpSevenDownMainView | null = null;
@@ -402,6 +448,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get FirstPlayBet(): number[] { return this._firstPlayBet; }
     public static get OddString(): string[] { return this._oddString; }
     public static get OpenPos(): number[] { return this._openPos; }
+    public static get WinLedList(): sevenupdown.MsgLastWinNtf[] { return this._winLedList; }
 
     /**
      * 重置所有数据
@@ -417,11 +464,14 @@ export default class SevenUpSevenDownManager extends BaseManager {
 
     }
 
-    private static _mybetInfo: betInfo[] = [];
-    private static _before: betInfo = null;
-    private static _lastbetInfo: betInfo[] = [];
-    private static _allbetInfo: betInfo[] = [];
-    private static _firstPlayBet: number[] = [];
+    private static _before: betInfo = null;//前端记录上一从下注内容
+    private static _lastbetInfo: betInfo[] = [];//前端上一局下注记录
+    private static _mybetInfo: betInfo[] = [];//本局自己下注记录
+    private static _allbetInfo: betInfo[] = [];//本局所有人下注记录
+    private static _firstPlayBet: number[] = [];//第一名下注记录
+    public static subtractLedList() {
+        this._winLedList.splice(0, 1);
+    }
     /**
      * 对倒计时进行减法
      * @param value 

@@ -71,7 +71,15 @@ export enum GameEvent {
     /**
      *是否能双倍下注
      */
-    UPDATE_DOUBEL = 'UPDATE_DOUBEL'
+    UPDATE_DOUBEL = 'UPDATE_DOUBEL',
+    /**
+     *LED
+     */
+    UPDATE_LED = 'UPDATE_LED',
+    /**
+    *RANK
+    */
+    UPDATE_RANK = 'UPDATE_RANK',
 
 }
 
