@@ -34,7 +34,7 @@ export default class CustomHead extends ViewBase {
         });
         const balance = WalletManager.balance;
         this.updateTotalBalance(balance);
-        this.label_name.string = "aviator_" + SevenUpSevenDownManager.PlayerId;
+        this.label_name.string = "" + SevenUpSevenDownManager.PlayerId;
         this.spr_head.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
     }
 
@@ -42,6 +42,10 @@ export default class CustomHead extends ViewBase {
         this.label_coin.string = balance.toFixed(2);
     }
 
+    getWorldPos(): cc.Vec3 {
+        let wordPos = this.spr_head.node.parent.transform.convertToWorldSpaceAR(this.spr_head.node.position);
+        return wordPos;
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

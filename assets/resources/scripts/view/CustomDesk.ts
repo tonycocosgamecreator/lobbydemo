@@ -4,6 +4,12 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
+import { MessageSender } from '../network/net/message-sender';
+import WalletManager from '../manager/wallet-manager';
+import UIHelper from '../network/helper/ui-helper';
+import { GameEvent, THEME_ID } from '../define';
+import { v3 } from 'cc';
+import BaseGlobal from '../core/message/base-global';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -24,9 +30,15 @@ export default class CustomDesk extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    _chipButtons = [];
+    _stage = -1;
 
     buildUi() {
+        BaseGlobal.registerListeners(this, {
+            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
+        });
         const odds = SevenUpSevenDownManager.Odds;
+        this._chipButtons = WalletManager.getCurrencyBetSize()
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('odd').getComponent(cc.Label).string = odds[idx];
         });
@@ -34,17 +46,72 @@ export default class CustomDesk extends ViewBase {
     }
 
     reset() {
-        this.labelallbet_down.string = '';
-        this.labelallbet_top.string = '';
-        this.labelmybet_down.string = '';
-        this.labelmybet_top.string = '';
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('star').active = false;
             child.getChildByName('lightning').active = false;
+            child.getChildByName('coinbg').active = false;
+            child.getChildByName('bets').active = false;
         });
     }
 
+    updateGameStage(reconnect: boolean = false) {
+        this._stage = SevenUpSevenDownManager.Stage;
+        switch (this._stage) {
+            case baccarat.DeskStage.ReadyStage: this.reset();
+                break;
+            case baccarat.DeskStage.StartBetStage:
+            case baccarat.DeskStage.EndBetStage:
+                this.updatePlayBetValue();
+                break;
+            case baccarat.DeskStage.OpenStage:
+                //播放翻倍动画
+                break;
+        }
+    }
 
+    updatePlayBetValue() {
+        const total = SevenUpSevenDownManager.TotalBet;
+        const mybets = SevenUpSevenDownManager.MyBets;
+        const isFirst = SevenUpSevenDownManager.FirstPlayBet;
+        this.betarea_node.children.forEach((child, idx) => {
+            child.getChildByName('star').active = isFirst.indexOf(idx + 1) == -1 ? false : true;
+            if (total[idx]) {
+                child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label).string = mybets[idx] + '';
+                child.getChildByName('bets').getChildByName('labelallbet').getComponent(cc.Label).string = '/' + total[idx];
+                child.getChildByName('bets').active = true;
+                child.getChildByName('coinbg').active = true;
+            } else {
+                child.getChildByName('bets').active = false;
+                child.getChildByName('coinbg').active = false;
+            }
+        });
+
+    }
+
+    sendBetMessage(idx: number) {
+        const myCoin = WalletManager.balance;
+        const betcoin = this._chipButtons[SevenUpSevenDownManager.ChipIdx];
+        if (betcoin > myCoin) {
+            UIHelper.showMoneyNotEnough();
+            return;
+        }
+        const BetSevenUpDownReq: sevenupdown.MsgBetSevenUpDownReq = {
+            theme_id: THEME_ID,
+            /**  桌子ID */
+            desk_id: SevenUpSevenDownManager.DeskId,
+            /**  下注列表 */
+            bets: [{ bet_id: idx, bet_coin: betcoin + '', is_rebet: false }],
+        }
+        MessageSender.SendMessage(sevenupdown.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
+    }
+
+    getWorldPosByIdx(idx: number): cc.Vec3 {
+        const child = this.betarea_node.children[idx - 1];
+        let wordPos = child.parent.transform.convertToWorldSpaceAR(
+            child.position
+        );
+        return wordPos;
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -55,68 +122,68 @@ export default class CustomDesk extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
 
-    private onClickButton_click0(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click0');
-    }
-
-
     private onClickButton_click1(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click1');
+        this.sendBetMessage(1);
     }
 
 
     private onClickButton_click2(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click2');
+        this.sendBetMessage(2);
     }
 
 
     private onClickButton_click3(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click3');
+        this.sendBetMessage(3);
     }
 
 
     private onClickButton_click4(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click4');
+        this.sendBetMessage(4);
     }
 
 
     private onClickButton_click5(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click5');
+        this.sendBetMessage(5);
     }
 
 
     private onClickButton_click6(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click6');
+        this.sendBetMessage(6);
     }
 
 
     private onClickButton_click7(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click7');
+        this.sendBetMessage(7);
     }
 
 
     private onClickButton_click8(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click8');
+        this.sendBetMessage(8);
     }
 
 
     private onClickButton_click9(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click9');
+        this.sendBetMessage(9);
     }
 
 
     private onClickButton_click10(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click10');
+        this.sendBetMessage(10);
     }
 
 
     private onClickButton_click11(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click11');
+        this.sendBetMessage(11);
     }
 
 
     private onClickButton_click12(event: cc.EventTouch) {
-        cc.log('on click event cc_button_click12');
+        this.sendBetMessage(12);
+    }
+
+
+    private onClickButton_click13(event: cc.EventTouch) {
+        this.sendBetMessage(13);
     }
 
     // @view export event end
@@ -126,11 +193,11 @@ export default class CustomDesk extends ViewBase {
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_betarea_node: [cc.Node],
-            cc_button_click0: [GButton, this.onClickButton_click0.bind(this)],
             cc_button_click1: [GButton, this.onClickButton_click1.bind(this)],
             cc_button_click10: [GButton, this.onClickButton_click10.bind(this)],
             cc_button_click11: [GButton, this.onClickButton_click11.bind(this)],
             cc_button_click12: [GButton, this.onClickButton_click12.bind(this)],
+            cc_button_click13: [GButton, this.onClickButton_click13.bind(this)],
             cc_button_click2: [GButton, this.onClickButton_click2.bind(this)],
             cc_button_click3: [GButton, this.onClickButton_click3.bind(this)],
             cc_button_click4: [GButton, this.onClickButton_click4.bind(this)],
@@ -139,19 +206,15 @@ export default class CustomDesk extends ViewBase {
             cc_button_click7: [GButton, this.onClickButton_click7.bind(this)],
             cc_button_click8: [GButton, this.onClickButton_click8.bind(this)],
             cc_button_click9: [GButton, this.onClickButton_click9.bind(this)],
-            cc_labelallbet_down: [cc.Label],
-            cc_labelallbet_top: [cc.Label],
-            cc_labelmybet_down: [cc.Label],
-            cc_labelmybet_top: [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
     protected betarea_node: cc.Node = null;
-    protected button_click0: GButton = null;
     protected button_click1: GButton = null;
     protected button_click10: GButton = null;
     protected button_click11: GButton = null;
     protected button_click12: GButton = null;
+    protected button_click13: GButton = null;
     protected button_click2: GButton = null;
     protected button_click3: GButton = null;
     protected button_click4: GButton = null;
@@ -160,10 +223,6 @@ export default class CustomDesk extends ViewBase {
     protected button_click7: GButton = null;
     protected button_click8: GButton = null;
     protected button_click9: GButton = null;
-    protected labelallbet_down: cc.Label = null;
-    protected labelallbet_top: cc.Label = null;
-    protected labelmybet_down: cc.Label = null;
-    protected labelmybet_top: cc.Label = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

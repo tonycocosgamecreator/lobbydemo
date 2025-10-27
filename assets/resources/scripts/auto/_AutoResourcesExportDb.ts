@@ -19,18 +19,24 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomBigWinner': 'CustomBigWinner',
+    'CustomChipItem': 'CustomChipItem',
     'CustomChip': 'CustomChip',
     'CustomDesk': 'CustomDesk',
+    'CustomFlyChip': 'CustomFlyChip',
+    'CustomGameItem': 'CustomGameItem',
     'CustomHandle': 'CustomHandle',
     'CustomHead': 'CustomHead',
     'CustomMainHistory': 'CustomMainHistory',
     'CustomOnline': 'CustomOnline',
+    'CustomRecord': 'CustomRecord',
     'CustomTime': 'CustomTime',
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',
     'PanelCircleLoading': 'PanelCircleLoading',
+    'PanelLobby': 'PanelLobby',
     'PanelSevenUpSevenDownInit': 'PanelSevenUpSevenDownInit',
     'PanelSevenUpSevenDownMain': 'PanelSevenUpSevenDownMain',
+    'PanelThirdGame': 'PanelThirdGame',
 }
 
     /** 唯一id */

@@ -57,9 +57,21 @@ export enum GameEvent {
      */
     UPDATE_HISTORY_PROBABILITY = 'UPDATE_HISTORY_PROBABILITY',
     /**
-     *在线人数
+     *房间在线人数
+     */
+    UPDATE_ONLINE_ROOM = 'UPDATE_ONLINE_ROOM',
+    /**
+     *实时在线人数
      */
     UPDATE_ONLINE = 'UPDATE_ONLINE',
+    /**
+     * 玩家总下注额度更新
+     */
+    PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
+    /**
+     *是否能双倍下注
+     */
+    UPDATE_DOUBEL = 'UPDATE_DOUBEL'
 
 }
 
@@ -90,7 +102,7 @@ export interface BetInfo {
 /**
  * 游戏的主题ID
  */
-export const THEME_ID = 1025;
+export const THEME_ID = 1007;
 
 
 /**

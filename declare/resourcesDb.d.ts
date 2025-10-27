@@ -68,18 +68,24 @@ declare module resourcesDb {
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
         ['CustomBigWinner']: 'CustomBigWinner',
+        ['CustomChipItem']: 'CustomChipItem',
         ['CustomChip']: 'CustomChip',
         ['CustomDesk']: 'CustomDesk',
+        ['CustomFlyChip']: 'CustomFlyChip',
+        ['CustomGameItem']: 'CustomGameItem',
         ['CustomHandle']: 'CustomHandle',
         ['CustomHead']: 'CustomHead',
         ['CustomMainHistory']: 'CustomMainHistory',
         ['CustomOnline']: 'CustomOnline',
+        ['CustomRecord']: 'CustomRecord',
         ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',
         ['PanelCircleLoading']: 'PanelCircleLoading',
+        ['PanelLobby']: 'PanelLobby',
         ['PanelSevenUpSevenDownInit']: 'PanelSevenUpSevenDownInit',
         ['PanelSevenUpSevenDownMain']: 'PanelSevenUpSevenDownMain',
+        ['PanelThirdGame']: 'PanelThirdGame',
 }
     type protobuf_load_priority_db_data = {
         /** 包体 */

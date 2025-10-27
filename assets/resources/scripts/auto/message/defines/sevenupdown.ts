@@ -28,6 +28,12 @@ export namespace sevenupdown{
         /** 阶段 */
         SUDAreaUserBetsNum = 'SUDAreaUserBetsNum',
         /** 阶段 */
+        SUDSevenUpDownRankInfo = 'SUDSevenUpDownRankInfo',
+        /** 阶段 */
+        SUDSevenUpDownBetNtf = 'SUDSevenUpDownBetNtf',
+        /** 阶段 */
+        SUDSevenUpDownRankList = 'SUDSevenUpDownRankList',
+        /** 阶段 */
         SUDSevenUpDownInfo = 'SUDSevenUpDownInfo',
         /** 阶段 */
         SUDSevenUpDownWinType = 'SUDSevenUpDownWinType',
@@ -47,6 +53,14 @@ export namespace sevenupdown{
         MsgBetSevenUpDownReq = 'MsgBetSevenUpDownReq',
         /** BetBaccaratRsp 7UPDOWN下注请求响应 */
         MsgBetSevenUpDownRsp = 'MsgBetSevenUpDownRsp',
+        /** 取消下注请求 */
+        MsgCancelBetSevenUpDownReq = 'MsgCancelBetSevenUpDownReq',
+        /** 取消下注请求响应 */
+        MsgCancelBetSevenUpDownRsp = 'MsgCancelBetSevenUpDownRsp',
+        /** 取消下注请求响应通知 */
+        MsgCancelBetBaccaratNtf = 'MsgCancelBetBaccaratNtf',
+        /** BetPlayer */
+        BetPlayer = 'BetPlayer',
         /** SevenUpDownSettleNtf 结算通知消息 */
         MsgSevenUpDownSettleNtf = 'MsgSevenUpDownSettleNtf',
         /** StockWinData 胜利者数据 */
@@ -59,8 +73,14 @@ export namespace sevenupdown{
         MsgSevenUpDownPlayerHistoryReq = 'MsgSevenUpDownPlayerHistoryReq',
         /** 玩家下注信息 */
         MsgSevenUpDownPlayerHistoryRsp = 'MsgSevenUpDownPlayerHistoryRsp',
-        /** 玩家下注信息 */
+        /** BetBaccaratNtf 最新玩家下注通知消息 */
+        MsgBetBaccaratNtf = 'MsgBetBaccaratNtf',
+        /** BetBaccaratNtf 最新玩家下注通知消息 */
         SevenUpDownPlayerHistory = 'SevenUpDownPlayerHistory',
+        /** 翻倍数据 */
+        MsgOddNtf = 'MsgOddNtf',
+        /** 前三名数据 */
+        MsgPlayerRankNtf = 'MsgPlayerRankNtf',
     }
 
     /** 阶段 */
@@ -121,6 +141,12 @@ export namespace sevenupdown{
         period_id? : string;
         /**  区域下注人数 */
         area_bet_num : SUDAreaUserBetsNum[];
+        /** 7updown前几名下注人员信息 */
+        player_rank_ntf? : SUDSevenUpDownRankInfo;
+        /** 下注信息 */
+        bet_ntf? : SUDSevenUpDownBetNtf;
+        /** 下注区域翻倍率 */
+        odds : string[];
         /** 7updown配置信息 */
         seven_up_down_info? : SUDSevenUpDownInfo;
         /**  当前阶段总时间 */
@@ -135,6 +161,30 @@ export namespace sevenupdown{
         user_sum? : number;
         /**  下注和 */
         bet_sum? : number;
+    }
+
+    /** 阶段 */
+    export interface SUDSevenUpDownRankInfo{
+        /** 前几名信息 */
+        ranks : SUDSevenUpDownRankList[];
+    }
+
+    /** 阶段 */
+    export interface SUDSevenUpDownBetNtf{
+        /**  桌子ID */
+        desk_id? : number;
+        /**  下注玩家信息 */
+        players : BetPlayer[];
+    }
+
+    /** 阶段 */
+    export interface SUDSevenUpDownRankList{
+        /** 玩家id */
+        player_id? : number;
+        /** 玩家金额 */
+        balance? : number;
+        /** 玩家icon */
+        icon? : number;
     }
 
     /** 阶段 */
@@ -233,6 +283,54 @@ export namespace sevenupdown{
         new_coin? : string;
         /**  下注列表 */
         bets : SUDBetData[];
+        /**  头像 */
+        icon? : number;
+        /**  isFirst */
+        is_first? : boolean;
+    }
+
+    /** 取消下注请求 */
+    export interface MsgCancelBetSevenUpDownReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  取消类型 1 上一步 2 所有 */
+        cancel_type? : number;
+    }
+
+    /** 取消下注请求响应 */
+    export interface MsgCancelBetSevenUpDownRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  扣除金币 */
+        cost_coin? : string;
+        /**  我的最新金币余额 */
+        new_coin? : string;
+        /**  下注列表 */
+        bets : SUDBetData[];
+    }
+
+    /** 取消下注请求响应通知 */
+    export interface MsgCancelBetBaccaratNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  下注玩家信息 */
+        players : BetPlayer[];
+    }
+
+    /** BetPlayer */
+    export interface BetPlayer{
+        /**  下注列表 */
+        bets : baccarat.BetData[];
+        /**  玩家ID */
+        player_id? : number;
+        /**  头像 */
+        icon? : string;
+        /**  是否是第一名下注 */
+        is_first? : boolean;
     }
 
     /** SevenUpDownSettleNtf 结算通知消息 */
@@ -311,7 +409,17 @@ export namespace sevenupdown{
         IsLast? : boolean;
     }
 
-    /** 玩家下注信息 */
+    /** BetBaccaratNtf 最新玩家下注通知消息 */
+    export interface MsgBetBaccaratNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  最新的下注玩家信息 */
+        players : BetPlayer[];
+    }
+
+    /** BetBaccaratNtf 最新玩家下注通知消息 */
     export interface SevenUpDownPlayerHistory{
         /**  期数 */
         period? : string;
@@ -325,6 +433,18 @@ export namespace sevenupdown{
         plain_text? : string;
         /** 密文 */
         encrypt_text? : string;
+    }
+
+    /** 翻倍数据 */
+    export interface MsgOddNtf{
+        /** 每个区域的翻倍情况 */
+        odd_string : string[];
+    }
+
+    /** 前三名数据 */
+    export interface MsgPlayerRankNtf{
+        /** 前几名信息 */
+        ranks : SUDSevenUpDownRankList[];
     }
 
 }

@@ -4,6 +4,7 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -25,26 +26,35 @@ export default class CustomTime extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
-    stage = -1;
+    _stage = -1;
 
     buildUi() {
         this.node.active = false;
     }
 
     updateGameStage() {
-        this.stage = SevenUpSevenDownManager.Stage;
-        this.node.active = (this.stage == baccarat.DeskStage.StartBetStage || this.stage == baccarat.DeskStage.SettleStage) ? true : false;
+        this._stage = SevenUpSevenDownManager.Stage;
+        this.node.active = (this._stage == baccarat.DeskStage.StartBetStage || this._stage == baccarat.DeskStage.SettleStage) ? true : false;
     }
 
     private _currentHaveSec: number = 0;
     protected lateUpdate(dt: number): void {
-        if (this.stage != baccarat.DeskStage.StartBetStage && this.stage != baccarat.DeskStage.SettleStage) return;
+        if (this._stage != baccarat.DeskStage.StartBetStage && this._stage != baccarat.DeskStage.SettleStage) return;
         const left = SevenUpSevenDownManager.minusHaveSec(dt);
         const maxSec = SevenUpSevenDownManager.Dur;
         const secNow = Math.ceil(left);
         if (secNow !== this._currentHaveSec) {
             this._currentHaveSec = secNow;
             this.labeltime.string = secNow.toString();
+            if (SevenUpSevenDownManager.Stage == jmbaccarat.DeskStage.StartBetStage) {
+                // if (this._isGameInBackground == false) {
+                if (secNow == 5) {
+                    AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
+                } else if (secNow < 5 && secNow > 0) {
+                    AudioManager.playSound(this.bundleName, '剩余4秒，倒计时提示音，每秒播放一次');
+                }
+                // }
+            }
         }
         this.timeCounterBar.progress = left / maxSec;
     }

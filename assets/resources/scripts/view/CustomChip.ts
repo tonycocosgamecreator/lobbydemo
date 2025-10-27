@@ -46,6 +46,9 @@ export default class CustomChip extends ViewBase {
     _world: cc.Vec3 = v3(0, 0, 0);
     _chipColor = ['#47506A', '#1A7401', '#1756A4', '#91017A', '#A31B09', '#A36407'];
     _chooseChip: number = 0;
+    getWorldPos() {
+        return this.buttonclick.node.parent.transform.convertToWorldSpaceAR(this.buttonclick.node.position)
+    }
 
     protected start(): void {
         const deviceSize = view.getVisibleSize();
@@ -119,6 +122,7 @@ export default class CustomChip extends ViewBase {
         this._chooseChip = SevenUpSevenDownManager.ChipIdx;
         let idx = this._chooseChip;
         if (idx >= this._chipColor.length) idx -= this._chipColor.length;
+        this.buttonclick.getComponentInChildren(cc.Label).string = this._chipButtons[idx] + '';
         this.buttonclick.getComponentInChildren(cc.Label).color = new Color(this._chipColor[idx]);
         this.buttonclick.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + idx) + "/spriteFrame");
     }

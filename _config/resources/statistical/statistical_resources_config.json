@@ -54,5 +54,17 @@
     "CustomTime": {
         "statisticalId": 100001013,
         "panelId": 13
+    },
+    "CustomChipItem": {
+        "statisticalId": 100001014,
+        "panelId": 14
+    },
+    "CustomFlyChip": {
+        "statisticalId": 100001015,
+        "panelId": 15
+    },
+    "CustomRecord": {
+        "statisticalId": 100001016,
+        "panelId": 16
     }
 }

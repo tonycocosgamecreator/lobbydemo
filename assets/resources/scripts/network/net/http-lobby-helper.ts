@@ -38,6 +38,16 @@ export default class HttpLobbyHelper {
         return msg;
 
     }
-
+    public static async GetOnlineNum(): Promise<any | null> {
+        const data = await HttpLobbyConnector.instance.send({
+            type: 'GET',
+            url: '/api/online-counter/v1/data',
+            params: {},
+            headers: {}
+        });
+        const msg = JSON.parse(data) as any;
+        if (!msg || !msg.result) return 0;
+        return msg.result.total || 0;
+    }
 
 }

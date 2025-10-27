@@ -6,7 +6,15 @@ import { MessageSender } from '../network/net/message-sender';
 import { Global } from '../global';
 import { GameEvent } from '../define';
 import { IPanelSevenUpSevenDownMainView } from '../define/ipanel-sevenupsevendown-main-view';
+import HttpLobbyHelper from '../network/net/http-lobby-helper';
 const { ccclass, property } = _decorator;
+export interface betInfo {
+    bet_coin: string,
+    bet_id: number,
+    uid: number,
+    icon: number,
+    win?: number
+}
 
 export default class SevenUpSevenDownManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -61,21 +69,127 @@ export default class SevenUpSevenDownManager extends BaseManager {
                 );
                 return true; //拦截消息，不继续传递
             }
+            this.reset();
             this._deskId = msg.info.desk_id || 0;
             WalletManager.walletInfos = msg.wallets || [];
             WalletManager.bets = msg.info.bets;
             this._playerId = msg.player_id || 0;
             this._headId = msg.player_data?.icon || 1;
             this._odds = msg.info?.seven_up_down_info?.odds || [];
+            this._oddString = msg.info?.odds || [];
             this._records = msg.info?.seven_up_down_info?.win_type_list || [];
-            this._stage = msg.info.stage;
             this._haveSec = msg.info.have_sec || 0;
+            this._dur = msg.info.have_sec || 0;
+            this._bigWinList = msg.info?.player_rank_ntf?.ranks || [];
+            //翻倍数据
+            // this.Odd = msg.info.odds || [];
+            if (msg.info?.bet_ntf?.desk_id == this._deskId) {
+                const plays = msg.info?.bet_ntf?.players || [];
+                for (let i = 0; i < plays.length; i++) {
+                    const play = plays[i];
+                    let isme: boolean = this._playerId == play.player_id
+                    for (let j = 0; j < play.bets.length; j++) {
+                        const bet = play.bets[j];
+                        const _d = {
+                            bet_coin: bet.bet_coin,
+                            bet_id: bet.bet_id,
+                            uid: play.player_id,
+                            icon: +play.icon
+                        }
+                        if (isme) {
+                            this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            this._mybetInfo.push(_d);
+                            this.Before = _d;
+                        }
+                        this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                        this._allbetInfo.push(_d);
+                        if (play.is_first) {
+                            if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
+                                this._firstPlayBet.push(bet.bet_id);
+                            }
+                        }
+                    }
+
+                }
+            }
             if (this._chipIdx == -1) {
                 this._chipIdx = WalletManager.getCurrencyBetIndex();
             }
             MessageSender.SendMessage(sevenupdown.Message.MsgGetPercentReq, { desk_id: this._deskId });
+            this._stage = msg.info.stage;
+            this._view?.updateReconnect()
             return false;
         }
+        if (msgType == sevenupdown.Message.MsgBetSevenUpDownRsp) {
+            const msg = data as sevenupdown.MsgBetSevenUpDownRsp;
+            const result = msg.result;
+            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+                //如果有错误码，说明下注失败了
+                //这里可以弹出提示框，提示玩家下注失败
+                console.error(`Bet Failed: ${result.err_desc}`);
+                UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_AB_BET_FAILED);
+                return true; //拦截消息，不继续传递
+            }
+            const new_coin = msg.new_coin || '0';
+            const bets = msg.bets || [];
+            for (let i = 0; i < bets.length; i++) {
+                const bet = bets[i];
+                this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                const _d = {
+                    bet_coin: bet.bet_coin,
+                    bet_id: bet.bet_id,
+                    uid: this._playerId,
+                    icon: this._headId
+                }
+                if (msg.is_first) {
+                    if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
+                        this._firstPlayBet.push(bet.bet_id);
+                    }
+                }
+                this.Before = _d;
+                this._mybetInfo.push(_d);
+                this._allbetInfo.push(_d);
+                this._view?.updateflyChip(_d);
+            }
+            Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+            //更新客户端下注金币
+            WalletManager.updatePlayerCoin(parseFloat(new_coin));
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgBetBaccaratNtf) {
+            //广播玩家下注信息
+            const msg = data as sevenupdown.MsgBetBaccaratNtf;
+            if (msg.desk_id != this._deskId) return false;
+            const plays = msg.players || [];
+            if (plays && plays.length) {
+                for (let i = 0; i < plays.length; i++) {
+                    const play = plays[i];
+                    if (this._playerId != play.player_id) {
+                        for (let j = 0; j < play.bets.length; j++) {
+                            const bet = play.bets[j];
+                            this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            const _d = {
+                                bet_coin: bet.bet_coin,
+                                bet_id: bet.bet_id,
+                                uid: play.player_id,
+                                icon: +play.icon
+                            }
+                            if (play.is_first) {
+                                if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
+                                    this._firstPlayBet.push(bet.bet_id);
+                                }
+                            }
+                            this._allbetInfo.push(_d);
+                            this._view?.updateflyChip(_d);
+                        }
+                    }
+                }
+                Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+            }
+            return true;
+        }
+
         if (msgType == sevenupdown.Message.MsgGetPercentRsp) {
             const msg = data as sevenupdown.MsgGetPercentRsp;
             if (msg.percents) {
@@ -89,12 +203,100 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._haveSec = msg.have_sec || 0;
             this._dur = msg.have_sec || 0;
             if (msg.stage == baccarat.DeskStage.SettleStage) return false;
+            if (msg.stage == baccarat.DeskStage.ReadyStage) {
+                this.reset();
+            }
             this.View?.updateGameStage();
             return true;
         }
         if (msgType == baccarat.Message.MsgBaccaratOnlineNtf) {
             //房间在线玩家数量刷新
-            this.Online = data.online_sum || 0;
+            this.OnlineRoom = data.online_sum || 0;
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgCancelBetSevenUpDownRsp) {
+            const msg = data as sevenupdown.MsgCancelBetSevenUpDownRsp;
+            const result = msg.result;
+            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+                //如果有错误码，说明下注失败了
+                //这里可以弹出提示框，提示玩家下注失败
+                console.error(`Bet Failed: ${result.err_desc}`);
+                UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_AB_BET_FAILED);
+                return true; //拦截消息，不继续传递
+            }
+            const new_coin = msg.new_coin || '0';
+            WalletManager.updatePlayerCoin(parseFloat(new_coin));
+            const bets = msg.bets || [];
+            let info = []
+            for (let i = 0; i < bets.length; i++) {
+                const bet = bets[i];
+                this._totalBet[bet.bet_id - 1] -= parseFloat(bet.bet_coin || '0');
+                this._myBets[bet.bet_id - 1] -= parseFloat(bet.bet_coin || '0');
+                const _d = {
+                    bet_coin: bet.bet_coin,
+                    bet_id: bet.bet_id,
+                    uid: this._playerId,
+                    icon: this._headId
+                }
+                info.push(_d);
+                this._view?.updateDeletChip(_d);
+            }
+            this._mybetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid']);
+            this._allbetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid']);
+            Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+            return true
+        }
+        if (msgType == sevenupdown.Message.MsgCancelBetBaccaratNtf) {
+            const msg = data as sevenupdown.MsgCancelBetBaccaratNtf;
+            if (msg.desk_id != this._deskId) return false;
+            const plays = msg.players || [];
+            if (plays && plays.length) {
+                let info = []
+                for (let i = 0; i < plays.length; i++) {
+                    const play = plays[i];
+                    if (this._playerId != play.player_id) {
+                        for (let j = 0; j < play.bets.length; j++) {
+                            const bet = play.bets[j];
+                            this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            const _d = {
+                                bet_coin: bet.bet_coin,
+                                bet_id: bet.bet_id,
+                                uid: play.player_id,
+                                icon: play.icon
+                            }
+                            info.push(_d);
+                            this._view?.updateDeletChip(_d);
+                        }
+                    }
+                }
+                this._allbetInfo = this.removeObjectsByMultipleProps(this._mybetInfo, info, ['bet_coin', 'bet_id', 'uid'])
+                Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+            }
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgOddNtf) {
+            const msg = data as sevenupdown.MsgOddNtf;
+            this._oddString = msg.odd_string || [];
+            return false;
+        }
+        if (msgType == sevenupdown.Message.MsgSevenUpDownSettleNtf) {
+            const msg = data as baccarat.MsgSevenUpDownSettleNtf;
+            if (msg.desk_id != this._deskId) return false;
+            this._lastbetInfo = [...this._mybetInfo];
+            if (data.win_data && data.win_data.new_coin) {
+                WalletManager.updatePlayerCoin(parseFloat(data.win_data.new_coin));
+            }
+            if (msg.open_pos) {
+                this._openPos = msg.open_pos;
+                this.View?.updateGameStage();
+            } else {
+                console.error(`Settle Failed: result_data is null`);
+            }
+            return true;
+        }
+        if (msgType == sevenupdown.Message.MsgPlayerRankNtf) {
+            const msg = data as sevenupdown.MsgPlayerRankNtf;
+            this._bigWinList = msg.ranks || [];
             return true;
         }
         return false;
@@ -119,8 +321,21 @@ export default class SevenUpSevenDownManager extends BaseManager {
      */
     private static _deskId: number = -1;
     /**
-    * 当前玩家的ID
+    * 当前玩家的总投注额度
     */
+    private static _myBets: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    /**
+    * 当前房间的总投注额度
+    */
+    private static _totalBet: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    /**
+     * 下注区域翻倍率
+     */
+    private static _oddString: string[] = [];
+    /**
+     * 开牌点数
+     */
+    private static _openPos: number[] = [];
     private static _chipIdx: number = -1;//筹码默认选择
     private static _odds: string[] = [];//倍率
     private static _playerId: number = -1;//玩家名字id
@@ -128,6 +343,10 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _records: sevenupdown.SUDSevenUpDownWinType[] | null = null;//当前所有的开奖记录
     private static _probability: number[] = [0, 0, 0];
     private static _online: number = 0;//实时在线人数
+    private static _onlineRoom: number = 0;//房间人数
+    private static _bigWinList: sevenupdown.SUDSevenUpDownRankList[] | null = null;//前三名玩家的信息
+    private static _auto: boolean = false;
+    // private static 
     /**----------------绑定界面-------------------*/
     private static _view: IPanelSevenUpSevenDownMainView | null = null;
     public static set ChipIdx(value: number) {
@@ -137,17 +356,34 @@ export default class SevenUpSevenDownManager extends BaseManager {
         this._probability = value;
         Global.sendMsg(GameEvent.UPDATE_HISTORY_PROBABILITY);
     }
-    public static set Online(value: number) {
-        Global.sendMsg(GameEvent.UPDATE_ONLINE);
-        this._online = value;
+    public static set OnlineRoom(value: number) {
+        this._onlineRoom = value;
+        Global.sendMsg(GameEvent.UPDATE_ONLINE_ROOM);
     }
+    public static set Online(value: number) {
+        this._online = value;
+        Global.sendMsg(GameEvent.UPDATE_ONLINE);
+    }
+    public static set Before(value: betInfo) {
+        this._before = value;
+        Global.sendMsg(GameEvent.UPDATE_DOUBEL);
+    }
+    public static set Auto(value: boolean) {
+        this._auto = value;
+        Global.sendMsg(GameEvent.UPDATE_AUTO);
+    }
+
+    public static set OddString(value: string[]) {
+        this._oddString = value;
+    }
+
     public static set View(value: IPanelSevenUpSevenDownMainView | null) {
         this._view = value;
     }
-
     public static get HaveSec(): number { return this._haveSec; }
     public static get Stage(): number { return this._stage; }
     public static get Dur(): number { return this._dur; }
+    public static get DeskId(): number { return this._deskId; }
     public static get ChipIdx(): number { return this._chipIdx; }
     public static get Odds(): string[] { return this._odds; }
     public static get PlayerId(): number { return this._playerId; }
@@ -155,15 +391,37 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get Records(): sevenupdown.SUDSevenUpDownWinType[] | null { return this._records; }
     public static get Probability(): number[] { return this._probability; }
     public static get Online(): number { return this._online; }
+    public static get OnlineRoom(): number { return this._onlineRoom; }
+    public static get BigWinList(): sevenupdown.SUDSevenUpDownRankList[] | null { return this._bigWinList; }
     public static get View(): IPanelSevenUpSevenDownMainView | null { return this._view; }
+    public static get MyBets(): number[] { return this._myBets; }
+    public static get TotalBet(): number[] { return this._totalBet; }
+    public static get AllbetInfo(): betInfo[] { return this._allbetInfo; }
+    public static get Before(): betInfo { return this._before; }
+    public static get LastbetInfo(): betInfo[] { return this._lastbetInfo; }
+    public static get FirstPlayBet(): number[] { return this._firstPlayBet; }
+    public static get OddString(): string[] { return this._oddString; }
+    public static get OpenPos(): number[] { return this._openPos; }
 
     /**
      * 重置所有数据
      */
     public static reset() {
+        this._myBets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this._totalBet = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this._mybetInfo = [];
+        this._before = null;
+        this._allbetInfo = [];
+        this._firstPlayBet = [];
+        this._oddString = [];
 
     }
 
+    private static _mybetInfo: betInfo[] = [];
+    private static _before: betInfo = null;
+    private static _lastbetInfo: betInfo[] = [];
+    private static _allbetInfo: betInfo[] = [];
+    private static _firstPlayBet: number[] = [];
     /**
      * 对倒计时进行减法
      * @param value 
@@ -174,6 +432,32 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._haveSec = 0;
         }
         return this._haveSec;
+    }
+    public static async doGetlineNum() {
+        const rsp = await HttpLobbyHelper.GetOnlineNum();
+        this.Online = rsp;
+    }
+    public static removeObjectsByMultipleProps(arr1: betInfo[], arr2: betInfo[], matchKeys: (keyof betInfo)[]): betInfo[] {
+        // 生成对象的匹配键
+        const getMatchKey = (item: betInfo): string => {
+            return matchKeys.map(key => item[key]).join('|');
+        };
+
+        const countMap = new Map<string, number>();
+        // 统计数组2中每个匹配键的出现次数
+        arr2.forEach(item => {
+            const key = getMatchKey(item);
+            countMap.set(key, (countMap.get(key) || 0) + 1);
+        });
+        // 过滤数组1中的对象
+        return arr1.filter(item => {
+            const key = getMatchKey(item);
+            if (countMap.has(key) && countMap.get(key)! > 0) {
+                countMap.set(key, countMap.get(key)! - 1);
+                return false;
+            }
+            return true;
+        });
     }
 }
 

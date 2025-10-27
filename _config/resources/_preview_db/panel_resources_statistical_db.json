@@ -42,6 +42,12 @@
         "desc": "",
         "statisticalId": 100001012
     },
+    "CustomChipItem": {
+        "viewName": "CustomChipItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001014
+    },
     "CustomChip": {
         "viewName": "CustomChip",
         "bundleName": "resources",
@@ -53,6 +59,18 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001008
+    },
+    "CustomFlyChip": {
+        "viewName": "CustomFlyChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001015
+    },
+    "CustomGameItem": {
+        "viewName": "CustomGameItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001001
     },
     "CustomHandle": {
         "viewName": "CustomHandle",
@@ -78,6 +96,12 @@
         "desc": "",
         "statisticalId": 100001011
     },
+    "CustomRecord": {
+        "viewName": "CustomRecord",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001016
+    },
     "CustomTime": {
         "viewName": "CustomTime",
         "bundleName": "resources",
@@ -102,6 +126,12 @@
         "desc": "",
         "statisticalId": 100001020
     },
+    "PanelLobby": {
+        "viewName": "PanelLobby",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001000
+    },
     "PanelSevenUpSevenDownInit": {
         "viewName": "PanelSevenUpSevenDownInit",
         "bundleName": "resources",
@@ -113,6 +143,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001004
+    },
+    "PanelThirdGame": {
+        "viewName": "PanelThirdGame",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001003
     }
 }
 }

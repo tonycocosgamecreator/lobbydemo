@@ -22,16 +22,27 @@ export default class CustomOnline extends ViewBase {
 
     protected onDestroy(): void {
         super.onDestroy();
+        this.callback && this.unschedule(this.callback)
     }
 
 
     //------------------------ 内部逻辑 ------------------------//
+
+    callback = null;
+
+    protected start(): void {
+        this.callback = () => {
+            SevenUpSevenDownManager.doGetlineNum();
+        }
+        this.schedule(this.callback, 30);
+    }
 
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_ONLINE]: this.updateOnline,
         });
         this.updateOnline();
+        SevenUpSevenDownManager.doGetlineNum();
     }
 
     updateOnline() {

@@ -21,7 +21,7 @@ export class HttpLobbyConnector {
     public static get instance() {
         if (!this._instance) {
             this._instance = new HttpLobbyConnector();
-            this._instance._baseUrl = "https://demolobbyapi.gdsgog.xyz";
+            this._instance._baseUrl = "http://192.168.110.4:11402";
 
         }
         return this._instance;

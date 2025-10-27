@@ -48,7 +48,7 @@ export default class CustomToast extends ReusableBase {
      * 刷新背景大小
      */
     public updateContentSize() {
-        const width = this.contentNode.width;
+        const width = this.contentNode.transform.width;
         const trs = this.bgNode.transform;
         const size = trs.contentSize;
         size.set(width, size.height);

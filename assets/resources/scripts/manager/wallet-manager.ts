@@ -116,7 +116,7 @@ export default class WalletManager extends BaseManager {
             return;
         }
         this._walletInfo.balance = new_coin;
-        Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE);
+        Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, new_coin);
     }
 
     public static isCoinEnough(val: number): boolean {
@@ -167,7 +167,7 @@ export default class WalletManager extends BaseManager {
         }
         return [];
     }
-        public static getCurrencyBetIndex(currency?: string): number {
+    public static getCurrencyBetIndex(currency?: string): number {
         currency = currency || this._currency;
         const betInfo = this.getCurrencyBetInfo(currency);
         if (betInfo) {

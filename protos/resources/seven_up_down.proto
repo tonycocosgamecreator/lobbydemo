@@ -52,18 +52,36 @@ message SUDDeskInfo {
 
     optional string bet_min = 9;                     // 最少下注金币金币余额
     optional string bet_max = 10;                     // 最大下注金币金币余额
-    optional string seq = 14;                          // 序列
-    optional string  period_id = 15;                    //当前期号
-    repeated SUDAreaUserBetsNum area_bet_num = 23;                    // 区域下注人数
+    optional string seq = 11;                          // 序列
+    optional string  period_id = 12;                    //当前期号
+    repeated SUDAreaUserBetsNum area_bet_num = 13;                    // 区域下注人数
+    optional SUDSevenUpDownRankInfo player_rank_ntf = 14;               //7updown前几名下注人员信息
+    optional SUDSevenUpDownBetNtf bet_ntf = 15;               //下注信息
+    repeated string odds = 16;                   //下注区域翻倍率
     optional SUDSevenUpDownInfo seven_up_down_info = 24;               //7updown配置信息
 
     optional int32 stage_total_time = 25;                      // 当前阶段总时间
+
 }
 
 message SUDAreaUserBetsNum {
     optional int32 pos_id = 1;                          // 位置ID
     optional int32 user_sum = 2;                    // 下注人数
     optional int64 bet_sum = 3;                    // 下注和
+}
+
+message SUDSevenUpDownRankInfo {
+    repeated SUDSevenUpDownRankList ranks  = 1;    //前几名信息
+}
+message SUDSevenUpDownBetNtf {
+    optional int64 desk_id = 1;                       // 桌子ID
+    repeated BetPlayer players = 2;                   // 下注玩家信息
+}
+
+message SUDSevenUpDownRankList {
+    optional int32 player_id = 1;    //玩家id
+    optional int64 balance = 2; //玩家金额
+    optional int64 icon = 3; //玩家icon
 }
 
 message SUDSevenUpDownInfo {
@@ -94,6 +112,7 @@ message MsgEnterSevenUpDownRsp {
     optional PlayData player_data = 5;                // 玩家基础信息
     optional bool can_spin  = 6;                      // 是否可以下注
     repeated WalletInfo wallets = 9;                  // 钱包列表
+
 }
 
 // LeaveBaccaratReq 离开7UPDOWN请求
@@ -128,8 +147,35 @@ message MsgBetSevenUpDownRsp {
     optional string cost_coin = 2;                    // 扣除金币
     optional string new_coin = 3;                     // 我的最新金币余额
     repeated SUDBetData bets = 4;                        // 下注列表
+    optional int64 icon = 5;                        // 头像
+    optional bool is_first = 6;                        // isFirst
 }
-
+// 取消下注请求
+message MsgCancelBetSevenUpDownReq {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    optional int64 cancel_type = 3;                      // 取消类型 1 上一步 2 所有
+}
+// 取消下注请求响应
+message MsgCancelBetSevenUpDownRsp {
+    optional common.RummyResult result = 1;           // 请求结果信息
+    optional string cost_coin = 2;                    // 扣除金币
+    optional string new_coin = 3;                     // 我的最新金币余额
+    repeated SUDBetData bets = 4;                        // 下注列表
+}
+// 取消下注请求响应通知
+message MsgCancelBetBaccaratNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated BetPlayer players = 3;                   // 下注玩家信息
+}
+// BetPlayer
+message BetPlayer {
+    repeated BetData bets = 1;                        // 下注列表
+    optional int64 player_id = 2;                      // 玩家ID
+    optional string icon = 3;                         // 头像
+    optional bool is_first = 4;                       // 是否是第一名下注
+}
 // SevenUpDownSettleNtf 结算通知消息
 message MsgSevenUpDownSettleNtf {
     optional int32 theme_id = 1;                      // 主题ID
@@ -179,6 +225,13 @@ message MsgSevenUpDownPlayerHistoryRsp {
     optional bool IsLast = 3;   //是否最后一页
 }
 
+// BetBaccaratNtf 最新玩家下注通知消息
+message MsgBetBaccaratNtf {
+    optional int32 theme_id = 1;                      // 主题ID
+    optional int64 desk_id = 2;                       // 桌子ID
+    repeated BetPlayer players = 3;                   // 最新的下注玩家信息
+}
+
 message SevenUpDownPlayerHistory {
     optional string period = 1;                       // 期数
     optional string bet = 3;                     // 下注金额
@@ -186,4 +239,12 @@ message SevenUpDownPlayerHistory {
     optional string win_coin = 5;                     // 赢奖数量
     optional string plain_text = 6;        //明文
     optional string encrypt_text = 7;      //密文
+}
+//翻倍数据
+message MsgOddNtf{
+    repeated string odd_string = 1;   //每个区域的翻倍情况
+}
+//前三名数据
+message MsgPlayerRankNtf {
+    repeated SUDSevenUpDownRankList ranks  = 1;    //前几名信息
 }
