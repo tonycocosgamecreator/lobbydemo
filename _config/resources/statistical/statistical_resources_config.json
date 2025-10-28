@@ -74,5 +74,9 @@
     "CustomRank": {
         "statisticalId": 100001018,
         "panelId": 18
+    },
+    "CustomUser": {
+        "statisticalId": 100001019,
+        "panelId": 19
     }
 }

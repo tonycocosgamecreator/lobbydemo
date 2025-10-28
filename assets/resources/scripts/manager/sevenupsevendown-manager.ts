@@ -119,6 +119,10 @@ export default class SevenUpSevenDownManager extends BaseManager {
             }
             MessageSender.SendMessage(sevenupdown.Message.MsgGetPercentReq, { desk_id: this._deskId });
             this._stage = msg.info.stage;
+            if (this._stage == jmbaccarat.DeskStage.SettleStage) {
+                let _list = msg.info?.seven_up_down_info?.win_type_list || []
+                this._openPos = _list.length ? _list[_list.length - 1].win_type : [];
+            }
             this._view?.updateReconnect()
             return false;
         }

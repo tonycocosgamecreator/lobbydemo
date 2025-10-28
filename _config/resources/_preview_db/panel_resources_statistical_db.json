@@ -126,6 +126,12 @@
         "desc": "",
         "statisticalId": 100001005
     },
+    "CustomUser": {
+        "viewName": "CustomUser",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001019
+    },
     "CustomWinTip": {
         "viewName": "CustomWinTip",
         "bundleName": "resources",

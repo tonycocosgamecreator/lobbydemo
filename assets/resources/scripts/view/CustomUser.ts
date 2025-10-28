@@ -4,19 +4,19 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
-import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { GameEvent } from '../define';
+import WalletManager from '../manager/wallet-manager';
+import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { Tween } from 'cc';
 import { v3 } from 'cc';
 import { tween } from 'cc';
-import { easing } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass('CustomBigWinner')
-export default class CustomBigWinner extends ViewBase {
+@ccclass('CustomUser')
+export default class CustomUser extends ViewBase {
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
@@ -30,27 +30,30 @@ export default class CustomBigWinner extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-
+    _stage = -1;
     _ids: number[] = [];
     _showAnimation: boolean = false;
+    _myId: number = -1;
 
     buildUi() {
         BaseGlobal.registerListeners(this, {
+            [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
             [GameEvent.UPDATE_ONLINE_ROOM]: this.updateOnlineRoom,
         });
-        this.reset();
+        const balance = WalletManager.balance;
+        this.updateTotalBalance(balance);
         this.updateOnlineRoom();
-    }
-
-    updateOnlineRoom() {
-        this.labelnum.string = SevenUpSevenDownManager.OnlineRoom + '';
+        this.resetBetPlayer();
+        this.init();
     }
 
     init() {
-        this._ids = [];
-        this.resetBetPlayer();
+        this.label_name.string = "" + SevenUpSevenDownManager.PlayerId;
+        this.spr_myhead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
+        this._myId = SevenUpSevenDownManager.PlayerId;
+        this._stage = SevenUpSevenDownManager.Stage;
         const data = SevenUpSevenDownManager.BigWinList;
-        this.head_node.children.forEach((child, idx) => {
+        this.otherhead_node.children.forEach((child, idx) => {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
@@ -62,9 +65,30 @@ export default class CustomBigWinner extends ViewBase {
         })
     }
 
+    updateTotalBalance(balance: number): void {
+        this.label_coin.string = balance.toFixed(2);
+    }
+
+    updateOnlineRoom() {
+        this.labelpeople.string = SevenUpSevenDownManager.OnlineRoom + '';
+    }
+
+    updateGameStage() {
+        this._stage = SevenUpSevenDownManager.Stage;
+        switch (this._stage) {
+            case baccarat.DeskStage.ReadyStage:
+                this.updatePlayer();
+                break;
+            case baccarat.DeskStage.StartBetStage:
+            case baccarat.DeskStage.EndBetStage:
+            case baccarat.DeskStage.OpenStage:
+                break;
+        }
+    }
+
     updatePlayer() {
         const data = SevenUpSevenDownManager.BigWinList;
-        this.head_node.children.forEach((child, idx) => {
+        this.otherhead_node.children.forEach((child, idx) => {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
@@ -92,26 +116,10 @@ export default class CustomBigWinner extends ViewBase {
         })
     }
 
-    resetBetPlayer() {
-        this._showAnimation = false;
-        this.spr_head_one.node.parent.active = false;
-        this.spr_head_two.node.parent.active = false;
-        this.spr_head_three.node.parent.active = false;
-    }
-
-    reset() {
-        this.head_node.children.forEach((child, idx) => {
-            child.active = false;
-            Tween.stopAllByTarget(child.getChildByName('labelwin'));
-            Tween.stopAllByTarget(child.getChildByName('head'))
-        })
-        this.resetBetPlayer();
-    }
-
     getWorldPosByUid(player_id: number): cc.Vec3 {
         let node = this.rest_node;
         let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
-        this.head_node.children.forEach((child, idx) => {
+        this.otherhead_node.children.forEach((child, idx) => {
             if (this._ids[idx] && this._ids[idx] == player_id) {
                 wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
                 const startPos = cc.v3(0, 0, 0);
@@ -130,8 +138,19 @@ export default class CustomBigWinner extends ViewBase {
                     .start();
             }
         })
+        if (player_id == this._myId) {
+            wordPos = this.spr_myhead.node.parent.transform.convertToWorldSpaceAR(this.spr_myhead.node.position);
+        }
         return wordPos;
     }
+
+    resetBetPlayer() {
+        this._showAnimation = false;
+        this.spr_head_one.node.parent.active = false;
+        this.spr_head_two.node.parent.active = false;
+        this.spr_head_three.node.parent.active = false;
+    }
+
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -147,26 +166,34 @@ export default class CustomBigWinner extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_head_node: [cc.Node],
-            cc_labelnum: [cc.Label],
+            cc_label_coin: [cc.Label],
+            cc_label_name: [cc.Label],
+            cc_labelpeople: [cc.Label],
+            cc_myhead_node: [cc.Node],
+            cc_otherhead_node: [cc.Node],
             cc_rest_node: [cc.Node],
             cc_spr_head_one: [cc.Sprite],
             cc_spr_head_three: [cc.Sprite],
             cc_spr_head_two: [cc.Sprite],
+            cc_spr_myhead: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected head_node: cc.Node = null;
-    protected labelnum: cc.Label = null;
+    protected label_coin: cc.Label = null;
+    protected label_name: cc.Label = null;
+    protected labelpeople: cc.Label = null;
+    protected myhead_node: cc.Node = null;
+    protected otherhead_node: cc.Node = null;
     protected rest_node: cc.Node = null;
     protected spr_head_one: cc.Sprite = null;
     protected spr_head_three: cc.Sprite = null;
     protected spr_head_two: cc.Sprite = null;
+    protected spr_myhead: cc.Sprite = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomBigWinner';
+    public static readonly VIEW_NAME = 'CustomUser';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
@@ -176,10 +203,10 @@ export default class CustomBigWinner extends ViewBase {
      * 请勿修改，脚本自动生成
     */
     public get bundleName() {
-        return CustomBigWinner.BUNDLE_NAME;
+        return CustomUser.BUNDLE_NAME;
     }
     public get viewName() {
-        return CustomBigWinner.VIEW_NAME;
+        return CustomUser.VIEW_NAME;
     }
     // @view export resource end
 }

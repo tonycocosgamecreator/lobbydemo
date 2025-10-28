@@ -3,6 +3,8 @@ export interface IPanelSevenUpSevenDownMainView {
     updateflyChip(data: any): void;
     updateDeletChip(data: any): void;
     updateReconnect(): void;
+    getDeskWorldPosByIdx(id:number): void;
+    getUserWorldPosByUid(id:number): void;
 }
 
 

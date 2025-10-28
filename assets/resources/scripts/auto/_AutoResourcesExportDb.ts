@@ -33,6 +33,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomTime': 'CustomTime',
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',
+    'CustomUser': 'CustomUser',
     'CustomWinTip': 'CustomWinTip',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelLobby': 'PanelLobby',

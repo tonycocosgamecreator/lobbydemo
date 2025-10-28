@@ -14,6 +14,7 @@ import CustomChipItem from './CustomChipItem';
 import { UIOpacity } from 'cc';
 import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
 import AudioManager from '../core/manager/audio-manager';
+import WalletManager from '../manager/wallet-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -39,9 +40,13 @@ export default class CustomFlyChip extends ViewBase {
     _baseDistance: number = 200; // 基准距离(像素)   
     _targetScale: number = 0.5;
     _stage = -1;
+    _chipButtons: number[] = [];
+    view = null
 
     buildUi() {
         this.reset()
+        this._chipButtons = WalletManager.getCurrencyBetSize();
+        this.view = SevenUpSevenDownManager.View;
     }
 
     reset() {
@@ -54,13 +59,41 @@ export default class CustomFlyChip extends ViewBase {
 
     updateGameStage(reconnect: boolean = false) {
         this._stage = SevenUpSevenDownManager.Stage;
+        if (reconnect) {
+            this.view = SevenUpSevenDownManager.View;
+        }
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.reset();
                 break
+            case baccarat.DeskStage.StartBetStage:
+            case baccarat.DeskStage.EndBetStage:
+            case baccarat.DeskStage.OpenStage:
+                if (reconnect) {
+                    this.reset();
+                    const info = SevenUpSevenDownManager.AllbetInfo;
+                    for (let i = 0; i < info.length; i++) {
+                        this.init(info[i])
+                    }
+                }
+                break
             case baccarat.DeskStage.SettleStage:
-                // if ()
-                    break;
+
+                break;
+        }
+    }
+        
+    init(data: betInfo, isFly: boolean = false) {
+        let index = 0
+        this._chipButtons.forEach((value, idx) => {
+            if (+data.bet_coin == value) index = idx;
+        })
+        let start = this.view.getUserWorldPosByUid(data.player_id);
+        let end = this.view.getDeskWorldPosByIdx(data.bet_id);
+        if (isFly) {
+            this.addFlyChip(data, index, start, end);
+        } else {
+            this.setChipData(data, index, start, end);
         }
     }
 
