@@ -1,25 +1,24 @@
-import { bDebug } from "db://assets/resources/scripts/core/define";
-import { GameEvent } from "db://assets/resources/scripts/define";
+import { GameEvent, THEME_ID } from "db://assets/resources/scripts/define";
 import { Global } from "db://assets/resources/scripts/global";
 import BaseManager from "../core/manager/base-manager";
 import UIHelper from "../network/helper/ui-helper";
 import { MessageSender } from "../network/net/message-sender";
-import WalletManager from "./wallet-manager";
+import SevenUpSevenDownManager from "./sevenupsevendown-manager";
 
-export default class SsHistoryManager extends BaseManager {
+export default class HistoryManager extends BaseManager {
 
     //=============================子类需要自己实现的方法===========================//
     /**
      * 存档的KEY,也是管理器的key
      */
-    public static KEY = 'SsHistoryManager';
+    public static KEY = 'HistoryManager';
 
     /**
      * 清理自己的数据结构
      * 此方法不会被主动调用，请在自己需要的时候自己调用
      */
     public static clear() {
-        this._pageIndex = 0;
+        this._pageIndex = 1;
         // this._maxPageIndex = 1;
         this._isLastPage = false;
         this._datas = [];
@@ -49,24 +48,35 @@ export default class SsHistoryManager extends BaseManager {
      * @returns 如果返回true，说明消息被框架拦截了，不需要继续向下传递
      */
     public static onNetMessage(msgType: string, data: any): boolean {
-        if (msgType == supersevenbaccarat.Message.MsgGameRecordListAck) {
-            const msg = data as supersevenbaccarat.MsgGameRecordListAck;
-            if (msg.code != 0) return false;
-            let is_last = !msg.infos || msg.infos.length == 0;
-            this._isLastPage = is_last;
-            if (this._isLastPage) {
-                //如果已经是最后一页了，就不需要再请求了
-                return false;
+        if (msgType == sevenupdown.Message.MsgSevenUpDownPlayerHistoryRsp) {
+            const msg = data as sevenupdown.MsgSevenUpDownPlayerHistoryRsp;
+            const result = msg.result;
+            if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
+                //如果有错误码，说明进入游戏失败了
+                //这里可以弹出提示框，提示玩家进入游戏失败
+                console.error(`enter Game Failed: ${result.err_desc}`);
+                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_HISTORY_GET_FAILED,
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.Error
+                );
+                return true; //拦截消息，不继续传递
             }
-            if (msg.infos.length < this._pageLen) {
-                this._isLastPage = true;
-            }
-            this._pageIndex++;
-            const history = msg.infos;
+            // let is_last = !msg.history || msg.history.length == 0;
+            this._isLastPage = msg.IsLast;
+            // if (msg.history.length < this._pageLen) {
+            //     this._isLastPage = true;
+            // }
+            // this._pageIndex++;
+            const history = msg.history;
             if (history && history.length > 0) {
                 this._datas.push(...history);
                 Global.sendMsg(GameEvent.REQUEST_REFRESH_GAME_HISTORY);
             }
+            if (this._isLastPage) {
+                //如果已经是最后一页了，就不需要再请求了
+                return false;
+            }
+            this._pageIndex++;
         }
         return false;
     }
@@ -78,14 +88,12 @@ export default class SsHistoryManager extends BaseManager {
             //如果已经是最后一页了，就不需要再请求了
             return false;
         }
-        const xlsx_config = resourcesDb.get_from_game_entrance_config_db('SuperSeven');
-        const theme_id = xlsx_config.themeId;
-        const data: supersevenbaccarat.MsgGameRecordListReq = {
-            currency: WalletManager.currency,
+        const data: sevenupdown.MsgSevenUpDownPlayerHistoryReq = {
+            theme_id: THEME_ID,
+            desk_id: SevenUpSevenDownManager.DeskId,
             page: this._pageIndex,
-            limit: this._pageLen,
         };
-        MessageSender.SendMessage(supersevenbaccarat.Message.MsgGameRecordListReq, data);
+        MessageSender.SendMessage(sevenupdown.Message.MsgSevenUpDownPlayerHistoryReq, data);
         return true;
     }
 
@@ -112,9 +120,9 @@ export default class SsHistoryManager extends BaseManager {
         return this._isLastPage;
     }
 
-    private static _datas: supersevenbaccarat.MsgBetRecord[] = [];
+    private static _datas: sevenupdown.SevenUpDownPlayerHistory[] = [];
 
-    public static get datas(): supersevenbaccarat.MsgBetRecord[] {
+    public static get datas(): sevenupdown.SevenUpDownPlayerHistory[] {
         return this._datas;
     }
 

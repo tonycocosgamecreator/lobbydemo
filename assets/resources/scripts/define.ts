@@ -45,10 +45,6 @@ export enum GameEvent {
      */
     UPDATE_AUTO = 'UPDATE_AUTO',
     /**
-     *更换头像
-     */
-    PLAYER_CHANGE_AVATAR = 'PLAYER_CHANGE_AVATAR',
-    /**
      *历史记录
      */
     UPDATE_HISTORY = 'UPDATE_HISTORY',
@@ -79,7 +75,10 @@ export enum GameEvent {
     /**
     *RANK
     */
-    UPDATE_RANK = 'UPDATE_RANK',
+    UPDATE_RANK = 'UPDATE_RANK',  /**
+     *更换头像
+     */
+    PLAYER_CHANGE_AVATAR = 'PLAYER_CHANGE_AVATAR'
 
 }
 

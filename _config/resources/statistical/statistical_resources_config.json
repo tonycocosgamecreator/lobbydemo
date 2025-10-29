@@ -78,5 +78,17 @@
     "CustomUser": {
         "statisticalId": 100001019,
         "panelId": 19
+    },
+    "CustomResult": {
+        "statisticalId": 100001020,
+        "panelId": 20
+    },
+    "CustomBaccaratTop": {
+        "statisticalId": 100001021,
+        "panelId": 21
+    },
+    "CustomHistoryItem": {
+        "statisticalId": 100001022,
+        "panelId": 22
     }
 }

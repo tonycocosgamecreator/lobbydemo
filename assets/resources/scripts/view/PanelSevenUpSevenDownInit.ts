@@ -7,6 +7,7 @@ import JsonLoginManager from '../network/managers/json-login-manager';
 import ViewManager from '../core/manager/view-manager';
 import Managers from '../core/manager/managers';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
+import HistoryManager from '../manager/history-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -30,6 +31,7 @@ export default class PanelSevenUpSevenDownInit extends ViewBase {
 
     buildUi() {
         Managers.registe(SevenUpSevenDownManager);
+        Managers.registe(HistoryManager);
         JsonLoginManager.Login();
     }
 

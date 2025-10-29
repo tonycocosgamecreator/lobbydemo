@@ -8,8 +8,8 @@ import { MessageSender } from '../network/net/message-sender';
 import WalletManager from '../manager/wallet-manager';
 import UIHelper from '../network/helper/ui-helper';
 import { GameEvent, THEME_ID } from '../define';
-import { v3 } from 'cc';
 import BaseGlobal from '../core/message/base-global';
+import { sp } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -48,23 +48,34 @@ export default class CustomDesk extends ViewBase {
     reset() {
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('star').active = false;
-            child.getChildByName('lightning').active = false;
             child.getChildByName('coinbg').active = false;
             child.getChildByName('bets').active = false;
+            child.getChildByName('spineone').active = false;
+            child.getChildByName('spinetwo').active = false;
+            child.getChildByName('lightning').active = false;
         });
     }
 
     updateGameStage(reconnect: boolean = false) {
         this._stage = SevenUpSevenDownManager.Stage;
         switch (this._stage) {
-            case baccarat.DeskStage.ReadyStage: this.reset();
+            case baccarat.DeskStage.ReadyStage:
+                this.reset();
                 break;
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
                 this.updatePlayBetValue();
                 break;
             case baccarat.DeskStage.OpenStage:
-                //播放翻倍动画
+                let _odds = SevenUpSevenDownManager.OddString;
+                for (let i = 0; i < _odds.length; i++) {
+                    if (_odds[i] && +_odds[i]) {
+                        let child = this.betarea_node.children[i];
+                        this.showDoubleAnimaton(child, '1open', reconnect)
+                    }
+                }
+                break;
+            case baccarat.DeskStage.SettleStage:
                 break;
         }
     }
@@ -86,6 +97,43 @@ export default class CustomDesk extends ViewBase {
             }
         });
 
+    }
+
+    showDoubleAnimaton(child: cc.Node, name: string, reconnect: boolean = false, syncPlay: boolean = false) {
+        let sp1 = child.getChildByName('spineone');
+        sp1.active = true;
+        const trackEntry = sp1.getComponent(sp.Skeleton).setAnimation(0, name, false);
+        trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
+        if (syncPlay) {
+            let sp2 = child.getChildByName('spinetwo');
+            sp2.active = true;
+            sp2.getComponent(sp.Skeleton).setAnimation(0, 'baokai', false);
+        }
+    }
+
+    showResult() {
+        let wintype = SevenUpSevenDownManager.WinType;
+        let myWintype = SevenUpSevenDownManager.MyWinType;
+        let _odds = SevenUpSevenDownManager.OddString;
+        for (let i = 0; i < this.betarea_node.children.length; i++) {
+            let child = this.betarea_node.children[i];
+            let win = wintype.indexOf(i + 1) == -1 ? false : true;
+            if (win) {
+                let light = child.getChildByName('lightning');
+                light.getComponent(sp.Skeleton).setAnimation(0, 'animation', false);
+                light.active = true;
+            }
+            if (_odds[i] && +_odds[i]) {
+                if (win && myWintype[i]) {
+                    this.showDoubleAnimaton(child, '2obtain');
+                    this.scheduleOnce(() => {
+                        this.showDoubleAnimaton(child, '3end', false, true);
+                    }, 0.5)
+                } else {
+                    this.showDoubleAnimaton(child, '2end');
+                }
+            }
+        }
     }
 
     sendBetMessage(idx: number) {
@@ -112,6 +160,7 @@ export default class CustomDesk extends ViewBase {
         );
         return wordPos;
     }
+
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

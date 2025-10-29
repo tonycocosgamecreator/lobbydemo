@@ -67,6 +67,7 @@ declare module resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
+        ['CustomBaccaratTop']: 'CustomBaccaratTop',
         ['CustomBigWinner']: 'CustomBigWinner',
         ['CustomChipItem']: 'CustomChipItem',
         ['CustomChip']: 'CustomChip',
@@ -75,10 +76,12 @@ declare module resourcesDb {
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHandle']: 'CustomHandle',
         ['CustomHead']: 'CustomHead',
+        ['CustomHistoryItem']: 'CustomHistoryItem',
         ['CustomMainHistory']: 'CustomMainHistory',
         ['CustomOnline']: 'CustomOnline',
         ['CustomRank']: 'CustomRank',
         ['CustomRecord']: 'CustomRecord',
+        ['CustomResult']: 'CustomResult',
         ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',

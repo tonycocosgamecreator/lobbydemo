@@ -44,6 +44,15 @@
     }
 ],
 'datas': {
+    "CustomBaccaratTop": {
+        "cc_buttonMenu": {
+            "viewName": "CustomBaccaratTop",
+            "buttonName": "cc_buttonMenu",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003200
+        }
+    },
     "CustomChip": {
         "cc_buttonclick": {
             "viewName": "CustomChip",

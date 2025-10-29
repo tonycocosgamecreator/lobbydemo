@@ -39,6 +39,7 @@ export default class CustomUser extends ViewBase {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
             [GameEvent.UPDATE_ONLINE_ROOM]: this.updateOnlineRoom,
+            [GameEvent.PLAYER_CHANGE_AVATAR]: this.updateHead
         });
         const balance = WalletManager.balance;
         this.updateTotalBalance(balance);
@@ -48,7 +49,7 @@ export default class CustomUser extends ViewBase {
     }
 
     init() {
-        this.label_name.string = "" + SevenUpSevenDownManager.PlayerId;
+        this.label_name.string = "Player_" + SevenUpSevenDownManager.PlayerId;
         this.spr_myhead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
         this._myId = SevenUpSevenDownManager.PlayerId;
         this._stage = SevenUpSevenDownManager.Stage;
@@ -71,6 +72,10 @@ export default class CustomUser extends ViewBase {
 
     updateOnlineRoom() {
         this.labelpeople.string = SevenUpSevenDownManager.OnlineRoom + '';
+    }
+
+    updateHead() {
+        this.spr_myhead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
     }
 
     updateGameStage() {

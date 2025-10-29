@@ -282,3 +282,14 @@ message SevenUpDownRankData {
     optional string icon = 4;                     // 玩家头像
     optional int64 save_time = 5;                 // 时间
 }
+// 请求更换头像
+message MsgUpdatePlayerDataReq {
+    optional int32 icon = 1;
+}
+// 请求更换头像回复
+message MsgUpdatePlayerDataRsp {
+    optional RummyErrCode err_code = 1; // 错误码
+    optional string err_desc = 2;       // 错误描述
+    optional string pic_url = 3;        // 图片地址
+    optional int32 icon = 4;
+}

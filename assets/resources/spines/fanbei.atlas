@@ -1,0 +1,132 @@
+
+fanbei.png
+size: 256,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+22/jb_00
+  rotate: false
+  xy: 2, 107
+  size: 46, 45
+  orig: 60, 60
+  offset: 7, 8
+  index: -1
+22/jb_01
+  rotate: true
+  xy: 96, 63
+  size: 41, 45
+  orig: 60, 60
+  offset: 9, 8
+  index: -1
+22/jb_02
+  rotate: true
+  xy: 49, 32
+  size: 29, 45
+  orig: 60, 60
+  offset: 15, 8
+  index: -1
+22/jb_03
+  rotate: false
+  xy: 128, 201
+  size: 11, 45
+  orig: 60, 60
+  offset: 25, 8
+  index: -1
+22/jb_04
+  rotate: false
+  xy: 119, 154
+  size: 28, 45
+  orig: 60, 60
+  offset: 17, 8
+  index: -1
+22/jb_05
+  rotate: true
+  xy: 2, 63
+  size: 42, 45
+  orig: 60, 60
+  offset: 10, 8
+  index: -1
+22/jb_06
+  rotate: false
+  xy: 50, 107
+  size: 46, 45
+  orig: 60, 60
+  offset: 7, 8
+  index: -1
+22/jb_07
+  rotate: true
+  xy: 2, 20
+  size: 41, 45
+  orig: 60, 60
+  offset: 9, 8
+  index: -1
+22/jb_08
+  rotate: true
+  xy: 96, 32
+  size: 29, 45
+  orig: 60, 60
+  offset: 15, 8
+  index: -1
+22/jb_09
+  rotate: false
+  xy: 134, 248
+  size: 11, 45
+  orig: 60, 60
+  offset: 25, 8
+  index: -1
+22/jb_10
+  rotate: true
+  xy: 49, 2
+  size: 28, 45
+  orig: 60, 60
+  offset: 17, 8
+  index: -1
+22/jb_11
+  rotate: true
+  xy: 49, 63
+  size: 42, 45
+  orig: 60, 60
+  offset: 10, 8
+  index: -1
+22/jb_12
+  rotate: true
+  xy: 98, 106
+  size: 46, 45
+  orig: 60, 60
+  offset: 7, 8
+  index: -1
+52
+  rotate: false
+  xy: 2, 291
+  size: 130, 71
+  orig: 133, 72
+  offset: 2, 0
+  index: -1
+di
+  rotate: false
+  xy: 2, 364
+  size: 140, 140
+  orig: 144, 144
+  offset: 2, 2
+  index: -1
+light
+  rotate: false
+  xy: 96, 7
+  size: 23, 23
+  orig: 27, 25
+  offset: 3, 1
+  index: -1
+x12
+  rotate: false
+  xy: 2, 154
+  size: 115, 63
+  orig: 118, 65
+  offset: 2, 1
+  index: -1
+x16
+  rotate: false
+  xy: 2, 219
+  size: 124, 70
+  orig: 127, 72
+  offset: 2, 1
+  index: -1

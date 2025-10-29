@@ -18,6 +18,7 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
+    'CustomBaccaratTop': 'CustomBaccaratTop',
     'CustomBigWinner': 'CustomBigWinner',
     'CustomChipItem': 'CustomChipItem',
     'CustomChip': 'CustomChip',
@@ -26,10 +27,12 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomGameItem': 'CustomGameItem',
     'CustomHandle': 'CustomHandle',
     'CustomHead': 'CustomHead',
+    'CustomHistoryItem': 'CustomHistoryItem',
     'CustomMainHistory': 'CustomMainHistory',
     'CustomOnline': 'CustomOnline',
     'CustomRank': 'CustomRank',
     'CustomRecord': 'CustomRecord',
+    'CustomResult': 'CustomResult',
     'CustomTime': 'CustomTime',
     'CustomToast': 'CustomToast',
     'CustomTop': 'CustomTop',

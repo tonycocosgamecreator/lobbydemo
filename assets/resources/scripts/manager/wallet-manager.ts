@@ -102,7 +102,7 @@ export default class WalletManager extends BaseManager {
         }
     }
 
-    public static updatePlayerCoin(new_coin: number) {
+    public static updatePlayerCoin(new_coin: number, sendmsg: boolean = true) {
         if (this._currency == '') {
             console.error('WalletManager.updatePlayerCoin: currency is empty!');
             return;
@@ -116,7 +116,7 @@ export default class WalletManager extends BaseManager {
             return;
         }
         this._walletInfo.balance = new_coin;
-        Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, new_coin);
+        if (sendmsg) Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, new_coin);
     }
 
     public static isCoinEnough(val: number): boolean {

@@ -91,6 +91,10 @@ declare namespace sevenupdown{
         MsgGetRankRsp = 'MsgGetRankRsp',
         /** 排行榜数据 */
         SevenUpDownRankData = 'SevenUpDownRankData',
+        /** 请求更换头像 */
+        MsgUpdatePlayerDataReq = 'MsgUpdatePlayerDataReq',
+        /** 请求更换头像回复 */
+        MsgUpdatePlayerDataRsp = 'MsgUpdatePlayerDataRsp',
     }
 
     /** 阶段 */
@@ -509,6 +513,24 @@ declare namespace sevenupdown{
         icon? : string;
         /**  时间 */
         save_time? : number;
+    }
+
+    /** 请求更换头像 */
+    interface MsgUpdatePlayerDataReq{
+        /**  */
+        icon? : number;
+    }
+
+    /** 请求更换头像回复 */
+    interface MsgUpdatePlayerDataRsp{
+        /**  错误码 */
+        err_code? : commonrummy.RummyErrCode;
+        /**  错误描述 */
+        err_desc? : string;
+        /**  图片地址 */
+        pic_url? : string;
+        /**  */
+        icon? : number;
     }
 
 }

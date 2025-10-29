@@ -122,6 +122,13 @@ export default class SevenUpSevenDownManager extends BaseManager {
             if (this._stage == jmbaccarat.DeskStage.SettleStage) {
                 let _list = msg.info?.seven_up_down_info?.win_type_list || []
                 this._openPos = _list.length ? _list[_list.length - 1].win_type : [];
+                let v = this._openPos[0] + this._openPos[1];
+                this._winType = [v - 1];
+                if (v >= 2 && v <= 6) {
+                    this._winType.push(12);
+                } else if (v >= 8 && v <= 12) {
+                    this._winType.push(13);
+                }
             }
             this._view?.updateReconnect()
             return false;
@@ -295,6 +302,23 @@ export default class SevenUpSevenDownManager extends BaseManager {
             } else {
                 console.error(`Settle Failed: result_data is null`);
             }
+            const new_coin = msg.win_data?.new_coin || '0';
+            WalletManager.updatePlayerCoin(parseFloat(new_coin), false);
+            let v = msg.open_pos[0] + msg.open_pos[1];
+            this._winType = [v - 1];
+            if (v >= 2 && v <= 6) {
+                this._winType.push(12);
+            } else if (v >= 8 && v <= 12) {
+                this._winType.push(13);
+            }
+            this._myWinType = [];
+            const open_elem = msg.win_data?.open_elem || [];
+            open_elem.forEach(t => {
+                if (t) {
+                    this._myWinType.push(t.pos_id);
+                }
+            })
+            this._winCoin = +msg.win_data?.win_coin || 0;
             //历史记录更新
             this._records.push({ win_type: msg.open_pos, is_double: msg.is_double });
             Global.sendMsg(GameEvent.UPDATE_HISTORY);
@@ -372,11 +396,11 @@ export default class SevenUpSevenDownManager extends BaseManager {
     /**
     * 当前玩家的总投注额度
     */
-    private static _myBets: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    private static _myBets: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     /**
     * 当前房间的总投注额度
     */
-    private static _totalBet: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    private static _totalBet: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     /**
      * 下注区域翻倍率
      */
@@ -385,6 +409,18 @@ export default class SevenUpSevenDownManager extends BaseManager {
      * 开牌点数
      */
     private static _openPos: number[] = [];
+    /**
+     * 赢的金币数
+     */
+    private static _winCoin: number = 0;
+    /**
+     * 玩家赢奖区域数据
+     */
+    private static _winType: number[] = [];
+    /**
+     * 自己的赢奖区域数据
+     */
+    private static _myWinType: number[] = [];
     private static _chipIdx: number = -1;//筹码默认选择
     private static _odds: string[] = [];//倍率
     private static _playerId: number = -1;//玩家名字id
@@ -402,18 +438,26 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static set ChipIdx(value: number) {
         this._chipIdx = value;
     }
+    public static set HeadId(value: number) {
+        this._headId = value;
+        Global.sendMsg(GameEvent.PLAYER_CHANGE_AVATAR);
+    }
+
     public static set Probability(value: number[]) {
         this._probability = value;
         Global.sendMsg(GameEvent.UPDATE_HISTORY_PROBABILITY);
     }
+
     public static set OnlineRoom(value: number) {
         this._onlineRoom = value;
         Global.sendMsg(GameEvent.UPDATE_ONLINE_ROOM);
     }
+
     public static set Online(value: number) {
         this._online = value;
         Global.sendMsg(GameEvent.UPDATE_ONLINE);
     }
+
     public static set Before(value: betInfo) {
         this._before = value;
         Global.sendMsg(GameEvent.UPDATE_DOUBEL);
@@ -453,18 +497,24 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get OddString(): string[] { return this._oddString; }
     public static get OpenPos(): number[] { return this._openPos; }
     public static get WinLedList(): sevenupdown.MsgLastWinNtf[] { return this._winLedList; }
+    public static get WinCoin(): number { return this._winCoin; }
+    public static get WinType(): number[] { return this._winType; }
+    public static get MyWinType(): number[] { return this._myWinType; }
 
     /**
      * 重置所有数据
      */
     public static reset() {
-        this._myBets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this._totalBet = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this._myBets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this._totalBet = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this._mybetInfo = [];
         this._before = null;
         this._allbetInfo = [];
         this._firstPlayBet = [];
         this._oddString = [];
+        this._winCoin = 0;
+        this._winType = [];
+        this._myWinType = [];
 
     }
 

@@ -36,6 +36,12 @@
     }
 ],
 'datas': {
+    "CustomBaccaratTop": {
+        "viewName": "CustomBaccaratTop",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001021
+    },
     "CustomBigWinner": {
         "viewName": "CustomBigWinner",
         "bundleName": "resources",
@@ -84,6 +90,12 @@
         "desc": "",
         "statisticalId": 100001010
     },
+    "CustomHistoryItem": {
+        "viewName": "CustomHistoryItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001022
+    },
     "CustomMainHistory": {
         "viewName": "CustomMainHistory",
         "bundleName": "resources",
@@ -107,6 +119,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001016
+    },
+    "CustomResult": {
+        "viewName": "CustomResult",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001020
     },
     "CustomTime": {
         "viewName": "CustomTime",
