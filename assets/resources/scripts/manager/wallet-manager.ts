@@ -116,7 +116,9 @@ export default class WalletManager extends BaseManager {
             return;
         }
         this._walletInfo.balance = new_coin;
-        if (sendmsg) Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, new_coin);
+        if (sendmsg) {
+            Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, new_coin);
+        }
     }
 
     public static isCoinEnough(val: number): boolean {

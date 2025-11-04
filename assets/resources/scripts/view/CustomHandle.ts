@@ -49,7 +49,6 @@ export default class CustomHandle extends ViewBase {
         this.updateAuto();
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_DOUBEL]: this.updateDoubel,
-            [GameEvent.UPDATE_AUTO]: this.updateAuto,
         });
     }
 
@@ -84,6 +83,7 @@ export default class CustomHandle extends ViewBase {
     updateAuto() {
         this._auto = SevenUpSevenDownManager.Auto;
         this.button_auto.node.active = this._auto;
+        this.button_unauto.node.active = this._auto;
         this.button_agail.node.active = !this._auto;
     }
 
@@ -92,7 +92,7 @@ export default class CustomHandle extends ViewBase {
         this.button_double.isEnabled = !!SevenUpSevenDownManager.Before;
     }
 
-    sendBetMessage(bets: sevenupdown.SUDBetData[], gold: number, isAuto: boolean = false) {
+    sendBetMessage(bets: sevenupdown.SUDBetData[], gold: number, isAuto: boolean = false, agail: boolean = false) {
         const myCoin = WalletManager.balance;
         if (gold > myCoin) {
             UIHelper.showMoneyNotEnough();
@@ -107,6 +107,11 @@ export default class CustomHandle extends ViewBase {
             bets: bets,
         }
         MessageSender.SendMessage(sevenupdown.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
+        if (agail) {
+            this.button_auto.node.active = true;
+            this.button_unauto.node.active = false;
+            this.button_agail.node.active = false;
+        }
 
     }
     //------------------------ 网络消息 ------------------------//
@@ -119,12 +124,8 @@ export default class CustomHandle extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
     private onClickButton_auto(event: cc.EventTouch) {
-        if (this._auto) {
-            this.button_auto.node.active = false;
-            SevenUpSevenDownManager.Auto = false;
-        } else {
-            SevenUpSevenDownManager.Auto = true;
-        }
+        SevenUpSevenDownManager.Auto = true;
+        this.updateAuto();
     }
 
     private onClickButton_agail(event: cc.EventTouch) {
@@ -136,7 +137,7 @@ export default class CustomHandle extends ViewBase {
             betcoin += parseInt(t.bet_coin);
             bets.push({ bet_id: t.bet_id, bet_coin: t.bet_coin, is_rebet: false })
         })
-        this.sendBetMessage(bets, betcoin);
+        this.sendBetMessage(bets, betcoin, false, true);
     }
 
     private onClickButton_undo(event: cc.EventTouch) {
@@ -165,11 +166,17 @@ export default class CustomHandle extends ViewBase {
         const _data = SevenUpSevenDownManager.Before;
         const betcoin = +(_data.bet_coin) * 2;
         let bets = [
-            { bet_id: _data.bet_id, bet_coin: betcoin + '', is_rebet: false },
-            { bet_id: _data.bet_id, bet_coin: betcoin + '', is_rebet: false }
+            { bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false },
+            { bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false }
         ]
         this.sendBetMessage(bets, betcoin, true);
     }
+
+    private onClickButton_unauto(event: cc.EventTouch) {
+        SevenUpSevenDownManager.Auto = false;
+         this.updateAuto();
+    }
+
     // @view export event end
 
 
@@ -180,6 +187,7 @@ export default class CustomHandle extends ViewBase {
             cc_button_auto: [GButton, this.onClickButton_auto.bind(this)],
             cc_button_clear: [GButton, this.onClickButton_clear.bind(this)],
             cc_button_double: [GButton, this.onClickButton_double.bind(this)],
+            cc_button_unauto: [GButton, this.onClickButton_unauto.bind(this)],
             cc_button_undo: [GButton, this.onClickButton_undo.bind(this)],
         };
     }
@@ -188,6 +196,7 @@ export default class CustomHandle extends ViewBase {
     protected button_auto: GButton = null;
     protected button_clear: GButton = null;
     protected button_double: GButton = null;
+    protected button_unauto: GButton = null;
     protected button_undo: GButton = null;
     /**
      * 当前界面的名字

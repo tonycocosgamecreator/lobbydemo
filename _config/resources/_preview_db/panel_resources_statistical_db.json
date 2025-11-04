@@ -144,6 +144,12 @@
         "desc": "",
         "statisticalId": 100001005
     },
+    "CustomUserIcon": {
+        "viewName": "CustomUserIcon",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001023
+    },
     "CustomUser": {
         "viewName": "CustomUser",
         "bundleName": "resources",

@@ -22,6 +22,8 @@ import AudioManager from '../core/manager/audio-manager';
 import { Global } from '../global';
 import { BaseMessage } from '../core/message/base-message';
 import Formater from '../core/utils/formater';
+import { GameEvent } from '../define';
+import WalletManager from '../manager/wallet-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -171,8 +173,13 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                         }
                         //飞筹码
                         this.result_node.reset();
-                        this.fly_chip_node.reset();
+                        this.fly_chip_node.recycleChip();
                         this.desk_node.reset();
+                        this.scheduleOnce(() => {
+                            this.user_node.playWinAnimation();
+                            const balance = WalletManager.balance;
+                            Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, balance);
+                        }, 0.2)
                     }, 1)
                 }, 2.8)
                 break;
@@ -183,8 +190,12 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         return this.desk_node.getWorldPosByIdx(id);
     }
 
-    getUserWorldPosByUid(id: number) {
-        return this.user_node.getWorldPosByUid(id);
+    getUserWorldPosByUid(id: string, icon: number) {
+        return this.user_node.getWorldPosByUid(id, icon);
+    }
+
+    getUserLoseWorldPos() {
+        return this.user_node.getLoseWorldPos();
     }
 
     updateflyChip(data: betInfo) {

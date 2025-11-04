@@ -82,18 +82,19 @@ export default class CustomFlyChip extends ViewBase {
                 break;
         }
     }
-        
+
     init(data: betInfo, isFly: boolean = false) {
         let index = 0
         this._chipButtons.forEach((value, idx) => {
             if (+data.bet_coin == value) index = idx;
         })
-        let start = this.view.getUserWorldPosByUid(data.player_id);
+        let start = this.view.getUserWorldPosByUid(data.player_id, data.icon);
         let end = this.view.getDeskWorldPosByIdx(data.bet_id);
+        let lose = this.view.getUserLoseWorldPos();
         if (isFly) {
-            this.addFlyChip(data, index, start, end);
+            this.addFlyChip(data, index, start, end, lose);
         } else {
-            this.setChipData(data, index, start, end);
+            this.setChipData(data, index, start, end, lose);
         }
     }
 
@@ -103,23 +104,25 @@ export default class CustomFlyChip extends ViewBase {
     * @param sourceWorldPos 添加筹码位置的世界坐标
     * @param endWorldPos 飞筹码终点的世界坐标
     */
-    addFlyChip(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3) {
+    addFlyChip(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         this.node.addChild(chip.node);
         chip.node.position = targetLocalPos;
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
-        chip.setBetData(index, info, targetLocalPos);
+        let losePos = this.node.transform.convertToNodeSpaceAR(loseWorldPos);
+        chip.setBetData(index, info, targetLocalPos, losePos);
         this._flyToTarget(chip.node, endPos);
     }
 
-    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3) {
+    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         this.node.addChild(chip.node);
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
+        let losePos = this.node.transform.convertToNodeSpaceAR(loseWorldPos);
         chip.node.position = endPos;
-        chip.setBetData(index, info, targetLocalPos);
+        chip.setBetData(index, info, targetLocalPos, losePos);
         chip.node.scale = v3(this._targetScale, this._targetScale, this._targetScale)
     }
     /**
@@ -127,8 +130,14 @@ export default class CustomFlyChip extends ViewBase {
     * * @param recycleWorldPos 回收筹码终点的世界坐标
     */
     recycleChip() {
-        this.node.children.forEach(t => {
-            this._flyToEnd(t, t.getComponent(CustomChipItem).StartLocalPos);
+        let winData = SevenUpSevenDownManager.WinData;
+        this.node.children.forEach((child, idx) => {
+            let _d = child.getComponent(CustomChipItem).ChipInfo;
+            if (winData.has(_d.player_id)) {
+                this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos);
+            } else {
+                this._flyToEnd(child, child.getComponent(CustomChipItem).LoseLocalPos);
+            }
         })
     }
 

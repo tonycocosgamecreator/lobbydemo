@@ -10,6 +10,11 @@ import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { Tween } from 'cc';
 import { v3 } from 'cc';
 import { tween } from 'cc';
+import { UIOpacity } from 'cc';
+//------------------------特殊引用开始----------------------------//
+import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
+import { random } from 'cc';
+//------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -31,9 +36,8 @@ export default class CustomUser extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
     _stage = -1;
-    _ids: number[] = [];
-    _showAnimation: boolean = false;
-    _myId: number = -1;
+    _ids: string[] = [];
+    _myId: string = '';
 
     buildUi() {
         BaseGlobal.registerListeners(this, {
@@ -79,10 +83,14 @@ export default class CustomUser extends ViewBase {
     }
 
     updateGameStage() {
+        this.user_icon_node.updateGameStage();
         this._stage = SevenUpSevenDownManager.Stage;
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
+                const balance = WalletManager.balance;
+                this.updateTotalBalance(balance);
                 this.updatePlayer();
+                this.resetBetPlayer();
                 break;
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
@@ -95,6 +103,7 @@ export default class CustomUser extends ViewBase {
         const data = SevenUpSevenDownManager.BigWinList;
         this.otherhead_node.children.forEach((child, idx) => {
             const _d = data[idx];
+            Tween.stopAllByTarget(child.getChildByName('labelwin'));
             child.active = !!_d;
             if (_d) {
                 child.getChildByName('labelcoin').getComponent(cc.Label).string = _d.balance + '';
@@ -110,8 +119,6 @@ export default class CustomUser extends ViewBase {
                         })
                         .to(0.2, { eulerAngles: v3(0, 0, 0) }, { easing: 'cubicInOut' })
                         .start();
-
-
                     this._ids[idx] = _d.player_id;
                 } else {
                     this._ids[idx] = _d.player_id;
@@ -121,9 +128,10 @@ export default class CustomUser extends ViewBase {
         })
     }
 
-    getWorldPosByUid(player_id: number): cc.Vec3 {
+    getWorldPosByUid(player_id: string, icon: number): cc.Vec3 {
         let node = this.rest_node;
         let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
+        let unrank = true;
         this.otherhead_node.children.forEach((child, idx) => {
             if (this._ids[idx] && this._ids[idx] == player_id) {
                 wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
@@ -141,21 +149,67 @@ export default class CustomUser extends ViewBase {
                         target.position = startPos;
                     })
                     .start();
+                unrank = false;
             }
         })
         if (player_id == this._myId) {
             wordPos = this.spr_myhead.node.parent.transform.convertToWorldSpaceAR(this.spr_myhead.node.position);
+            unrank = false;
+            // this.user_icon_node.receiveData(Math.floor(Math.random() * 10) + 1)
+        }
+        if (unrank) {
+            this.user_icon_node.receiveData(icon)
         }
         return wordPos;
     }
 
-    resetBetPlayer() {
-        this._showAnimation = false;
-        this.spr_head_one.node.parent.active = false;
-        this.spr_head_two.node.parent.active = false;
-        this.spr_head_three.node.parent.active = false;
+    getLoseWorldPos() {
+        let node = this.rest_node;
+        let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
+        return wordPos;
     }
 
+    resetBetPlayer() {
+        Tween.stopAllByTarget(this.labelwin.node);
+        this.labelwin.string = '';
+    }
+
+
+    playWinAnimation() {
+        let winData = SevenUpSevenDownManager.WinData;
+        this._ids.forEach((v, idx) => {
+            if (winData.has(v)) {
+                let _d = winData.get(v);
+                if (_d > 0) {
+                    let node = this.otherhead_node.children[idx].getChildByName('labelwin');
+                    Tween.stopAllByTarget(node);
+                    node.getComponent(cc.Label).string = '+' + _d;
+                    node.getComponent(UIOpacity).opacity = 0;
+                    node.setPosition(v3(43, 0, 0))
+                    tween(node)
+                        .parallel(
+                            tween().to(0.1, { position: v3(43, 21, 0) }, { easing: 'quadOut' }),
+                            tween().to(0.1, { opacity: 255 }),
+                        )
+                        .start();
+                }
+            }
+        })
+        if (winData.has(this._myId)) {
+            let _d = winData.get(this._myId);
+            if (_d > 0) {
+                let node = this.labelwin.node;
+                this.labelwin.string = '+' + _d;
+                node.setPosition(v3(43, 0, 0))
+                tween(node)
+                    .parallel(
+                        tween().to(0.1, { position: v3(43, 21, 0) }, { easing: 'quadOut' }),
+                        tween().to(0.1, { opacity: 255 }),
+                    )
+                    .start();
+            }
+        }
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -174,26 +228,24 @@ export default class CustomUser extends ViewBase {
             cc_label_coin: [cc.Label],
             cc_label_name: [cc.Label],
             cc_labelpeople: [cc.Label],
+            cc_labelwin: [cc.Label],
             cc_myhead_node: [cc.Node],
             cc_otherhead_node: [cc.Node],
             cc_rest_node: [cc.Node],
-            cc_spr_head_one: [cc.Sprite],
-            cc_spr_head_three: [cc.Sprite],
-            cc_spr_head_two: [cc.Sprite],
             cc_spr_myhead: [cc.Sprite],
+            cc_user_icon_node: [CustomUserIcon],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
     protected label_coin: cc.Label = null;
     protected label_name: cc.Label = null;
     protected labelpeople: cc.Label = null;
+    protected labelwin: cc.Label = null;
     protected myhead_node: cc.Node = null;
     protected otherhead_node: cc.Node = null;
     protected rest_node: cc.Node = null;
-    protected spr_head_one: cc.Sprite = null;
-    protected spr_head_three: cc.Sprite = null;
-    protected spr_head_two: cc.Sprite = null;
     protected spr_myhead: cc.Sprite = null;
+    protected user_icon_node: CustomUserIcon = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成

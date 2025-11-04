@@ -194,7 +194,7 @@ export namespace sevenupdown{
     /** 阶段 */
     export interface SUDSevenUpDownRankList{
         /** 玩家id */
-        player_id? : number;
+        player_id? : string;
         /** 玩家金额 */
         balance? : number;
         /** 玩家icon */
@@ -340,7 +340,7 @@ export namespace sevenupdown{
         /**  下注列表 */
         bets : baccarat.BetData[];
         /**  玩家ID */
-        player_id? : number;
+        player_id? : string;
         /**  头像 */
         icon? : number;
         /**  是否是第一名下注 */

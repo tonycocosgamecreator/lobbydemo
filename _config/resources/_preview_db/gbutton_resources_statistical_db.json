@@ -262,6 +262,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002004
+        },
+        "cc_button_unauto": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_unauto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002005
         }
     },
     "CustomMainHistory": {

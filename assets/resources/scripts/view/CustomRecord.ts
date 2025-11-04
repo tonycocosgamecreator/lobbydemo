@@ -91,7 +91,7 @@ export default class CustomRecord extends ViewBase {
     }
 
     getBigPlayData() {
-        const winMap = new Map<number, { total_win: number; count: number, icon: number }>();
+        const winMap = new Map<string, { total_win: number; count: number, icon: number }>();
         this._list.forEach(player => {
             const playerId = player.player_id;
             const winCoin = parseFloat(player.win) || 0;
@@ -145,8 +145,10 @@ export default class CustomRecord extends ViewBase {
         this.recordList.stopScrollTo();
         this.recordList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
+            let str = data.player_id.toString();
+            if (str.length > 6) str = str.slice(0, 6) + '...';
             item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
-            item.getChildByName('playId').getComponent(cc.Label).string = data.player_id + '';
+            item.getChildByName('playId').getComponent(cc.Label).string = "Player_" + str;
             item.getChildByName('bet').getComponent(cc.Label).string = data.bet_coin;
             item.getChildByName('win').getComponent(cc.Label).string = +data.win ? data.win : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
         }

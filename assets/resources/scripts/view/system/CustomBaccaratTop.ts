@@ -32,7 +32,7 @@ export default class CustomBaccaratTop extends ViewBase {
 
     buildUi() {
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLAYER_CURRENCY_UPDATE]: this.updateTotalBalance,
+            [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
         });
         this.labelGameTitle.string = 'sevenupdown';
         this.menu.show(false, 0);

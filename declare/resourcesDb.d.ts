@@ -85,6 +85,7 @@ declare module resourcesDb {
         ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',
+        ['CustomUserIcon']: 'CustomUserIcon',
         ['CustomUser']: 'CustomUser',
         ['CustomWinTip']: 'CustomWinTip',
         ['PanelCircleLoading']: 'PanelCircleLoading',

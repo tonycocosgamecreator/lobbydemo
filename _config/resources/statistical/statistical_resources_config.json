@@ -90,5 +90,9 @@
     "CustomHistoryItem": {
         "statisticalId": 100001022,
         "panelId": 22
+    },
+    "CustomUserIcon": {
+        "statisticalId": 100001023,
+        "panelId": 23
     }
 }

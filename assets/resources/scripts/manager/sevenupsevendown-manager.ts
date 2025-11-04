@@ -11,7 +11,7 @@ const { ccclass, property } = _decorator;
 export interface betInfo {
     bet_coin: string,
     bet_id: number,
-    player_id: number,
+    player_id: string,
     icon: number,
     win?: string
 }
@@ -73,7 +73,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._deskId = msg.info.desk_id || 0;
             WalletManager.walletInfos = msg.wallets || [];
             WalletManager.bets = msg.info.bets;
-            this._playerId = msg.player_id || 0;
+            this._playerId = msg.player_id + '' || '';
             this._headId = msg.player_data?.icon || 1;
             this._odds = msg.info?.seven_up_down_info?.odds || [];
             this._oddString = msg.info?.odds || [];
@@ -81,8 +81,12 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._haveSec = msg.info.have_sec || 0;
             this._dur = msg.info.have_sec || 0;
             this._bigWinList = msg.info?.player_rank_ntf?.ranks || [];
-            //翻倍数据
-            // this.Odd = msg.info.odds || [];
+            this._bigWinList.forEach(t => {
+                if (t && t.player_id) {
+                    this._winData.set(t.player_id, 0);
+                }
+            });
+            this._winData.set(this._playerId, 0);
             if (msg.info?.bet_ntf?.desk_id == this._deskId) {
                 const plays = msg.info?.bet_ntf?.players || [];
                 for (let i = 0; i < plays.length; i++) {
@@ -97,6 +101,12 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             icon: +play.icon,
                             win: play.win_coin,
                         }
+                        if (+play.win_coin > 0 && this._winData.has(play.player_id)) {
+                            let _v = this._winData.get(play.player_id);
+                            _v += parseInt(play.win_coin);
+                            this._winData.set(play.player_id, _v);
+                        }
+
                         if (isme) {
                             this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
                             this._mybetInfo.push(_d);
@@ -105,9 +115,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
                         this._allbetInfo.push(_d);
                         if (play.is_first) {
-                            if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
-                                this._firstPlayBet.push(bet.bet_id);
-                            }
+                            this._firstPlayBet.add(bet.bet_id);
                         }
                     }
 
@@ -156,9 +164,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     icon: this._headId
                 }
                 if (msg.is_first) {
-                    if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
-                        this._firstPlayBet.push(bet.bet_id);
-                    }
+                    this._firstPlayBet.add(bet.bet_id);
                 }
                 this.Before = _d;
                 this._allbetInfo.push(_d);
@@ -188,9 +194,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                                 icon: +play.icon
                             }
                             if (play.is_first) {
-                                if (this._firstPlayBet.indexOf(bet.bet_id) == -1) {
-                                    this._firstPlayBet.push(bet.bet_id);
-                                }
+                                this._firstPlayBet.add(bet.bet_id);
                             }
                             this._allbetInfo.push(_d);
                             this._view?.updateflyChip(_d);
@@ -217,6 +221,13 @@ export default class SevenUpSevenDownManager extends BaseManager {
             if (msg.stage == baccarat.DeskStage.SettleStage) return false;
             if (msg.stage == baccarat.DeskStage.ReadyStage) {
                 this.reset();
+                this._winData.clear();
+                this._bigWinList.forEach(t => {
+                    if (t && t.player_id) {
+                        this._winData.set(t.player_id, 0);
+                    }
+                });
+                this._winData.set(this.PlayerId, 0);
             }
             this.View?.updateGameStage();
             return true;
@@ -272,7 +283,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             const _d = {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
-                                player_id: play.player_id,
+                                player_id: +play.player_id,
                                 icon: play.icon
                             }
                             info.push(_d);
@@ -293,9 +304,6 @@ export default class SevenUpSevenDownManager extends BaseManager {
         if (msgType == sevenupdown.Message.MsgSevenUpDownSettleNtf) {
             const msg = data as sevenupdown.MsgSevenUpDownSettleNtf;
             if (msg.desk_id != this._deskId) return false;
-            if (data.win_data && data.win_data.new_coin) {
-                WalletManager.updatePlayerCoin(parseFloat(data.win_data.new_coin));
-            }
             if (msg.open_pos) {
                 this._openPos = msg.open_pos;
                 this.View?.updateGameStage();
@@ -311,13 +319,6 @@ export default class SevenUpSevenDownManager extends BaseManager {
             } else if (v >= 8 && v <= 12) {
                 this._winType.push(13);
             }
-            this._myWinType = [];
-            const open_elem = msg.win_data?.open_elem || [];
-            open_elem.forEach(t => {
-                if (t) {
-                    this._myWinType.push(t.pos_id);
-                }
-            })
             this._winCoin = +msg.win_data?.win_coin || 0;
             //历史记录更新
             this._records.push({ win_type: msg.open_pos, is_double: msg.is_double });
@@ -347,7 +348,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             if (plays && plays.length) {
                 for (let i = 0; i < plays.length; i++) {
                     const play = plays[i];
-                    let isme: boolean = this._playerId == play.player_id
+                    let isme: boolean = this._playerId == play.player_id;
                     for (let j = 0; j < play.bets.length; j++) {
                         const bet = play.bets[j];
                         this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
@@ -357,6 +358,14 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             player_id: play.player_id,
                             icon: play.icon,
                             win: play.win_coin
+                        }
+                        if (+play.win_coin > 0) {
+                            console.log()
+                        }
+                        if (+play.win_coin > 0 && this._winData.has(play.player_id)) {
+                            let _v = this._winData.get(play.player_id);
+                            _v += parseInt(play.win_coin);
+                            this._winData.set(play.player_id, _v);
                         }
                         if (isme) {
                             this._mybetInfo.push(_d);
@@ -420,10 +429,10 @@ export default class SevenUpSevenDownManager extends BaseManager {
     /**
      * 自己的赢奖区域数据
      */
-    private static _myWinType: number[] = [];
+    // private static _myWinType: number[] = [];
     private static _chipIdx: number = -1;//筹码默认选择
     private static _odds: string[] = [];//倍率
-    private static _playerId: number = -1;//玩家名字id
+    private static _playerId: string = '';//玩家名字id
     private static _headId: number = 1;//头像
     private static _records: sevenupdown.SUDSevenUpDownWinType[] | null = null;//当前所有的开奖记录
     private static _probability: number[] = [0, 0, 0];
@@ -464,7 +473,6 @@ export default class SevenUpSevenDownManager extends BaseManager {
     }
     public static set Auto(value: boolean) {
         this._auto = value;
-        Global.sendMsg(GameEvent.UPDATE_AUTO);
     }
 
     public static set OddString(value: string[]) {
@@ -480,7 +488,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get DeskId(): number { return this._deskId; }
     public static get ChipIdx(): number { return this._chipIdx; }
     public static get Odds(): string[] { return this._odds; }
-    public static get PlayerId(): number { return this._playerId; }
+    public static get PlayerId(): string { return this._playerId; }
     public static get HeadId(): number { return this._headId; }
     public static get Records(): sevenupdown.SUDSevenUpDownWinType[] | null { return this._records; }
     public static get Probability(): number[] { return this._probability; }
@@ -493,13 +501,15 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get AllbetInfo(): betInfo[] { return this._allbetInfo; }
     public static get Before(): betInfo { return this._before; }
     public static get LastbetInfo(): betInfo[] { return this._lastbetInfo; }
-    public static get FirstPlayBet(): number[] { return this._firstPlayBet; }
+    public static get FirstPlayBet(): Set<number> { return this._firstPlayBet; }
     public static get OddString(): string[] { return this._oddString; }
     public static get OpenPos(): number[] { return this._openPos; }
     public static get WinLedList(): sevenupdown.MsgLastWinNtf[] { return this._winLedList; }
     public static get WinCoin(): number { return this._winCoin; }
     public static get WinType(): number[] { return this._winType; }
-    public static get MyWinType(): number[] { return this._myWinType; }
+    public static get Auto(): boolean { return this._auto };
+    // public static get MyWinType(): number[] { return this._myWinType; }
+    public static get WinData(): Map<string, number> { return this._winData; }
 
     /**
      * 重置所有数据
@@ -510,19 +520,19 @@ export default class SevenUpSevenDownManager extends BaseManager {
         this._mybetInfo = [];
         this._before = null;
         this._allbetInfo = [];
-        this._firstPlayBet = [];
+        this._firstPlayBet.clear()
         this._oddString = [];
         this._winCoin = 0;
         this._winType = [];
-        this._myWinType = [];
-
+        // this._myWinType = [];
     }
 
     private static _before: betInfo = null;//前端记录上一从下注内容
     private static _lastbetInfo: betInfo[] = [];//前端上一局下注记录
     private static _mybetInfo: betInfo[] = [];//本局自己下注记录
     private static _allbetInfo: betInfo[] = [];//本局所有人下注记录
-    private static _firstPlayBet: number[] = [];//第一名下注记录
+    private static _firstPlayBet: Set<number> = new Set;//第一名下注记录
+    private static _winData: Map<string, number> = new Map();
     public static subtractLedList() {
         this._winLedList.splice(0, 1);
     }

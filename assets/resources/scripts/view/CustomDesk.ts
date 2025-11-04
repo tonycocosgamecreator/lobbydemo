@@ -51,7 +51,6 @@ export default class CustomDesk extends ViewBase {
             child.getChildByName('coinbg').active = false;
             child.getChildByName('bets').active = false;
             child.getChildByName('spineone').active = false;
-            child.getChildByName('spinetwo').active = false;
             child.getChildByName('lightning').active = false;
         });
     }
@@ -71,7 +70,11 @@ export default class CustomDesk extends ViewBase {
                 for (let i = 0; i < _odds.length; i++) {
                     if (_odds[i] && +_odds[i]) {
                         let child = this.betarea_node.children[i];
-                        this.showDoubleAnimaton(child, '1open', reconnect)
+                        this.showDoubleAnimaton(child, 'open', reconnect)
+                        child.getChildByName('spineone').children[0].children[0].active = true;
+                        child.getChildByName('spineone').children[0].children[1].active = false;
+                        child.getChildByName('spineone').children[0].children[0].getComponent(cc.Label).string = `X2`;
+                        child.getChildByName('spineone').children[0].children[1].getComponent(cc.Label).string = `X2`;
                     }
                 }
                 break;
@@ -85,7 +88,7 @@ export default class CustomDesk extends ViewBase {
         const mybets = SevenUpSevenDownManager.MyBets;
         const isFirst = SevenUpSevenDownManager.FirstPlayBet;
         this.betarea_node.children.forEach((child, idx) => {
-            child.getChildByName('star').active = isFirst.indexOf(idx + 1) == -1 ? false : true;
+            child.getChildByName('star').active = isFirst.has(idx + 1);
             if (total[idx]) {
                 child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label).string = mybets[idx] + '';
                 child.getChildByName('bets').getChildByName('labelallbet').getComponent(cc.Label).string = '/' + total[idx];
@@ -99,44 +102,42 @@ export default class CustomDesk extends ViewBase {
 
     }
 
-    showDoubleAnimaton(child: cc.Node, name: string, reconnect: boolean = false, syncPlay: boolean = false) {
+    showDoubleAnimaton(child: cc.Node, name: string, reconnect: boolean = false) {
         let sp1 = child.getChildByName('spineone');
         sp1.active = true;
         const trackEntry = sp1.getComponent(sp.Skeleton).setAnimation(0, name, false);
         trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
-        if (syncPlay) {
-            let sp2 = child.getChildByName('spinetwo');
-            sp2.active = true;
-            sp2.getComponent(sp.Skeleton).setAnimation(0, 'baokai', false);
-        }
+        sp1.getComponent(sp.Skeleton).setCompleteListener(() => {
+            sp1.children[0].children[0].active = false;
+            sp1.children[0].children[1].active = true;
+        })
     }
 
     showResult() {
         let wintype = SevenUpSevenDownManager.WinType;
-        let myWintype = SevenUpSevenDownManager.MyWinType;
         let _odds = SevenUpSevenDownManager.OddString;
         for (let i = 0; i < this.betarea_node.children.length; i++) {
             let child = this.betarea_node.children[i];
             let win = wintype.indexOf(i + 1) == -1 ? false : true;
             if (win) {
                 let light = child.getChildByName('lightning');
-                light.getComponent(sp.Skeleton).setAnimation(0, 'animation', false);
+                let name = (i == 6 || i == 12 || i == 13) ? 'animation' : 'animation2';
+                if (light.getComponentInChildren(sp.Skeleton)) {
+
+                    light.getComponentInChildren(sp.Skeleton).setAnimation(0, name, false);
+                } else {
+                    console.log(i, '========================================================,i')
+                }
                 light.active = true;
             }
             if (_odds[i] && +_odds[i]) {
-                if (win && myWintype[i]) {
-                    this.showDoubleAnimaton(child, '2obtain');
-                    this.scheduleOnce(() => {
-                        this.showDoubleAnimaton(child, '3end', false, true);
-                    }, 0.5)
-                } else {
-                    this.showDoubleAnimaton(child, '2end');
-                }
+                this.showDoubleAnimaton(child, 'end');
             }
         }
     }
 
     sendBetMessage(idx: number) {
+        if (this._stage != baccarat.DeskStage.StartBetStage) return;
         const myCoin = WalletManager.balance;
         const betcoin = this._chipButtons[SevenUpSevenDownManager.ChipIdx];
         if (betcoin > myCoin) {
@@ -154,7 +155,7 @@ export default class CustomDesk extends ViewBase {
     }
 
     getWorldPosByIdx(idx: number): cc.Vec3 {
-        const child = this.betarea_node.children[idx - 1];
+        const child = this.betarea_node.children[idx - 1].getChildByName('end');
         let wordPos = child.parent.transform.convertToWorldSpaceAR(
             child.position
         );

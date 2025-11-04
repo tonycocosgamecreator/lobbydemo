@@ -8,6 +8,7 @@ import ViewManager from '../core/manager/view-manager';
 import Managers from '../core/manager/managers';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import HistoryManager from '../manager/history-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -30,6 +31,7 @@ export default class PanelSevenUpSevenDownInit extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
+        AudioManager.playBgm(this.bundleName, '背景')
         Managers.registe(SevenUpSevenDownManager);
         Managers.registe(HistoryManager);
         JsonLoginManager.Login();

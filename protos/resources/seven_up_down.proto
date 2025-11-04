@@ -79,7 +79,7 @@ message SUDSevenUpDownBetNtf {
 }
 
 message SUDSevenUpDownRankList {
-    optional int32 player_id = 1;    //玩家id
+    optional string player_id = 1;    //玩家id
     optional int64 balance = 2; //玩家金额
     optional int64 icon = 3; //玩家icon
 }
@@ -172,7 +172,7 @@ message MsgCancelBetBaccaratNtf {
 // BetPlayer
 message BetPlayer {
     repeated BetData bets = 1;                        // 下注列表
-    optional int64 player_id = 2;                      // 玩家ID
+    optional string player_id = 2;                      // 玩家ID
     optional int64 icon = 3;                         // 头像
     optional bool is_first = 4;                       // 是否是第一名下注
     optional string win_coin = 5;                         // 赢分

@@ -33,7 +33,7 @@
         "_value": true
       },
       "particle": {
-        "_value": true
+        "_value": false
       },
       "physics": {
         "_value": false,
@@ -140,7 +140,6 @@
       "dragon-bones",
       "gfx-webgl",
       "meshopt",
-      "particle",
       "particle-2d",
       "spine",
       "tween",
