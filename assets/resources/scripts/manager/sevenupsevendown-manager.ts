@@ -382,6 +382,19 @@ export default class SevenUpSevenDownManager extends BaseManager {
             Global.sendMsg(GameEvent.UPDATE_RANK, msg.rank);
             return true;
         }
+        if (msgType == baccarat.Message.MsgBaccaratKickOutNtf) {
+            const msg = data as baccarat.MsgBaccaratKickOutNtf;
+            console.warn('receive kick out ntf! === ', msg);
+            const uid = msg.uid;
+            if (uid == +this.PlayerId) {
+                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.TIP_ENTER_GAME_FAILED,
+                    resourcesDb.I18N_RESOURCES_DB_INDEX.Notice
+                );
+                return true;
+            }
+            return true;
+        }
         return false;
     }
     /**----------------游戏状态相关-------------------*/

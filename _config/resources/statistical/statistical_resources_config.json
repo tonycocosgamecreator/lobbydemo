@@ -94,5 +94,9 @@
     "CustomUserIcon": {
         "statisticalId": 100001023,
         "panelId": 23
+    },
+    "CustomDouble": {
+        "statisticalId": 100001024,
+        "panelId": 24
     }
 }

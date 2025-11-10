@@ -123,8 +123,6 @@ export default class CustomUserIcon extends ViewBase {
         if (this._currentData.length !== 3) return;
         const [head1, head2, head3] = this.node.children;
         const opacity1 = head1.getComponent(UIOpacity);
-        const opacity2 = head2.getComponent(UIOpacity);
-        const opacity3 = head3.getComponent(UIOpacity);
         head3.setPosition(this._positions[1])
         head2.setPosition(this._positions[0])
         // 位置1和位置2保持不动

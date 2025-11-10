@@ -22,6 +22,7 @@ import Timer from './core/utils/timer';
 import { bDebug } from './core/define';
 import { BaseMessage } from './core/message/base-message';
 import { Net } from './core/net/net';
+import { HttpLobbyConnector } from './network/net/http-lobby-connector';
 const { ccclass, property } = _decorator;
 
 enum NetWorkStatus {
@@ -47,6 +48,11 @@ export class main extends Component {
     start() {
         //初始化浏览器参数
         BrowserUtils.Init();
+        let url = BrowserUtils.getParam('api')
+        if (url) {
+            url = decodeURIComponent(url);
+            HttpLobbyConnector.instance.baseUrl = url;
+        }
         const fadeOutLogo = window['fadeOutLogo'];
         const canvas = this.uiCamera.node.parent.getComponent(Canvas);
         Constant.CurrentBundleId = AssetManager.BuiltinBundleName.MAIN;

@@ -66,6 +66,12 @@
         "desc": "",
         "statisticalId": 100001008
     },
+    "CustomDouble": {
+        "viewName": "CustomDouble",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001024
+    },
     "CustomFlyChip": {
         "viewName": "CustomFlyChip",
         "bundleName": "resources",

@@ -32,15 +32,16 @@ export default class CustomMainHistory extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
     _showAnimation: boolean = false;
+    _show: boolean = false;
     buildUi() {
         this.labelmax.string = '';
         this.labelmiddle.string = '';
         this.labelmin.string = '';
         this.historyDetailList.numItems = 0;
         this.historyList.numItems = 0;
-        this.buttonCloseDetail.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.buttonHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
         this.history_detail_node.scale = v3(1, 0, 1);
+        this.jiantou.node.setScale(v3(1, 1, 1));
         BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_HISTORY]: this.updateHistory,
             [GameEvent.UPDATE_HISTORY_PROBABILITY]: this.updateHistoryProbability,
@@ -83,12 +84,16 @@ export default class CustomMainHistory extends ViewBase {
         if (this._showAnimation) return;
         this._showAnimation = true;
         if (show) {
+            this.jiantou.node.setScale(v3(1, -1, 1));
             cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 1, 1) }).call(() => {
                 this._showAnimation = false;
+                this._show = true;
             }).start();
         } else {
+            this.jiantou.node.setScale(v3(1, 1, 1));
             cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 0, 1) }).call(() => {
                 this._showAnimation = false;
+                this._show = false;
             }).start();
         }
     }
@@ -101,11 +106,8 @@ export default class CustomMainHistory extends ViewBase {
 
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
-    private onClickButtonCloseDetail(event: cc.EventTouch) {
-        this.playAnimation(false);
-    }
     private onClickButtonHistory(event: cc.EventTouch) {
-        this.playAnimation(true);
+        this.playAnimation(this._show ? false : true);
     }
     // @view export event end
 
@@ -113,42 +115,42 @@ export default class CustomMainHistory extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonCloseDetail    : [GButton,this.onClickButtonCloseDetail.bind(this)],
-            cc_buttonHistory    : [GButton,this.onClickButtonHistory.bind(this)],
-            cc_historyDetailList    : [List],
-            cc_historyList    : [List],
-            cc_history_detail_node    : [cc.Node],
-            cc_labelmax    : [cc.Label],
-            cc_labelmiddle    : [cc.Label],
-            cc_labelmin    : [cc.Label],
+            cc_buttonHistory: [GButton, this.onClickButtonHistory.bind(this)],
+            cc_historyDetailList: [List],
+            cc_historyList: [List],
+            cc_history_detail_node: [cc.Node],
+            cc_jiantou: [cc.Sprite],
+            cc_labelmax: [cc.Label],
+            cc_labelmiddle: [cc.Label],
+            cc_labelmin: [cc.Label],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected buttonCloseDetail: GButton    = null;
-   protected buttonHistory: GButton    = null;
-   protected historyDetailList: List    = null;
-   protected historyList: List    = null;
-   protected history_detail_node: cc.Node    = null;
-   protected labelmax: cc.Label    = null;
-   protected labelmiddle: cc.Label    = null;
-   protected labelmin: cc.Label    = null;
+    protected buttonHistory: GButton = null;
+    protected historyDetailList: List = null;
+    protected historyList: List = null;
+    protected history_detail_node: cc.Node = null;
+    protected jiantou: cc.Sprite = null;
+    protected labelmax: cc.Label = null;
+    protected labelmiddle: cc.Label = null;
+    protected labelmin: cc.Label = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomMainHistory';
+    public static readonly VIEW_NAME = 'CustomMainHistory';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomMainHistory.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomMainHistory.VIEW_NAME;
     }
     // @view export resource end

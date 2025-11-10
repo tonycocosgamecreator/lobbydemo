@@ -13,7 +13,7 @@ import { tween } from 'cc';
 import { UIOpacity } from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
-import { random } from 'cc';
+import { StringUtils } from '../core/utils/string-utils';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -62,7 +62,7 @@ export default class CustomUser extends ViewBase {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
-                child.getChildByName('labelcoin').getComponent(cc.Label).string = _d.balance + '';
+                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('labelcoin').getComponent(cc.Label), _d.balance);
                 child.getChildByName('labelwin').getComponent(cc.Label).string = '';
                 child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
                 this._ids.push(_d.player_id);
@@ -71,7 +71,7 @@ export default class CustomUser extends ViewBase {
     }
 
     updateTotalBalance(balance: number): void {
-        this.label_coin.string = balance.toFixed(2);
+        StringUtils.updateNumberTextWithSperateAndFixed(this.label_coin, balance);
     }
 
     updateOnlineRoom() {
@@ -103,11 +103,12 @@ export default class CustomUser extends ViewBase {
         const data = SevenUpSevenDownManager.BigWinList;
         this.otherhead_node.children.forEach((child, idx) => {
             const _d = data[idx];
-            Tween.stopAllByTarget(child.getChildByName('labelwin'));
+            let winNode = child.getChildByName('labelwin')
+            Tween.stopAllByTarget(winNode);
             child.active = !!_d;
             if (_d) {
-                child.getChildByName('labelcoin').getComponent(cc.Label).string = _d.balance + '';
-                child.getChildByName('labelwin').getComponent(cc.Label).string = '';
+                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('labelcoin').getComponent(cc.Label), _d.balance);
+                winNode.getComponent(cc.Label).string = '';
                 if (this._ids[idx] && this._ids[idx] != _d.player_id) {
                     const nd = child.getChildByName('head');
                     nd.eulerAngles = v3(0, 0, 0);
@@ -183,7 +184,8 @@ export default class CustomUser extends ViewBase {
                 if (_d > 0) {
                     let node = this.otherhead_node.children[idx].getChildByName('labelwin');
                     Tween.stopAllByTarget(node);
-                    node.getComponent(cc.Label).string = '+' + _d;
+                    StringUtils.updateNumberTextWithSperateAndFixed(node.getComponent(cc.Label), _d, '+');
+                    // node.getComponent(cc.Label).string = '+' + _d;
                     node.getComponent(UIOpacity).opacity = 0;
                     node.setPosition(v3(43, 0, 0))
                     tween(node)
@@ -199,7 +201,7 @@ export default class CustomUser extends ViewBase {
             let _d = winData.get(this._myId);
             if (_d > 0) {
                 let node = this.labelwin.node;
-                this.labelwin.string = '+' + _d;
+                StringUtils.updateNumberTextWithSperateAndFixed(this.labelwin, _d, '+');
                 node.setPosition(v3(43, 0, 0))
                 tween(node)
                     .parallel(

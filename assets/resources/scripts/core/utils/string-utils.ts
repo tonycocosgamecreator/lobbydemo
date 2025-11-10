@@ -121,15 +121,16 @@ export class StringUtils {
    * 使用指定模式更新这个label的显示,没有动效的处理，直接
    * @param label
    * @param val           数值
+   * @param symbol        符号，数字前方添加的
    * @param seprateCount  多少个数字进行分割，默认3，千分位
    * @param seprate       分割符号是什么，默认","
    * @param pMulte        需要除以多少倍，默认1
    * @param fixedCount    最后保留几位小数，默认2
    */
-  public static updateNumberTextWithSperateAndFixed(label: Label, val: number, seprateCount: number = 3, seprate: string = ',', pMulte: number = 1, fixedCount: number = 2) {
+  public static updateNumberTextWithSperateAndFixed(label: Label, val: number, symb: string = '', seprateCount: number = 3, seprate: string = ',', pMulte: number = 1, fixedCount: number = 2) {
     const floater = (val / pMulte).toFixed(fixedCount);
     const text = this.splitNumber(floater, seprate, seprateCount);
-    label.string = text;
+    label.string = symb + text;
   }
 
   /**

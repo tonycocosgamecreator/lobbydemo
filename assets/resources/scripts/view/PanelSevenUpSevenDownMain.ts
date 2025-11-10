@@ -7,6 +7,7 @@ import * as cc from 'cc';
 import CustomBaccaratTop from 'db://assets/resources/scripts/view/system/CustomBaccaratTop';
 import CustomChip from 'db://assets/resources/scripts/view/CustomChip';
 import CustomDesk from 'db://assets/resources/scripts/view/CustomDesk';
+import CustomDouble from 'db://assets/resources/scripts/view/CustomDouble';
 import CustomFlyChip from 'db://assets/resources/scripts/view/CustomFlyChip';
 import CustomHandle from 'db://assets/resources/scripts/view/CustomHandle';
 import CustomMainHistory from 'db://assets/resources/scripts/view/CustomMainHistory';
@@ -48,7 +49,8 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
 
     //------------------------ 内部逻辑 ------------------------//
     _isGameInBackground: boolean = false;
-    stage = -1;
+    _stage = -1;
+    _playId: string = '';
 
     buildUi() {
         this.reset();
@@ -78,16 +80,18 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     }
 
     updateReconnect() {
-        this.stage = SevenUpSevenDownManager.Stage;
-        if (this.stage == -1) return;
+        this._playId = SevenUpSevenDownManager.PlayerId;
+        this._stage = SevenUpSevenDownManager.Stage;
+        if (this._stage == -1) return;
         this.reset();
         this.time_node.updateGameStage();
-        this.handle_node.updateGameStage();
+        this.handle_node.updateGameStage(true);
         this.desk_node.updateGameStage(true);
         this.record_node.updateGameStage(true);
         this.fly_chip_node.updateGameStage(true);
         this.result_node.updateGameStage(true);
-        switch (this.stage) {
+        this.double_node.updateGameStage(true);
+        switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.ske_person.setAnimation(0, 'idle2', false);
                 break;
@@ -98,6 +102,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.ske_person.setAnimation(0, 'idle3', false);
                 break;
             case baccarat.DeskStage.OpenStage:
+                this.ske_person.setAnimation(0, 'idle3', false);
                 break;
             case baccarat.DeskStage.SettleStage:
                 this.setTouZiData();
@@ -107,8 +112,8 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     }
 
     updateGameStage() {
-        this.stage = SevenUpSevenDownManager.Stage;
-        if (this.stage == -1) return;
+        this._stage = SevenUpSevenDownManager.Stage;
+        if (this._stage == -1) return;
         this.time_node.updateGameStage();
         this.handle_node.updateGameStage();
         this.desk_node.updateGameStage();
@@ -116,7 +121,8 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.user_node.updateGameStage();
         this.fly_chip_node.updateGameStage();
         this.result_node.updateGameStage();
-        switch (this.stage) {
+        this.double_node.updateGameStage();
+        switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.reset();
                 this.ske_start.node.active = true;
@@ -156,6 +162,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                     this.ske_person.setAnimation(0, 'clap', false);
                     this.result_node.showResult(true);
                     this.desk_node.showResult();
+                    this.double_node.showResult()
                     if (SevenUpSevenDownManager.WinCoin > 0) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
                     }
@@ -201,11 +208,17 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     updateflyChip(data: betInfo) {
         this.fly_chip_node.init(data, true);
         this.record_node.addList(data);
+        if (data.player_id == this._playId) {
+            this.handle_node.updateClear();
+        }
     }
 
     updateDeletChip(data: betInfo) {
         this.fly_chip_node.recycleChipByCondition(data);
         this.record_node.deleList(data);
+        if (data.player_id == this._playId) {
+            this.handle_node.updateClear();
+        }
     }
 
     setTouZiData() {
@@ -244,6 +257,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
             cc_bg: [cc.Node],
             cc_chip_node: [CustomChip],
             cc_desk_node: [CustomDesk],
+            cc_double_node: [CustomDouble],
             cc_fly_chip_node: [CustomFlyChip],
             cc_handle_node: [CustomHandle],
             cc_history_node: [CustomMainHistory],
@@ -267,6 +281,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     protected bg: cc.Node = null;
     protected chip_node: CustomChip = null;
     protected desk_node: CustomDesk = null;
+    protected double_node: CustomDouble = null;
     protected fly_chip_node: CustomFlyChip = null;
     protected handle_node: CustomHandle = null;
     protected history_node: CustomMainHistory = null;

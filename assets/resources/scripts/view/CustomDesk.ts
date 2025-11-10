@@ -10,6 +10,7 @@ import UIHelper from '../network/helper/ui-helper';
 import { GameEvent, THEME_ID } from '../define';
 import BaseGlobal from '../core/message/base-global';
 import { sp } from 'cc';
+import { StringUtils } from '../core/utils/string-utils';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -50,7 +51,6 @@ export default class CustomDesk extends ViewBase {
             child.getChildByName('star').active = false;
             child.getChildByName('coinbg').active = false;
             child.getChildByName('bets').active = false;
-            child.getChildByName('spineone').active = false;
             child.getChildByName('lightning').active = false;
         });
     }
@@ -66,17 +66,6 @@ export default class CustomDesk extends ViewBase {
                 this.updatePlayBetValue();
                 break;
             case baccarat.DeskStage.OpenStage:
-                let _odds = SevenUpSevenDownManager.OddString;
-                for (let i = 0; i < _odds.length; i++) {
-                    if (_odds[i] && +_odds[i]) {
-                        let child = this.betarea_node.children[i];
-                        this.showDoubleAnimaton(child, 'open', reconnect)
-                        child.getChildByName('spineone').children[0].children[0].active = true;
-                        child.getChildByName('spineone').children[0].children[1].active = false;
-                        child.getChildByName('spineone').children[0].children[0].getComponent(cc.Label).string = `X2`;
-                        child.getChildByName('spineone').children[0].children[1].getComponent(cc.Label).string = `X2`;
-                    }
-                }
                 break;
             case baccarat.DeskStage.SettleStage:
                 break;
@@ -90,8 +79,13 @@ export default class CustomDesk extends ViewBase {
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('star').active = isFirst.has(idx + 1);
             if (total[idx]) {
-                child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label).string = mybets[idx] + '';
-                child.getChildByName('bets').getChildByName('labelallbet').getComponent(cc.Label).string = '/' + total[idx];
+                let bet = mybets[idx]
+                if (bet) {
+                    StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label), bet, '', 3, ',', 1, 0);
+                } else {
+                    child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label).string = '';
+                }
+                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('bets').getChildByName('labelallbet').getComponent(cc.Label), total[idx], bet ? '/' : '', 3, ',', 1, 0)
                 child.getChildByName('bets').active = true;
                 child.getChildByName('coinbg').active = true;
             } else {
@@ -102,20 +96,8 @@ export default class CustomDesk extends ViewBase {
 
     }
 
-    showDoubleAnimaton(child: cc.Node, name: string, reconnect: boolean = false) {
-        let sp1 = child.getChildByName('spineone');
-        sp1.active = true;
-        const trackEntry = sp1.getComponent(sp.Skeleton).setAnimation(0, name, false);
-        trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
-        sp1.getComponent(sp.Skeleton).setCompleteListener(() => {
-            sp1.children[0].children[0].active = false;
-            sp1.children[0].children[1].active = true;
-        })
-    }
-
     showResult() {
         let wintype = SevenUpSevenDownManager.WinType;
-        let _odds = SevenUpSevenDownManager.OddString;
         for (let i = 0; i < this.betarea_node.children.length; i++) {
             let child = this.betarea_node.children[i];
             let win = wintype.indexOf(i + 1) == -1 ? false : true;
@@ -123,15 +105,9 @@ export default class CustomDesk extends ViewBase {
                 let light = child.getChildByName('lightning');
                 let name = (i == 6 || i == 12 || i == 13) ? 'animation' : 'animation2';
                 if (light.getComponentInChildren(sp.Skeleton)) {
-
                     light.getComponentInChildren(sp.Skeleton).setAnimation(0, name, false);
-                } else {
-                    console.log(i, '========================================================,i')
                 }
                 light.active = true;
-            }
-            if (_odds[i] && +_odds[i]) {
-                this.showDoubleAnimaton(child, 'end');
             }
         }
     }

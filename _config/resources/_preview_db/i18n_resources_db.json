@@ -337,6 +337,16 @@
         "en_us": "Avatar change failed",
         "hi_in": "",
         "en_in": ""
+    },
+    "Tip_BaccaratKickOutNtf": {
+        "index": "Tip_BaccaratKickOutNtf",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "You haven't operated the game for a long time and you're kicked out of the game",
+        "en_us": "You haven't operated the game for a long time and you're kicked out of the game",
+        "hi_in": "Você não opera o jogo há muito tempo e é expulso do jogo",
+        "en_in": "आपने लंबे समय से गेम का संचालन नहीं किया है और आपको गेम से बाहर कर दिया गया है"
     }
 }
 }

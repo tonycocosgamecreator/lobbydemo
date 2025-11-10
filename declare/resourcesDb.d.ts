@@ -72,6 +72,7 @@ declare module resourcesDb {
         ['CustomChipItem']: 'CustomChipItem',
         ['CustomChip']: 'CustomChip',
         ['CustomDesk']: 'CustomDesk',
+        ['CustomDouble']: 'CustomDouble',
         ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHandle']: 'CustomHandle',
@@ -169,6 +170,7 @@ declare module resourcesDb {
         ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
         ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
         ['AVATAR_CHANGED_FAILED']: 'AVATAR_CHANGED_FAILED',
+        ['Tip_BaccaratKickOutNtf']: 'Tip_BaccaratKickOutNtf',
 }
     type game_entrance_config_db_data = {
         /** 游戏id（bundleId） */

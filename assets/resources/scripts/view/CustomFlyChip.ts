@@ -91,10 +91,11 @@ export default class CustomFlyChip extends ViewBase {
         let start = this.view.getUserWorldPosByUid(data.player_id, data.icon);
         let end = this.view.getDeskWorldPosByIdx(data.bet_id);
         let lose = this.view.getUserLoseWorldPos();
+        let scale = (data.bet_id == 6 || data.bet_id == 12 || data.bet_id == 13) ? v3(0.6,0.6,0.6) : v3(0.5,0.5,0.5);
         if (isFly) {
-            this.addFlyChip(data, index, start, end, lose);
+            this.addFlyChip(data, index, start, end, lose,scale);
         } else {
-            this.setChipData(data, index, start, end, lose);
+            this.setChipData(data, index, start, end, lose,scale);
         }
     }
 
@@ -115,7 +116,7 @@ export default class CustomFlyChip extends ViewBase {
         this._flyToTarget(chip.node, endPos);
     }
 
-    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3) {
+    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3,scale:) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         this.node.addChild(chip.node);

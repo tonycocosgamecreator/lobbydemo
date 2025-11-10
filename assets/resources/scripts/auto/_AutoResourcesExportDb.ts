@@ -23,6 +23,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomChipItem': 'CustomChipItem',
     'CustomChip': 'CustomChip',
     'CustomDesk': 'CustomDesk',
+    'CustomDouble': 'CustomDouble',
     'CustomFlyChip': 'CustomFlyChip',
     'CustomGameItem': 'CustomGameItem',
     'CustomHandle': 'CustomHandle',
@@ -75,6 +76,7 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     'PanelSystemMenu_title_i18n_button_sound': 'PanelSystemMenu_title_i18n_button_sound',
     'PanelSystemMenu_title_i18n_button_exit': 'PanelSystemMenu_title_i18n_button_exit',
     'AVATAR_CHANGED_FAILED': 'AVATAR_CHANGED_FAILED',
+    'Tip_BaccaratKickOutNtf': 'Tip_BaccaratKickOutNtf',
 }
 
     /** 游戏ID */

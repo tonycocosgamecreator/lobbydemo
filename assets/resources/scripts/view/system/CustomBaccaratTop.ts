@@ -8,6 +8,7 @@ import CustomMenu from 'db://assets/resources/scripts/view/system/CustomMenu';
 import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
 import WalletManager from '../../manager/wallet-manager';
+import { StringUtils } from '../../core/utils/string-utils';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -41,7 +42,7 @@ export default class CustomBaccaratTop extends ViewBase {
     }
 
     updateTotalBalance(balance: number): void {
-        this.labelCoin.string = balance.toFixed(2);
+        StringUtils.updateNumberTextWithSperateAndFixed(this.labelCoin, balance);
         const currency = WalletManager.currency;
         this.labelCurrency.string = currency;
     }
