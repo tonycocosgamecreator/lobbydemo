@@ -147,8 +147,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             const bets = msg.bets || [];
             this._before = [];
             let _betV = this._betsList.get(this._playerId) || { playid: this._playerId, win: 0, bet: 0, icon: this._headId };
-            this._betsList.delete(this._playerId)
-            this._betsList.set(this._playerId, _betV);
+            // this._betsList.delete(this._playerId)
             for (let i = 0; i < bets.length; i++) {
                 const bet = bets[i];
                 this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
@@ -160,6 +159,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     icon: this._headId
                 }
                 _betV.bet += +bet.bet_coin;
+                this._betsList.set(this._playerId, _betV);
                 this._bigWinList.forEach(t => {
                     if (t && t.player_id && t.player_id == this._playerId) {
                         t.balance -= +(bet.bet_coin);
@@ -187,8 +187,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     const play = plays[i];
                     if (this._playerId != play.player_id) {
                         let _betV = this._betsList.get(play.player_id) || { playid: play.player_id, win: 0, bet: 0, icon: +play.icon }
-                        this._betsList.delete(play.player_id)
-                        this._betsList.set(play.player_id, _betV);
+                        // this._betsList.delete(play.player_id)
                         for (let j = 0; j < play.bets.length; j++) {
                             const bet = play.bets[j];
                             this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
@@ -199,6 +198,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                                 icon: +play.icon
                             }
                             _betV.bet += +bet.bet_coin;
+                            this._betsList.set(play.player_id, _betV);
                             if (play.is_first) {
                                 this._firstPlayBet.add(bet.bet_id);
                             }
@@ -256,8 +256,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             const bets = msg.bets || [];
             let info = []
             let _betV = this._betsList.get(this._playerId) || { playid: this._playerId, win: 0, bet: 0, icon: this._headId }
-            this._betsList.delete(this._playerId)
-            this._betsList.set(this._playerId, _betV);
+            // this._betsList.delete(this._playerId)
             for (let i = 0; i < bets.length; i++) {
                 const bet = bets[i];
                 this._totalBet[bet.bet_id - 1] -= parseFloat(bet.bet_coin || '0');
@@ -269,6 +268,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     icon: this._headId
                 }
                 _betV.bet -= +bet.bet_coin;
+                this._betsList.set(this._playerId, _betV);
                 this._bigWinList.forEach(t => {
                     if (t && t.player_id && t.player_id == this._playerId) {
                         t.balance += +(bet.bet_coin);
@@ -291,8 +291,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     const play = plays[i];
                     if (this._playerId != play.player_id) {
                         let _betV = this._betsList.get(play.player_id) || { playid: play.player_id, win: 0, bet: 0, icon: +play.icon }
-                        this._betsList.delete(play.player_id)
-                        this._betsList.set(play.player_id, _betV); for (let j = 0; j < play.bets.length; j++) {
+                        // this._betsList.delete(play.player_id)
+                        for (let j = 0; j < play.bets.length; j++) {
                             const bet = play.bets[j];
                             this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
                             const _d = {
@@ -302,6 +302,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                                 icon: play.icon
                             }
                             _betV.bet -= +bet.bet_coin;
+                            this._betsList.set(play.player_id, _betV);
                             this._bigWinList.forEach(t => {
                                 if (t && t.player_id && t.player_id == play.player_id) {
                                     t.balance += +(bet.bet_coin);

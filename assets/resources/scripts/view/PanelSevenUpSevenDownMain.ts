@@ -100,7 +100,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.desk_node.updateGameStage(true);
         this.record_node.updateGameStage(true);
         this.fly_chip_node.updateGameStage(true);
-        this.result_node.updateGameStage(true);
+        // this.result_node.updateGameStage(true);
         this.double_node.updateGameStage(true);
         this.score_node.updateGameStage(true);
         switch (this._stage) {
@@ -132,7 +132,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.record_node.updateGameStage();
         this.user_node.updateGameStage();
         this.fly_chip_node.updateGameStage();
-        this.result_node.updateGameStage();
+        // this.result_node.updateGameStage();
         this.double_node.updateGameStage();
         this.score_node.updateGameStage();
         switch (this._stage) {
@@ -176,7 +176,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.setTouZiData();
                 this.scheduleOnce(() => {
                     this.ske_person.setAnimation(0, 'clap', true);
-                    this.result_node.showResult(true);
+                    // this.result_node.showResult(true);
                     this.desk_node.showResult();
                     this.double_node.showResult()
                     if (SevenUpSevenDownManager.WinCoin > 0) {
@@ -184,14 +184,14 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                     }
                     this.scheduleOnce(() => {
                         //飞筹码
-                        this.result_node.reset();
+                        // this.result_node.reset();
                         this.fly_chip_node.recycleChip();
                         this.desk_node.reset();
                         this.scheduleOnce(() => {
                             this.user_node.playWinAnimation();
                             Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
-                        }, 1)
-                    }, 1)
+                        }, 0.7)
+                    }, 1.4)
                 }, 2.5)
                 break;
         }

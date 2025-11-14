@@ -98,7 +98,7 @@ export default class CustomRecord extends ViewBase {
 
     updateList() {
         let listMap = SevenUpSevenDownManager.BetsList
-        this._list = [...listMap.values()].map(item => ({ ...item })).reverse();
+        this._list = [...listMap.values()]
         this.updateRecord();
     }
 
@@ -107,12 +107,14 @@ export default class CustomRecord extends ViewBase {
         this.recordList.stopScrollTo();
         this.recordList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
-            let str = data.playid;
-            if (str.length > 6) str = str.slice(0, 6) + '...';
-            item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
-            item.getChildByName('playId').getComponent(cc.Label).string = "Player_" + str;
-            item.getChildByName('bet').getComponent(cc.Label).string = CurrencyHelper.format(+data.bet, currency);
-            item.getChildByName('win').getComponent(cc.Label).string = +data.win ? CurrencyHelper.format(+data.win, currency) : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
+            if (data) {
+                let str = data.playid;
+                if (str.length > 6) str = str.slice(0, 6) + '...';
+                item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
+                item.getChildByName('playId').getComponent(cc.Label).string = "Player_" + str;
+                item.getChildByName('bet').getComponent(cc.Label).string = CurrencyHelper.format(+data.bet, currency);
+                item.getChildByName('win').getComponent(cc.Label).string = +data.win ? CurrencyHelper.format(+data.win, currency) : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
+            }
         }
         this.recordList.numItems = this._list.length;
     }

@@ -154,15 +154,19 @@ export default class CustomFlyChip extends ViewBase {
     * * @param recycleWorldPos 回收筹码终点的世界坐标
     */
     recycleChip() {
-        let winData = SevenUpSevenDownManager.BetsList;
-        this.node.children.forEach((child, idx) => {
+        let betsList = SevenUpSevenDownManager.BetsList;
+        let wintype = SevenUpSevenDownManager.WinType;
+        for (let i = 0; i < this.node.children.length; i++) {
+            let child = this.node.children[i];
             let _d = child.getComponent(CustomChipItem).ChipInfo;
-            if (winData.has(_d.player_id) && winData.get(_d.player_id).win > 0) {
-                this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type);
+            if (betsList.get(_d.player_id)?.win > 0 && wintype.indexOf(_d.bet_id) != -1) {
             } else {
-                // this._flyToEnd(child, child.getComponent(CustomChipItem).LoseLocalPos);
                 this._clearChip(child)
+                i--;
             }
+        }
+        this.node.children.forEach((child, idx) => {
+            this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type);
         })
     }
 
@@ -258,21 +262,6 @@ export default class CustomFlyChip extends ViewBase {
                 }
             })
             .start();
-        // tween(flyObject)
-        //     .parallel(
-        //         tween().to(flyDuration, {
-        //             position: endPos
-        //         }, {
-        //             easing: 'quadOut',
-        //         }),
-        // tween().to(flyDuration, { opacity: 150 }),
-        // )
-        // .call(() => {
-        //     if (flyObject.getComponent(CustomChipItem)) {
-        //         this._clearChip(flyObject);
-        //     }
-        // })
-        // .start();
     }
     /**
     * 飞筹码动画需要的时间
