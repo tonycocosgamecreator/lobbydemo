@@ -98,5 +98,9 @@
     "CustomDouble": {
         "statisticalId": 100001024,
         "panelId": 24
+    },
+    "CustomScore": {
+        "statisticalId": 100001025,
+        "panelId": 25
     }
 }

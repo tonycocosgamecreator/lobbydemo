@@ -132,6 +132,12 @@
         "desc": "",
         "statisticalId": 100001020
     },
+    "CustomScore": {
+        "viewName": "CustomScore",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001025
+    },
     "CustomTime": {
         "viewName": "CustomTime",
         "bundleName": "resources",

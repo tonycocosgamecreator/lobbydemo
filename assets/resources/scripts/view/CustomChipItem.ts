@@ -39,6 +39,7 @@ export default class CustomChipItem extends ReusableBase {
     _info: betInfo = null;
     _startLocalPos: cc.Vec3;
     _losePos: cc.Vec3;
+    _type: number = 0;
 
     get StartLocalPos(): cc.Vec3 {
         return this._startLocalPos;
@@ -51,15 +52,18 @@ export default class CustomChipItem extends ReusableBase {
     get ChipInfo(): betInfo {
         return this._info;
     }
+    get Type(): number {
+        return this._type;
+    }
     /**
      * 设置筹码的样式
      * @param index 筹码类型
      */
-    setBetData(index: number, info: betInfo, startLocalPos: cc.Vec3, losePos: cc.Vec3) {
+    setBetData(index: number, info: betInfo, startLocalPos: cc.Vec3, losePos: cc.Vec3, type: number) {
+        this._type = type;
         this._startLocalPos = startLocalPos;
         this._losePos = losePos;
         this._info = info;
-        this.node.scale = v3(1, 1, 1);
         this.node.getComponent(UIOpacity).opacity = 255;
         this.spricon.spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + index) + "/spriteFrame");
         let _chipButtons = WalletManager.getCurrencyBetSize();

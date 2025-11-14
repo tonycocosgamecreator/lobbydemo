@@ -14,6 +14,7 @@ import { UIOpacity } from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
 import { StringUtils } from '../core/utils/string-utils';
+import { CurrencyHelper } from '../helper/currency-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -31,25 +32,35 @@ export default class CustomUser extends ViewBase {
 
     protected onDestroy(): void {
         super.onDestroy();
+        this.callback && this.unschedule(this.callback)
     }
 
 
     //------------------------ 内部逻辑 ------------------------//
+
     _stage = -1;
     _ids: string[] = [];
     _myId: string = '';
-
+    callback = null;
+    currency = '';
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
+            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
             [GameEvent.UPDATE_ONLINE_ROOM]: this.updateOnlineRoom,
             [GameEvent.PLAYER_CHANGE_AVATAR]: this.updateHead
         });
         const balance = WalletManager.balance;
+        this.currency = WalletManager.currency;
         this.updateTotalBalance(balance);
         this.updateOnlineRoom();
         this.resetBetPlayer();
         this.init();
+        this.callback = () => {
+            this.otherhead_node.children.forEach((child) => {
+                child.getChildByName('head').getChildByName('mask').active = false;
+            })
+        }
     }
 
     init() {
@@ -62,16 +73,30 @@ export default class CustomUser extends ViewBase {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
-                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('labelcoin').getComponent(cc.Label), _d.balance);
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
                 child.getChildByName('labelwin').getComponent(cc.Label).string = '';
                 child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                child.getChildByName('head').getChildByName('mask').active = false;
                 this._ids.push(_d.player_id);
             }
         })
     }
 
     updateTotalBalance(balance: number): void {
-        StringUtils.updateNumberTextWithSperateAndFixed(this.label_coin, balance);
+        this.label_coin.string = CurrencyHelper.format(balance, this.currency, { showSymbol: true });
+    }
+
+    updatePlayBalance() {
+        const balance = WalletManager.balance;
+        this.updateTotalBalance(balance);
+        const data = SevenUpSevenDownManager.BigWinList;
+        this.otherhead_node.children.forEach((child, idx) => {
+            const _d = data[idx];
+            child.active = !!_d;
+            if (_d) {
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
+            }
+        })
     }
 
     updateOnlineRoom() {
@@ -107,7 +132,7 @@ export default class CustomUser extends ViewBase {
             Tween.stopAllByTarget(winNode);
             child.active = !!_d;
             if (_d) {
-                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('labelcoin').getComponent(cc.Label), _d.balance);
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
                 winNode.getComponent(cc.Label).string = '';
                 if (this._ids[idx] && this._ids[idx] != _d.player_id) {
                     const nd = child.getChildByName('head');
@@ -125,6 +150,7 @@ export default class CustomUser extends ViewBase {
                     this._ids[idx] = _d.player_id;
                     child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
                 }
+                child.getChildByName('head').getChildByName('mask').active = false;
             }
         })
     }
@@ -133,30 +159,20 @@ export default class CustomUser extends ViewBase {
         let node = this.rest_node;
         let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
         let unrank = true;
-        this.otherhead_node.children.forEach((child, idx) => {
-            if (this._ids[idx] && this._ids[idx] == player_id) {
-                wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
-                const startPos = cc.v3(0, 0, 0);
-                let target = child.getChildByName('head');
-                Tween.stopAllByTarget(target);
-                target.position = startPos;
-                tween(target)
-                    .by(0.05, { position: cc.v3(10, 5, 0) })
-                    .by(0.05, { position: cc.v3(-8, -3, 0) })
-                    .by(0.05, { position: cc.v3(6, 2, 0) })
-                    .by(0.05, { position: cc.v3(-4, -1, 0) })
-                    .by(0.05, { position: cc.v3(2, 0, 0) })
-                    .call(() => {
-                        target.position = startPos;
-                    })
-                    .start();
-                unrank = false;
-            }
-        })
         if (player_id == this._myId) {
             wordPos = this.spr_myhead.node.parent.transform.convertToWorldSpaceAR(this.spr_myhead.node.position);
             unrank = false;
             // this.user_icon_node.receiveData(Math.floor(Math.random() * 10) + 1)
+        } else {
+            this.otherhead_node.children.forEach((child, idx) => {
+                if (this._ids[idx] && this._ids[idx] == player_id) {
+                    wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
+                    child.getChildByName('head').getChildByName('mask').active = true;
+                    this.callback && this.unschedule(this.callback)
+                    this.scheduleOnce(this.callback, 0.5);
+                    unrank = false;
+                }
+            })
         }
         if (unrank) {
             this.user_icon_node.receiveData(icon)
@@ -177,37 +193,55 @@ export default class CustomUser extends ViewBase {
 
 
     playWinAnimation() {
-        let winData = SevenUpSevenDownManager.WinData;
+        const _list = SevenUpSevenDownManager.BetsList;
         this._ids.forEach((v, idx) => {
-            if (winData.has(v)) {
-                let _d = winData.get(v);
-                if (_d > 0) {
-                    let node = this.otherhead_node.children[idx].getChildByName('labelwin');
-                    Tween.stopAllByTarget(node);
-                    StringUtils.updateNumberTextWithSperateAndFixed(node.getComponent(cc.Label), _d, '+');
-                    // node.getComponent(cc.Label).string = '+' + _d;
-                    node.getComponent(UIOpacity).opacity = 0;
-                    node.setPosition(v3(43, 0, 0))
-                    tween(node)
+            if (_list.has(v)) {
+                let _d = _list.get(v);
+                if (_d.win > 0) {
+                    let child = this.otherhead_node.children[idx].getChildByName('labelwin');
+                    Tween.stopAllByTarget(child);
+                    child.getComponent(cc.Label).string = '+' + CurrencyHelper.format(_d.win, this.currency);
+                    child.getComponent(UIOpacity).opacity = 0;
+                    child.setPosition(v3(43, -10, 0)); // 从稍下方开始
+                    child.scale = v3(0.8, 0.8, 1); // 初始稍小
+                    tween(child)
                         .parallel(
-                            tween().to(0.1, { position: v3(43, 21, 0) }, { easing: 'quadOut' }),
-                            tween().to(0.1, { opacity: 255 }),
+                            tween().to(0.2, {
+                                position: v3(43, 21, 0),
+                                scale: v3(1, 1, 1)
+                            }, { easing: 'backOut' }),
+                            tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
                         )
+                        .delay(0.6) // 显示时间
+                        .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
+                        .call(() => {
+                            child.getComponent(cc.Label).string = '';
+                            child.setPosition(v3(43, 0, 0));
+                        })
                         .start();
                 }
             }
         })
-        if (winData.has(this._myId)) {
-            let _d = winData.get(this._myId);
-            if (_d > 0) {
-                let node = this.labelwin.node;
-                StringUtils.updateNumberTextWithSperateAndFixed(this.labelwin, _d, '+');
-                node.setPosition(v3(43, 0, 0))
-                tween(node)
+        if (_list.has(this._myId)) {
+            let _d = _list.get(this._myId);
+            if (_d.win > 0) {
+                let child = this.labelwin.node;
+                this.labelwin.string = '+' + CurrencyHelper.format(_d.win, this.currency);
+                child.setPosition(v3(43, 0, 0))
+                tween(child)
                     .parallel(
-                        tween().to(0.1, { position: v3(43, 21, 0) }, { easing: 'quadOut' }),
-                        tween().to(0.1, { opacity: 255 }),
+                        tween().to(0.2, {
+                            position: v3(43, 21, 0),
+                            scale: v3(1, 1, 1)
+                        }, { easing: 'backOut' }),
+                        tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
                     )
+                    .delay(0.6) // 显示时间
+                    .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
+                    .call(() => {
+                        this.labelwin.string = '';
+                        child.setPosition(v3(43, 0, 0));
+                    })
                     .start();
             }
         }

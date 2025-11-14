@@ -1,6 +1,7 @@
 import BaseManager from "../core/manager/base-manager";
 import { BetInfo, GameEvent, WalletInfo } from "../define";
 import { Global } from "../global";
+import { CurrencyHelper } from "../helper/currency-helper";
 
 export default class WalletManager extends BaseManager {
     //=============================子类需要自己实现的方法===========================//
@@ -200,6 +201,15 @@ export default class WalletManager extends BaseManager {
             return betInfo.bet_index_rule;
         }
         return [];
+    }
+
+    /**
+     * 获取用于显示的货币格式化字符串
+     */
+    public static get formattedCurrency(): string {
+        const balance = this.balance;
+        const currency = this.currency;
+        return CurrencyHelper.format(balance, currency, { showSymbol: true });
     }
 
 }

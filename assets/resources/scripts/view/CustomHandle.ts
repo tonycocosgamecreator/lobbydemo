@@ -47,9 +47,6 @@ export default class CustomHandle extends ViewBase {
         this.button_clear.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_39'), this.getSpriteFrame('textures/ui/7up_Img_39'), this.getSpriteFrame('textures/ui/7up_Img_35')];
         this.button_double.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/ui/7up_Img_40'), this.getSpriteFrame('textures/ui/7up_Img_40'), this.getSpriteFrame('textures/ui/7up_Img_36')];
         this.updateAuto();
-        BaseGlobal.registerListeners(this, {
-            [GameEvent.UPDATE_DOUBEL]: this.updateDoubel,
-        });
     }
 
     updateGameStage(reconnect: boolean = false) {
@@ -89,18 +86,22 @@ export default class CustomHandle extends ViewBase {
         this.button_agail.node.active = !this._auto;
     }
 
-    updateDoubel() {
-        if (this._stage != baccarat.DeskStage.StartBetStage) return;
-        this.button_double.isEnabled = !!SevenUpSevenDownManager.Before;
-    }
-
-    updateClear() {
+    updateClear(isUndo: boolean = false) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         const mybets = SevenUpSevenDownManager.MyBets;
+        let before = SevenUpSevenDownManager.Before;
         let v = 0;
         mybets.forEach(t => { v += t });
-        this.button_undo.isEnabled = !!v;
-        this.button_clear.isEnabled = !!v;
+        this.button_undo.isEnabled = !!v && this._auto == false;
+        this.button_clear.isEnabled = !!v && this._auto == false;
+        this.button_double.isEnabled = !!v && this._auto == false && before.length > 0;
+        if (isUndo) {
+            if (this._auto == false && v == 0) {
+                let list = SevenUpSevenDownManager.LastbetInfo;
+                this.button_agail.isEnabled = list && list.length ? true : false;
+                this.updateAuto();
+            }
+        }
     }
 
     sendBetMessage(bets: sevenupdown.SUDBetData[], gold: number, isAuto: boolean = false, agail: boolean = false) {
@@ -136,7 +137,9 @@ export default class CustomHandle extends ViewBase {
     // @view export event begin
     private onClickButton_auto(event: cc.EventTouch) {
         SevenUpSevenDownManager.Auto = true;
+        this.button_agail.isEnabled = false;
         this.updateAuto();
+        this.updateClear();
     }
 
     private onClickButton_agail(event: cc.EventTouch) {
@@ -175,17 +178,21 @@ export default class CustomHandle extends ViewBase {
 
     private onClickButton_double(event: cc.EventTouch) {
         const _data = SevenUpSevenDownManager.Before;
-        const betcoin = +(_data.bet_coin) * 2;
-        let bets = [
-            { bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false },
-            { bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false }
-        ]
+        if (_data.length == 0) return;
+        let bets = [];
+        let betcoin = 0;
+        _data.forEach((val) => {
+            betcoin += +(val.bet_coin) * 2;
+            bets.push({ bet_id: val.bet_id, bet_coin: val.bet_coin + '', is_rebet: false });
+            bets.push({ bet_id: val.bet_id, bet_coin: val.bet_coin + '', is_rebet: false });
+        })
         this.sendBetMessage(bets, betcoin, true);
     }
 
     private onClickButton_unauto(event: cc.EventTouch) {
         SevenUpSevenDownManager.Auto = false;
         this.updateAuto();
+        this.updateClear();
     }
 
     // @view export event end

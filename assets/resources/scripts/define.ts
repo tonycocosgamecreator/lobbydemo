@@ -65,10 +65,6 @@ export enum GameEvent {
      */
     PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
     /**
-     *是否能双倍下注
-     */
-    UPDATE_DOUBEL = 'UPDATE_DOUBEL',
-    /**
      *LED
      */
     UPDATE_LED = 'UPDATE_LED',

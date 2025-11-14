@@ -83,6 +83,7 @@ declare module resourcesDb {
         ['CustomRank']: 'CustomRank',
         ['CustomRecord']: 'CustomRecord',
         ['CustomResult']: 'CustomResult',
+        ['CustomScore']: 'CustomScore',
         ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',
@@ -128,10 +129,14 @@ declare module resourcesDb {
         readonly zh_cn: string,
         /** 英文 */
         readonly en_us: string,
+        /** 葡萄牙语（巴西） */
+        readonly pt_br: string,
         /** 印地语 */
         readonly hi_in: string,
-        /** 英语-印度 */
-        readonly en_in: string,
+        readonly my_mm: string,
+        readonly bn_bd: string,
+        readonly vi_vn: string,
+        readonly th_th: string,
     };
 
     type i18n_resources_db = {

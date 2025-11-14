@@ -14,6 +14,7 @@ import CustomMainHistory from 'db://assets/resources/scripts/view/CustomMainHist
 import CustomOnline from 'db://assets/resources/scripts/view/CustomOnline';
 import CustomRecord from 'db://assets/resources/scripts/view/CustomRecord';
 import CustomResult from 'db://assets/resources/scripts/view/CustomResult';
+import CustomScore from 'db://assets/resources/scripts/view/CustomScore';
 import CustomTime from 'db://assets/resources/scripts/view/CustomTime';
 import CustomUser from 'db://assets/resources/scripts/view/CustomUser';
 import CustomWinTip from 'db://assets/resources/scripts/view/CustomWinTip';
@@ -22,9 +23,9 @@ import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-ma
 import AudioManager from '../core/manager/audio-manager';
 import { Global } from '../global';
 import { BaseMessage } from '../core/message/base-message';
-import Formater from '../core/utils/formater';
 import { GameEvent } from '../define';
-import WalletManager from '../manager/wallet-manager';
+import { Vec3 } from 'cc';
+import { v3 } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -50,8 +51,9 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     //------------------------ 内部逻辑 ------------------------//
     _isGameInBackground: boolean = false;
     _stage = -1;
-    _playId: string = '';
-
+    // _playId: string = '';
+    _boneNode1 = null;
+    _boneNode2 = null;
     buildUi() {
         this.reset();
         this.ske_person.node.active = true;
@@ -66,6 +68,15 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 }
             }
         );
+        // this._boneNode2 = this.ske_person.findBone("dice_white_2");
+        // const socket = this.ske_person.sockets.find(s => s.path === "root/z/bone/dice_white_1")
+        // if (socket) {
+        //     this._boneNode1 = socket.target;
+        //     const spriteNode = new cc.Node();
+        //     const sprite = spriteNode.addComponent(cc.Sprite);
+        //     sprite.spriteFrame = this.getSpriteFrame("textures/ui/1/spriteFrame");
+        //     this._boneNode1.addChild(spriteNode);
+        // }
     }
 
     protected start(): void {
@@ -75,12 +86,12 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     reset() {
         this.ske_change.node.active = false;
         this.ske_start.node.active = false;
+        this.ske_extra.node.active = false;
         this.touzi_node.active = false;
-        this.spwin.node.active = false;
     }
 
     updateReconnect() {
-        this._playId = SevenUpSevenDownManager.PlayerId;
+        // this._playId = SevenUpSevenDownManager.PlayerId;
         this._stage = SevenUpSevenDownManager.Stage;
         if (this._stage == -1) return;
         this.reset();
@@ -91,12 +102,13 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.fly_chip_node.updateGameStage(true);
         this.result_node.updateGameStage(true);
         this.double_node.updateGameStage(true);
+        this.score_node.updateGameStage(true);
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
-                this.ske_person.setAnimation(0, 'idle2', false);
+                this.ske_person.setAnimation(0, 'shaking', false);
                 break;
             case baccarat.DeskStage.StartBetStage:
-                this.ske_person.setAnimation(0, 'idle2', false);
+                this.ske_person.setAnimation(0, 'idle1', false);
                 break;
             case baccarat.DeskStage.EndBetStage:
                 this.ske_person.setAnimation(0, 'idle3', false);
@@ -122,6 +134,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.fly_chip_node.updateGameStage();
         this.result_node.updateGameStage();
         this.double_node.updateGameStage();
+        this.score_node.updateGameStage();
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.reset();
@@ -139,27 +152,30 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.ske_start.node.active = false;
                 this.ske_change.node.active = true;
                 this.ske_change.setAnimation(0, 'xz', false);
-                this.ske_person.setAnimation(0, 'idle2', false);
+                this.ske_person.setAnimation(0, 'idle1', false);
                 break;
             case baccarat.DeskStage.EndBetStage:
-                this.ske_person.setAnimation(0, 'idle2', false);
+                this.ske_person.setAnimation(0, 'idle3', false);
                 this.ske_change.setAnimation(0, 'tzxz', false);
                 break;
             case baccarat.DeskStage.OpenStage:
                 this.ske_person.setAnimation(0, 'idle3', false);
+                this.ske_change.node.active = false;
                 let _odds = SevenUpSevenDownManager.OddString;
                 for (let i = 0; i < _odds.length; i++) {
                     if (_odds[i] && +_odds[i]) {
-                        this.ske_change.setAnimation(0, 'ewbl', false);
+                        this.ske_extra.node.active = true;
+                        this.ske_extra.setAnimation(0, 'animation', false);
                         break;
                     }
                 }
                 break;
             case baccarat.DeskStage.SettleStage:
+                this.ske_extra.node.active = false;
                 this.ske_person.setAnimation(0, 'open', false);
                 this.setTouZiData();
                 this.scheduleOnce(() => {
-                    this.ske_person.setAnimation(0, 'clap', false);
+                    this.ske_person.setAnimation(0, 'clap', true);
                     this.result_node.showResult(true);
                     this.desk_node.showResult();
                     this.double_node.showResult()
@@ -167,34 +183,22 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
                     }
                     this.scheduleOnce(() => {
-                        if (SevenUpSevenDownManager.WinCoin > 0) {
-                            let strText = Formater.splitNumber(SevenUpSevenDownManager.WinCoin.toFixed(2), ',', 3);
-                            if (strText.endsWith('.00')) {
-                                strText = strText.slice(0, -3)
-                            } else if (strText.includes('.') && strText.endsWith('0')) {
-                                strText = strText.slice(0, -1);
-                            }
-                            this.labelwinCoin.string = strText;
-                            this.spwin.node.active = true;
-                            this.spwin.setAnimation(0, 'animation', false);
-                        }
                         //飞筹码
                         this.result_node.reset();
                         this.fly_chip_node.recycleChip();
                         this.desk_node.reset();
                         this.scheduleOnce(() => {
                             this.user_node.playWinAnimation();
-                            const balance = WalletManager.balance;
-                            Global.sendMsg(GameEvent.PLAYER_INFO_UPDATE, balance);
-                        }, 0.2)
+                            Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+                        }, 1)
                     }, 1)
-                }, 2.8)
+                }, 2.5)
                 break;
         }
     }
 
-    getDeskWorldPosByIdx(id: number) {
-        return this.desk_node.getWorldPosByIdx(id);
+    getDeskWorldPosByIdx(id: number, isme: boolean, order: number) {
+        return this.desk_node.getWorldPosByIdx(id, isme, order);
     }
 
     getUserWorldPosByUid(id: string, icon: number) {
@@ -205,31 +209,46 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         return this.user_node.getLoseWorldPos();
     }
 
-    updateflyChip(data: betInfo) {
-        this.fly_chip_node.init(data, true);
-        this.record_node.addList(data);
-        if (data.player_id == this._playId) {
+    updateflyChip(data: betInfo, isme: boolean, order: number) {
+        this.fly_chip_node.init(data, true, isme, order);
+        if (isme) {
+            this.desk_node.updateBetAnimation(data.bet_id);
             this.handle_node.updateClear();
         }
+        this.record_node.updateList();
     }
 
-    updateDeletChip(data: betInfo) {
+    updateDeletChip(data: betInfo, isme: boolean) {
         this.fly_chip_node.recycleChipByCondition(data);
-        this.record_node.deleList(data);
-        if (data.player_id == this._playId) {
-            this.handle_node.updateClear();
+        this.record_node.updateList();
+        if (isme) {
+            this.handle_node.updateClear(true);
         }
     }
 
+    _defaultPos = [v3(-15, 10, 0), v3(19, 10, 0)]
     setTouZiData() {
         let open = SevenUpSevenDownManager.OpenPos;
         this.touzi_node.children.forEach((child, idx) => {
             child.active = !!open[idx];
             if (open[idx]) {
-                child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/ui/" + open[idx] + "/spriteFrame");
+                let pos = this.getRandomPointAround(this._defaultPos[idx])
+                child.setPosition(pos)
+                child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/dice/dice_white_" + open[idx] + "/spriteFrame");
+
             }
         });
         this.touzi_node.active = true;
+    }
+
+    getRandomPointAround(centerPoint: Vec3, horizontalRange: number = 4, verticalRange: number = 8): Vec3 {
+        const randomX = Math.floor(Math.random() * 9) - horizontalRange;
+        const randomY = Math.floor(Math.random() * 9) - verticalRange;
+        return new Vec3(
+            centerPoint.x + randomX,
+            centerPoint.y + randomY,
+            centerPoint.z,
+        );
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -261,14 +280,15 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
             cc_fly_chip_node: [CustomFlyChip],
             cc_handle_node: [CustomHandle],
             cc_history_node: [CustomMainHistory],
-            cc_labelwinCoin: [cc.Label],
             cc_online: [CustomOnline],
             cc_record_node: [CustomRecord],
             cc_result_node: [CustomResult],
+            cc_scollview: [cc.ScrollView],
+            cc_score_node: [CustomScore],
             cc_ske_change: [cc.sp.Skeleton],
+            cc_ske_extra: [cc.sp.Skeleton],
             cc_ske_person: [cc.sp.Skeleton],
             cc_ske_start: [cc.sp.Skeleton],
-            cc_spwin: [cc.sp.Skeleton],
             cc_time_node: [CustomTime],
             cc_top: [CustomBaccaratTop],
             cc_touzi_node: [cc.Node],
@@ -285,14 +305,15 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     protected fly_chip_node: CustomFlyChip = null;
     protected handle_node: CustomHandle = null;
     protected history_node: CustomMainHistory = null;
-    protected labelwinCoin: cc.Label = null;
     protected online: CustomOnline = null;
     protected record_node: CustomRecord = null;
     protected result_node: CustomResult = null;
+    protected scollview: cc.ScrollView = null;
+    protected score_node: CustomScore = null;
     protected ske_change: cc.sp.Skeleton = null;
+    protected ske_extra: cc.sp.Skeleton = null;
     protected ske_person: cc.sp.Skeleton = null;
     protected ske_start: cc.sp.Skeleton = null;
-    protected spwin: cc.sp.Skeleton = null;
     protected time_node: CustomTime = null;
     protected top: CustomBaccaratTop = null;
     protected touzi_node: cc.Node = null;

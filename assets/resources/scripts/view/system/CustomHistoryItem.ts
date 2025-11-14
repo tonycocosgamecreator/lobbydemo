@@ -3,6 +3,8 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+import { CurrencyHelper } from '../../helper/currency-helper';
+import WalletManager from '../../manager/wallet-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -28,8 +30,9 @@ export default class CustomHistoryItem extends ViewBase {
         const urls1 = ['textures/system/icon_tc_bz_02/spriteFrame', 'textures/system/XFJ_Img_9/spriteFrame'];
         this.itemBg.spriteFrame = this.getSpriteFrame(urls1[index % 2]);
         this.labelPeriod.string = data.period;
-        this.labelBetVal.string = data.bet;
-        this.labelWinBet.string = data.win_coin;
+        const currency = WalletManager.currency;
+        this.labelBetVal.string = CurrencyHelper.format(+data.bet, currency);
+        this.labelWinBet.string = CurrencyHelper.format(+data.win_coin, currency);
         let wintype = data.win_type || [];
         this.result.children.forEach((child, idx) => {
             child.active = !!wintype[idx];

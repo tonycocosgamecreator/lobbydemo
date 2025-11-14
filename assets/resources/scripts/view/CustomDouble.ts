@@ -39,17 +39,19 @@ export default class CustomDouble extends ViewBase {
                 this.reset();
                 break;
             case baccarat.DeskStage.OpenStage:
-                let _odds = SevenUpSevenDownManager.OddString;
-                for (let i = 0; i < _odds.length; i++) {
-                    if (_odds[i] && +_odds[i]) {
-                        let child = this.node.children[i];
-                        this.showDoubleAnimaton(child, 'open', reconnect)
-                        child.children[0].children[0].active = true;
-                        child.children[0].children[1].active = false;
-                        child.children[0].children[0].getComponent(cc.Label).string = `X2`;
-                        child.children[0].children[1].getComponent(cc.Label).string = `X2`;
+                this.scheduleOnce(() => {
+                    let _odds = SevenUpSevenDownManager.OddString;
+                    for (let i = 0; i < _odds.length; i++) {
+                        if (_odds[i] && +_odds[i]) {
+                            let child = this.node.children[i];
+                            this.showDoubleAnimaton(child, 'open', reconnect)
+                            child.children[0].children[0].active = true;
+                            child.children[0].children[1].active = false;
+                            child.children[0].children[0].getComponent(cc.Label).string = `X2`;
+                            child.children[0].children[1].getComponent(cc.Label).string = `X2`;
+                        }
                     }
-                }
+                }, reconnect ? 0 : 1)
                 break;
         }
     }

@@ -8,6 +8,8 @@ import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import { Tween } from 'cc';
 import { UIOpacity } from 'cc';
+import { v3 } from 'cc';
+import { tween } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -29,9 +31,10 @@ export default class CustomWinTip extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
-    _duration: number = 1; // 动画持续时间
+    _duration: number = 0.4; // 动画持续时间
     _list: sevenupdown.MsgLastWinNtf[] = [];
     _showAnimation: boolean = false;
+    _displayTime: number = 1; // 停留时间
 
     buildUi() {
         this.winbg_node.active = false;
@@ -44,7 +47,7 @@ export default class CustomWinTip extends ViewBase {
         const _data = this._list[0];
         this.spr_head.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_data.avatar || 1}`);
         this.labelname.string = _data.username;
-         this.labelwin.string = 'WIN+'+_data.winAmount;
+        this.labelwin.string = 'WIN+' + _data.winAmount;
     }
 
     updateList() {
@@ -55,15 +58,23 @@ export default class CustomWinTip extends ViewBase {
         if (this._showAnimation) return;
         if (!this._list.length) return;
         this._showAnimation = true;
-        Tween.stopAllByTarget(this.winbg_node);
-        this.winbg_node.active = true;
         const uiOpacity = this.winbg_node.getComponent(UIOpacity);
-        if (!uiOpacity) return;
+        Tween.stopAllByTarget(this.winbg_node);
+        Tween.stopAllByTarget(uiOpacity);
         this.setData();
+        this.winbg_node.active = true;
         uiOpacity.opacity = 0;
-        cc.tween(uiOpacity)
-            .to(this._duration, { opacity: 255 }, { easing: 'sineOut' })
-            .to(this._duration, { opacity: 0 }, { easing: 'sineIn' })
+        this.winbg_node.setPosition(v3(0, -20, 0));
+        tween(this.winbg_node)
+            .parallel(
+                tween().to(this._duration, { position: v3(0, 0, 0) }, { easing: 'cubicOut' }),
+                tween().to(this._duration, { opacity: 255 })
+            )
+            .delay(this._displayTime)
+            .parallel(
+                tween().to(this._duration, { position: v3(0, 20, 0) }, { easing: 'cubicIn' }),
+                tween().to(this._duration, { opacity: 0 })
+            )
             .call(() => {
                 SevenUpSevenDownManager.subtractLedList();
                 this.updateList();

@@ -8,6 +8,8 @@ import CustomRank from 'db://assets/resources/scripts/view/CustomRank';
 import GButtonGroup from 'db://assets/resources/scripts/core/view/gbutton-group';
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
+import WalletManager from '../manager/wallet-manager';
+import { CurrencyHelper } from '../helper/currency-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -30,7 +32,7 @@ export default class CustomRecord extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
-    _list: betInfo[] = [];
+    _list: { playid: string; win: number; bet: number; icon: number }[] = [];
     _stage = -1;
 
     buildUi() {
@@ -61,17 +63,17 @@ export default class CustomRecord extends ViewBase {
                 if (reconnect) {
                     this.reset();
                 }
-                this._list = SevenUpSevenDownManager.AllbetInfo;
+                let listMap = SevenUpSevenDownManager.BetsList
                 this.updateRecord();
                 if (this._stage == baccarat.DeskStage.SettleStage) {
-                    let bigD = this.getBigPlayData();
+                    let bigD = Array.from(listMap.values()).sort((a, b) => b.win - a.win);;
                     this.head_node.active = true;
                     let winNum = 0;
                     let winGold = 0;
                     bigD.forEach(t => {
-                        if (t.total_win > 0) {
+                        if (t.win > 0) {
                             winNum++;
-                            winGold += t.total_win
+                            winGold += t.win
                         }
                     })
                     this.head_node.children.forEach((child, index) => {
@@ -84,40 +86,9 @@ export default class CustomRecord extends ViewBase {
                     this.labelbets.string = winNum + '/' + bigD.length + ' Bets';
                     this.labelwin.string = winGold + '';
                     this.labelwin.node.active = true;
-                    console.log(bigD)
                 }
                 break;
         }
-    }
-
-    getBigPlayData() {
-        const winMap = new Map<string, { total_win: number; count: number, icon: number }>();
-        this._list.forEach(player => {
-            const playerId = player.player_id;
-            const winCoin = parseFloat(player.win) || 0;
-            const icon = player.icon || 1;
-
-            const existing = winMap.get(playerId);
-            if (existing) {
-                existing.total_win += winCoin;
-                existing.count += 1;
-                existing.icon = icon;
-            } else {
-                winMap.set(playerId, {
-                    total_win: winCoin,
-                    count: 1,
-                    icon: icon
-                });
-            }
-        });
-        return Array.from(winMap.entries())
-            .map(([player_id, data]) => ({
-                player_id,
-                total_win: data.total_win,
-                count: data.count,
-                icon: data.icon
-            }))
-            .sort((a, b) => b.total_win - a.total_win);
     }
 
     changeState(isAllBet: boolean) {
@@ -125,32 +96,23 @@ export default class CustomRecord extends ViewBase {
         this.allbet_node.active = isAllBet;
     }
 
-    addList(data: betInfo) {
-        this._list.unshift(data);
-        this.updateRecord();
-    }
-
-    deleList(data: betInfo) {
-        for (let i = 0; i < this._list.length; i++) {
-            let _d = this._list[i];
-            if (_d.bet_coin == data.bet_coin && _d.bet_id == data.bet_id) {
-                this._list.splice(i, 1);
-                break;
-            }
-        }
+    updateList() {
+        let listMap = SevenUpSevenDownManager.BetsList
+        this._list = [...listMap.values()].map(item => ({ ...item })).reverse();
         this.updateRecord();
     }
 
     updateRecord() {
+        const currency = WalletManager.currency;
         this.recordList.stopScrollTo();
         this.recordList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
-            let str = data.player_id.toString();
+            let str = data.playid;
             if (str.length > 6) str = str.slice(0, 6) + '...';
             item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
             item.getChildByName('playId').getComponent(cc.Label).string = "Player_" + str;
-            item.getChildByName('bet').getComponent(cc.Label).string = data.bet_coin;
-            item.getChildByName('win').getComponent(cc.Label).string = +data.win ? data.win : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
+            item.getChildByName('bet').getComponent(cc.Label).string = CurrencyHelper.format(+data.bet, currency);
+            item.getChildByName('win').getComponent(cc.Label).string = +data.win ? CurrencyHelper.format(+data.win, currency) : this._stage == baccarat.DeskStage.SettleStage ? '0.00' : '';
         }
         this.recordList.numItems = this._list.length;
     }

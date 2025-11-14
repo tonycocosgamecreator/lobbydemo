@@ -8,7 +8,7 @@ import CustomMenu from 'db://assets/resources/scripts/view/system/CustomMenu';
 import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
 import WalletManager from '../../manager/wallet-manager';
-import { StringUtils } from '../../core/utils/string-utils';
+import { CurrencyHelper } from '../../helper/currency-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -34,6 +34,7 @@ export default class CustomBaccaratTop extends ViewBase {
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
+            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
         });
         this.labelGameTitle.string = 'sevenupdown';
         this.menu.show(false, 0);
@@ -42,11 +43,14 @@ export default class CustomBaccaratTop extends ViewBase {
     }
 
     updateTotalBalance(balance: number): void {
-        StringUtils.updateNumberTextWithSperateAndFixed(this.labelCoin, balance);
         const currency = WalletManager.currency;
-        this.labelCurrency.string = currency;
+        this.labelCoin.string = CurrencyHelper.format(balance, currency, { showSymbol: true });
+        this.labelCurrency.string = '';
     }
-
+    updatePlayBalance() {
+        const balance = WalletManager.balance;
+        this.updateTotalBalance(balance);
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

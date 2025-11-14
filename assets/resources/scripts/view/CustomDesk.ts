@@ -8,9 +8,14 @@ import { MessageSender } from '../network/net/message-sender';
 import WalletManager from '../manager/wallet-manager';
 import UIHelper from '../network/helper/ui-helper';
 import { GameEvent, THEME_ID } from '../define';
-import BaseGlobal from '../core/message/base-global';
 import { sp } from 'cc';
-import { StringUtils } from '../core/utils/string-utils';
+import BaseGlobal from '../core/message/base-global';
+import { Vec3 } from 'cc';
+import { randomRange } from 'cc';
+import { UITransform } from 'cc';
+import { v3 } from 'cc';
+import { Tween } from 'cc';
+import { UIOpacity } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -33,10 +38,11 @@ export default class CustomDesk extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
     _chipButtons = [];
     _stage = -1;
+    _tagetWorldPos: Vec3[] = [];
 
     buildUi() {
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
+            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updateStar,
         });
         const odds = SevenUpSevenDownManager.Odds;
         this._chipButtons = WalletManager.getCurrencyBetSize()
@@ -49,10 +55,10 @@ export default class CustomDesk extends ViewBase {
     reset() {
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('star').active = false;
-            child.getChildByName('coinbg').active = false;
-            child.getChildByName('bets').active = false;
             child.getChildByName('lightning').active = false;
+            child.getChildByName('show').active = false;
         });
+        this._tagetWorldPos = [];
     }
 
     updateGameStage(reconnect: boolean = false) {
@@ -60,38 +66,18 @@ export default class CustomDesk extends ViewBase {
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.reset();
-                break;
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
-                this.updatePlayBetValue();
-                break;
             case baccarat.DeskStage.OpenStage:
-                break;
-            case baccarat.DeskStage.SettleStage:
+                this.updateStar();
                 break;
         }
     }
 
-    updatePlayBetValue() {
-        const total = SevenUpSevenDownManager.TotalBet;
-        const mybets = SevenUpSevenDownManager.MyBets;
+    updateStar() {
         const isFirst = SevenUpSevenDownManager.FirstPlayBet;
         this.betarea_node.children.forEach((child, idx) => {
             child.getChildByName('star').active = isFirst.has(idx + 1);
-            if (total[idx]) {
-                let bet = mybets[idx]
-                if (bet) {
-                    StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label), bet, '', 3, ',', 1, 0);
-                } else {
-                    child.getChildByName('bets').getChildByName('labelmybet').getComponent(cc.Label).string = '';
-                }
-                StringUtils.updateNumberTextWithSperateAndFixed(child.getChildByName('bets').getChildByName('labelallbet').getComponent(cc.Label), total[idx], bet ? '/' : '', 3, ',', 1, 0)
-                child.getChildByName('bets').active = true;
-                child.getChildByName('coinbg').active = true;
-            } else {
-                child.getChildByName('bets').active = false;
-                child.getChildByName('coinbg').active = false;
-            }
         });
 
     }
@@ -112,7 +98,7 @@ export default class CustomDesk extends ViewBase {
         }
     }
 
-    sendBetMessage(idx: number) {
+    sendBetMessage(idx: number, tagetWorldPos: Vec3) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         const myCoin = WalletManager.balance;
         const betcoin = this._chipButtons[SevenUpSevenDownManager.ChipIdx];
@@ -127,17 +113,58 @@ export default class CustomDesk extends ViewBase {
             /**  下注列表 */
             bets: [{ bet_id: idx, bet_coin: betcoin + '', is_rebet: false }],
         }
+        this._tagetWorldPos.push(tagetWorldPos);
         MessageSender.SendMessage(sevenupdown.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
     }
-
-    getWorldPosByIdx(idx: number): cc.Vec3 {
+    getWorldPosByIdx(idx: number, isme: boolean, order: number): cc.Vec3 {
+        let wordPos = null;
+        if (isme) {
+            wordPos = this.getUserClickPosByIdx(order);
+            if (wordPos) {
+                return wordPos;
+            }
+        }
         const child = this.betarea_node.children[idx - 1].getChildByName('end');
-        let wordPos = child.parent.transform.convertToWorldSpaceAR(
+        let endPos = child.parent.transform.convertToWorldSpaceAR(
             child.position
         );
+        let width = child.getComponent(UITransform).width / 2;
+        let height = child.getComponent(UITransform).height / 2;
+        wordPos = this.getRandomPointAround(endPos, width, height);
         return wordPos;
     }
 
+    getUserClickPosByIdx(order: number): cc.Vec3 {
+        let wordPos = this._tagetWorldPos[order]
+        return wordPos;
+    }
+
+    getRandomPointAround(centerPoint: Vec3, horizontalRange: number = 90, verticalRange: number = 120): Vec3 {
+        const randomX = randomRange(-horizontalRange, horizontalRange);
+        const randomY = randomRange(-verticalRange, verticalRange);
+        return new Vec3(
+            centerPoint.x + randomX,
+            centerPoint.y + randomY,
+            centerPoint.z,
+        );
+    }
+
+    updateBetAnimation(idx: number) {
+        const child = this.betarea_node.children[idx - 1].getChildByName('show');
+        const opacity = child.getComponent(UIOpacity)
+        Tween.stopAllByTarget(opacity);
+        opacity.opacity = 0;
+        child.active = true;
+        cc.tween(opacity)
+            .to(0.12, { opacity: 30 })
+            .delay(0.03)
+            .to(0.1, { opacity: 0 })
+            .call(() => {
+                child.active = false;
+            })
+            .start();
+
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -149,67 +176,93 @@ export default class CustomDesk extends ViewBase {
     // @view export event begin
 
     private onClickButton_click1(event: cc.EventTouch) {
-        this.sendBetMessage(1);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(1, _tagetWorldPos);
     }
 
 
     private onClickButton_click2(event: cc.EventTouch) {
-        this.sendBetMessage(2);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(2, _tagetWorldPos);
     }
 
 
     private onClickButton_click3(event: cc.EventTouch) {
-        this.sendBetMessage(3);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(3, _tagetWorldPos);
     }
 
 
     private onClickButton_click4(event: cc.EventTouch) {
-        this.sendBetMessage(4);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(4, _tagetWorldPos);
     }
 
 
     private onClickButton_click5(event: cc.EventTouch) {
-        this.sendBetMessage(5);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(5, _tagetWorldPos);
     }
 
 
     private onClickButton_click6(event: cc.EventTouch) {
-        this.sendBetMessage(6);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(6, _tagetWorldPos);
     }
 
 
     private onClickButton_click7(event: cc.EventTouch) {
-        this.sendBetMessage(7);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(7, _tagetWorldPos);
     }
 
 
     private onClickButton_click8(event: cc.EventTouch) {
-        this.sendBetMessage(8);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(8, _tagetWorldPos);
     }
 
 
     private onClickButton_click9(event: cc.EventTouch) {
-        this.sendBetMessage(9);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(9, _tagetWorldPos);
     }
 
 
     private onClickButton_click10(event: cc.EventTouch) {
-        this.sendBetMessage(10);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(10, _tagetWorldPos);
     }
 
 
     private onClickButton_click11(event: cc.EventTouch) {
-        this.sendBetMessage(11);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(11, _tagetWorldPos);
     }
 
 
     private onClickButton_click12(event: cc.EventTouch) {
-        this.sendBetMessage(12);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(12, _tagetWorldPos);
     }
 
 
     private onClickButton_click13(event: cc.EventTouch) {
-        this.sendBetMessage(13);
+        const touchPos = event.getUILocation();
+        let _tagetWorldPos = new Vec3(touchPos.x, touchPos.y, 0);
+        this.sendBetMessage(13, _tagetWorldPos);
     }
 
     // @view export event end

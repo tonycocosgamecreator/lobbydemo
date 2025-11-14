@@ -10,6 +10,8 @@ import { MessageSender } from '../network/net/message-sender';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import Timer from '../core/utils/timer';
+import WalletManager from '../manager/wallet-manager';
+import { CurrencyHelper } from '../helper/currency-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -67,14 +69,15 @@ export default class CustomRank extends ViewBase {
     }
 
     updateRank(list: sevenupdown.SevenUpDownRankData[]) {
+        const currency = WalletManager.currency;
         this._list = list;
         this.rankList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
             item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
             item.getChildByName('name').getComponent(cc.Label).string = data.name;
             item.getChildByName('time').getComponent(cc.Label).string = Timer.formateDate(data.save_time * 1000, 'yyyy/MM/dd\nHH:mm:ss')
-            item.getChildByName('bet').getComponent(cc.Label).string = 'Bet : ' + data.bet;
-            item.getChildByName('win').getComponent(cc.Label).string = 'Win : ' + data.win;
+            item.getChildByName('bet').getComponent(cc.Label).string = 'Bet : ' + CurrencyHelper.format(+data.bet, currency);
+            item.getChildByName('win').getComponent(cc.Label).string = 'Win : ' + CurrencyHelper.format(+data.win, currency);
         }
         this.rankList.numItems = this._list.length;
     }
