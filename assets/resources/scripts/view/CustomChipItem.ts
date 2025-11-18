@@ -4,12 +4,10 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { Color } from 'cc';
-import { Node } from 'cc';
 import ReusableBase from '../core/view/reusable-base';
-import { v3 } from 'cc';
 import { UIOpacity } from 'cc';
 import WalletManager from '../manager/wallet-manager';
-import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
+import  { betInfo } from '../manager/sevenupsevendown-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 

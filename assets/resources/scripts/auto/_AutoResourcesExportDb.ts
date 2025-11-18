@@ -46,6 +46,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'PanelSevenUpSevenDownInit': 'PanelSevenUpSevenDownInit',
     'PanelSevenUpSevenDownMain': 'PanelSevenUpSevenDownMain',
     'PanelThirdGame': 'PanelThirdGame',
+    'PanelUserCenter': 'PanelUserCenter',
 }
 
     /** 唯一id */

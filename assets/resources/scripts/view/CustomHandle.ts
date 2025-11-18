@@ -7,7 +7,6 @@ import { GButtonDisableStyle, GButtonTouchStyle } from '../core/view/view-define
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { GameEvent, THEME_ID } from '../define';
 import { MessageSender } from '../network/net/message-sender';
-import BaseGlobal from '../core/message/base-global';
 import WalletManager from '../manager/wallet-manager';
 import UIHelper from '../network/helper/ui-helper';
 //------------------------上述内容请勿修改----------------------------//

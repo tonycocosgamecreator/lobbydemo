@@ -13,7 +13,6 @@ import BaseGlobal from '../core/message/base-global';
 import { Vec3 } from 'cc';
 import { randomRange } from 'cc';
 import { UITransform } from 'cc';
-import { v3 } from 'cc';
 import { Tween } from 'cc';
 import { UIOpacity } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
@@ -82,7 +81,7 @@ export default class CustomDesk extends ViewBase {
 
     }
 
-    showResult() {
+    showResult(reconnect: boolean = false) {
         let wintype = SevenUpSevenDownManager.WinType;
         for (let i = 0; i < this.betarea_node.children.length; i++) {
             let child = this.betarea_node.children[i];
@@ -91,7 +90,8 @@ export default class CustomDesk extends ViewBase {
                 let light = child.getChildByName('lightning');
                 let name = (i == 6 || i == 12 || i == 13) ? 'animation' : 'animation2';
                 if (light.getComponentInChildren(sp.Skeleton)) {
-                    light.getComponentInChildren(sp.Skeleton).setAnimation(0, name, false);
+                    const trackEntry = light.getComponentInChildren(sp.Skeleton).setAnimation(0, name, false);
+                    trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
                 }
                 light.active = true;
             }

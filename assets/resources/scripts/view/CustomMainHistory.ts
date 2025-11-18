@@ -75,9 +75,9 @@ export default class CustomMainHistory extends ViewBase {
 
     updateHistoryProbability() {
         const _data = SevenUpSevenDownManager.Probability;
-        this.labelmin.string = `2-6:${(_data[0]).toFixed(2)}%`;
-        this.labelmiddle.string = `7:${(_data[1]).toFixed(2)}%`;
-        this.labelmax.string = `8-12:${(_data[2]).toFixed(2)}%`;
+        this.labelmin.string = `2-6:${(_data[0]).toFixed(0)}%`;
+        this.labelmiddle.string = `7:${(_data[1]).toFixed(0)}%`;
+        this.labelmax.string = `8-12:${(_data[2]).toFixed(0)}%`;
     }
 
     playAnimation(show: boolean) {

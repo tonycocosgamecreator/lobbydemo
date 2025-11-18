@@ -104,7 +104,9 @@ export class main extends Component {
         bDebug && console.log('游戏恢复前台~', cast, 'ms');
         if (cast >= 1000 * 5) {
             //超过5秒，重新加载
-            MessageSender.CloseConnector(null, Net.WebSocketCloseEventType.HEART_BEAT_TIMEOUT);
+            if (!MessageSender.IsConnected()) {
+                MessageSender.CloseConnector(null, Net.WebSocketCloseEventType.HEART_BEAT_TIMEOUT);
+            }
         }
         Global.sendMsg(BaseMessage.ON_ENTER_FORGOUND);
     }

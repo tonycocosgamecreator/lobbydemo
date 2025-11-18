@@ -6,7 +6,6 @@ import * as cc from 'cc';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
-import { StringUtils } from '../core/utils/string-utils';
 import WalletManager from '../manager/wallet-manager';
 import { CurrencyHelper } from '../helper/currency-helper';
 //------------------------上述内容请勿修改----------------------------//
@@ -36,6 +35,7 @@ export default class CustomScore extends ViewBase {
         this.reset();
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
+            [GameEvent.UPDATE_ADDBET]: this.updateAddBet,
         });
     }
 
@@ -49,6 +49,7 @@ export default class CustomScore extends ViewBase {
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
                 this.updatePlayBetValue();
+                this.updateAddBet();
                 break;
         }
     }
@@ -58,6 +59,18 @@ export default class CustomScore extends ViewBase {
         const currency = WalletManager.currency;
         const total = SevenUpSevenDownManager.TotalBet;
         const mybets = SevenUpSevenDownManager.MyBets;
+        const info = SevenUpSevenDownManager.AllbetInfo;
+        let id: string[][] = [];
+        for (let i = 0; i < info.length; i++) {
+            let _d = info[i];
+            if (!id[_d.bet_id - 1]) id[_d.bet_id - 1] = [];
+            id[_d.bet_id - 1].push(_d.player_id);
+        }
+        id = id.map(t => [...new Set(t)]);
+        let all = 0;
+        total.forEach((val) => {
+            all += val;
+        })
         this.node.children.forEach((child, idx) => {
             child.active = !!total[idx];
             if (total[idx]) {
@@ -67,15 +80,58 @@ export default class CustomScore extends ViewBase {
                     str = str + '<color=#FFDC5A>' + CurrencyHelper.format(bet, currency, { showSymbol: true, minFractionDigits: 0 }) + '</color><color=#FFFFFF>/</color>';
                 }
                 str = str + '<color=#FFFFFF>' + CurrencyHelper.format(total[idx], currency, { showSymbol: bet ? false : true, minFractionDigits: 0 }) + '</color>';
-                child.getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                //比例
+                child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = id[idx].length + '';
+                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = total[idx] / all;
+                let tt = Math.round(total[idx] / all * 100);
+                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = tt + "%";
+
+            } else {
+                child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = '';
             }
         });
+
+    }
+
+    updateAddBet() {
+        return;
+        if (this._stage == baccarat.DeskStage.SettleStage) return;
+        const data = SevenUpSevenDownManager.BetDetail;
+        let all = 0;
+        let id: number[] = [];
+        let num: number[] = [];
+        data.forEach(val => {
+            if (!id[val.pos_id]) id[val.pos_id] = 0;
+            id[val.pos_id] += val.bet_sum;
+            all += val.bet_sum;
+            if (!num[val.pos_id]) num[val.pos_id] = 0;
+            num[val.pos_id] += 1;
+        });
+        this.node.children.forEach((child, idx) => {
+            let index = idx + 1;
+            if (!id[index]) id[index] = 0;
+            if (!num[index]) num[index] = 0;
+            child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = num[index] + '';
+            if (all == 0) {
+                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = 0;
+                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = '0%';
+            } else {
+                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = id[index] / all;
+                let str = Math.round(id[index] / all * 100);
+                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = str + "%";
+            }
+        })
 
     }
 
     reset() {
         this.node.children.forEach(child => {
             child.active = false;
+            child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = 0;
+            child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = '0%';
+            child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = '0';
+            child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = '';
         })
     }
 

@@ -203,6 +203,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001003
+    },
+    "PanelUserCenter": {
+        "viewName": "PanelUserCenter",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001026
     }
 }
 }

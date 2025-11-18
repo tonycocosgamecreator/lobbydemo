@@ -419,6 +419,14 @@ export default class SevenUpSevenDownManager extends BaseManager {
             }
             return true;
         }
+
+        if (msgType == baccarat.Message.MsgBaccaratAreaUserBetsNtf) {
+            const msg = data as baccarat.MsgBaccaratAreaUserBetsNtf;
+            if (msg.desk_id != this._deskId) return false;
+            this._betDetail = msg.bet_num;
+            Global.sendMsg(GameEvent.UPDATE_ADDBET);
+            return true;
+        }
         return false;
     }
     /**----------------游戏状态相关-------------------*/
@@ -549,6 +557,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get WinType(): number[] { return this._winType; }
     public static get Auto(): boolean { return this._auto };
     public static get BetsList(): Map<string, { playid: string, win: number, bet: number, icon: number }> { return this._betsList; }
+    public static get BetDetail(): baccarat.AreaUserBetsNum[] { return this._betDetail }
 
     /**
      * 重置所有数据
@@ -565,6 +574,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
         this._winType = [];
         this._order = -1;
         this._betsList.clear();
+        this._betDetail = [];
     }
 
     private static _before: betInfo[] = [];//前端记录上一从下注内容
@@ -573,6 +583,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _allbetInfo: betInfo[] = [];//本局所有人下注记录
     private static _firstPlayBet: Set<number> = new Set;//第一名下注记录
     private static _betsList: Map<string, { playid: string, win: number, bet: number, icon: number }> = new Map();
+    public static _betDetail: baccarat.AreaUserBetsNum[] = [];
     public static subtractLedList() {
         this._winLedList.splice(0, 1);
     }

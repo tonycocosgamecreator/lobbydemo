@@ -5,6 +5,8 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import AudioManager from '../core/manager/audio-manager';
+import { Global } from '../global';
+import { BaseMessage } from '../core/message/base-message';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -27,9 +29,20 @@ export default class CustomTime extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     _stage = -1;
-
+    _isGameInBackground: boolean = false;
     buildUi() {
         this.node.active = false;
+        Global.registerListeners(
+            this,
+            {
+                [BaseMessage.ON_ENTER_FORGOUND]: () => {
+                    this._isGameInBackground = false;
+                },
+                [BaseMessage.ON_ENTER_BACK_GROUND]: () => {
+                    this._isGameInBackground = true;
+                }
+            }
+        );
     }
 
     updateGameStage() {
@@ -47,13 +60,13 @@ export default class CustomTime extends ViewBase {
             this._currentHaveSec = secNow;
             this.labeltime.string = secNow.toString();
             if (SevenUpSevenDownManager.Stage == jmbaccarat.DeskStage.StartBetStage) {
-                // if (this._isGameInBackground == false) {
-                if (secNow == 5) {
-                    AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
-                } else if (secNow < 5 && secNow > 0) {
-                    AudioManager.playSound(this.bundleName, '剩余4秒，倒计时提示音，每秒播放一次');
+                if (this._isGameInBackground == false) {
+                    if (secNow == 5) {
+                        AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');
+                    } else if (secNow < 5 && secNow > 0) {
+                        AudioManager.playSound(this.bundleName, '剩余4秒，倒计时提示音，每秒播放一次');
+                    }
                 }
-                // }
             }
         }
         this.timeCounterBar.progress = left / maxSec;

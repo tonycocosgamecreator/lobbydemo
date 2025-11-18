@@ -95,6 +95,7 @@ declare module resourcesDb {
         ['PanelSevenUpSevenDownInit']: 'PanelSevenUpSevenDownInit',
         ['PanelSevenUpSevenDownMain']: 'PanelSevenUpSevenDownMain',
         ['PanelThirdGame']: 'PanelThirdGame',
+        ['PanelUserCenter']: 'PanelUserCenter',
 }
     type protobuf_load_priority_db_data = {
         /** 包体 */

@@ -6,7 +6,6 @@ import * as cc from 'cc';
 import { Node } from 'cc';
 import { Vec3 } from 'cc';
 import { tween } from 'cc';
-import CustomChip from './CustomChip';
 import { v3 } from 'cc';
 import PoolManager from '../core/manager/pool-manager';
 import { Tween } from 'cc';
@@ -17,6 +16,7 @@ import AudioManager from '../core/manager/audio-manager';
 import WalletManager from '../manager/wallet-manager';
 import { Global } from '../global';
 import { GameEvent } from '../define';
+import { BaseMessage } from '../core/message/base-message';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -38,7 +38,7 @@ export default class CustomFlyChip extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-
+    _isGameInBackground: boolean = false;
     _baseDuration: number = 0.2; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 300; // 基准距离(像素)   
     // _targetScale: number = 0.5;
@@ -55,6 +55,17 @@ export default class CustomFlyChip extends ViewBase {
         this._chipButtons = WalletManager.getCurrencyBetSize();
         this.view = SevenUpSevenDownManager.View;
         this._playId = SevenUpSevenDownManager.PlayerId;
+        Global.registerListeners(
+            this,
+            {
+                [BaseMessage.ON_ENTER_FORGOUND]: () => {
+                    this._isGameInBackground = false;
+                },
+                [BaseMessage.ON_ENTER_BACK_GROUND]: () => {
+                    this._isGameInBackground = true;
+                }
+            }
+        );
     }
 
     reset() {
@@ -212,7 +223,9 @@ export default class CustomFlyChip extends ViewBase {
 
             // 落地效果：直接缩回到原始大小
             .call(() => {
-                AudioManager.playSound(this.bundleName, '下注筹码声');
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '下注筹码声');
+                }
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
                 tween(flyObject)
                     .to(0.15, {
@@ -236,7 +249,9 @@ export default class CustomFlyChip extends ViewBase {
             }, { easing: 'quadOut' })
             // 落地效果：直接缩回到原始大小
             .call(() => {
-                AudioManager.playSound(this.bundleName, '下注筹码声');
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '下注筹码声');
+                }
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
                 tween(flyObject)
                     .to(0.05, {

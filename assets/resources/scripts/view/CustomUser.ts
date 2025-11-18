@@ -13,8 +13,8 @@ import { tween } from 'cc';
 import { UIOpacity } from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
-import { StringUtils } from '../core/utils/string-utils';
 import { CurrencyHelper } from '../helper/currency-helper';
+import ViewManager from '../core/manager/view-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -255,12 +255,39 @@ export default class CustomUser extends ViewBase {
 
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
+
+    private onClickButtonOne(event: cc.EventTouch) {
+        let idx = 0;
+        let id = this._ids[idx];
+        if (!id) return;
+        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+    }
+
+
+    private onClickButtonTwo(event: cc.EventTouch) {
+        let idx = 1;
+        let id = this._ids[idx];
+        if (!id) return;
+        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+    }
+
+
+    private onClickButtonThree(event: cc.EventTouch) {
+        let idx = 2;
+        let id = this._ids[idx];
+        if (!id) return;
+        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+    }
+
     // @view export event end
 
 
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
+            cc_buttonOne: [GButton, this.onClickButtonOne.bind(this)],
+            cc_buttonThree: [GButton, this.onClickButtonThree.bind(this)],
+            cc_buttonTwo: [GButton, this.onClickButtonTwo.bind(this)],
             cc_label_coin: [cc.Label],
             cc_label_name: [cc.Label],
             cc_labelpeople: [cc.Label],
@@ -273,6 +300,9 @@ export default class CustomUser extends ViewBase {
         };
     }
     //------------------------ 所有可用变量 ------------------------//
+    protected buttonOne: GButton = null;
+    protected buttonThree: GButton = null;
+    protected buttonTwo: GButton = null;
     protected label_coin: cc.Label = null;
     protected label_name: cc.Label = null;
     protected labelpeople: cc.Label = null;

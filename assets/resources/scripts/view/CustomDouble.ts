@@ -43,7 +43,7 @@ export default class CustomDouble extends ViewBase {
                     let _odds = SevenUpSevenDownManager.OddString;
                     for (let i = 0; i < _odds.length; i++) {
                         if (_odds[i] && +_odds[i]) {
-                            let child = this.node.children[i];
+                            let child = this.node.children[i].getChildByName('spine');
                             this.showDoubleAnimaton(child, 'open', reconnect)
                             child.children[0].children[0].active = true;
                             child.children[0].children[1].active = false;
@@ -57,19 +57,22 @@ export default class CustomDouble extends ViewBase {
     }
 
     showDoubleAnimaton(child: cc.Node, name: string, reconnect: boolean = false) {
-        child.active = true;
+        child.parent.active = true;
         const trackEntry = child.getComponent(sp.Skeleton).setAnimation(0, name, false);
         trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
         child.getComponent(sp.Skeleton).setCompleteListener(() => {
             child.children[0].children[0].active = false;
             child.children[0].children[1].active = true;
+            if(name=='end'){
+                 child.parent.active = false;
+            }
         })
     }
 
     showResult() {
         let _odds = SevenUpSevenDownManager.OddString;
         for (let i = 0; i < this.node.children.length; i++) {
-            let child = this.node.children[i];
+            let child = this.node.children[i].getChildByName('spine');
             if (_odds[i] && +_odds[i]) {
                 this.showDoubleAnimaton(child, 'end');
             }

@@ -68,15 +68,6 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 }
             }
         );
-        // this._boneNode2 = this.ske_person.findBone("dice_white_2");
-        // const socket = this.ske_person.sockets.find(s => s.path === "root/z/bone/dice_white_1")
-        // if (socket) {
-        //     this._boneNode1 = socket.target;
-        //     const spriteNode = new cc.Node();
-        //     const sprite = spriteNode.addComponent(cc.Sprite);
-        //     sprite.spriteFrame = this.getSpriteFrame("textures/ui/1/spriteFrame");
-        //     this._boneNode1.addChild(spriteNode);
-        // }
     }
 
     protected start(): void {
@@ -118,6 +109,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 break;
             case baccarat.DeskStage.SettleStage:
                 this.setTouZiData();
+                this.desk_node.showResult(true);
                 this.ske_person.setAnimation(0, 'clap', false);
                 break;
         }
@@ -153,10 +145,16 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.ske_change.node.active = true;
                 this.ske_change.setAnimation(0, 'xz', false);
                 this.ske_person.setAnimation(0, 'idle1', false);
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '开始下注');
+                }
                 break;
             case baccarat.DeskStage.EndBetStage:
                 this.ske_person.setAnimation(0, 'idle3', false);
                 this.ske_change.setAnimation(0, 'tzxz', false);
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '停止下注');
+                }
                 break;
             case baccarat.DeskStage.OpenStage:
                 this.ske_person.setAnimation(0, 'idle3', false);
@@ -179,14 +177,14 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                     // this.result_node.showResult(true);
                     this.desk_node.showResult();
                     this.double_node.showResult()
-                    if (SevenUpSevenDownManager.WinCoin > 0) {
+                    if (this._isGameInBackground == false && SevenUpSevenDownManager.WinCoin > 0) {
                         AudioManager.playSound(this.bundleName, '押中中奖音效');
                     }
                     this.scheduleOnce(() => {
                         //飞筹码
                         // this.result_node.reset();
                         this.fly_chip_node.recycleChip();
-                        this.desk_node.reset();
+                        // this.desk_node.reset();
                         this.scheduleOnce(() => {
                             this.user_node.playWinAnimation();
                             Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
