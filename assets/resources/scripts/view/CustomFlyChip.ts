@@ -165,12 +165,12 @@ export default class CustomFlyChip extends ViewBase {
     * * @param recycleWorldPos 回收筹码终点的世界坐标
     */
     recycleChip() {
-        let betsList = SevenUpSevenDownManager.BetsList;
+        // let betsList = SevenUpSevenDownManager.BetsList;
         let wintype = SevenUpSevenDownManager.WinType;
         for (let i = 0; i < this.node.children.length; i++) {
             let child = this.node.children[i];
             let _d = child.getComponent(CustomChipItem).ChipInfo;
-            if (betsList.get(_d.player_id)?.win > 0 && wintype.indexOf(_d.bet_id) != -1) {
+            if (wintype.indexOf(_d.bet_id) != -1) {
             } else {
                 this._clearChip(child)
                 i--;

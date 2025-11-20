@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "pako": "^2.1.0",
-    "protobufjs": "^7.5.3"
+    "protobufjs": "^7.5.4"
   },
   "devDependencies": {
     "@types/pako": "^2.0.3",

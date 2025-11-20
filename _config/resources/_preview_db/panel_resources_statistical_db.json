@@ -138,6 +138,12 @@
         "desc": "",
         "statisticalId": 100001025
     },
+    "CustomStar": {
+        "viewName": "CustomStar",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001027
+    },
     "CustomTime": {
         "viewName": "CustomTime",
         "bundleName": "resources",

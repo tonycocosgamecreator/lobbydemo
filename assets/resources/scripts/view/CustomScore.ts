@@ -28,7 +28,6 @@ export default class CustomScore extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-
     _stage = -1;
 
     buildUi() {
@@ -80,15 +79,17 @@ export default class CustomScore extends ViewBase {
                     str = str + '<color=#FFDC5A>' + CurrencyHelper.format(bet, currency, { showSymbol: true, minFractionDigits: 0 }) + '</color><color=#FFFFFF>/</color>';
                 }
                 str = str + '<color=#FFFFFF>' + CurrencyHelper.format(total[idx], currency, { showSymbol: bet ? false : true, minFractionDigits: 0 }) + '</color>';
-                child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = str;
                 //比例
-                child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = id[idx].length + '';
-                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = total[idx] / all;
-                let tt = Math.round(total[idx] / all * 100);
-                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = tt + "%";
+                if (child.getChildByName('progressbar')) {
+                    child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                    child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = id[idx].length + '';
+                    child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = total[idx] / all;
+                    let tt = Math.ceil(total[idx] / all * 100);
+                    child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = tt + "%";
+                } else {
+                    child.getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                }
 
-            } else {
-                child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = '';
             }
         });
 
@@ -128,10 +129,14 @@ export default class CustomScore extends ViewBase {
     reset() {
         this.node.children.forEach(child => {
             child.active = false;
-            child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = 0;
-            child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = '0%';
-            child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = '0';
-            child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = '';
+            if (child.getChildByName('progressbar')) {
+                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = 0;
+                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = '0%';
+                child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = '0';
+                child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = '';
+            } else {
+                child.getChildByName('labelbet').getComponent(cc.RichText).string = '';
+            }
         })
     }
 

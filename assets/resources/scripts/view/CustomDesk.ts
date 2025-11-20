@@ -40,9 +40,9 @@ export default class CustomDesk extends ViewBase {
     _tagetWorldPos: Vec3[] = [];
 
     buildUi() {
-        BaseGlobal.registerListeners(this, {
-            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updateStar,
-        });
+        // BaseGlobal.registerListeners(this, {
+        //     [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updateStar,
+        // });
         const odds = SevenUpSevenDownManager.Odds;
         this._chipButtons = WalletManager.getCurrencyBetSize()
         this.betarea_node.children.forEach((child, idx) => {
@@ -68,18 +68,18 @@ export default class CustomDesk extends ViewBase {
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
-                this.updateStar();
+                // this.updateStar();
                 break;
         }
     }
 
-    updateStar() {
-        const isFirst = SevenUpSevenDownManager.FirstPlayBet;
-        this.betarea_node.children.forEach((child, idx) => {
-            child.getChildByName('star').active = isFirst.has(idx + 1);
-        });
+    // updateStar() {
+    //     const isFirst = SevenUpSevenDownManager.FirstPlayBet;
+    //     this.betarea_node.children.forEach((child, idx) => {
+    //         child.getChildByName('star').active = isFirst.has(idx + 1);
+    //     });
 
-    }
+    // }
 
     showResult(reconnect: boolean = false) {
         let wintype = SevenUpSevenDownManager.WinType;

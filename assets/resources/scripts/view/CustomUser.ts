@@ -15,6 +15,7 @@ import { UIOpacity } from 'cc';
 import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
 import { CurrencyHelper } from '../helper/currency-helper';
 import ViewManager from '../core/manager/view-manager';
+import { Global } from '../global';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -258,25 +259,28 @@ export default class CustomUser extends ViewBase {
 
     private onClickButtonOne(event: cc.EventTouch) {
         let idx = 0;
-        let id = this._ids[idx];
-        if (!id) return;
-        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+        // let id = this._ids[idx];
+        // if (!id) return;
+        // ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+        Global.sendMsg(GameEvent.UPDATE_STAR, this._ids[idx]);
     }
 
 
     private onClickButtonTwo(event: cc.EventTouch) {
         let idx = 1;
-        let id = this._ids[idx];
-        if (!id) return;
-        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+        Global.sendMsg(GameEvent.UPDATE_STAR, this._ids[idx]);
+        // let id = this._ids[idx];
+        // if (!id) return;
+        // ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
     }
 
 
     private onClickButtonThree(event: cc.EventTouch) {
         let idx = 2;
-        let id = this._ids[idx];
-        if (!id) return;
-        ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
+        Global.sendMsg(GameEvent.UPDATE_STAR, this._ids[idx]);
+        // let id = this._ids[idx];
+        // if (!id) return;
+        // ViewManager.OpenPanel(this.module, 'PanelUserCenter', { idx: idx });
     }
 
     // @view export event end

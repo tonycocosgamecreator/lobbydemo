@@ -106,5 +106,9 @@
     "PanelUserCenter": {
         "statisticalId": 100001026,
         "panelId": 26
+    },
+    "CustomStar": {
+        "statisticalId": 100001027,
+        "panelId": 27
     }
 }

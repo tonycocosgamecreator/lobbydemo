@@ -84,6 +84,7 @@ declare module resourcesDb {
         ['CustomRecord']: 'CustomRecord',
         ['CustomResult']: 'CustomResult',
         ['CustomScore']: 'CustomScore',
+        ['CustomStar']: 'CustomStar',
         ['CustomTime']: 'CustomTime',
         ['CustomToast']: 'CustomToast',
         ['CustomTop']: 'CustomTop',

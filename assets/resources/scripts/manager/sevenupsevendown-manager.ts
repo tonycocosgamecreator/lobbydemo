@@ -104,9 +104,9 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         }
                         this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
                         this._allbetInfo.push(_d);
-                        if (play.is_first) {
-                            this._firstPlayBet.add(bet.bet_id);
-                        }
+                        // if (play.is_first) {
+                        //     this._firstPlayBet.add(bet.bet_id);
+                        // }
                     }
                     _betV.win += +(play.win_coin);
                     this._betsList.set(play.player_id, _betV);
@@ -165,9 +165,9 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         t.balance -= +(bet.bet_coin);
                     }
                 });
-                if (msg.is_first) {
-                    this._firstPlayBet.add(bet.bet_id);
-                }
+                // if (msg.is_first) {
+                //     this._firstPlayBet.add(bet.bet_id);
+                // }
                 this._before.push(_d);
                 this._allbetInfo.push(_d);
                 this._order++;
@@ -199,9 +199,9 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             }
                             _betV.bet += +bet.bet_coin;
                             this._betsList.set(play.player_id, _betV);
-                            if (play.is_first) {
-                                this._firstPlayBet.add(bet.bet_id);
-                            }
+                            // if (play.is_first) {
+                            //     this._firstPlayBet.add(bet.bet_id);
+                            // }
                             this._allbetInfo.push(_d);
                             this._bigWinList.forEach(t => {
                                 if (t && t.player_id && t.player_id == play.player_id) {
@@ -549,7 +549,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get AllbetInfo(): betInfo[] { return this._allbetInfo; }
     public static get Before(): betInfo[] { return this._before; }
     public static get LastbetInfo(): betInfo[] { return this._lastbetInfo; }
-    public static get FirstPlayBet(): Set<number> { return this._firstPlayBet; }
+    // public static get FirstPlayBet(): Set<number> { return this._firstPlayBet; }
     public static get OddString(): string[] { return this._oddString; }
     public static get OpenPos(): number[] { return this._openPos; }
     public static get WinLedList(): sevenupdown.MsgLastWinNtf[] { return this._winLedList; }
@@ -568,7 +568,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
         this._mybetInfo = [];
         this._before = [];
         this._allbetInfo = [];
-        this._firstPlayBet.clear()
+        // this._firstPlayBet.clear()
         this._oddString = [];
         this._winCoin = 0;
         this._winType = [];
@@ -581,7 +581,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _lastbetInfo: betInfo[] = [];//前端上一局下注记录
     private static _mybetInfo: betInfo[] = [];//本局自己下注记录
     private static _allbetInfo: betInfo[] = [];//本局所有人下注记录
-    private static _firstPlayBet: Set<number> = new Set;//第一名下注记录
+    // private static _firstPlayBet: Set<number> = new Set;//第一名下注记录
     private static _betsList: Map<string, { playid: string, win: number, bet: number, icon: number }> = new Map();
     public static _betDetail: baccarat.AreaUserBetsNum[] = [];
     public static subtractLedList() {

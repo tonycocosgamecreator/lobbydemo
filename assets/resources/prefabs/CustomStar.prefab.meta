@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "93f635df-d268-4a2c-9466-7c0f6517010b",
+  "uuid": "9cbe62f5-b83a-48bf-839e-b027509a3e6d",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "CustomResult"
+    "syncNodeName": "CustomStar"
   }
 }

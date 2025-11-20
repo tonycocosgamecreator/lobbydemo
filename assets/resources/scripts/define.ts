@@ -71,15 +71,19 @@ export enum GameEvent {
     /**
     *RANK
     */
-    UPDATE_RANK = 'UPDATE_RANK', 
-     /**
-     *更换头像
-     */
+    UPDATE_RANK = 'UPDATE_RANK',
+    /**
+    *更换头像
+    */
     PLAYER_CHANGE_AVATAR = 'PLAYER_CHANGE_AVATAR',
-     /**
-     *用户累计下注值
-     */
-    UPDATE_ADDBET='UPDATE_ADDBET',
+    /**
+    *用户累计下注值
+    */
+    UPDATE_ADDBET = 'UPDATE_ADDBET',
+    /**
+    *sta动画
+    */
+    UPDATE_STAR = 'UPDATE_STAR'
 
 }
 
