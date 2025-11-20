@@ -119,10 +119,14 @@ declare module resourcesDb {
         readonly zh_cn: string,
         /** 英文 */
         readonly en_us: string,
+        /** 葡萄牙语（巴西） */
+        readonly pt_br: string,
         /** 印地语 */
         readonly hi_in: string,
-        /** 英语-印度 */
-        readonly en_in: string,
+        readonly my_mm: string,
+        readonly bn_bd: string,
+        readonly vi_vn: string,
+        readonly th_th: string,
     };
 
     type i18n_resources_db = {
@@ -160,6 +164,8 @@ declare module resourcesDb {
         ['PanelSystemMenu_title_i18n_button_rules']: 'PanelSystemMenu_title_i18n_button_rules',
         ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
         ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
+        ['AVATAR_CHANGED_FAILED']: 'AVATAR_CHANGED_FAILED',
+        ['Tip_BaccaratKickOutNtf']: 'Tip_BaccaratKickOutNtf',
 }
     type game_entrance_config_db_data = {
         /** 游戏id（bundleId） */

@@ -8,6 +8,7 @@ import { Global } from '../global';
 import { BetPoint, GameEvent } from '../define';
 import { LocalStorageManager } from './localstorage-manager';
 import { Vec3 } from 'cc';
+import I18nManager from '../core/manager/i18n-manager';
 
 export enum GameState {
     IDLE = 'idle',          // 空闲状态，游戏未开始
@@ -186,6 +187,20 @@ export default class JmManager extends BaseManager {
             if (msg.desk_id != this._deskId) return false;
             this._view?.flyOtherChip(msg.players || []);
             return false;
+        }
+        if (msgType == baccarat.Message.MsgBaccaratKickOutNtf) {
+            const msg = data as baccarat.MsgBaccaratKickOutNtf;
+            console.warn('receive kick out ntf! === ', msg);
+            const uid = msg.uid;
+            if (uid == +this.PlayerId) {
+                UIHelper.showConfirmOfOneButtonToRefreshBrowser(
+                    I18nManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Tip_BaccaratKickOutNtf),
+                    I18nManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Notice),
+                    I18nManager.getText(resourcesDb.I18N_RESOURCES_DB_INDEX.Confirm),
+                );
+                return true;
+            }
+            return true;
         }
         return false;
     }
