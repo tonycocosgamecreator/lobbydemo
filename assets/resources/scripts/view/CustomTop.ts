@@ -9,6 +9,7 @@ import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
 import { Widget } from 'cc';
+import { CurrencyHelper } from '../helper/currency-helper';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -41,9 +42,9 @@ export default class CustomTop extends ViewBase {
     }
 
     updateTotalBalance(balance: number): void {
-        this.labelCoin.string = balance.toFixed(2);
         const currency = WalletManager.currency;
-        this.labelCurrency.string = currency;
+        this.labelCoin.string = CurrencyHelper.format(balance, currency, { showSymbol: true });
+        this.labelCurrency.string = '';
     }
 
     updateAllWidgets() {

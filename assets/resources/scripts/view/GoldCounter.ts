@@ -32,6 +32,8 @@ export class GoldCounter extends Component {
     setGold(amount: number) {
         this._currentGold = amount;
         this._targetGold = amount;
+        this._currentGold = Number(amount.toFixed(2));
+        this._targetGold = Number(amount.toFixed(2));
         this.updateGoldDisplay();
     }
 
@@ -41,6 +43,7 @@ export class GoldCounter extends Component {
      */
     addGold(amount: number) {
         this._targetGold = amount;
+        this._targetGold = Number(amount.toFixed(2));
         if (!this._isAnimating) {
             this.startAnimation();
         }

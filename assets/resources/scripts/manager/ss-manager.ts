@@ -167,7 +167,9 @@ export default class SuperSevenManager extends BaseManager {
 
             if (this.Free) {
                 this._finishedCount++;
-                this._finishedWin += msg.spin_data?.award || 0;
+                let a = this._finishedWin;
+                a += msg.spin_data?.award;
+                this._finishedWin = Number((this._finishedWin + msg.spin_data?.award).toFixed(2));
             } else {
                 this._finishedCount = 0;
                 this._finishedWin = 0;

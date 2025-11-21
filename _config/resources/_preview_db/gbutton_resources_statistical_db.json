@@ -278,6 +278,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001902
+        },
+        "cc_buttonCloseTip": {
+            "viewName": "PanelSuperSevenMain",
+            "buttonName": "cc_buttonCloseTip",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001903
         }
     }
 }

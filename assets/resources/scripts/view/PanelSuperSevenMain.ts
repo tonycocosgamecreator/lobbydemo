@@ -53,6 +53,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     //------------------------ 内部逻辑 ------------------------//
     _gameState: gameState = gameState.None;
     _free: boolean = false;
+
     buildUi() {
         this._reset();
         this._updateFree();
@@ -455,6 +456,12 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
 
     }
 
+
+    private onClickButtonCloseTip(event: cc.EventTouch) {
+        this.sptankuang.setCompleteListener(null);
+        this.sptankuang.node.parent.active = false;
+    }
+
     // @view export event end
 
 
@@ -463,6 +470,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
         return {
             cc_animation_node: [cc.Sprite],
             cc_buttom_node: [CustomButtom],
+            cc_buttonCloseTip: [GButton, this.onClickButtonCloseTip.bind(this)],
             cc_buttonCloseWin: [GButton, this.onClickButtonCloseWin.bind(this)],
             cc_buttonCollect: [GButton, this.onClickButtonCollect.bind(this)],
             cc_buttonStart: [GButton, this.onClickButtonStart.bind(this)],
@@ -489,6 +497,7 @@ export default class PanelSuperSevenMain extends ViewBase implements IPanelSuper
     //------------------------ 所有可用变量 ------------------------//
     protected animation_node: cc.Sprite = null;
     protected buttom_node: CustomButtom = null;
+    protected buttonCloseTip: GButton = null;
     protected buttonCloseWin: GButton = null;
     protected buttonCollect: GButton = null;
     protected buttonStart: GButton = null;
