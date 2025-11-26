@@ -94,18 +94,23 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
         this.fly_chip_node.updateGameStage(true);
         this.double_node.updateGameStage(true);
         this.score_node.updateGameStage(true);
+        this.ske_person.setCompleteListener(null);
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
                 this.ske_person.setAnimation(0, 'shaking', false);
                 break;
             case baccarat.DeskStage.StartBetStage:
                 this.ske_person.setAnimation(0, 'idle1', false);
+                this.ske_person.setCompleteListener(() => {
+                    this.ske_person.setCompleteListener(null);
+                    this.ske_person.setAnimation(0, 'dle3', true);
+                })
                 break;
             case baccarat.DeskStage.EndBetStage:
-                this.ske_person.setAnimation(0, 'idle3', false);
+                this.ske_person.setAnimation(0, 'dle3', true);
                 break;
             case baccarat.DeskStage.OpenStage:
-                this.ske_person.setAnimation(0, 'idle3', false);
+                this.ske_person.setAnimation(0, 'dle3', true);
                 break;
             case baccarat.DeskStage.SettleStage:
                 this.setTouZiData();
@@ -146,19 +151,24 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.ske_change.node.active = true;
                 this.ske_change.setAnimation(0, 'xz', false);
                 this.ske_person.setAnimation(0, 'idle1', false);
+                this.ske_person.setCompleteListener(() => {
+                    this.ske_person.setCompleteListener(null);
+                    this.ske_person.setAnimation(0, 'dle3', true);
+                })
                 if (this._isGameInBackground == false) {
                     AudioManager.playSound(this.bundleName, '开始下注');
                 }
                 break;
             case baccarat.DeskStage.EndBetStage:
-                this.ske_person.setAnimation(0, 'idle3', false);
+                this.ske_person.setCompleteListener(null);
+                this.ske_person.setAnimation(0, 'dle3', true);
                 this.ske_change.setAnimation(0, 'tzxz', false);
                 if (this._isGameInBackground == false) {
                     AudioManager.playSound(this.bundleName, '停止下注');
                 }
                 break;
             case baccarat.DeskStage.OpenStage:
-                this.ske_person.setAnimation(0, 'idle3', false);
+                // this.ske_person.setAnimation(0, 'dle3', true);
                 this.ske_change.node.active = false;
                 let _odds = SevenUpSevenDownManager.OddString;
                 for (let i = 0; i < _odds.length; i++) {
@@ -271,70 +281,70 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_animation_node    : [cc.Node],
-            cc_bg    : [cc.Node],
-            cc_chip_node    : [CustomChip],
-            cc_desk_node    : [CustomDesk],
-            cc_double_node    : [CustomDouble],
-            cc_fly_chip_node    : [CustomFlyChip],
-            cc_handle_node    : [CustomHandle],
-            cc_history_node    : [CustomMainHistory],
-            cc_online    : [CustomOnline],
-            cc_record_node    : [CustomRecord],
-            cc_scollview    : [cc.ScrollView],
-            cc_score_node    : [CustomScore],
-            cc_ske_change    : [cc.sp.Skeleton],
-            cc_ske_extra    : [cc.sp.Skeleton],
-            cc_ske_person    : [cc.sp.Skeleton],
-            cc_ske_start    : [cc.sp.Skeleton],
-            cc_star_node    : [CustomStar],
-            cc_time_node    : [CustomTime],
-            cc_top    : [CustomBaccaratTop],
-            cc_touzi_node    : [cc.Sprite],
-            cc_user_node    : [CustomUser],
-            cc_wintip_node    : [CustomWinTip],
+            cc_animation_node: [cc.Node],
+            cc_bg: [cc.Node],
+            cc_chip_node: [CustomChip],
+            cc_desk_node: [CustomDesk],
+            cc_double_node: [CustomDouble],
+            cc_fly_chip_node: [CustomFlyChip],
+            cc_handle_node: [CustomHandle],
+            cc_history_node: [CustomMainHistory],
+            cc_online: [CustomOnline],
+            cc_record_node: [CustomRecord],
+            cc_scollview: [cc.ScrollView],
+            cc_score_node: [CustomScore],
+            cc_ske_change: [cc.sp.Skeleton],
+            cc_ske_extra: [cc.sp.Skeleton],
+            cc_ske_person: [cc.sp.Skeleton],
+            cc_ske_start: [cc.sp.Skeleton],
+            cc_star_node: [CustomStar],
+            cc_time_node: [CustomTime],
+            cc_top: [CustomBaccaratTop],
+            cc_touzi_node: [cc.Sprite],
+            cc_user_node: [CustomUser],
+            cc_wintip_node: [CustomWinTip],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected animation_node: cc.Node    = null;
-   protected bg: cc.Node    = null;
-   protected chip_node: CustomChip    = null;
-   protected desk_node: CustomDesk    = null;
-   protected double_node: CustomDouble    = null;
-   protected fly_chip_node: CustomFlyChip    = null;
-   protected handle_node: CustomHandle    = null;
-   protected history_node: CustomMainHistory    = null;
-   protected online: CustomOnline    = null;
-   protected record_node: CustomRecord    = null;
-   protected scollview: cc.ScrollView    = null;
-   protected score_node: CustomScore    = null;
-   protected ske_change: cc.sp.Skeleton    = null;
-   protected ske_extra: cc.sp.Skeleton    = null;
-   protected ske_person: cc.sp.Skeleton    = null;
-   protected ske_start: cc.sp.Skeleton    = null;
-   protected star_node: CustomStar    = null;
-   protected time_node: CustomTime    = null;
-   protected top: CustomBaccaratTop    = null;
-   protected touzi_node: cc.Sprite    = null;
-   protected user_node: CustomUser    = null;
-   protected wintip_node: CustomWinTip    = null;
+    protected animation_node: cc.Node = null;
+    protected bg: cc.Node = null;
+    protected chip_node: CustomChip = null;
+    protected desk_node: CustomDesk = null;
+    protected double_node: CustomDouble = null;
+    protected fly_chip_node: CustomFlyChip = null;
+    protected handle_node: CustomHandle = null;
+    protected history_node: CustomMainHistory = null;
+    protected online: CustomOnline = null;
+    protected record_node: CustomRecord = null;
+    protected scollview: cc.ScrollView = null;
+    protected score_node: CustomScore = null;
+    protected ske_change: cc.sp.Skeleton = null;
+    protected ske_extra: cc.sp.Skeleton = null;
+    protected ske_person: cc.sp.Skeleton = null;
+    protected ske_start: cc.sp.Skeleton = null;
+    protected star_node: CustomStar = null;
+    protected time_node: CustomTime = null;
+    protected top: CustomBaccaratTop = null;
+    protected touzi_node: cc.Sprite = null;
+    protected user_node: CustomUser = null;
+    protected wintip_node: CustomWinTip = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'PanelSevenUpSevenDownMain';
+    public static readonly VIEW_NAME = 'PanelSevenUpSevenDownMain';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return PanelSevenUpSevenDownMain.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return PanelSevenUpSevenDownMain.VIEW_NAME;
     }
     // @view export resource end

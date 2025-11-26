@@ -65,10 +65,10 @@ export default class CustomScore extends ViewBase {
             if (!id[_d.bet_id - 1]) id[_d.bet_id - 1] = [];
             id[_d.bet_id - 1].push(_d.player_id);
         }
-        id = id.map(t => [...new Set(t)]);
+        id = id.map(t => Array.from(new Set(t)));
         let all = 0;
         total.forEach((val) => {
-            all += val;
+            all = all.add(val);
         })
         this.node.children.forEach((child, idx) => {
             child.active = !!total[idx];

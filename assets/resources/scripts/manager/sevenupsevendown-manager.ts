@@ -96,19 +96,19 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             player_id: play.player_id,
                             icon: +play.icon,
                         }
-                        _betV.bet += +bet.bet_coin;
+                        _betV.bet = _betV.bet.add(+bet.bet_coin);
                         if (isme) {
-                            this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            this._myBets[bet.bet_id - 1] = this._myBets[bet.bet_id - 1].add(+bet.bet_coin);
                             this._mybetInfo.push(_d);
                             this._before[0] = _d;
                         }
-                        this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                        this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].add(+bet.bet_coin);
                         this._allbetInfo.push(_d);
                         // if (play.is_first) {
                         //     this._firstPlayBet.add(bet.bet_id);
                         // }
                     }
-                    _betV.win += +(play.win_coin);
+                    _betV.win = _betV.win.add(+play.win_coin);
                     this._betsList.set(play.player_id, _betV);
                 }
                 this._lastbetInfo = [...this._mybetInfo];
@@ -118,7 +118,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             }
             MessageSender.SendMessage(sevenupdown.Message.MsgGetPercentReq, { desk_id: this._deskId });
             this._stage = msg.info.stage;
-            if (this._stage == jmbaccarat.DeskStage.SettleStage) {
+            if (this._stage == baccarat.DeskStage.SettleStage) {
                 let _list = msg.info?.seven_up_down_info?.win_type_list || []
                 this._openPos = _list.length ? _list[_list.length - 1].win_type : [];
                 let v = this._openPos[0] + this._openPos[1];
@@ -150,19 +150,19 @@ export default class SevenUpSevenDownManager extends BaseManager {
             // this._betsList.delete(this._playerId)
             for (let i = 0; i < bets.length; i++) {
                 const bet = bets[i];
-                this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
-                this._myBets[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].add(+bet.bet_coin);
+                this._myBets[bet.bet_id - 1] = this._myBets[bet.bet_id - 1].add(+bet.bet_coin);
                 const _d = {
                     bet_coin: bet.bet_coin,
                     bet_id: bet.bet_id,
                     player_id: this._playerId,
                     icon: this._headId
                 }
-                _betV.bet += +bet.bet_coin;
+                _betV.bet = _betV.bet.add(+bet.bet_coin);
                 this._betsList.set(this._playerId, _betV);
                 this._bigWinList.forEach(t => {
                     if (t && t.player_id && t.player_id == this._playerId) {
-                        t.balance -= +(bet.bet_coin);
+                        t.balance = t.balance.sub(+bet.bet_coin);
                     }
                 });
                 // if (msg.is_first) {
@@ -190,14 +190,14 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         // this._betsList.delete(play.player_id)
                         for (let j = 0; j < play.bets.length; j++) {
                             const bet = play.bets[j];
-                            this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].add(+bet.bet_coin);
                             const _d = {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
                                 player_id: play.player_id,
                                 icon: +play.icon
                             }
-                            _betV.bet += +bet.bet_coin;
+                            _betV.bet = _betV.bet.add(+bet.bet_coin);
                             this._betsList.set(play.player_id, _betV);
                             // if (play.is_first) {
                             //     this._firstPlayBet.add(bet.bet_id);
@@ -205,7 +205,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             this._allbetInfo.push(_d);
                             this._bigWinList.forEach(t => {
                                 if (t && t.player_id && t.player_id == play.player_id) {
-                                    t.balance -= +(bet.bet_coin);
+                                    t.balance = t.balance.sub(+bet.bet_coin);
                                 }
                             });
                             this._view?.updateflyChip(_d, false, -1);
@@ -259,19 +259,19 @@ export default class SevenUpSevenDownManager extends BaseManager {
             // this._betsList.delete(this._playerId)
             for (let i = 0; i < bets.length; i++) {
                 const bet = bets[i];
-                this._totalBet[bet.bet_id - 1] -= parseFloat(bet.bet_coin || '0');
-                this._myBets[bet.bet_id - 1] -= parseFloat(bet.bet_coin || '0');
+                this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].sub(+bet.bet_coin);
+                this._myBets[bet.bet_id - 1] = this._myBets[bet.bet_id - 1].sub(+bet.bet_coin);
                 const _d = {
                     bet_coin: bet.bet_coin,
                     bet_id: bet.bet_id,
                     player_id: this._playerId,
                     icon: this._headId
                 }
-                _betV.bet -= +bet.bet_coin;
+                _betV.bet = _betV.bet.sub(+bet.bet_coin);
                 this._betsList.set(this._playerId, _betV);
                 this._bigWinList.forEach(t => {
                     if (t && t.player_id && t.player_id == this._playerId) {
-                        t.balance += +(bet.bet_coin);
+                        t.balance = t.balance.add(+bet.bet_coin);
                     }
                 });
                 info.push(_d);
@@ -294,18 +294,18 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         // this._betsList.delete(play.player_id)
                         for (let j = 0; j < play.bets.length; j++) {
                             const bet = play.bets[j];
-                            this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                            this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].add(+bet.bet_coin);
                             const _d = {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
                                 player_id: +play.player_id,
                                 icon: play.icon
                             }
-                            _betV.bet -= +bet.bet_coin;
+                            _betV.bet = _betV.bet.sub(+bet.bet_coin);
                             this._betsList.set(play.player_id, _betV);
                             this._bigWinList.forEach(t => {
                                 if (t && t.player_id && t.player_id == play.player_id) {
-                                    t.balance += +(bet.bet_coin);
+                                    t.balance = t.balance.add(+bet.bet_coin);
                                 }
                             });
                             info.push(_d);
@@ -375,14 +375,14 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     _betV.bet = 0;
                     for (let j = 0; j < play.bets.length; j++) {
                         const bet = play.bets[j];
-                        this._totalBet[bet.bet_id - 1] += parseFloat(bet.bet_coin || '0');
+                        this._totalBet[bet.bet_id - 1] = this._totalBet[bet.bet_id - 1].add(+bet.bet_coin);
                         const _d = {
                             bet_coin: bet.bet_coin,
                             bet_id: bet.bet_id,
                             player_id: play.player_id,
                             icon: play.icon
                         }
-                        _betV.bet += +(bet.bet_coin);
+                        _betV.bet = _betV.bet.add(+bet.bet_coin);
                         if (isme) {
                             this._mybetInfo.push(_d);
                         }
@@ -391,7 +391,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
                     _betV.win = +(play.win_coin);
                     this._bigWinList.forEach(t => {
                         if (t && t.player_id && t.player_id == play.player_id) {
-                            t.balance += +(play.win_coin);
+                            t.balance = t.balance.add(+play.win_coin);
                         }
                     });
                 }

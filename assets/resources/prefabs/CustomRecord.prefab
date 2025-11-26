@@ -344,7 +344,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": -165,
-      "y": 140.875,
+      "y": 140,
       "z": 0
     },
     "_lrot": {
@@ -787,7 +787,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "head-001",
+    "_name": "head",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1202,7 +1202,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "head-002",
+    "_name": "head",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -5282,7 +5282,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
+      "width": 720.0000000000001,
       "height": 400
     },
     "_anchorPoint": {

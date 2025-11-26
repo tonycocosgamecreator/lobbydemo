@@ -59,7 +59,7 @@ export default class CustomTime extends ViewBase {
         if (secNow !== this._currentHaveSec) {
             this._currentHaveSec = secNow;
             this.labeltime.string = secNow.toString();
-            if (SevenUpSevenDownManager.Stage == jmbaccarat.DeskStage.StartBetStage) {
+            if (SevenUpSevenDownManager.Stage == baccarat.DeskStage.StartBetStage) {
                 if (this._isGameInBackground == false) {
                     if (secNow == 5) {
                         AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');

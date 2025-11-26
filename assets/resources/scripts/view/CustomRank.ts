@@ -33,7 +33,7 @@ export default class CustomRank extends ViewBase {
 
     protected onEnable(): void {
         if (this._gid == 0) {
-            this.changeState(2);
+            this.changeState(4);
         }
     }
 
@@ -71,6 +71,7 @@ export default class CustomRank extends ViewBase {
     updateRank(list: sevenupdown.SevenUpDownRankData[]) {
         const currency = WalletManager.currency;
         this._list = list;
+        this.rankList.stopScrollTo();
         this.rankList.itemRender = (item: cc.Node, i: number) => {
             const data = this._list[i];
             item.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
@@ -92,7 +93,7 @@ export default class CustomRank extends ViewBase {
     // @view export event begin
 
     private onClickButtonallday(event: cc.EventTouch) {
-        this.changeState(2);
+        this.changeState(4);
     }
 
 
@@ -102,7 +103,7 @@ export default class CustomRank extends ViewBase {
 
 
     private onClickButtonmonth(event: cc.EventTouch) {
-        this.changeState(8);
+        this.changeState(6);
     }
 
     // @view export event end

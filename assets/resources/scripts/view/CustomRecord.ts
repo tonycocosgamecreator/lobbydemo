@@ -10,6 +10,8 @@ import List from 'db://assets/resources/scripts/core/view/list-view';
 import SevenUpSevenDownManager, { betInfo } from '../manager/sevenupsevendown-manager';
 import WalletManager from '../manager/wallet-manager';
 import { CurrencyHelper } from '../helper/currency-helper';
+import { v3 } from 'cc';
+import { Tween } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -34,6 +36,7 @@ export default class CustomRecord extends ViewBase {
 
     _list: { playid: string; win: number; bet: number; icon: number }[] = [];
     _stage = -1;
+    _positionArr = [v3(25, 0, 0), v3(0, 0, 0), v3(-25, 0, 0)]
 
     buildUi() {
         this.tabGroup.init();
@@ -66,28 +69,30 @@ export default class CustomRecord extends ViewBase {
                 let listMap = SevenUpSevenDownManager.BetsList
                 this._list = Array.from(listMap.values())
                 this.updateRecord();
+                let winNum = 0;
                 if (this._stage == baccarat.DeskStage.SettleStage) {
-                    let bigD = Array.from(listMap.values()).sort((a, b) => b.win - a.win);;
-                    this.head_node.active = true;
-                    let winNum = 0;
+                    let bigD = Array.from(listMap.values()).sort((a, b) => b.win - a.win);
                     let winGold = 0;
                     bigD.forEach(t => {
                         if (t.win > 0) {
                             winNum++;
-                            winGold += t.win
+                            winGold = winGold.add(t.win)
                         }
                     })
-                    this.head_node.children.forEach((child, index) => {
-                        let data = index == 0 ? bigD[2] : index == 2 ? bigD[0] : bigD[1];
+                    this.head_node.children.forEach((child, idx) => {
+                        let data = idx == 0 ? bigD[2] : idx == 2 ? bigD[0] : bigD[1];
                         child.active = !!data;
+                        // Tween.stopAllByTarget(child)
+                        child.setPosition(this._positionArr[idx]);
                         if (data) {
                             child.getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${data.icon}`);
                         }
                     })
-                    this.labelbets.string = winNum + '/' + bigD.length + ' Bets';
                     this.labelwin.string = winGold + '';
-                    this.labelwin.node.active = true;
+                } else {
+                    this.updateHead();
                 }
+                this.labelbets.string = winNum + '/' + this._list.length + ' Bets';
                 break;
         }
     }
@@ -99,8 +104,10 @@ export default class CustomRecord extends ViewBase {
 
     updateList() {
         let listMap = SevenUpSevenDownManager.BetsList
-        this._list = Array.from(listMap.values())
+        this._list = Array.from(listMap.values());
+        this.labelbets.string = '0/' + this._list.length + ' Bets';
         this.updateRecord();
+        this.updateHead();
     }
 
     updateRecord() {
@@ -118,12 +125,54 @@ export default class CustomRecord extends ViewBase {
         this.recordList.numItems = this._list.length;
     }
 
+    updateHead() {
+        if (this._stage == baccarat.DeskStage.ReadyStage || this._stage == baccarat.DeskStage.SettleStage) return;
+        const info = SevenUpSevenDownManager.AllbetInfo;
+        if (info.length == 0) {
+            this.head_node.children.forEach((child, idx) => {
+                child.active = false;
+                child.setPosition(this._positionArr[idx]);
+            })
+        } else if (info.length == 1) {
+            this.head_node.children.forEach((child, idx) => {
+                if (idx === 2) {
+                    child.getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${info[0].icon}`);
+                    child.active = true;
+                    child.setPosition(this._positionArr[idx]);
+                } else {
+                    child.active = false;
+                }
+            });
+
+        } else if (info.length == 2) {
+            this.head_node.children.forEach((child, idx) => {
+                if (idx > 0) {
+                    child.getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${info[idx - 1].icon}`);
+                    child.active = true;
+                    child.setPosition(this._positionArr[idx]);
+                } else {
+                    child.active = false;
+                }
+            });
+        } else if (info.length >= 3) {
+            let arr = info.slice(-3)
+            this.head_node.children.forEach((child, idx) => {
+                child.getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${arr[idx].icon}`);
+                child.active = true;
+                child.setPosition(this._positionArr[idx]);
+            });
+        }
+    }
+
     reset() {
         this._list = [];
         this.recordList.numItems = 0;
-        this.head_node.active = false;
         this.labelbets.string = '';
-        this.labelwin.node.active = false;
+        this.labelwin.string = '';
+        this.head_node.children.forEach((child, idx) => {
+            child.active = false;
+            child.setPosition(this._positionArr[idx]);
+        })
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

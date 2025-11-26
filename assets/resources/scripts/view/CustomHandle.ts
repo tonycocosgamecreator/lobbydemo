@@ -64,7 +64,7 @@ export default class CustomHandle extends ViewBase {
                     let betcoin = 0;
                     let bets = [];
                     list.forEach(t => {
-                        betcoin += parseInt(t.bet_coin);
+                        betcoin = betcoin.add(+t.bet_coin);
                         bets.push({ bet_id: t.bet_id, bet_coin: t.bet_coin, is_rebet: false })
                     })
                     this.sendBetMessage(bets, betcoin, true);
@@ -90,7 +90,7 @@ export default class CustomHandle extends ViewBase {
         const mybets = SevenUpSevenDownManager.MyBets;
         let before = SevenUpSevenDownManager.Before;
         let v = 0;
-        mybets.forEach(t => { v += t });
+        mybets.forEach(t => { v = v.add(t) });
         this.button_undo.isEnabled = !!v && this._auto == false;
         this.button_clear.isEnabled = !!v && this._auto == false;
         this.button_double.isEnabled = !!v && this._auto == false && before.length > 0;
@@ -147,7 +147,7 @@ export default class CustomHandle extends ViewBase {
         let betcoin = 0;
         let bets = [];
         list.forEach(t => {
-            betcoin += parseInt(t.bet_coin);
+            betcoin = betcoin.add(+t.bet_coin);
             bets.push({ bet_id: t.bet_id, bet_coin: t.bet_coin, is_rebet: false })
         })
         this.sendBetMessage(bets, betcoin, false, true);
@@ -181,7 +181,9 @@ export default class CustomHandle extends ViewBase {
         let bets = [];
         let betcoin = 0;
         _data.forEach((val) => {
-            betcoin += +(val.bet_coin) * 2;
+            let coin = +val.bet_coin;
+            coin = coin.mul(2);
+            betcoin = betcoin.add(coin);
             bets.push({ bet_id: val.bet_id, bet_coin: val.bet_coin + '', is_rebet: false });
             bets.push({ bet_id: val.bet_id, bet_coin: val.bet_coin + '', is_rebet: false });
         })
