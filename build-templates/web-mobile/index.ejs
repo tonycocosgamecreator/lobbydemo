@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="./game.png" />
     <meta charset="utf-8">
 
     <title>Game</title>
@@ -32,8 +33,8 @@
             <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="99">
             </canvas>
         </div>
-        <div class="inner-div2" id="myDiv" style="visibility: hidden;">
-            <!-- <img src="game.png" class="logo" alt="Logo"> -->
+        <div class="inner-div2" id="myDiv">
+            <img src="game.png" class="logo" alt="Logo">
             <div class="progress" id="myProgress" style="visibility: hidden;">
                 <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 0%;" id="progress-bar">
                     
@@ -44,7 +45,6 @@
         </div>
     </div>
     
-    <script text="text/javascript" src="./libs/pako.min.js"></script>
     <script text="text/javascript" src="./libs/jszip.min.js"></script>
     <script text="text/javascript" src="./libs/ziploader.js"></script>
     <!-- INSERT IMPORT MAP -->
@@ -82,14 +82,12 @@
 
         //BUNDLES DEFINED//
 
-        window['pako']     = pako;
-        window["JSZIP"]   = JSZip;  
+        window['JSZIP']     = JSZip;
         const ziploader     = loader.ZipLoader.Instance;
         window['ziploader'] = ziploader;
         var progressState   = 0;
         function enterGame(){
             progressState   = 1;
-            console.log('BOLE GAME INIT START!');
             System.import('./index.js').catch(function(err) { console.error(err); })
         }
         var fgamestart = 0;
@@ -99,6 +97,9 @@
             console.log('BOLE GAME INIT CAST ' + fgameinterval + 'ms!');
 
             var div = document.getElementById('myDiv');
+            //var myProgress = document.getElementById('inner-progress');
+            //myProgress.remove();
+            //myProgress.style.visibility = 'hidden'; // 在动画结束后隐藏元素
             div.classList.add('fadeOut');
             setTimeout(function() {
                 div.style.display = 'none'; // 在动画结束后隐藏元素
@@ -116,7 +117,7 @@
                     width = 756;
                 }
                 progress.style.width    = (width * 0.7) + 'px';
-                progress.style.visibility = 'hidden';
+                progress.style.visibility = 'visible';
             }
             const percent = (progressState * 50 + (nowCount / totalCount) * 50).toFixed(2) + "%";
             document.getElementById('progress-bar').style.width = percent;
