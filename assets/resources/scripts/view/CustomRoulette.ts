@@ -21,7 +21,6 @@ export default class CustomRoulette extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        this.setNumberAngleMap();
         this.resetGame();
         this.updatePosition();
         this.calculateOrbitRadius();
@@ -71,33 +70,19 @@ export default class CustomRoulette extends ViewBase {
     private isRelativeLocked: boolean = false;
     outerRingRadius: number = 250;  // 外圈半径
     innerRingRadius: number = 198;  // 内圈半径
-    map: { [key: number]: number } = {};
-    // 创建数字到角度的映射表
-    private setNumberAngleMap() {
-        // 欧洲轮盘数字顺序，从0°（顶部）开始
+    // 获取数字在轮盘上的正确显示角度
+    private getNumberDisplayOnWheel(targetNumber: number): number {
         const euroNumbers = [
             5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26,
             0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10
         ];
-
-        const sectorSize = (2 * Math.PI) / 37; // 每个扇区弧度
-        // 假设数字5在轮盘顶部（0度）
-        // 顺时针方向每个数字增加一个扇区
-        euroNumbers.forEach((num, index) => {
-            // 计算角度，数字5在0°，顺时针增加
-            const angle = (index * sectorSize) % (2 * Math.PI);
-            this.map[num] = angle;
-        });
-
-    }
-    getNumberAngleMap(): { [key: number]: number } {
-        return this.map;
+        const index = euroNumbers.indexOf(targetNumber);
+        const sectorAngle = (2 * Math.PI) / 37;
+        const displayAngleRad = Math.PI / 2 - (index * sectorAngle);
+        console.log(`数字 ${targetNumber} 在轮盘上的显示角度: ${math.toDegree(displayAngleRad).toFixed(1)}°`);
+        return displayAngleRad;
     }
 
-    // 辅助函数：归一化角度到 [0, 2π)
-    private normalizeAngle(angle: number): number {
-        return ((angle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
-    }
     // 开始游戏
     async startGame(): Promise<void> {
         if (this.isGameRunning) return;
@@ -116,13 +101,13 @@ export default class CustomRoulette extends ViewBase {
             await this.phase2_BallFastRotation();
 
             // // 阶段3：小球减速 (1.5秒)
-            await this.phase3_BallSlowDown();
+            // await this.phase3_BallSlowDown();
 
             // // 阶段4：一起减速 (2.8秒)
             // await this.phase4_SlowDownTogether();
-            this.wheel.stop()
-            this.isGameRunning = false;
-            this.currentPhase = 0;
+
+            // this.isGameRunning = false;
+            // this.currentPhase = 0;
 
         } catch (error) {
             console.error('游戏出错:', error);
@@ -165,11 +150,11 @@ export default class CustomRoulette extends ViewBase {
         this.currentPhase = 3;
 
         // 测试数字32
-        const targetNumber = 32;
+        const targetNumber = 5;
         console.log(`\n=== 开始减速测试 ===`);
         console.log(`目标数字: ${targetNumber}`);
 
-        await this.slowDownToTargetFinal(targetNumber);
+        await this.slowDownToTargetWithCorrectedAngle(targetNumber);
     }
 
 
@@ -290,133 +275,85 @@ export default class CustomRoulette extends ViewBase {
     }
 
 
-    private async slowDownToTargetFinal(targetNumber: number): Promise<void> {
+    private async slowDownToTargetWithCorrectedAngle(targetNumber: number): Promise<void> {
         return new Promise((resolve) => {
-            // 1. 先找到目标数字相对于轮盘的角度偏移
-            // 假设轮盘0度在顶部，小球相对角度为0时对应某个数字
-            const numberToAngleMap = this.getNumberAngleMap(); // 需要实现这个方法
-            const targetRelativeAngle = numberToAngleMap[targetNumber];
+            console.log(`角度修正定点减速到: ${targetNumber}`);
+            this.ballState = 'slow';
 
-            console.log(`目标数字 ${targetNumber} 的相对角度: ${math.toDegree(targetRelativeAngle).toFixed(1)}°`);
+            // 目标数字角度
+            const targetOnWheel = ((this.getNumberDisplayOnWheel(targetNumber)) % (2 * Math.PI) + (2 * Math.PI)) % (2 * Math.PI);
+            console.log(`目标数字角度: ${math.toDegree(targetOnWheel).toFixed(1)}°`);
 
-            // 2. 计算最终小球应该的绝对角度
-            // 最终小球位置 = 轮盘角度 + 相对偏移角度
-            const currentWheelAngle = this.wheel.currentAngle;
-            const finalBallAngle = currentWheelAngle + targetRelativeAngle;
+            // 参数
+            const startBallSpeed = this.ballSpeed;
+            const wheelSpeed = this.wheel.rotationSpeed;
+            const duration = 2.0;
+            let elapsedTime = 0;
 
-            // 3. 获取当前状态
-            const startBallAngle = this.ballAngle;
-            const startWheelAngle = currentWheelAngle;
-            const startTime = Date.now();
+            const slowDownUpdate = () => {
+                elapsedTime += 0.016;
+                const progress = Math.min(elapsedTime / duration, 1);
 
-            // 4. 简单线性减速
-            const duration = 2000; // 2秒
-            const startRadius = this.outerRingRadius;
-            const endRadius = this.innerRingRadius;
+                // 1. 基础线性减速（主减速曲线）
+                const baseTargetSpeed = startBallSpeed - (startBallSpeed - wheelSpeed) * progress;
 
-            const animate = () => {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+                // 2. 计算相对角度和角度差
+                const wheelDisplayAngle = -this.wheel.currentAngle;
+                let ballRelativeToWheel = this.ballAngle - wheelDisplayAngle;
+                ballRelativeToWheel = ((ballRelativeToWheel % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
 
-                // 当前轮盘角度（假设轮盘也在减速）
-                const wheelAngle = startWheelAngle + this.wheel.rotationSpeed * elapsed / 1000;
-                this.wheel.currentAngle = wheelAngle;
-
-                // 5. 计算当前轮盘对应的最终小球位置
-                const currentTargetBallAngle = wheelAngle + targetRelativeAngle;
-
-                // 6. 从当前位置平滑过渡到目标位置
-                const startBallAngleNorm = this.normalizeAngle(startBallAngle);
-                const currentTargetBallAngleNorm = this.normalizeAngle(currentTargetBallAngle);
-
-                // 计算最短路径
-                let angleDiff = currentTargetBallAngleNorm - startBallAngleNorm;
+                let angleDiff = targetOnWheel - ballRelativeToWheel;
                 if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
                 if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
 
-                // 当前角度（线性插值）
-                const currentBallAngle = startBallAngleNorm + angleDiff * progress;
+                const angleGap = Math.abs(angleDiff);
 
-                // 7. 设置小球状态
-                this.ballAngle = currentBallAngle;
-
-                // 小球速度逐渐与轮盘同步
-                const wheelSpeed = this.wheel.rotationSpeed * (1 - progress * 0.8);
-                this.ballSpeed = wheelSpeed;
-                this.wheel.rotationSpeed = wheelSpeed;
-
-                // 8. 半径变化
-                this.orbitRadius = startRadius - (startRadius - endRadius) * progress;
-
-                // 9. 更新位置
-                this.updatePosition();
-
-                // 10. 显示当前数字
-                const currentRelAngle = this.normalizeAngle(this.ballAngle - wheelAngle);
-                const currentNum = this.calculateNumberFromAngle(currentRelAngle);
-
-                if (elapsed % 500 < 16) {
-                    console.log(`进度: ${(progress * 100).toFixed(0)}% - 当前数字: ${currentNum}`);
+                // 3. 角度修正（只在差距较大时应用，避免抖动）
+                let correction = 0;
+                if (angleGap > 0.1) { // 大于5.7度才修正
+                    // 修正量随进度和角度差变化
+                    const correctionStrength = 0.2 * (1 - progress * 0.7); // 后期修正减弱
+                    correction = angleDiff * correctionStrength;
                 }
 
-                // 11. 完成
-                if (progress >= 1.0) {
-                    // 最终位置
-                    this.ballAngle = wheelAngle + targetRelativeAngle;
-                    this.ballSpeed = this.wheel.rotationSpeed;
-                    this.orbitRadius = endRadius;
-                    this.updatePosition();
+                // 4. 平滑组合：基础减速 + 角度修正
+                // 使用加权平均，避免突变
+                const smoothFactor = 0.8; // 基础速度权重
+                const finalTargetSpeed = baseTargetSpeed * smoothFactor + (baseTargetSpeed + correction) * (1 - smoothFactor);
 
-                    // 验证结果
-                    const finalRelAngle = this.normalizeAngle(this.ballAngle - this.wheel.currentAngle);
-                    const finalNum = this.calculateNumberFromAngle(finalRelAngle);
+                // 5. 平滑过渡到目标速度
+                const smoothRate = 0.1; // 平滑系数，值越小越平滑
+                this.ballSpeed += (finalTargetSpeed - this.ballSpeed) * smoothRate;
 
-                    console.log(`\n🎯 完成!`);
-                    console.log(`目标数字: ${targetNumber}, 最终数字: ${finalNum}`);
-                    console.log(`最终相对角度: ${math.toDegree(finalRelAngle).toFixed(1)}°`);
+                // 速度限制
+                const minSpeed = wheelSpeed * 0.8;
+                const maxSpeed = wheelSpeed * 1.5;
+                this.ballSpeed = Math.max(minSpeed, Math.min(this.ballSpeed, maxSpeed));
 
-                    if (finalNum === targetNumber) {
-                        console.log(`✅ 准确命中目标!`);
-                    } else {
-                        console.log(`❌ 未命中目标，需要调整角度映射`);
-                    }
 
+                // 6. 更新角度
+                // 小球顺时针
+                this.ballAngle -= this.ballSpeed * 0.016;
+                if (this.ballAngle < 0) this.ballAngle += 2 * Math.PI;
+
+                this.updatePosition();
+
+                // 7. 完成条件
+                if (angleGap < (5 * Math.PI / 180) && progress > 0.9) { // 5度
+                    console.log(`\n完成！误差: ${math.toDegree(angleDiff).toFixed(1)}°`);
+                    this.wheel.stop()
                     this.ballState = 'locked';
                     this.isRelativeLocked = true;
+                    this.ballSpeed = wheelSpeed;
+
+                    this.unschedule(slowDownUpdate);
                     resolve();
-                } else {
-                    requestAnimationFrame(animate);
                 }
             };
 
-            animate();
+            this.schedule(slowDownUpdate, 0.016);
         });
     }
-
-    // 辅助方法：从角度计算数字
-    private calculateNumberFromAngle(relativeAngle: number): number {
-        const map = this.getNumberAngleMap();
-        const sectorSize = (2 * Math.PI) / 37;
-
-        // 归一化角度
-        const normalizedAngle = this.normalizeAngle(relativeAngle);
-
-        // 找到最接近的角度对应的数字
-        let closestNum = -1;
-        let minDiff = Infinity;
-
-        for (const [num, angle] of Object.entries(map)) {
-            const diff = Math.abs(this.normalizeAngle(normalizedAngle - Number(angle)));
-            if (diff < minDiff) {
-                minDiff = diff;
-                closestNum = Number(num);
-            }
-        }
-
-        return closestNum;
-    }
-
-
     // 锁定到轮盘相对位置
     lockToWheel(): void {
         this.ballState = 'locked';

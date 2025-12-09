@@ -158,9 +158,9 @@ export default class CustomRouletteWheel extends ViewBase {
             this.schedule(slowDownUpdate, 0.016);
         });
     }
-    
-    stop(){
-          this.isSpinning = false;
+
+    stop() {
+        this.isSpinning = false;
     }
 
     // 重置
@@ -177,11 +177,12 @@ export default class CustomRouletteWheel extends ViewBase {
         if (this.isSpinning && this._rotationSpeed > 0) {
             // 更新角度：速度 * 时间
             this._currentAngle += this._rotationSpeed * deltaTime;
+            if (this._currentAngle > 360) this._currentAngle -= 360;
             this.updateRotation();
         }
     }
     // 辅助方法：等待轮盘稳定
-     waitForWheelStable(): Promise<void> {
+    waitForWheelStable(): Promise<void> {
         return new Promise((resolve) => {
             const checkStable = () => {
                 if (Math.abs(this.rotationSpeed) > 0.1) { // 有足够速度
