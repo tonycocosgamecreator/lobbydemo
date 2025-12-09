@@ -11,48 +11,104 @@
         "statisticalId": 100001002,
         "panelId": 2
     },
-    "PanelSevenUpSevenDownInit": {
+    "PanelWheelInit": {
         "statisticalId": 100001003,
         "panelId": 3
     },
-    "PanelSevenUpSevenDownMain": {
+    "CustomOnline": {
         "statisticalId": 100001004,
         "panelId": 4
     },
-    "CustomTop": {
+    "CustomWin": {
         "statisticalId": 100001005,
         "panelId": 5
     },
-    "CustomMainHistory": {
+    "CustomTopRankUser": {
         "statisticalId": 100001006,
         "panelId": 6
     },
-    "CustomChip": {
+    "CustomUser": {
         "statisticalId": 100001007,
         "panelId": 7
     },
-    "CustomDesk": {
+    "CustomMainHistory": {
         "statisticalId": 100001008,
         "panelId": 8
     },
-    "CustomHandle": {
+    "CustomRoomPeople": {
         "statisticalId": 100001009,
         "panelId": 9
     },
-    "CustomHead": {
+    "CustomRoomPeopleNum": {
         "statisticalId": 100001010,
         "panelId": 10
     },
-    "CustomOnline": {
+    "CustomOnlineInRoom": {
         "statisticalId": 100001011,
         "panelId": 11
     },
-    "CustomBigWinner": {
+    "CustomOtherBetUser": {
         "statisticalId": 100001012,
         "panelId": 12
     },
-    "CustomTime": {
+    "CustomHandle": {
         "statisticalId": 100001013,
         "panelId": 13
+    },
+    "CustomTop": {
+        "statisticalId": 100001014,
+        "panelId": 14
+    },
+    "PanelWheelMain": {
+        "statisticalId": 100001015,
+        "panelId": 15
+    },
+    "CustomAllUser": {
+        "statisticalId": 100001016,
+        "panelId": 16
+    },
+    "CustomRoomData": {
+        "statisticalId": 100001017,
+        "panelId": 17
+    },
+    "CustomAllBet": {
+        "statisticalId": 100001018,
+        "panelId": 18
+    },
+    "CustomAllBets": {
+        "statisticalId": 100001019,
+        "panelId": 19
+    },
+    "CustomButtom": {
+        "statisticalId": 100001020,
+        "panelId": 20
+    },
+    "CustomDesk": {
+        "statisticalId": 100001021,
+        "panelId": 21
+    },
+    "CustomBetArea": {
+        "statisticalId": 100001022,
+        "panelId": 22
+    },
+    "CustomFlyChip": {
+        "statisticalId": 100001023,
+        "panelId": 23
+    },
+    "CustomScore": {
+        "statisticalId": 100001024,
+        "panelId": 24
+    },
+    "CustomRoulette": {
+        "statisticalId": 100001025,
+        "panelId": 25
+    },
+    "CustomRouletteWheel": {
+        "statisticalId": 100001026,
+        "panelId": 26
+    },
+    "CustomRouletteBall": {
+        "statisticalId": 100001027,
+        "panelId": 27
     }
 }

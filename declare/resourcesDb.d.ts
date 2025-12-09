@@ -1,5 +1,5 @@
 /** 配置表数据结构描述文件，本文件由导出器自动生成，请勿手动修改 */
-declare namespace resourcesDb {
+declare module resourcesDb {
     function getDataBase(dbName: string): any;
     type customize_resources_statistical_db_data = {
         /** 唯一id */
@@ -67,11 +67,36 @@ declare namespace resourcesDb {
     function foreach_from_panel_resources_statistical_db(callback: (viewNameKey: string, data: resourcesDb.panel_resources_statistical_db_data) => (void | boolean)): void;
     /** 界面名字 */
     export const PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME: {
+        ['CustomAllBets']: 'CustomAllBets',
+        ['CustomAllBet']: 'CustomAllBet',
+        ['CustomAllUser']: 'CustomAllUser',
+        ['CustomBetArea']: 'CustomBetArea',
+        ['CustomButtom']: 'CustomButtom',
+        ['CustomDesk']: 'CustomDesk',
+        ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
+        ['CustomHandle']: 'CustomHandle',
+        ['CustomMainHistory']: 'CustomMainHistory',
+        ['CustomOnlineInRoom']: 'CustomOnlineInRoom',
+        ['CustomOnline']: 'CustomOnline',
+        ['CustomOtherBetUser']: 'CustomOtherBetUser',
+        ['CustomRoomData']: 'CustomRoomData',
+        ['CustomRoomPeopleNum']: 'CustomRoomPeopleNum',
+        ['CustomRoomPeople']: 'CustomRoomPeople',
+        ['CustomRouletteBall']: 'CustomRouletteBall',
+        ['CustomRouletteWheel']: 'CustomRouletteWheel',
+        ['CustomRoulette']: 'CustomRoulette',
+        ['CustomScore']: 'CustomScore',
         ['CustomToast']: 'CustomToast',
+        ['CustomTopRankUser']: 'CustomTopRankUser',
+        ['CustomTop']: 'CustomTop',
+        ['CustomUser']: 'CustomUser',
+        ['CustomWin']: 'CustomWin',
         ['PanelCircleLoading']: 'PanelCircleLoading',
         ['PanelLobby']: 'PanelLobby',
         ['PanelThirdGame']: 'PanelThirdGame',
+        ['PanelWheelInit']: 'PanelWheelInit',
+        ['PanelWheelMain']: 'PanelWheelMain',
 }
     type protobuf_load_priority_db_data = {
         /** 包体 */
@@ -131,6 +156,24 @@ declare namespace resourcesDb {
         ['Close']: 'Close',
         ['ExitGame']: 'ExitGame',
         ['Retry']: 'Retry',
+        ['Tip_ReconnectFailed']: 'Tip_ReconnectFailed',
+        ['Tip_Reconnecting']: 'Tip_Reconnecting',
+        ['TIP_ENTER_GAME_FAILED']: 'TIP_ENTER_GAME_FAILED',
+        ['TIP_AB_BET_FAILED']: 'TIP_AB_BET_FAILED',
+        ['Tip_No_More_Historys']: 'Tip_No_More_Historys',
+        ['TIP_HISTORY_GET_FAILED']: 'TIP_HISTORY_GET_FAILED',
+        ['CustomSystemTopFoot_totalbet_info_i18n']: 'CustomSystemTopFoot_totalbet_info_i18n',
+        ['CustomSystemTopFoot_balance_info_i18n']: 'CustomSystemTopFoot_balance_info_i18n',
+        ['CustomSystemTopFoot_label_period_i18n_skin']: 'CustomSystemTopFoot_label_period_i18n_skin',
+        ['PanelMessageBox_cc_title_i18n']: 'PanelMessageBox_cc_title_i18n',
+        ['PanelMessageBox_cc_cancelTitle_i18n']: 'PanelMessageBox_cc_cancelTitle_i18n',
+        ['PanelMessageBox_cc_okTitle_i18n']: 'PanelMessageBox_cc_okTitle_i18n',
+        ['PanelSystemMenu_title_i18n_button_records']: 'PanelSystemMenu_title_i18n_button_records',
+        ['PanelSystemMenu_title_i18n_button_rules']: 'PanelSystemMenu_title_i18n_button_rules',
+        ['PanelSystemMenu_title_i18n_button_sound']: 'PanelSystemMenu_title_i18n_button_sound',
+        ['PanelSystemMenu_title_i18n_button_exit']: 'PanelSystemMenu_title_i18n_button_exit',
+        ['AVATAR_CHANGED_FAILED']: 'AVATAR_CHANGED_FAILED',
+        ['Tip_BaccaratKickOutNtf']: 'Tip_BaccaratKickOutNtf',
 }
     type game_config_db_data = {
         /** 变量的名字 */

@@ -1,0 +1,166 @@
+syntax = "proto2";
+
+package msgserver;
+
+// NoticeType 公告类型
+enum NoticeType{
+    URL = 0;   // URL类型
+    Game = 1;  // 游戏主题
+    Wnd = 2;   // 窗口
+}
+// 公告信息
+message NoticeInfo {
+    optional NoticeType typ=1;                  // 公告类型
+    optional string tag = 2;                    // tag标签
+    optional string title = 3;                  // 公告标题
+    repeated string pic_url = 4;                // 公告图片url,支持多个图片轮换
+    repeated string point = 5;                  // 点击区域: x,y
+    optional string go_url = 6;                    // 跳转url
+
+    optional int32 id= 7;                       // 公告ID
+    optional bool is_read = 8;                  //  是否已读,  false=未读,显示红点
+}
+
+// 获取公告列表请求
+message MsgSvrGetNoticeListReq {
+    optional uint64 player_id=1;            // 玩家ID
+    optional int32 type = 2;                // 类型 0 默认 1 大转盘
+}
+
+// 获取公告列表请求应答
+message MsgSvrGetNoticeListRsp {
+    optional int32 err_code = 1;        // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;       // 错误描述
+    repeated NoticeInfo  list = 3;      // 公告列表
+}
+
+// 已读公告请求
+message MsgSvrReadNoticeReq {
+    optional uint64 player_id=1;            // 玩家ID
+    optional int32 id= 2;                   // 公告ID
+}
+
+// 已读公告请求应答
+message MsgSvrReadNoticeRsp {
+    optional int32 err_code = 1;        // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;       // 错误描述
+    optional int32 id= 3;                // 公告ID
+    optional bool is_read = 4;           //  是否已读
+}
+
+
+// msgid:MSGSVR_GET_HORSE_RACE_REQ = 0x4001; 	// 获取跑马灯请求
+// 获取跑马灯请求
+message MsgSvrGetHorseRaceReq {
+    optional uint64 player_id=1;            // 玩家ID
+    optional int32 type = 2;                // 类型 0 默认 1 大转盘
+}
+
+// msgid:MSGSVR_GET_HORSE_RACE_RSP = 0x4002; 	// 获取跑马灯应答
+// 获取跑马灯应答
+message MsgSvrGetHorseRaceRsp {
+    optional int32 err_code = 1;        // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;       // 错误描述
+    optional int32  tick = 3;           // 两个跑马灯播放间隔,单位:秒
+    optional int32 sleep = 4;           // 跑马灯播放一轮后，休眠时间:秒
+    repeated  string content = 5;       // 跑马灯内容列表
+    optional int32 type = 6;                // 类型 0 默认 1 大转盘
+}
+
+// msgid:MSGSVR_HORSE_RACE_UPDATE_NTF = 0x4003; // 跑马灯变化通知
+// 跑马灯变化通知
+message MsgSvrHorseRaceUpdateNtf {
+    optional int32 channel = 1;         // 渠道Id
+    optional  string content = 2;       // 新加的跑马灯内容
+    optional int32 type = 3;            // 类型 0 默认 1 大转盘
+}
+
+//msgid:MSGSVR_STOP_NTF = 0x4004; // 停服通知消息
+message MsgSvrStopNtf {
+	optional string msg = 1;    		//消息内容
+	optional bool roomforbid = 2;		//开房场限制
+	optional bool goldforbid = 3;		//金币场限制
+}
+
+//msgid:MSGSVR_ALLCLI_NTF = 0x4005; 	//通知所有客户端下线
+message MsgSvrAllCliNtf {
+	optional int32 msg = 1;
+	optional int32 panlstatus = 2;   	//维护公告状态
+	optional string showpanlhead = 3;	//维护公告标题
+	optional string showpanlmsg = 4;	//维护公告内容
+}
+
+
+//msgid:MSGSVR_MESSAGE_NTF = 0x4006;    //通用通知消息
+message MsgSvrMessageNtf {
+    optional int32 type = 1;      //消息类型
+    optional string title = 2;	//消息标题: txt或json
+    optional string content = 3;	//消息内容: txt或json
+}
+
+//msgid:MsgSvrHorseRaceJbrNtf = 0x4010; // 跑马灯假百人变化通知
+message MsgSvrHorseRaceJbrNtf {
+    optional string name = 1;        // 玩家名称
+    optional string icon = 2;        // 玩家头像
+    optional string win_coins = 3;   // 赢金币总数
+    optional int32 win_type = 4;     // 赢类型: 0=未赢，1=小赢，2=big win，3=mega win, 4=super win
+}
+
+//////////////////// 语聊消息列表 begin/////////////////////////////////////////
+// 语聊玩家信息
+message VoicePlayerInfo {
+    optional uint64 player_id = 1;      // 玩家ID
+    optional int32 state_id = 2;        // 当前状态
+    optional string nick_name = 3;      // 微信昵称
+    optional string pic_url = 4;        // 微信头像
+    optional string open_id = 5;        // 微信openid
+}
+
+//msgid: MSGSVR_VOICE_STATE_CHANGE_NTF = 0x400D;       //语聊玩家状态变化通知消息
+message MsgSvrVoiceStateChangeNtf {
+    optional VoicePlayerInfo change_player = 1;     // 变化的玩家信息
+}
+
+// msgid: MSGSVR_ENTER_VOICE_ROOM_REQ = 0x4007; 	// 进入语聊房间请求
+// 进入语聊房间请求
+message MsgSvrEnterVoiceRoomReq {
+    optional uint64 player_id = 1;            // 玩家ID
+    optional int32 state_id = 2;              // 当前状态
+    repeated uint64 broadcast_players = 3;    // 广播玩家列表
+}
+
+// msgid: MSGSVR_ENTER_VOICE_ROOM_RSP = 0x4008; 	// 进入语聊房间应答
+// 进入语聊房间应答
+message MsgSvrEnterVoiceRoomRsp {
+    optional int32 err_code = 1;        // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;       // 错误描述
+}
+
+// msgid: MSGSVR_LEAVE_VOICE_ROOM_REQ = 0x4009; 	// 离开语聊房间请求
+// 离开语聊房间请求
+message MsgSvrLeaveVoiceRoomReq {
+    optional uint64 player_id=1;            // 玩家ID
+}
+
+// msgid: MSGSVR_LEAVE_VOICE_ROOM_RSP = 0x400A; 	// 离开语聊房间应答
+// 离开语聊房间应答
+message MsgSvrLeaveVoiceRoomRsp {
+    optional int32 err_code = 1;        // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;       // 错误描述
+}
+
+// msgid: MSGSVR_GET_VOICE_PLAYER_INFO_REQ = 0x400B; 	// 获取语聊玩家信息请求
+// 获取语聊玩家信息请求
+message MsgSvrGetVoicePlayerInfoReq {
+   repeated string open_id = 1;                         // 微信openid
+}
+
+// msgid: MSGSVR_GET_VOICE_PLAYER_INFO_RSP = 0x400C; 	// 获取语聊玩家信息应答
+// 获取语聊玩家信息应答
+message MsgSvrGetVoicePlayerInfoRsp {
+    optional int32 err_code = 1;                       // 错误码， 参考 common.ErrCode
+    optional string err_desc = 2;                      // 错误描述
+    repeated VoicePlayerInfo inf_list = 3;             // 玩家信息列表
+
+}
+//////////////////// 语聊消息列表 end/////////////////////////////////////////

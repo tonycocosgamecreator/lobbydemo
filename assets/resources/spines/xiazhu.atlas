@@ -1,0 +1,90 @@
+
+xiazhu.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1fangou
+  rotate: true
+  xy: 744, 501
+  size: 190, 87
+  orig: 201, 101
+  offset: 3, 6
+  index: -1
+1gou
+  rotate: true
+  xy: 686, 608
+  size: 131, 53
+  orig: 142, 61
+  offset: 6, 5
+  index: -1
+1kaishixiazhu
+  rotate: true
+  xy: 744, 138
+  size: 361, 68
+  orig: 365, 71
+  offset: 2, 2
+  index: -1
+1lizi1
+  rotate: false
+  xy: 2, 168
+  size: 647, 186
+  orig: 653, 192
+  offset: 4, 2
+  index: -1
+1lizi2
+  rotate: false
+  xy: 2, 356
+  size: 648, 193
+  orig: 653, 198
+  offset: 3, 3
+  index: -1
+1mask
+  rotate: false
+  xy: 674, 8
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+1tingzhixiazhu
+  rotate: true
+  xy: 674, 138
+  size: 411, 68
+  orig: 417, 73
+  offset: 3, 3
+  index: -1
+1waikuang
+  rotate: false
+  xy: 2, 551
+  size: 682, 188
+  orig: 682, 188
+  offset: 0, 0
+  index: -1
+1wangge
+  rotate: false
+  xy: 2, 2
+  size: 670, 164
+  orig: 670, 164
+  offset: 0, 0
+  index: -1
+1xing1
+  rotate: false
+  xy: 804, 101
+  size: 33, 35
+  orig: 39, 42
+  offset: 3, 4
+  index: -1
+1xing2
+  rotate: false
+  xy: 686, 560
+  size: 42, 46
+  orig: 50, 56
+  offset: 4, 6
+  index: -1
+31
+  rotate: true
+  xy: 741, 693
+  size: 40, 63
+  orig: 66, 139
+  offset: 0, 38
+  index: -1
