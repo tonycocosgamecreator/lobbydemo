@@ -3,19 +3,18 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
+//------------------------特殊引用开始----------------------------//
+import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
+import { CurrencyHelper } from '../helper/currency-helper';
+import { Global } from '../global';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
 import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 import { Tween } from 'cc';
+import { UIOpacity } from 'cc';
 import { v3 } from 'cc';
 import { tween } from 'cc';
-import { UIOpacity } from 'cc';
-//------------------------特殊引用开始----------------------------//
-import CustomUserIcon from 'db://assets/resources/scripts/view/CustomUserIcon';
-import { CurrencyHelper } from '../helper/currency-helper';
-import ViewManager from '../core/manager/view-manager';
-import { Global } from '../global';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -41,6 +40,7 @@ export default class CustomUser extends ViewBase {
 
     _stage = -1;
     _ids: string[] = [];
+    _luckIds: string[] = [];
     _myId: string = '';
     callback = null;
     currency = '';
@@ -58,7 +58,10 @@ export default class CustomUser extends ViewBase {
         this.resetBetPlayer();
         this.init();
         this.callback = () => {
-            this.otherhead_node.children.forEach((child) => {
+            this.tophead.children.forEach((child) => {
+                child.getChildByName('head').getChildByName('mask').active = false;
+            })
+            this.luckhead.children.forEach((child) => {
                 child.getChildByName('head').getChildByName('mask').active = false;
             })
         }
@@ -69,8 +72,8 @@ export default class CustomUser extends ViewBase {
         this.spr_myhead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
         this._myId = SevenUpSevenDownManager.PlayerId;
         this._stage = SevenUpSevenDownManager.Stage;
-        const data = SevenUpSevenDownManager.BigWinList;
-        this.otherhead_node.children.forEach((child, idx) => {
+        const data = SevenUpSevenDownManager.getTopPlayerData();
+        this.tophead.children.forEach((child, idx) => {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
@@ -80,7 +83,19 @@ export default class CustomUser extends ViewBase {
                 child.getChildByName('head').getChildByName('mask').active = false;
                 this._ids.push(_d.player_id);
             }
-        })
+        });
+        const luck = SevenUpSevenDownManager.getLuckPlayerData();
+        this.luckhead.children.forEach((child, idx) => {
+            const _d = luck[idx];
+            child.active = !!_d;
+            if (_d) {
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
+                child.getChildByName('labelwin').getComponent(cc.Label).string = '';
+                child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                child.getChildByName('head').getChildByName('mask').active = false;
+                this._luckIds.push(_d.player_id);
+            }
+        });
     }
 
     updateTotalBalance(balance: number): void {
@@ -90,14 +105,22 @@ export default class CustomUser extends ViewBase {
     updatePlayBalance() {
         const balance = WalletManager.balance;
         this.updateTotalBalance(balance);
-        const data = SevenUpSevenDownManager.BigWinList;
-        this.otherhead_node.children.forEach((child, idx) => {
+        const data = SevenUpSevenDownManager.getTopPlayerData();
+        this.tophead.children.forEach((child, idx) => {
             const _d = data[idx];
             child.active = !!_d;
             if (_d) {
                 child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
             }
         })
+        const luck = SevenUpSevenDownManager.getLuckPlayerData();
+        this.luckhead.children.forEach((child, idx) => {
+            const _d = luck[idx];
+            child.active = !!_d;
+            if (_d) {
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
+            }
+        });
     }
 
     updateOnlineRoom() {
@@ -126,8 +149,9 @@ export default class CustomUser extends ViewBase {
     }
 
     updatePlayer() {
-        const data = SevenUpSevenDownManager.BigWinList;
-        this.otherhead_node.children.forEach((child, idx) => {
+        const data = SevenUpSevenDownManager.getTopPlayerData();
+        const luck = SevenUpSevenDownManager.getLuckPlayerData();
+        this.tophead.children.forEach((child, idx) => {
             const _d = data[idx];
             let winNode = child.getChildByName('labelwin')
             Tween.stopAllByTarget(winNode);
@@ -152,6 +176,37 @@ export default class CustomUser extends ViewBase {
                     child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
                 }
                 child.getChildByName('head').getChildByName('mask').active = false;
+            } else {
+                this._ids[idx] = null;
+            }
+        })
+        this.luckhead.children.forEach((child, idx) => {
+            const _d = luck[idx];
+            let winNode = child.getChildByName('labelwin')
+            Tween.stopAllByTarget(winNode);
+            child.active = !!_d;
+            if (_d) {
+                child.getChildByName('labelcoin').getComponent(cc.Label).string = CurrencyHelper.format(_d.balance, this.currency, { showSymbol: true });
+                winNode.getComponent(cc.Label).string = '';
+                if (this._luckIds[idx] && this._luckIds[idx] != _d.player_id) {
+                    const nd = child.getChildByName('head');
+                    nd.eulerAngles = v3(0, 0, 0);
+                    cc.tween(nd)
+                        .to(0.2, { eulerAngles: v3(0, 90, 0) }, { easing: 'cubicInOut' })
+                        .call(() => {
+                            nd.eulerAngles = v3(0, -90, 0);
+                            child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                        })
+                        .to(0.2, { eulerAngles: v3(0, 0, 0) }, { easing: 'cubicInOut' })
+                        .start();
+                    this._luckIds[idx] = _d.player_id;
+                } else {
+                    this._luckIds[idx] = _d.player_id;
+                    child.getChildByName('head').getChildByName('icon').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_d.icon}`);
+                }
+                child.getChildByName('head').getChildByName('mask').active = false;
+            } else {
+                this._luckIds[idx] = null;
             }
         })
     }
@@ -163,9 +218,9 @@ export default class CustomUser extends ViewBase {
         if (player_id == this._myId) {
             wordPos = this.spr_myhead.node.parent.transform.convertToWorldSpaceAR(this.spr_myhead.node.position);
             unrank = false;
-            // this.user_icon_node.receiveData(Math.floor(Math.random() * 10) + 1)
-        } else {
-            this.otherhead_node.children.forEach((child, idx) => {
+        }
+        if (unrank) {
+            this.tophead.children.forEach((child, idx) => {
                 if (this._ids[idx] && this._ids[idx] == player_id) {
                     wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
                     child.getChildByName('head').getChildByName('mask').active = true;
@@ -176,14 +231,20 @@ export default class CustomUser extends ViewBase {
             })
         }
         if (unrank) {
+            this.luckhead.children.forEach((child, idx) => {
+                if (this._luckIds[idx] && this._luckIds[idx] == player_id) {
+                    wordPos = child.parent.transform.convertToWorldSpaceAR(child.position);
+                    child.getChildByName('head').getChildByName('mask').active = true;
+                    this.callback && this.unschedule(this.callback)
+                    this.scheduleOnce(this.callback, 0.5);
+                    unrank = false;
+                }
+            })
+        }
+
+        if (unrank) {
             this.user_icon_node.receiveData(icon)
         }
-        return wordPos;
-    }
-
-    getLoseWorldPos() {
-        let node = this.rest_node;
-        let wordPos = node.parent.transform.convertToWorldSpaceAR(node.position);
         return wordPos;
     }
 
@@ -199,7 +260,7 @@ export default class CustomUser extends ViewBase {
             if (_list.has(v)) {
                 let _d = _list.get(v);
                 if (_d.win > 0) {
-                    let child = this.otherhead_node.children[idx].getChildByName('labelwin');
+                    let child = this.tophead.children[idx].getChildByName('labelwin');
                     Tween.stopAllByTarget(child);
                     child.getComponent(cc.Label).string = '+' + CurrencyHelper.format(_d.win, this.currency);
                     child.getComponent(UIOpacity).opacity = 0;
@@ -218,6 +279,34 @@ export default class CustomUser extends ViewBase {
                         .call(() => {
                             child.getComponent(cc.Label).string = '';
                             child.setPosition(v3(43, 0, 0));
+                        })
+                        .start();
+                }
+            }
+        })
+        this._luckIds.forEach((v, idx) => {
+            if (_list.has(v)) {
+                let _d = _list.get(v);
+                if (_d.win > 0) {
+                    let child = this.luckhead.children[idx].getChildByName('labelwin');
+                    Tween.stopAllByTarget(child);
+                    child.getComponent(cc.Label).string = '+' + CurrencyHelper.format(_d.win, this.currency);
+                    child.getComponent(UIOpacity).opacity = 0;
+                    child.setPosition(v3(-43, -10, 0)); // 从稍下方开始
+                    child.scale = v3(0.8, 0.8, 1); // 初始稍小
+                    tween(child)
+                        .parallel(
+                            tween().to(0.2, {
+                                position: v3(-43, 21, 0),
+                                scale: v3(1, 1, 1)
+                            }, { easing: 'backOut' }),
+                            tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
+                        )
+                        .delay(0.6) // 显示时间
+                        .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
+                        .call(() => {
+                            child.getComponent(cc.Label).string = '';
+                            child.setPosition(v3(-43, 0, 0));
                         })
                         .start();
                 }
@@ -296,10 +385,11 @@ export default class CustomUser extends ViewBase {
             cc_label_name: [cc.Label],
             cc_labelpeople: [cc.Label],
             cc_labelwin: [cc.Label],
+            cc_luckhead: [cc.Node],
             cc_myhead_node: [cc.Node],
-            cc_otherhead_node: [cc.Node],
             cc_rest_node: [cc.Node],
             cc_spr_myhead: [cc.Sprite],
+            cc_tophead: [cc.Node],
             cc_user_icon_node: [CustomUserIcon],
         };
     }
@@ -311,10 +401,11 @@ export default class CustomUser extends ViewBase {
     protected label_name: cc.Label = null;
     protected labelpeople: cc.Label = null;
     protected labelwin: cc.Label = null;
+    protected luckhead: cc.Node = null;
     protected myhead_node: cc.Node = null;
-    protected otherhead_node: cc.Node = null;
     protected rest_node: cc.Node = null;
     protected spr_myhead: cc.Sprite = null;
+    protected tophead: cc.Node = null;
     protected user_icon_node: CustomUserIcon = null;
     /**
      * 当前界面的名字

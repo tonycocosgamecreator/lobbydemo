@@ -72,6 +72,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             }
             this.reset();
             this._deskId = msg.info.desk_id || 0;
+            this._period = msg.info.period_id || '';
             WalletManager.walletInfos = msg.wallets || [];
             WalletManager.bets = msg.info.bets;
             this._playerId = msg.player_id + '' || '';
@@ -81,7 +82,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._records = msg.info?.seven_up_down_info?.win_type_list || [];
             this._haveSec = msg.info.have_sec || 0;
             this._dur = msg.info.have_sec || 0;
-            this._bigWinList = msg.info?.player_rank_ntf?.ranks || [];
+            this.setTopPlayerData(msg.info?.player_rank_ntf?.ranks || []);
+            this.setLuckPlayerData(msg.info?.player_rank_ntf?.ranks_rate || []);
             if (msg.info?.bet_ntf?.desk_id == this._deskId) {
                 const plays = msg.info?.bet_ntf?.players || [];
                 for (let i = 0; i < plays.length; i++) {
@@ -160,14 +162,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
                 }
                 _betV.bet = _betV.bet.add(+bet.bet_coin);
                 this._betsList.set(this._playerId, _betV);
-                this._bigWinList.forEach(t => {
-                    if (t && t.player_id && t.player_id == this._playerId) {
-                        t.balance = t.balance.sub(+bet.bet_coin);
-                    }
-                });
-                // if (msg.is_first) {
-                //     this._firstPlayBet.add(bet.bet_id);
-                // }
+                this.addTopPlayerScore(this._playerId, -bet.bet_coin);
+                this.addLuckPlayerScore(this._playerId, -bet.bet_coin);
                 this._before.push(_d);
                 this._allbetInfo.push(_d);
                 this._order++;
@@ -199,15 +195,9 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             }
                             _betV.bet = _betV.bet.add(+bet.bet_coin);
                             this._betsList.set(play.player_id, _betV);
-                            // if (play.is_first) {
-                            //     this._firstPlayBet.add(bet.bet_id);
-                            // }
                             this._allbetInfo.push(_d);
-                            this._bigWinList.forEach(t => {
-                                if (t && t.player_id && t.player_id == play.player_id) {
-                                    t.balance = t.balance.sub(+bet.bet_coin);
-                                }
-                            });
+                            this.addTopPlayerScore(play.player_id, -bet.bet_coin);
+                            this.addLuckPlayerScore(play.player_id, -bet.bet_coin);
                             this._view?.updateflyChip(_d, false, -1);
                         }
                     }
@@ -232,6 +222,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
             if (msg.stage == baccarat.DeskStage.SettleStage) return false;
             if (msg.stage == baccarat.DeskStage.ReadyStage) {
                 this.reset();
+                const period_id = msg.period_id || '';
+                this._period = period_id;
             }
             this.View?.updateGameStage();
             return true;
@@ -269,11 +261,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
                 }
                 _betV.bet = _betV.bet.sub(+bet.bet_coin);
                 this._betsList.set(this._playerId, _betV);
-                this._bigWinList.forEach(t => {
-                    if (t && t.player_id && t.player_id == this._playerId) {
-                        t.balance = t.balance.add(+bet.bet_coin);
-                    }
-                });
+                this.addTopPlayerScore(this.PlayerId, +bet.bet_coin);
+                this.addLuckPlayerScore(this.PlayerId, +bet.bet_coin);
                 info.push(_d);
                 this._view?.updateDeletChip(_d, true);
             }
@@ -303,11 +292,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
                             }
                             _betV.bet = _betV.bet.sub(+bet.bet_coin);
                             this._betsList.set(play.player_id, _betV);
-                            this._bigWinList.forEach(t => {
-                                if (t && t.player_id && t.player_id == play.player_id) {
-                                    t.balance = t.balance.add(+bet.bet_coin);
-                                }
-                            });
+                            this.addTopPlayerScore(play.player_id, +bet.bet_coin);
+                            this.addLuckPlayerScore(play.player_id, +bet.bet_coin);
                             info.push(_d);
                             this._view?.updateDeletChip(_d, false);
                         }
@@ -350,7 +336,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
         }
         if (msgType == sevenupdown.Message.MsgPlayerRankNtf) {
             const msg = data as sevenupdown.MsgPlayerRankNtf;
-            this._bigWinList = msg.ranks || [];
+            this.setTopPlayerData(msg.ranks);
+            this.setLuckPlayerData(msg.ranks_rate || []);
             return true;
         }
         if (msgType == sevenupdown.Message.MsgLastWinNtf) {
@@ -389,11 +376,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
                         this._allbetInfo.push(_d);
                     }
                     _betV.win = +(play.win_coin);
-                    this._bigWinList.forEach(t => {
-                        if (t && t.player_id && t.player_id == play.player_id) {
-                            t.balance = t.balance.add(+play.win_coin);
-                        }
-                    });
+                    this.addTopPlayerScore(play.player_id, +play.win_coin);
+                    this.addLuckPlayerScore(play.player_id, +play.win_coin);
                 }
 
             }
@@ -448,6 +432,10 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _dur: number;
     /**----------------玩家数据相关-------------------*/
     /**
+     * 当前期号
+     */
+    private static _period: string = '';
+    /**
      * 当前桌子的ID
      */
     private static _deskId: number = -1;
@@ -487,11 +475,79 @@ export default class SevenUpSevenDownManager extends BaseManager {
     private static _probability: number[] = [0, 0, 0];
     private static _online: number = 0;//实时在线人数
     private static _onlineRoom: number = 0;//房间人数
-    private static _bigWinList: sevenupdown.SUDSevenUpDownRankList[] | null = null;//前三名玩家的信息
+    private static _topPlayers: Map<string, sevenupdown.SUDSevenUpDownRankList> = new Map();//前三名玩家的信息
+    private static _luckPlayers: Map<string, sevenupdown.SUDSevenUpDownRankList> = new Map();//最幸运的三位玩家
     private static _auto: boolean = false;
     private static _winLedList: sevenupdown.MsgLastWinNtf[] = [];
     // private static 
     /**----------------绑定界面-------------------*/
+
+    /**
+     * 设置榜单玩家的数据
+     * @param ranks 
+     */
+    public static setTopPlayerData(ranks: sevenupdown.SUDSevenUpDownRankList[]) {
+        this._topPlayers.clear();
+        ranks.forEach((playerData) => {
+            if (playerData) {
+                this._topPlayers.set(playerData.player_id, playerData);
+            }
+        });
+    }
+
+    /**
+     * 榜单玩家分数的变化
+     * @param playerId 
+     * @param count
+     */
+    public static addTopPlayerScore(playerId: string, count: number) {
+        let playerData = this._topPlayers.get(playerId);
+        if (!playerData) return;
+        let score = playerData.balance.add(count);
+        playerData.balance = score;
+        this._topPlayers.set(playerId, playerData);
+    }
+
+    /**
+     * 获取榜单玩家的数据
+     * @param ranks 
+     */
+    public static getTopPlayerData(): sevenupdown.SUDSevenUpDownRankList[] {
+        return Array.from(this._topPlayers.values());
+    }
+    /**
+     * 设置幸运玩家的数据
+     * @param ranks 
+     */
+    public static setLuckPlayerData(ranks: sevenupdown.SUDSevenUpDownRankList[]) {
+        this._luckPlayers.clear();
+        ranks.forEach((playerData) => {
+            if (playerData) {
+                this._luckPlayers.set(playerData.player_id, playerData);
+            }
+        });
+    }
+
+    /**
+     * 幸运玩家分数的变化
+     * @param playerId 
+     * @param count
+     */
+    public static addLuckPlayerScore(playerId: string, count: number) {
+        let playerData = this._luckPlayers.get(playerId);
+        if (!playerData) return;
+        let score = playerData.balance.add(count);
+        playerData.balance = score;
+        this._luckPlayers.set(playerId, playerData);
+    }
+
+    /**
+     * 获取幸运玩家的数据
+     * @param ranks 
+     */
+    public static getLuckPlayerData(): sevenupdown.SUDSevenUpDownRankList[] {
+        return Array.from(this._luckPlayers.values());
+    }
     private static _view: IPanelSevenUpSevenDownMainView | null = null;
     public static set ChipIdx(value: number) {
         this._chipIdx = value;
@@ -530,6 +586,8 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static set View(value: IPanelSevenUpSevenDownMainView | null) {
         this._view = value;
     }
+
+    public static get Period(): string { return this._period; }
     public static get HaveSec(): number { return this._haveSec; }
     public static get Stage(): number { return this._stage; }
     public static get Dur(): number { return this._dur; }
@@ -542,7 +600,6 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get Probability(): number[] { return this._probability; }
     public static get Online(): number { return this._online; }
     public static get OnlineRoom(): number { return this._onlineRoom; }
-    public static get BigWinList(): sevenupdown.SUDSevenUpDownRankList[] | null { return this._bigWinList; }
     public static get View(): IPanelSevenUpSevenDownMainView | null { return this._view; }
     public static get MyBets(): number[] { return this._myBets; }
     public static get TotalBet(): number[] { return this._totalBet; }
@@ -558,7 +615,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
     public static get Auto(): boolean { return this._auto };
     public static get BetsList(): Map<string, { playid: string, win: number, bet: number, icon: number }> { return this._betsList; }
     public static get BetDetail(): baccarat.AreaUserBetsNum[] { return this._betDetail }
-
+    public static get MybetInfo(): betInfo[] { return this._mybetInfo }
     /**
      * 重置所有数据
      */

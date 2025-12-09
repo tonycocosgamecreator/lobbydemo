@@ -85,8 +85,8 @@ export default class Initializer {
     }
 
     public static OnLateUpdate(dt: number) {
-        CoreOnLateUpdate(dt);
-        //GameOnLateUpdate(dt);
+        // CoreOnLateUpdate(dt);
+        // GameOnLateUpdate(dt);
         ViewManager.OnLateUpdate(dt);
         MessageSender.onLateUpdate(dt);
     }

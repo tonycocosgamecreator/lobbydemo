@@ -132,6 +132,12 @@
         "desc": "",
         "statisticalId": 100001020
     },
+    "CustomRoomData": {
+        "viewName": "CustomRoomData",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001028
+    },
     "CustomScore": {
         "viewName": "CustomScore",
         "bundleName": "resources",

@@ -34,6 +34,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomRank': 'CustomRank',
     'CustomRecord': 'CustomRecord',
     'CustomResult': 'CustomResult',
+    'CustomRoomData': 'CustomRoomData',
     'CustomScore': 'CustomScore',
     'CustomStar': 'CustomStar',
     'CustomTime': 'CustomTime',

@@ -49,7 +49,12 @@ export default class CustomFlyChip extends ViewBase {
     _max = [v3(0.7, 0.7, 0.7), v3(0.6, 0.6, 0.6)];
     _rs = [v3(0.6, 0.6, 0.6), v3(0.5, 0.5, 0.5)]
     _min = [v3(0.5, 0.5, 0.5), v3(0.4, 0.4, 0.4)];
-
+    private _chips: Map<number, betInfo[]> = new Map();
+    private _count = [];
+    _losePos
+    getRandomInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     buildUi() {
         this.reset();
         this._chipButtons = WalletManager.getCurrencyBetSize();
@@ -74,12 +79,18 @@ export default class CustomFlyChip extends ViewBase {
             this._clearChip(child);
             i--;
         }
+        this._chips.clear();
+        for (let i = 0; i < 14; i++) {
+            this._count[i] = i == 6 || i == 12 || i == 13 ? this.getRandomInRange(15, 20) : this.getRandomInRange(5, 8);
+        }
     }
 
     updateGameStage(reconnect: boolean = false) {
         this._stage = SevenUpSevenDownManager.Stage;
         if (reconnect) {
             this.view = SevenUpSevenDownManager.View;
+            const losePos = this.view.getUserLoseWorldPos();
+            this._losePos = this.node.transform.convertToNodeSpaceAR(losePos);
         }
         switch (this._stage) {
             case baccarat.DeskStage.ReadyStage:
@@ -109,14 +120,14 @@ export default class CustomFlyChip extends ViewBase {
         })
         let start = this.view.getUserWorldPosByUid(data.player_id, data.icon);
         let end = this.view.getDeskWorldPosByIdx(data.bet_id, isme, order);
-        let lose = this.view.getUserLoseWorldPos();
         let type = (data.bet_id == 6 || data.bet_id == 12 || data.bet_id == 13) ? 0 : 1;
         if (isme) {
-            this.addFlyChip1(data, index, start, end, lose, type);
+            this.addFlyChip1(data, index, start, end, type);
         } else if (isFly) {
-            this.addFlyChip(data, index, start, end, lose, type);
+            this.addFlyChip(data, index, start, end, type);
         } else {
-            this.setChipData(data, index, start, end, lose, type);
+            this.setChipData(data, index, start, end, type);
+            this._checkChip(data);
         }
     }
 
@@ -126,59 +137,81 @@ export default class CustomFlyChip extends ViewBase {
     * @param sourceWorldPos 添加筹码位置的世界坐标
     * @param endWorldPos 飞筹码终点的世界坐标
     */
-    addFlyChip(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3, type: number) {
+    addFlyChip(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, type: number) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         this.node.addChild(chip.node);
         chip.node.scale = v3(0, 0, 0);
         chip.node.position = targetLocalPos;
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
-        let losePos = this.node.transform.convertToNodeSpaceAR(loseWorldPos);
-        chip.setBetData(index, info, targetLocalPos, losePos, type);
-        this._flyToTarget(chip.node, endPos, type);
+        chip.setBetData(index, info, targetLocalPos, type);
+        this._flyToTarget(info, chip.node, endPos, type);
     }
 
-    addFlyChip1(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3, type: number) {
+    addFlyChip1(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, type: number) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
         this.node.addChild(chip.node);
         chip.node.scale = this._max[type];
         chip.node.setPosition(new Vec3(endPos.x, endPos.y + 30, endPos.z))
-        let losePos = this.node.transform.convertToNodeSpaceAR(loseWorldPos);
-        chip.setBetData(index, info, targetLocalPos, losePos, type);
-        this._flyToTarget1(chip.node, endPos, type);
+        chip.setBetData(index, info, targetLocalPos, type);
+        this._flyToTarget1(info, chip.node, endPos, type);
     }
 
-    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, loseWorldPos: Vec3, type: number) {
+    setChipData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, type: number) {
         const chip = PoolManager.Get(CustomChipItem);
         let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
         this.node.addChild(chip.node);
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
-        let losePos = this.node.transform.convertToNodeSpaceAR(loseWorldPos);
         chip.node.position = endPos;
-        chip.setBetData(index, info, targetLocalPos, losePos, type);
+        chip.setBetData(index, info, targetLocalPos, type);
         chip.node.scale = this._rs[type];
+    }
+    addWinData(info: betInfo, index: number, sourceWorldPos: Vec3, endWorldPos: Vec3, type: number) {
+        const chip = PoolManager.Get(CustomChipItem);
+        let targetLocalPos = this.node.transform.convertToNodeSpaceAR(sourceWorldPos);
+        this.node.addChild(chip.node);
+        chip.node.scale = this._rs[type];
+        chip.node.position = this._losePos;
+        let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
+        chip.setBetData(index, info, targetLocalPos, type);
+        this._flyToTarget2(info, chip.node, endPos, type);
+
     }
     /**
     * 回收筹码
     * * @param recycleWorldPos 回收筹码终点的世界坐标
     */
     recycleChip() {
-        // let betsList = SevenUpSevenDownManager.BetsList;
         let wintype = SevenUpSevenDownManager.WinType;
-        for (let i = 0; i < this.node.children.length; i++) {
-            let child = this.node.children[i];
-            let _d = child.getComponent(CustomChipItem).ChipInfo;
-            if (wintype.indexOf(_d.bet_id) != -1) {
-            } else {
-                this._clearChip(child)
-                i--;
-            }
-        }
+        let AllbetInfo = SevenUpSevenDownManager.AllbetInfo;
         this.node.children.forEach((child, idx) => {
-            this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type);
+            let _d = child.getComponent(CustomChipItem).ChipInfo;
+            if (!_d || wintype.indexOf(_d.bet_id) == -1) {
+                this._flyToEnd(child, this._losePos, child.getComponent(CustomChipItem).Type);
+            }
         })
+        this.scheduleOnce(() => {
+            AllbetInfo.forEach(v => {
+                if (wintype.indexOf(v.bet_id) != -1) {
+                    let index = 0;
+                    this._chipButtons.forEach((value, idx) => {
+                        if (+v.bet_coin == value) index = idx;
+                    })
+                    let start = this.view.getUserWorldPosByUid(v.player_id, v.icon);
+                    let end = this.view.getDeskWorldPosByIdx(v.bet_id, false, 1);
+                    let type = (v.bet_id == 6 || v.bet_id == 12 || v.bet_id == 13) ? 0 : 1;
+                    this.addWinData(v, index, start, end, type)
+                }
+            })
+            this.scheduleOnce(() => {
+                this.node.children.forEach((child, idx) => {
+                    this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type, false);
+                })
+            }, 0.9);
+        }, 0.4);
+        this._chips.clear();
     }
 
     recycleChipByCondition(data: betInfo) {
@@ -196,7 +229,7 @@ export default class CustomFlyChip extends ViewBase {
     /**
     * 飞筹码动画
     */
-    _flyToTarget(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
+    _flyToTarget(info: betInfo, flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
         let startPos = flyObject.position;
         let distance = Vec3.distance(startPos, endPos);
         let flyDuration = this._calculateDurationByDistance(distance);
@@ -226,6 +259,7 @@ export default class CustomFlyChip extends ViewBase {
                 if (this._isGameInBackground == false) {
                     AudioManager.playSound(this.bundleName, '下注筹码声');
                 }
+                this._checkChip(info);
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
                 tween(flyObject)
                     .to(0.15, {
@@ -237,7 +271,7 @@ export default class CustomFlyChip extends ViewBase {
 
     }
 
-    _flyToTarget1(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
+    _flyToTarget1(info: betInfo, flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
         const opacity = flyObject.getComponent(UIOpacity);
         Tween.stopAllByTarget(flyObject);
         Tween.stopAllByTarget(opacity);
@@ -252,6 +286,7 @@ export default class CustomFlyChip extends ViewBase {
                 if (this._isGameInBackground == false) {
                     AudioManager.playSound(this.bundleName, '下注筹码声');
                 }
+                this._checkChip(info);
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
                 tween(flyObject)
                     .to(0.05, {
@@ -261,13 +296,47 @@ export default class CustomFlyChip extends ViewBase {
             })
             .start();
     }
+    _flyToTarget2(info: betInfo, flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
+        let startPos = flyObject.position;
+        let distance = Vec3.distance(startPos, endPos);
+        let flyDuration = this._calculateDurationByDistance(distance)
+        const opacity = flyObject.getComponent(UIOpacity);
+        opacity.opacity = 255;
+        Tween.stopAllByTarget(flyObject);
+        Tween.stopAllByTarget(opacity);
+        tween(flyObject)
+            // 飞行阶段：稍微放大一点
+            .delay(0.2)
+            .to(flyDuration, {
+                position: endPos,
+                scale: new Vec3(this._rs[type].x * 1.2, this._rs[type].y * 1.2, 1) // 飞行时放大10%
+            }, { easing: 'quadOut' })
+
+            // 落地效果：直接缩回到原始大小
+            .call(() => {
+                if (this._isGameInBackground == false) {
+                    AudioManager.playSound(this.bundleName, '下注筹码声');
+                }
+                Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+                tween(flyObject)
+                    .to(0.15, {
+                        scale: new Vec3(this._rs[type].x, this._rs[type].y, 1) // 直接回到原始大小
+                    }, { easing: 'sineOut' }) // 平滑过渡
+                    .start();
+            })
+            .start();
+
+    }
     /**
     * 收筹码动画
     */
-    _flyToEnd(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
+    _flyToEnd(flyObject: cc.Node, endPos: cc.Vec3, type: number, lose: boolean = true): void {
         let startPos = flyObject.position;
         let distance = Vec3.distance(startPos, endPos);
         let flyDuration = this._calculateDurationByDistance(distance);
+        if (lose) {
+            flyDuration = flyDuration / 2
+        }
         flyObject.scale = this._max[type]
         tween(flyObject)
             .to(flyDuration, { scale: this._rs[type], position: endPos }, { easing: 'quadOut', })
@@ -297,6 +366,37 @@ export default class CustomFlyChip extends ViewBase {
         PoolManager.Put(chip.getComponent(CustomChipItem));
     }
 
+    _checkChip(info: betInfo) {
+        let playerData = this._chips.get(info.bet_id);
+        if (!playerData) {
+            playerData = [];
+        }
+        playerData.push(info);
+        let ct = this._count[info.bet_id];
+        if (playerData.length > ct) {
+            // const removeCount = playerData.length - ct;
+            // const removedElements = playerData.slice(0, removeCount);
+            // removedElements.forEach(t => {
+            //     this.recycleChipByCondition2(t)
+            // })
+            // playerData = playerData.slice(removeCount);
+            let firstElement = playerData.shift();
+            this.recycleChipByCondition2(firstElement)
+        }
+        this._chips.set(info.bet_id, playerData);
+    }
+
+    recycleChipByCondition2(data: betInfo) {
+        let childs = this.node.children;
+        for (let i = 0; i < childs.length; i++) {
+            let ts = childs[i].getComponent(CustomChipItem);
+            const _d = ts.ChipInfo;
+            if (_d.bet_coin == data.bet_coin && _d.bet_id == data.bet_id) {
+                this._clearChip(childs[i])
+                break;
+            }
+        }
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

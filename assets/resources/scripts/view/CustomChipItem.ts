@@ -36,15 +36,10 @@ export default class CustomChipItem extends ReusableBase {
     _chipColor = ['#47506A', '#1A7401', '#1756A4', '#91017A', '#A31B09', '#A36407'];
     _info: betInfo = null;
     _startLocalPos: cc.Vec3;
-    _losePos: cc.Vec3;
     _type: number = 0;
 
     get StartLocalPos(): cc.Vec3 {
         return this._startLocalPos;
-    }
-
-    get LoseLocalPos(): cc.Vec3 {
-        return this._losePos;
     }
 
     get ChipInfo(): betInfo {
@@ -57,10 +52,9 @@ export default class CustomChipItem extends ReusableBase {
      * 设置筹码的样式
      * @param index 筹码类型
      */
-    setBetData(index: number, info: betInfo, startLocalPos: cc.Vec3, losePos: cc.Vec3, type: number) {
+    setBetData(index: number, info: betInfo, startLocalPos: cc.Vec3, type: number) {
         this._type = type;
         this._startLocalPos = startLocalPos;
-        this._losePos = losePos;
         this._info = info;
         this.node.getComponent(UIOpacity).opacity = 255;
         this.spricon.spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + index) + "/spriteFrame");

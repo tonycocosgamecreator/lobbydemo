@@ -72,6 +72,7 @@ message SUDAreaUserBetsNum {
 
 message SUDSevenUpDownRankInfo {
     repeated SUDSevenUpDownRankList ranks  = 1;    //前几名信息
+    repeated SUDSevenUpDownRankList ranks_rate  = 1;    //最幸运玩家信息
 }
 message SUDSevenUpDownBetNtf {
     optional int64 desk_id = 1;                       // 桌子ID
@@ -250,6 +251,7 @@ message MsgOddNtf{
 //前三名数据
 message MsgPlayerRankNtf {
     repeated SUDSevenUpDownRankList ranks  = 1;    //前几名信息
+    repeated SUDSevenUpDownRankList ranks_rate  = 1;    //最幸运玩家信息
 }
 
 //跑马灯

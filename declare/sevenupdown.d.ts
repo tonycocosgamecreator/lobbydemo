@@ -181,6 +181,8 @@ declare namespace sevenupdown{
     interface SUDSevenUpDownRankInfo{
         /** 前几名信息 */
         ranks : SUDSevenUpDownRankList[];
+        /** 最幸运玩家信息 */
+        ranks_rate : SUDSevenUpDownRankList[];
     }
 
     /** 阶段 */
@@ -463,6 +465,8 @@ declare namespace sevenupdown{
     interface MsgPlayerRankNtf{
         /** 前几名信息 */
         ranks : SUDSevenUpDownRankList[];
+        /** 最幸运玩家信息 */
+        ranks_rate : SUDSevenUpDownRankList[];
     }
 
     /** 跑马灯 */

@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "163a89a2-ffc7-4701-a4f7-7a452cab0e95",
+  "uuid": "23957a03-1027-4b64-865a-20d0927bce33",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "PanelUserCenter"
+    "syncNodeName": "CustomRoomData"
   }
 }

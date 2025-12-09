@@ -109,12 +109,16 @@ export interface BetInfo {
     bet_index_rule: number[];
     /** 默认选中倍数 */
     default_index: number;
+    /** 最大下注 */
+    max_bet?: number;
+    /** 最小下注 */
+    min_bet?: number;
 }
 
 /**
  * 游戏的主题ID
  */
-export const THEME_ID = 1007;
+export const THEME_ID = 1050;
 
 
 /**
