@@ -1,4 +1,5 @@
 import BaseManager from "../../core/manager/base-manager";
+import BrowserUtils from "../../core/utils/browser-utils";
 import { IPanelLobbyView } from "../define/lobby-main-view";
 import HttpLobbyHelper from "../net/http-lobby-helper";
 import { lobbyhttp } from "../net/lobby-https-interface-define";
@@ -50,7 +51,7 @@ export default class LobbyManager extends BaseManager {
 
     public static async doHttpGameLogin(game_code: string) {
         this.curGameUrl = '';
-        const msg = await HttpLobbyHelper.doGameLogin(game_code);
+        const msg = await HttpLobbyHelper.doGameLogin(game_code, BrowserUtils.getParam('currency'));
         if (!msg) {
             console.error('doGameLogin error');
             return;

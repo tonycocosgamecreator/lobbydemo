@@ -23,13 +23,14 @@ export default class HttpLobbyHelper {
     /**
        * 游戏登录
        */
-    public static async doGameLogin(game_code): Promise<any | null> {
+    public static async doGameLogin(game_code: string, currency: string): Promise<any | null> {
         const data = await HttpLobbyConnector.instance.send({
             type: 'POST',
             url: lobbyhttp.Message.LOGIN,
             params: {
                 account: lobbyhttp.Account.Value,
                 game_code: game_code,
+                currency: currency
             },
             headers: {}
         });
