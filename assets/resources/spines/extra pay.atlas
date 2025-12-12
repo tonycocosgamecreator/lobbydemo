@@ -6,253 +6,162 @@ filter: Linear,Linear
 repeat: none
 2EXTRA PAY
   rotate: false
-  xy: 2, 393
+  xy: 2, 468
   size: 338, 61
   orig: 346, 65
   offset: 4, 2
   index: -1
 2big
   rotate: false
-  xy: 2, 456
+  xy: 2, 531
   size: 456, 460
   orig: 484, 488
   offset: 14, 15
   index: -1
 2dikuang1
   rotate: false
-  xy: 2, 206
+  xy: 2, 99
   size: 618, 155
   orig: 618, 155
   offset: 0, 0
   index: -1
 2guan1
   rotate: true
-  xy: 460, 363
+  xy: 460, 438
   size: 553, 180
   orig: 562, 190
   offset: 4, 5
   index: -1
 2guan2
-  rotate: true
-  xy: 642, 363
+  rotate: false
+  xy: 2, 256
   size: 553, 180
   orig: 653, 190
   offset: 95, 5
   index: -1
 2jinbi
-  rotate: true
-  xy: 824, 414
+  rotate: false
+  xy: 2, 2
   size: 502, 95
   orig: 502, 95
   offset: 0, 0
   index: -1
 2mask
   rotate: false
-  xy: 342, 397
+  xy: 342, 472
   size: 58, 58
   orig: 58, 58
   offset: 0, 0
   index: -1
 caidai/caidai_01
   rotate: false
-  xy: 864, 376
+  xy: 169, 450
   size: 16, 16
   orig: 29, 29
   offset: 6, 7
   index: -1
 caidai/caidai_02
   rotate: false
-  xy: 60, 377
+  xy: 144, 439
   size: 17, 14
   orig: 29, 29
   offset: 6, 6
   index: -1
 caidai/caidai_03
   rotate: false
-  xy: 98, 380
+  xy: 233, 439
   size: 18, 11
   orig: 29, 29
   offset: 5, 9
   index: -1
 caidai/caidai_04
   rotate: false
-  xy: 361, 376
+  xy: 112, 447
   size: 14, 19
   orig: 29, 29
   offset: 5, 4
   index: -1
 caidai/caidai_05
   rotate: false
-  xy: 79, 377
+  xy: 233, 452
   size: 17, 14
   orig: 29, 29
   offset: 3, 5
   index: -1
 caidai/caidai_06
   rotate: false
-  xy: 864, 394
+  xy: 42, 448
   size: 18, 18
   orig: 29, 29
   offset: 4, 2
   index: -1
 caidai/caidai_07
   rotate: false
-  xy: 900, 391
+  xy: 78, 445
   size: 13, 21
   orig: 29, 29
   offset: 9, 2
   index: -1
 caidai/caidai_08
   rotate: false
-  xy: 377, 376
+  xy: 128, 447
   size: 14, 19
   orig: 29, 29
   offset: 7, 4
   index: -1
 caidai/caidai_09
   rotate: false
-  xy: 342, 379
+  xy: 93, 450
   size: 17, 16
   orig: 29, 29
   offset: 5, 6
   index: -1
 caidai/caidai_10
   rotate: false
-  xy: 27, 376
+  xy: 187, 451
   size: 17, 15
   orig: 29, 29
   offset: 5, 6
   index: -1
 caidai/caidai_11
   rotate: false
-  xy: 2, 380
+  xy: 144, 455
   size: 23, 11
   orig: 29, 29
   offset: 4, 9
   index: -1
 caidai/caidai_12
   rotate: false
-  xy: 884, 390
+  xy: 62, 444
   size: 14, 22
   orig: 29, 29
   offset: 10, 0
   index: -1
 caidai/caidai_13
   rotate: false
-  xy: 915, 383
+  xy: 220, 444
   size: 11, 22
   orig: 29, 29
   offset: 9, 1
   index: -1
 caidai/caidai_14
   rotate: false
-  xy: 46, 370
+  xy: 206, 445
   size: 12, 21
   orig: 29, 29
   offset: 8, 2
   index: -1
 caidai/caidai_15
   rotate: false
-  xy: 824, 391
+  xy: 2, 445
   size: 18, 21
   orig: 29, 29
   offset: 5, 2
   index: -1
 caidai/caidai_16
   rotate: false
-  xy: 844, 392
+  xy: 22, 446
   size: 18, 20
   orig: 29, 29
   offset: 5, 0
-  index: -1
-sg/sg_00
-  rotate: false
-  xy: 401, 381
-  size: 45, 73
-  orig: 309, 100
-  offset: 0, 1
-  index: -1
-sg/sg_01
-  rotate: false
-  xy: 928, 313
-  size: 88, 92
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_02
-  rotate: false
-  xy: 2, 2
-  size: 132, 100
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_03
-  rotate: true
-  xy: 921, 555
-  size: 175, 100
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_04
-  rotate: false
-  xy: 776, 57
-  size: 218, 100
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_05
-  rotate: false
-  xy: 276, 104
-  size: 257, 100
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_06
-  rotate: false
-  xy: 622, 159
-  size: 299, 100
-  orig: 309, 100
-  offset: 0, 0
-  index: -1
-sg/sg_07
-  rotate: false
-  xy: 622, 261
-  size: 304, 100
-  orig: 309, 100
-  offset: 5, 0
-  index: -1
-sg/sg_08
-  rotate: false
-  xy: 2, 104
-  size: 272, 100
-  orig: 309, 100
-  offset: 37, 0
-  index: -1
-sg/sg_09
-  rotate: false
-  xy: 535, 57
-  size: 239, 100
-  orig: 309, 100
-  offset: 70, 0
-  index: -1
-sg/sg_10
-  rotate: true
-  xy: 921, 732
-  size: 184, 100
-  orig: 309, 100
-  offset: 125, 0
-  index: -1
-sg/sg_11
-  rotate: true
-  xy: 921, 407
-  size: 146, 100
-  orig: 309, 100
-  offset: 163, 0
-  index: -1
-sg/sg_12
-  rotate: false
-  xy: 136, 2
-  size: 107, 100
-  orig: 309, 100
-  offset: 202, 0
   index: -1

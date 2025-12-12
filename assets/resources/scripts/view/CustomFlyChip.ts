@@ -58,7 +58,6 @@ export default class CustomFlyChip extends ViewBase {
     buildUi() {
         this.reset();
         this._chipButtons = WalletManager.getCurrencyBetSize();
-        this.view = SevenUpSevenDownManager.View;
         this._playId = SevenUpSevenDownManager.PlayerId;
         Global.registerListeners(
             this,
@@ -176,7 +175,7 @@ export default class CustomFlyChip extends ViewBase {
         chip.node.position = this._losePos;
         let endPos = this.node.transform.convertToNodeSpaceAR(endWorldPos);
         chip.setBetData(index, info, targetLocalPos, type);
-        this._flyToTarget2(info, chip.node, endPos, type);
+        this._flyToTarget2(chip.node, endPos, type);
 
     }
     /**
@@ -205,12 +204,12 @@ export default class CustomFlyChip extends ViewBase {
                     this.addWinData(v, index, start, end, type)
                 }
             })
-            this.scheduleOnce(() => {
-                this.node.children.forEach((child, idx) => {
-                    this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type, false);
-                })
-            }, 0.9);
-        }, 0.4);
+        }, 0.6);
+        this.scheduleOnce(() => {
+            this.node.children.forEach((child, idx) => {
+                this._flyToEnd(child, child.getComponent(CustomChipItem).StartLocalPos, child.getComponent(CustomChipItem).Type);
+            })
+        }, 1.4);
         this._chips.clear();
     }
 
@@ -296,18 +295,14 @@ export default class CustomFlyChip extends ViewBase {
             })
             .start();
     }
-    _flyToTarget2(info: betInfo, flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
+    _flyToTarget2(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
         let startPos = flyObject.position;
-        let distance = Vec3.distance(startPos, endPos);
-        let flyDuration = this._calculateDurationByDistance(distance)
         const opacity = flyObject.getComponent(UIOpacity);
         opacity.opacity = 255;
         Tween.stopAllByTarget(flyObject);
         Tween.stopAllByTarget(opacity);
         tween(flyObject)
-            // 飞行阶段：稍微放大一点
-            .delay(0.2)
-            .to(flyDuration, {
+            .to(0.5, {
                 position: endPos,
                 scale: new Vec3(this._rs[type].x * 1.2, this._rs[type].y * 1.2, 1) // 飞行时放大10%
             }, { easing: 'quadOut' })
@@ -330,16 +325,10 @@ export default class CustomFlyChip extends ViewBase {
     /**
     * 收筹码动画
     */
-    _flyToEnd(flyObject: cc.Node, endPos: cc.Vec3, type: number, lose: boolean = true): void {
-        let startPos = flyObject.position;
-        let distance = Vec3.distance(startPos, endPos);
-        let flyDuration = this._calculateDurationByDistance(distance);
-        if (lose) {
-            flyDuration = flyDuration / 2
-        }
+    _flyToEnd(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
         flyObject.scale = this._max[type]
         tween(flyObject)
-            .to(flyDuration, { scale: this._rs[type], position: endPos }, { easing: 'quadOut', })
+            .to(0.3, { scale: this._rs[type], position: endPos }, { easing: 'quadOut', })
             .call(() => {
                 if (flyObject.getComponent(CustomChipItem)) {
                     this._clearChip(flyObject);

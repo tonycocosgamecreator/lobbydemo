@@ -317,11 +317,11 @@ export default class CustomUser extends ViewBase {
             if (_d.win > 0) {
                 let child = this.labelwin.node;
                 this.labelwin.string = '+' + CurrencyHelper.format(_d.win, this.currency);
-                child.setPosition(v3(43, 0, 0))
+                child.setPosition(v3(-30, 30, 0))
                 tween(child)
                     .parallel(
                         tween().to(0.2, {
-                            position: v3(43, 21, 0),
+                            position: v3(-30, 61, 0),
                             scale: v3(1, 1, 1)
                         }, { easing: 'backOut' }),
                         tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
@@ -330,7 +330,7 @@ export default class CustomUser extends ViewBase {
                     .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
                     .call(() => {
                         this.labelwin.string = '';
-                        child.setPosition(v3(43, 0, 0));
+                        child.setPosition(v3(-30, 40, 0));
                     })
                     .start();
             }

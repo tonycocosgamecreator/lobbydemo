@@ -73,6 +73,7 @@ declare module resourcesDb {
         ['CustomChip']: 'CustomChip',
         ['CustomDesk']: 'CustomDesk',
         ['CustomDouble']: 'CustomDouble',
+        ['CustomEndAnimation']: 'CustomEndAnimation',
         ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHandle']: 'CustomHandle',

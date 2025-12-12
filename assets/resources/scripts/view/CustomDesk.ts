@@ -15,6 +15,7 @@ import { randomRange } from 'cc';
 import { UITransform } from 'cc';
 import { Tween } from 'cc';
 import { UIOpacity } from 'cc';
+import { Color } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -40,9 +41,6 @@ export default class CustomDesk extends ViewBase {
     _tagetWorldPos: Vec3[] = [];
 
     buildUi() {
-        // BaseGlobal.registerListeners(this, {
-        //     [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updateStar,
-        // });
         const odds = SevenUpSevenDownManager.Odds;
         this._chipButtons = WalletManager.getCurrencyBetSize()
         this.betarea_node.children.forEach((child, idx) => {
@@ -53,7 +51,10 @@ export default class CustomDesk extends ViewBase {
 
     reset() {
         this.betarea_node.children.forEach((child, idx) => {
-            child.getChildByName('star').active = false;
+            if (idx != 5 && idx != 11 && idx != 12) {
+                child.getChildByName('labelIdx').getComponent(cc.Label).color = new Color('#808080');
+                child.getChildByName('odd').getComponent(cc.Label).color = new Color('#808080');
+            }
             child.getChildByName('lightning').active = false;
             child.getChildByName('show').active = false;
         });
@@ -68,34 +69,33 @@ export default class CustomDesk extends ViewBase {
             case baccarat.DeskStage.StartBetStage:
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
-                // this.updateStar();
+                if (reconnect) {
+                    this.resetLabelColor();
+                }
                 break;
         }
     }
 
-    // updateStar() {
-    //     const isFirst = SevenUpSevenDownManager.FirstPlayBet;
-    //     this.betarea_node.children.forEach((child, idx) => {
-    //         child.getChildByName('star').active = isFirst.has(idx + 1);
-    //     });
-
-    // }
-
-    showResult(reconnect: boolean = false) {
+    showResult() {
         let wintype = SevenUpSevenDownManager.WinType;
         for (let i = 0; i < this.betarea_node.children.length; i++) {
             let child = this.betarea_node.children[i];
             let win = wintype.indexOf(i + 1) == -1 ? false : true;
-            if (win) {
-                let light = child.getChildByName('lightning');
-                let name = (i == 6 || i == 12 || i == 13) ? 'animation' : 'animation2';
-                if (light.getComponentInChildren(sp.Skeleton)) {
-                    const trackEntry = light.getComponentInChildren(sp.Skeleton).setAnimation(0, name, false);
-                    trackEntry.trackTime = reconnect ? trackEntry.animationEnd : 0;
-                }
-                light.active = true;
+            child.getChildByName('lightning').active = win;
+            if (i != 5 && i != 11 && i != 12) {
+                child.getChildByName('labelIdx').getComponent(cc.Label).color = win ? new Color('#ffffffff') : new Color('#808080');
+                child.getChildByName('odd').getComponent(cc.Label).color = win ? new Color('#ffffffff') : new Color('#808080');
             }
         }
+    }
+
+    resetLabelColor() {
+        this.betarea_node.children.forEach((child, idx) => {
+            if (idx != 5 && idx != 11 && idx != 12) {
+                child.getChildByName('labelIdx').getComponent(cc.Label).color = new Color('#808080');
+                child.getChildByName('odd').getComponent(cc.Label).color = new Color('#808080');
+            }
+        });
     }
 
     sendBetMessage(idx: number, tagetWorldPos: Vec3) {

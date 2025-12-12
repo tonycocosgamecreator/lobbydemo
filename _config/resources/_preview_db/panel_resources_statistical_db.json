@@ -72,6 +72,12 @@
         "desc": "",
         "statisticalId": 100001024
     },
+    "CustomEndAnimation": {
+        "viewName": "CustomEndAnimation",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001029
+    },
     "CustomFlyChip": {
         "viewName": "CustomFlyChip",
         "bundleName": "resources",

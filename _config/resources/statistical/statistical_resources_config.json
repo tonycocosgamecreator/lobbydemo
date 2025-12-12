@@ -114,5 +114,9 @@
     "CustomRoomData": {
         "statisticalId": 100001028,
         "panelId": 28
+    },
+    "CustomEndAnimation": {
+        "statisticalId": 100001029,
+        "panelId": 29
     }
 }
