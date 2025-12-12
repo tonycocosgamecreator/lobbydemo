@@ -71,7 +71,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
     }
 
     protected start(): void {
-        this.ske_person.setMix('clap', 'idle', 0.25);
+        // this.ske_person.setMix('clap', 'idle', 0.25);
         this.updateReconnect();
     }
 
@@ -114,7 +114,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
             case baccarat.DeskStage.SettleStage:
                 this.setTouZiData();
                 this.desk_node.showResult();
-                this.ske_person.setAnimation(0, 'clap', true);
+                this.ske_person.setAnimation(0, 'idle', true);
                 break;
         }
     }
@@ -137,7 +137,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                 this.reset();
                 this.ske_start.node.active = true;
                 this.ske_start.setAnimation(0, 'animation', false);
-                this.ske_person.setAnimation(0, 'idle', true);
+                // this.ske_person.setAnimation(0, 'idle', true);
                 this.room.updatePeriod();
                 break;
             case baccarat.DeskStage.StartBetStage:
@@ -188,7 +188,7 @@ export default class PanelSevenUpSevenDownMain extends ViewBase implements IPane
                     this.tou4.node.active = true;
                 }, 4.2)
                 this.scheduleOnce(() => {
-                    this.ske_person.setAnimation(0, 'clap', true);
+                    this.ske_person.setAnimation(0, 'idle', true);
                     this.ske_touzi.node.active = false;
                 }, 8.26)
                 this.scheduleOnce(() => {

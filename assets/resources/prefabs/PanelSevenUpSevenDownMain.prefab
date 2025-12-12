@@ -2552,7 +2552,8 @@
     "fileId": "7cWwyqjINMRakQdJN/1gsf",
     "instance": {
       "__id__": 139
-    }
+    },
+    "targetOverrides": null
   },
   {
     "__type__": "cc.PrefabInstance",
@@ -4893,6 +4894,8 @@
       "__id__": 0
     },
     "fileId": "65XAlSgbFO5YYV7rXXO8q4",
+    "instance": null,
+    "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
