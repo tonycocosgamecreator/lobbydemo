@@ -7,8 +7,9 @@ import { UITransform } from 'cc';
 import { view } from 'cc';
 import { NodeEventType } from 'cc';
 import { EventTouch } from 'cc';
-import { GButtonTouchStyle } from '../core/view/view-define';
-import { v3 } from 'cc';
+//------------------------特殊引用开始----------------------------//
+import CustomMenu from 'db://assets/resources/scripts/view/system/CustomMenu';
+//------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -29,51 +30,23 @@ export default class CustomTop extends ViewBase {
 
     protected start(): void {
         const deviceSize = view.getVisibleSize();
-        this.ndClick.getComponent(UITransform).width = deviceSize.width;
-        this.ndClick.getComponent(UITransform).height = deviceSize.height;
-        let targetNode = this.node.parent;
+        this.ndClick.getComponent(UITransform).width = deviceSize.width*2;
+        this.ndClick.getComponent(UITransform).height = deviceSize.height*2;
+        let targetNode = this.node.parent.parent.parent.parent;
         let world = targetNode.parent.getComponent(UITransform).convertToWorldSpaceAR(targetNode.position);
         let local = this.node.getComponent(UITransform).convertToNodeSpaceAR(world);
         this.ndClick.setPosition(local);
-        this.ndClick.on(NodeEventType.TOUCH_START, (event: EventTouch) => {
-            event.propagationStopped = false;
-        }, this);
-        this.ndClick.on(NodeEventType.TOUCH_END, (event: EventTouch) => {
-            event.propagationStopped = false;
-            this.playAnimation(false);
-        }, this);
-        this.ndClick.on(NodeEventType.TOUCH_CANCEL, (event: EventTouch) => {
-            event.propagationStopped = false;
-            this.playAnimation(false);
-        }, this);
-        this.ndClick.active = false;
+        this.ndClick.active = false
     }
     //------------------------ 内部逻辑 ------------------------//
     _showAnimation: boolean = false;
     buildUi() {
-        this.show_node.scale = v3(1, 0, 1);
-        this.button_help.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.button_histoy.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.button_menu.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.button_record.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.button_set.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-    }
-
-    playAnimation(show: boolean) {
-        if (!this.show_node) return;
-        if (this._showAnimation) return;
-        this._showAnimation = true;
-        if (show) {
-            cc.tween(this.show_node).to(0.08, { scale: v3(1, 1, 1) }).call(() => {
-                this.ndClick.active = true;
-                this._showAnimation = false;
-            }).start();
-        } else {
-            cc.tween(this.show_node).to(0.08, { scale: v3(1, 0, 1) }).call(() => {
-                this._showAnimation = false;
-                this.ndClick.active = false;
-            }).start();
-        }
+        this.menu.show(false, 0, () => {
+            this.ndClick.active = false
+        });
+        this.menu.setCloseCb(() => {
+            this.ndClick.active = false
+        });
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -86,30 +59,16 @@ export default class CustomTop extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
     private onClickButton_menu(event: cc.EventTouch) {
-        if (this.ndClick.active) {
-            this.playAnimation(false);
-            return;
-        }
-        this.playAnimation(true);
-    }
-
-    private onClickButton_set(event: cc.EventTouch) {
-        this.playAnimation(false);
+        this.ndClick.active = true;
+        this.menu.show(true, 0.35);
     }
 
 
-    private onClickButton_record(event: cc.EventTouch) {
-        this.playAnimation(false);
-    }
 
-
-    private onClickButton_histoy(event: cc.EventTouch) {
-        this.playAnimation(false);
-    }
-
-
-    private onClickButton_help(event: cc.EventTouch) {
-        this.playAnimation(false);
+    private onClickButtonClose(event: cc.EventTouch) {
+        this.menu.show(false, 0.35, () => {
+            this.ndClick.active = false
+        });
     }
 
     // @view export event end
@@ -118,42 +77,34 @@ export default class CustomTop extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_button_help    : [GButton,this.onClickButton_help.bind(this)],
-            cc_button_histoy    : [GButton,this.onClickButton_histoy.bind(this)],
-            cc_button_menu    : [GButton,this.onClickButton_menu.bind(this)],
-            cc_button_record    : [GButton,this.onClickButton_record.bind(this)],
-            cc_button_set    : [GButton,this.onClickButton_set.bind(this)],
-            cc_menu    : [cc.Sprite],
-            cc_ndClick    : [cc.Node],
-            cc_show_node    : [cc.Node],
+            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
+            cc_button_menu: [GButton, this.onClickButton_menu.bind(this)],
+            cc_menu: [CustomMenu],
+            cc_ndClick: [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-   protected button_help: GButton    = null;
-   protected button_histoy: GButton    = null;
-   protected button_menu: GButton    = null;
-   protected button_record: GButton    = null;
-   protected button_set: GButton    = null;
-   protected menu: cc.Sprite    = null;
-   protected ndClick: cc.Node    = null;
-   protected show_node: cc.Node    = null;
+    protected buttonClose: GButton = null;
+    protected button_menu: GButton = null;
+    protected menu: CustomMenu = null;
+    protected ndClick: cc.Node = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly VIEW_NAME    = 'CustomTop';
+    public static readonly VIEW_NAME = 'CustomTop';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-   public static readonly BUNDLE_NAME  = 'resources';
+    public static readonly BUNDLE_NAME = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-   public get bundleName() {
+    public get bundleName() {
         return CustomTop.BUNDLE_NAME;
     }
-   public get viewName(){
+    public get viewName() {
         return CustomTop.VIEW_NAME;
     }
     // @view export resource end

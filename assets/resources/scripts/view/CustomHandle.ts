@@ -51,7 +51,7 @@ export default class CustomHandle extends ViewBase {
         this.buttonDouble.spriteFramesOfIconWithSelected = [this.getSpriteFrame('textures/button/7up_Img_40'), this.getSpriteFrame('textures/button/7up_Img_40'), this.getSpriteFrame('textures/button/7up_Img_36')];
     }
 
-    updateGameStage(stage: baccarat.DeskStage.StartBetStage, reconnect: boolean = false) {
+    updateGameStage(stage: number, reconnect: boolean = false) {
         this._stage = stage;
         if (reconnect) {
             this._lastBetInfo = CommonManager.LastbetInfo;
@@ -97,16 +97,20 @@ export default class CustomHandle extends ViewBase {
         WheelManager.sendBetMessage(bets, betcoin, true, area);
     }
 
-    updateButtonState() {
+    updateButtonState(click: boolean = false) {
         let betStage = this._stage == baccarat.DeskStage.StartBetStage;
         this._myBetInfo = WheelManager.getBetInfoByPlayId();
+        if (!click && this._agail && this._myBetInfo.length == 0) {
+            //点了下注上一局又点撤销
+            this._agail = false;
+        }
         this.buttonAgail.isEnabled = !this._auto && betStage && !this._agail && this._lastBetInfo.length > 0 ? true : false;
         this.buttonAgail.node.active = !this._auto && !this._agail;
         this.buttonAuto.node.active = !this._auto && this._agail;
         this.buttonUnauto.node.active = this._auto;
-        this.buttonUndo.isEnabled = betStage && this._myBetInfo.length > 0;
-        this.buttonClear.isEnabled = betStage && this._myBetInfo.length > 0;
-        this.buttonDouble.isEnabled = betStage && this._myBetInfo.length > 0;
+        this.buttonUndo.isEnabled = !this._auto && betStage && this._myBetInfo.length > 0;
+        this.buttonClear.isEnabled = !this._auto && betStage && this._myBetInfo.length > 0;
+        this.buttonDouble.isEnabled = !this._auto && betStage && this._myBetInfo.length > 0;
     }
 
     //------------------------ 网络消息 ------------------------//
@@ -124,21 +128,21 @@ export default class CustomHandle extends ViewBase {
     private onClickButtonAuto(event: cc.EventTouch) {
         this._auto = true;
         CommonManager.Auto = true;
-        this.updateButtonState();
+        this.updateButtonState(true);
     }
 
 
     private onClickButtonUnauto(event: cc.EventTouch) {
         this._auto = false;
         CommonManager.Auto = false;
-        this.updateButtonState();
+        this.updateButtonState(true);
     }
 
 
     private onClickButtonAgail(event: cc.EventTouch) {
         this._agail = true;
         CommonManager.Agail = true;
-        this.updateButtonState();
+        this.updateButtonState(true);
         this.autoBets();
     }
 
@@ -146,26 +150,26 @@ export default class CustomHandle extends ViewBase {
     private onClickButtonUndo(event: cc.EventTouch) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         if (this._myBetInfo.length == 0) return;
-        const CancelBetSevenUpDownReq: sevenupdown.MsgCancelBetSevenUpDownReq = {
+        const CancelBetSevenUpDownReq: wheel.MsgCancelBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
             desk_id: WheelManager.DeskId,
             cancel_type: 1
         }
-        MessageSender.SendMessage(sevenupdown.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
+        MessageSender.SendMessage(wheel.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
     }
 
 
     private onClickButtonClear(event: cc.EventTouch) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         if (this._myBetInfo.length == 0) return;
-        const CancelBetSevenUpDownReq: sevenupdown.MsgCancelBetSevenUpDownReq = {
+        const CancelBetSevenUpDownReq: wheel.MsgCancelBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
             desk_id: WheelManager.DeskId,
             cancel_type: 2
         }
-        MessageSender.SendMessage(sevenupdown.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
+        MessageSender.SendMessage(wheel.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
     }
 
 
@@ -179,7 +183,7 @@ export default class CustomHandle extends ViewBase {
         betcoin = (+(_data.bet_coin)).mul(2);
         for (let i = 0; i < 2; i++) {
             bets.push({ bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false });
-            let pos =WheelManager.View.getDeskWorldPosByAid(_data.bet_id);;
+            let pos = WheelManager.View.getDeskWorldPosByAid(_data.bet_id);;
             area.push(pos);
         }
         WheelManager.sendBetMessage(bets, betcoin, false, area);

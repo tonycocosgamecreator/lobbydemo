@@ -36,7 +36,7 @@ export default class CustomBaccaratTop extends ViewBase {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
         });
-        this.labelGameTitle.string = 'sevenupdown';
+        this.labelGameTitle.string = 'wheel';
         this.menu.show(false, 0);
         this.updatePlayBalance();
     }

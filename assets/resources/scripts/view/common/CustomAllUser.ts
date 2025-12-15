@@ -36,7 +36,7 @@ export default class CustomAllUser extends ViewBase {
         this.ndTopRankUser.children.forEach((child, idx) => {
             child.getComponent(CustomTopRankUser).init(idx, this.topUserList[idx] || null);
         })
-
+        this.otherUser.reset();
     }
 
     updatePlayer() {
@@ -69,8 +69,16 @@ export default class CustomAllUser extends ViewBase {
         })
         return wordPos
     }
-    //缺一个播放赢家动画的效果
 
+    updateResult() {
+        this.ndTopRankUser.children.forEach((child, idx) => {
+            child.getComponent(CustomTopRankUser).updateResult();
+        })
+    }
+
+    clearOtherUser() {
+        this.otherUser.reset();
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

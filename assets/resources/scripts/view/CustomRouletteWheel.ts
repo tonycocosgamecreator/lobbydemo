@@ -16,17 +16,11 @@ export default class CustomRouletteWheel extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        // 计算每个扇区的弧度
-        this.sectorAngle = (2 * Math.PI) / this.sectors;
-
-        // 初始化旋转
-        this.updateRotation();
     }
 
     protected onDestroy(): void {
         super.onDestroy();
     }
-
 
     //------------------------ 内部逻辑 ------------------------//
     wheelRadius = 328;
@@ -35,20 +29,12 @@ export default class CustomRouletteWheel extends ViewBase {
     spinDuration: number = 5;
     private _currentAngle: number = 0; // 当前角度（弧度）
     private _rotationSpeed: number = 0; // 旋转速度（弧度/秒）
-    private sectorAngle: number = 0; // 每个扇区的弧度
     private isSpinning: boolean = false;
 
     // 速度参数
-    @property
     maxSpinSpeed: number = 30; // 最大旋转速度（弧度/秒），增加这个值可以让转盘转得更快
-
-    @property
     accelerationTime: number = 0.5; // 加速时间（秒）
-
-    @property
     decelerationTime: number = 2.0; // 减速时间（秒），减少这个值可以更快停止
-
-    @property
     minSpeedThreshold: number = 0.1; // 最小速度阈值（弧度/秒），低于这个值就停止
 
     // 角度相关方法
@@ -71,6 +57,12 @@ export default class CustomRouletteWheel extends ViewBase {
 
     // 更新轮盘旋转
     private updateRotation(): void {
+        // 1. 标准化角度到 [0, 2π) 范围
+        if (this._currentAngle >= 2 * Math.PI) {
+            this._currentAngle -= 2 * Math.PI;
+        } else if (this._currentAngle < 0) {
+            this._currentAngle += 2 * Math.PI;
+        }
         // 将弧度转换为度（用于显示）
         const degrees = math.toDegree(this._currentAngle);
         // 在Cocos Creator 3.x中，应该使用节点的欧拉角
@@ -137,7 +129,6 @@ export default class CustomRouletteWheel extends ViewBase {
                 } else {
                     friction = 0.960; // 最后阶段快速停止
                 }
-
                 this._rotationSpeed *= friction;
 
                 // 显示当前速度
@@ -154,7 +145,6 @@ export default class CustomRouletteWheel extends ViewBase {
                     resolve();
                 }
             };
-
             this.schedule(slowDownUpdate, 0.016);
         });
     }
@@ -181,6 +171,7 @@ export default class CustomRouletteWheel extends ViewBase {
             this.updateRotation();
         }
     }
+
     // 辅助方法：等待轮盘稳定
     waitForWheelStable(): Promise<void> {
         return new Promise((resolve) => {

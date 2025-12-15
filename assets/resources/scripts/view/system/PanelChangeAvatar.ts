@@ -48,10 +48,10 @@ export default class PanelChangeAvatar extends ViewBase {
             //选中
             const id = index + 1;
             if (id != player_avatar_id) {
-                const req: sevenupdown.MsgUpdatePlayerDataReq = {
+                const req: wheel.MsgUpdatePlayerDataReq = {
                     icon: id
                 }
-                MessageSender.SendMessage(sevenupdown.Message.MsgUpdatePlayerDataReq, req);
+                MessageSender.SendMessage(wheel.Message.MsgUpdatePlayerDataReq, req);
             }
         });
         this.listAvatars.numItems = 64;
@@ -61,8 +61,8 @@ export default class PanelChangeAvatar extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == sevenupdown.Message.MsgUpdatePlayerDataRsp) {
-            const msg = data as sevenupdown.MsgUpdatePlayerDataRsp;
+        if (msgType == wheel.Message.MsgUpdatePlayerDataRsp) {
+            const msg = data as wheel.MsgUpdatePlayerDataRsp;
             if (msg && msg.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //更新失败了
                 UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.AVATAR_CHANGED_FAILED);

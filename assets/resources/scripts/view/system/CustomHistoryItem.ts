@@ -26,20 +26,32 @@ export default class CustomHistoryItem extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     @ViewBase.requireResourceLoaded
-    fillData(data: sevenupdown.SevenUpDownPlayerHistory, index: number) {
+    fillData(data: wheel.SevenUpDownPlayerHistory, index: number) {
         const urls1 = ['textures/system/icon_tc_bz_02/spriteFrame', 'textures/system/XFJ_Img_9/spriteFrame'];
         this.itemBg.spriteFrame = this.getSpriteFrame(urls1[index % 2]);
         this.labelPeriod.string = data.period;
         const currency = WalletManager.currency;
         this.labelBetVal.string = CurrencyHelper.format(+data.bet, currency);
         this.labelWinBet.string = CurrencyHelper.format(+data.win_coin, currency);
-        let wintype = data.win_type || [];
-        this.result.children.forEach((child, idx) => {
-            child.active = !!wintype[idx];
-            if (wintype[idx]) {
-                child.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/ui/" + wintype[idx] + "/spriteFrame");
-            }
-        })
+        this.labelDice.string = data.win_type[0] + '';
+        this.sprbg.getComponent(cc.Sprite).spriteFrame= this.getSpriteFrame(`textures/wheel/LP_Img_${this.getColorByIdx(data.win_type[0])}/spriteFrame`);
+    }
+     //1 红色 2黑色 3绿色
+    getColorByIdx(idx: number): number {
+        if (idx == 0) return 3;
+        if (idx <= 10) {
+            return idx % 2 == 1 ? 1 : 2;
+        }
+        if (idx <= 18) {
+            return idx % 2 == 1 ? 2 : 1;
+        }
+        if (idx <= 28) {
+            return idx % 2 == 1 ? 1 : 2;
+        }
+        if (idx <= 36) {
+            return idx % 2 == 1 ? 2 : 1;
+        }
+        return 3;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -54,22 +66,25 @@ export default class CustomHistoryItem extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_itemBg: [cc.Sprite],
             cc_labelBetVal: [cc.Label],
+            cc_labelDice: [cc.Label],
             cc_labelPeriod: [cc.Label],
             cc_labelWinBet: [cc.Label],
             cc_result: [cc.Node],
+            cc_sprbg: [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
     protected itemBg: cc.Sprite = null;
     protected labelBetVal: cc.Label = null;
+    protected labelDice: cc.Label = null;
     protected labelPeriod: cc.Label = null;
     protected labelWinBet: cc.Label = null;
     protected result: cc.Node = null;
+    protected sprbg: cc.Sprite = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
@@ -89,6 +104,5 @@ export default class CustomHistoryItem extends ViewBase {
     public get viewName() {
         return CustomHistoryItem.VIEW_NAME;
     }
-
     // @view export resource end
 }

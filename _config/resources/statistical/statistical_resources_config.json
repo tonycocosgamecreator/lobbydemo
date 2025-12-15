@@ -110,5 +110,9 @@
     "CustomRouletteBall": {
         "statisticalId": 100001027,
         "panelId": 27
+    },
+    "CustomHistoryItem": {
+        "statisticalId": 100001028,
+        "panelId": 28
     }
 }

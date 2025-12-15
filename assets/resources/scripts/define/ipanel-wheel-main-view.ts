@@ -8,6 +8,7 @@ export interface IPanelWheelMainView {
     getMyHeadWorldPos(): Vec3;
     getChipWorldPos(): Vec3;
     getDeskWorldPosByAid(areaid: number): Vec3;
+    getLoseWorldPos(): Vec3;
     updateDeletChip(data: any, isme: boolean): void;
 }
 

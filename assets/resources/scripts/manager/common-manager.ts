@@ -92,7 +92,7 @@ export default class CommonManager extends BaseManager {
         return this._online;
     }
 
-    public static get UserWinList(): sevenupdown.MsgLastWinNtf[] {
+    public static get UserWinList(): wheel.MsgLastWinNtf[] {
         return this._userWinList;
     }
 
@@ -117,7 +117,7 @@ export default class CommonManager extends BaseManager {
     }
 
     public static get LastbetInfo(): betInfo[] {
-        return this._lastbetInfo;
+        return this._lastbetInfo || [];
     }
 
     public static subtractUserWinList() {

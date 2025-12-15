@@ -53,7 +53,7 @@ export default class CustomButtom extends ViewBase {
     }
 
     updateBetList(result: boolean = false) {
-        this.allbets.updateData(result)
+        this.allbets.updateData(result);
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

@@ -62,19 +62,33 @@ export default class CustomUser extends ViewBase {
         this.updateTotalBalance(balance);
     }
 
+    updateResult() {
+        const data = WheelManager.getBetInfoByPlayId();
+        if (!data || data.length == 0) return;
+        let count = 0;
+        data.forEach(v => {
+            if (v.win > 0) {
+                count = count.add(v.win);
+            }
+        })
+        if (count > 0) {
+            this.playWinLabelAnimation(count);
+        }
+    }
+
     playWinLabelAnimation(win: number) {
         const node = this.labelWin.node;
         const uiOpacity = node.getComponent(UIOpacity);
         Tween.stopAllByTarget(node);
         Tween.stopAllByTarget(uiOpacity);
         uiOpacity.opacity = 0;
-        node.setPosition(v3(43, -10, 0)); // 从稍下方开始
+        node.setPosition(v3(-30, 30, 0)); // 从稍下方开始
         node.scale = v3(0.8, 0.8, 1); // 初始稍小
         this.labelWin.string = '+' + CurrencyHelper.format(win, this._currency);
         cc.tween(node)
             .parallel(
                 tween().to(0.2, {
-                    position: v3(43, 21, 0),
+                    position: v3(-30, 61, 0),
                     scale: v3(1, 1, 1)
                 }, { easing: 'backOut' }),
                 tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
@@ -83,7 +97,7 @@ export default class CustomUser extends ViewBase {
             .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
             .call(() => {
                 this.labelWin.string = '';
-                node.setPosition(v3(43, 0, 0));
+                node.setPosition(v3(-30, 30, 0));
             })
             .start();
     }

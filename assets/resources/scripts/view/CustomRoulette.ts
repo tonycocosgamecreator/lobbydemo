@@ -34,14 +34,9 @@ export default class CustomRoulette extends ViewBase {
 
         switch (this.ballState) {
             case 'fast':
-                // 独立旋转：小球有自己的速度
                 // 注意：轮盘是顺时针转（角度增加），小球通常是逆时针转（角度减少）
                 this.ballAngle += this.ballSpeed * deltaTime;
                 this.updatePosition();
-                // 可选：添加角度限制，避免过大
-                if (this.ballAngle > 2 * Math.PI) {
-                    this.ballAngle -= 2 * Math.PI;
-                }
                 break;
 
             case 'slow':
@@ -49,12 +44,9 @@ export default class CustomRoulette extends ViewBase {
                 break;
 
             case 'locked':
-                // if (this.isRelativeLocked) {
-                //     // 相对锁定：保持在轮盘相对位置
-                //     const fixedRelativeAngle = Math.PI / 4; // 45度
-                //     this.ballAngle = this.wheel.currentAngle + fixedRelativeAngle;
-                //     this.updatePosition();
-                // }
+                if (this.isRelativeLocked) {
+                    this.updatePosition();
+                }
                 break;
         }
     }
@@ -101,13 +93,13 @@ export default class CustomRoulette extends ViewBase {
             await this.phase2_BallFastRotation();
 
             // // 阶段3：小球减速 (1.5秒)
-            // await this.phase3_BallSlowDown();
+            await this.phase3_BallSlowDown();
 
             // // 阶段4：一起减速 (2.8秒)
-            // await this.phase4_SlowDownTogether();
+            await this.phase4_SlowDownTogether();
 
-            // this.isGameRunning = false;
-            // this.currentPhase = 0;
+            this.isGameRunning = false;
+            this.currentPhase = 0;
 
         } catch (error) {
             console.error('游戏出错:', error);
@@ -152,11 +144,12 @@ export default class CustomRoulette extends ViewBase {
         // 测试数字32
         const targetNumber = 5;
         console.log(`\n=== 开始减速测试 ===`);
-        console.log(`目标数字: ${targetNumber}`);
-
-        await this.slowDownToTargetWithCorrectedAngle(targetNumber);
+        this.targetOnWheel = ((this.getNumberDisplayOnWheel(targetNumber)) % (2 * Math.PI) + (2 * Math.PI)) % (2 * Math.PI);
+        console.log(`目标数字角度: ${math.toDegree(this.targetOnWheel).toFixed(1)}°`);
+        await this.targetDecelerationPosition();
+        await this.slowDownAndStop()
     }
-
+    targetOnWheel: number = 0;
 
     private async phase4_SlowDownTogether(): Promise<void> {
         console.log('阶段4：相对静止一起减速');
@@ -167,7 +160,7 @@ export default class CustomRoulette extends ViewBase {
         this.lockToWheel();
 
         // 一起减速
-        await this.wheel.slowDownAndStop(2.8);
+        await this.wheel.slowDownAndStop(1);
 
         this.isGameRunning = false;
         this.currentPhase = 0;
@@ -190,18 +183,21 @@ export default class CustomRoulette extends ViewBase {
             case 'slow':
             case 'locked':
                 // 内圈：靠近数字区域
-                this.orbitRadius = this.innerRingRadius;
+                // this.orbitRadius = this.innerRingRadius;
                 break;
             default:
                 this.orbitRadius = 200; // 默认值
         }
     }
     private updatePosition(): void {
-        if (this.isRelativeLocked) {
-            const fixedRelativeAngle = Math.PI / 4;
-            this.ballAngle = this.wheel.currentAngle + fixedRelativeAngle;
+        if (this.ballAngle >= 2 * Math.PI) {
+            this.ballAngle -= 2 * Math.PI;
+        } else if (this.ballAngle < 0) {
+            this.ballAngle += 2 * Math.PI;
         }
-
+        if (this.isRelativeLocked) {
+            this.ballAngle = this.targetOnWheel - this.wheel.currentAngle;
+        }
         const x = Math.cos(this.ballAngle) * this.orbitRadius;
         const y = Math.sin(this.ballAngle) * this.orbitRadius;
 
@@ -275,85 +271,64 @@ export default class CustomRoulette extends ViewBase {
     }
 
 
-    private async slowDownToTargetWithCorrectedAngle(targetNumber: number): Promise<void> {
+    private async targetDecelerationPosition(): Promise<void> {
         return new Promise((resolve) => {
-            console.log(`角度修正定点减速到: ${targetNumber}`);
             this.ballState = 'slow';
-
-            // 目标数字角度
-            const targetOnWheel = ((this.getNumberDisplayOnWheel(targetNumber)) % (2 * Math.PI) + (2 * Math.PI)) % (2 * Math.PI);
-            console.log(`目标数字角度: ${math.toDegree(targetOnWheel).toFixed(1)}°`);
-
-            // 参数
-            const startBallSpeed = this.ballSpeed;
-            const wheelSpeed = this.wheel.rotationSpeed;
-            const duration = 2.0;
-            let elapsedTime = 0;
-
             const slowDownUpdate = () => {
-                elapsedTime += 0.016;
-                const progress = Math.min(elapsedTime / duration, 1);
-
-                // 1. 基础线性减速（主减速曲线）
-                const baseTargetSpeed = startBallSpeed - (startBallSpeed - wheelSpeed) * progress;
-
+                const speed = this.ballSpeed * 0.016;
+                this.ballAngle += this.ballSpeed * 0.016;
+                this.updatePosition();
                 // 2. 计算相对角度和角度差
                 const wheelDisplayAngle = -this.wheel.currentAngle;
                 let ballRelativeToWheel = this.ballAngle - wheelDisplayAngle;
                 ballRelativeToWheel = ((ballRelativeToWheel % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
-
-                let angleDiff = targetOnWheel - ballRelativeToWheel;
-                if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
-                if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
-
-                const angleGap = Math.abs(angleDiff);
-
-                // 3. 角度修正（只在差距较大时应用，避免抖动）
-                let correction = 0;
-                if (angleGap > 0.1) { // 大于5.7度才修正
-                    // 修正量随进度和角度差变化
-                    const correctionStrength = 0.2 * (1 - progress * 0.7); // 后期修正减弱
-                    correction = angleDiff * correctionStrength;
+                let angleDiff = this.targetOnWheel - ballRelativeToWheel;
+                // 调整到 [0, 2π) 范围
+                if (angleDiff < 0) {
+                    angleDiff += 2 * Math.PI;
                 }
-
-                // 4. 平滑组合：基础减速 + 角度修正
-                // 使用加权平均，避免突变
-                const smoothFactor = 0.8; // 基础速度权重
-                const finalTargetSpeed = baseTargetSpeed * smoothFactor + (baseTargetSpeed + correction) * (1 - smoothFactor);
-
-                // 5. 平滑过渡到目标速度
-                const smoothRate = 0.1; // 平滑系数，值越小越平滑
-                this.ballSpeed += (finalTargetSpeed - this.ballSpeed) * smoothRate;
-
-                // 速度限制
-                const minSpeed = wheelSpeed * 0.8;
-                const maxSpeed = wheelSpeed * 1.5;
-                this.ballSpeed = Math.max(minSpeed, Math.min(this.ballSpeed, maxSpeed));
-
-
-                // 6. 更新角度
-                // 小球顺时针
-                this.ballAngle -= this.ballSpeed * 0.016;
-                if (this.ballAngle < 0) this.ballAngle += 2 * Math.PI;
-
+                if (angleDiff < Math.PI || angleDiff > (Math.PI + speed)) {
+                    return;
+                }
+                let targetball = this.targetOnWheel + Math.PI + wheelDisplayAngle;
+                targetball = ((this.ballAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+                this.ballAngle = targetball
                 this.updatePosition();
+                this.unschedule(slowDownUpdate);
+                resolve();
 
-                // 7. 完成条件
-                if (angleGap < (5 * Math.PI / 180) && progress > 0.9) { // 5度
-                    console.log(`\n完成！误差: ${math.toDegree(angleDiff).toFixed(1)}°`);
-                    this.wheel.stop()
-                    this.ballState = 'locked';
-                    this.isRelativeLocked = true;
-                    this.ballSpeed = wheelSpeed;
-
-                    this.unschedule(slowDownUpdate);
-                    resolve();
-                }
             };
-
             this.schedule(slowDownUpdate, 0.016);
         });
     }
+
+    private async slowDownAndStop(): Promise<void> {
+        return new Promise((resolve) => {
+            const slowDown2Update = () => {
+                if (this.ballSpeed > 0.5) {
+                    this.ballSpeed -= 0.2;
+                } else {
+                    this.ballSpeed = 0.5
+                }
+                this.ballAngle += this.ballSpeed * 0.016;
+                this.updatePosition();
+                const wheelDisplayAngle = -this.wheel.currentAngle;
+                let ballRelativeToWheel = this.ballAngle - wheelDisplayAngle;
+                ballRelativeToWheel = ((ballRelativeToWheel % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+                let angleDiff = this.targetOnWheel - ballRelativeToWheel;
+                // 调整到 [0, 2π) 范围
+                if (angleDiff < 0) {
+                    angleDiff += 2 * Math.PI;
+                }
+                if (angleDiff <= 0.1) {
+                    this.unschedule(slowDown2Update);
+                    resolve();
+                }
+            }
+            this.schedule(slowDown2Update, 0.016);
+        })
+    }
+
     // 锁定到轮盘相对位置
     lockToWheel(): void {
         this.ballState = 'locked';
@@ -372,7 +347,7 @@ export default class CustomRoulette extends ViewBase {
         this.ballState = 'idle';
         this.ballSpeed = 0;
         this.ballAngle = 0;
-        this.orbitRadius = 2.5;
+        this.orbitRadius = this.outerRingRadius;
         this.isRelativeLocked = false;
         this.node.setScale(v3(1, 1, 1));
         this.unscheduleAllCallbacks();

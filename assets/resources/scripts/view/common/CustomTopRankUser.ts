@@ -45,6 +45,7 @@ export default class CustomTopRankUser extends ViewBase {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
         });
     }
+    
     @ViewBase.requireResourceLoaded
     init(index: number, data: wheel.RankList | null) {
         this._index = index;
@@ -129,6 +130,21 @@ export default class CustomTopRankUser extends ViewBase {
                 node.setPosition(v3(43, 0, 0));
             })
             .start();
+    }
+
+    updateResult() {
+        if (this._playerId == '-1') return;
+        const data = WheelManager.getBetInfoByPlayId(this._playerId);
+        if (!data || data.length == 0) return;
+        let count = 0;
+        data.forEach(v => {
+            if (v.win > 0) {
+                count = count.add(v.win);
+            }
+        })
+        if (count > 0) {
+            this.playWinLabelAnimation(count);
+        }
     }
 
     reset() {

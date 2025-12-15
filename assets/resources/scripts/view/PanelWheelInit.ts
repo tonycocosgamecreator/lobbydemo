@@ -10,6 +10,7 @@ import ViewManager from '../core/manager/view-manager';
 //------------------------特殊引用开始----------------------------//
 import CustomDesk from 'db://assets/resources/scripts/view/CustomDesk';
 import JsonLoginManager from '../network/managers/json-login-manager';
+import HistoryManager from '../manager/history-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -36,8 +37,7 @@ export default class PanelWheelInit extends ViewBase {
         // AudioManager.playBgm(this.bundleName, '背景')
         Managers.registe(CommonManager);
         Managers.registe(WheelManager);
-        // Managers.registe(SevenUpSevenDownManager);
-        // Managers.registe(HistoryManager);
+        Managers.registe(HistoryManager);
         JsonLoginManager.Login();
     }
 
@@ -45,7 +45,7 @@ export default class PanelWheelInit extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == sevenupdown.Message.MsgEnterSevenUpDownRsp) {
+        if (msgType == wheel.Message.MsgEnterSevenUpDownRsp) {
             ViewManager.OpenPanel(this.module, "PanelWheelMain");
             this.close();
             return true

@@ -184,6 +184,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002504
+        },
+        "cc_buttonClose": {
+            "viewName": "CustomTop",
+            "buttonName": "cc_buttonClose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002505
         }
     }
 }

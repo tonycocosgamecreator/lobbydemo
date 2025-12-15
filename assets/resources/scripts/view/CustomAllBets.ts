@@ -48,14 +48,14 @@ export default class CustomAllBets extends ViewBase {
             let arr = [];
             let allwin = 0;
             for (let i = 0; i < list.length; i++) {
-                let _d = list[i];
+                let item = list[i];
                 let win = 0;
-                _d.forEach(d => {
+                item.forEach(d => {
                     win = win.add(+d.win);
                     allwin = allwin.add(+d.win);
                 })
                 if (win > 0) {
-                    arr.push({ playid: _d[0].player_id, win: win, icon: _d[0].icon });
+                    arr.push({ playid: item[0].player_id, win: win, icon: item[0].icon });
                 }
             }
             let result = arr.sort((a, b) => b.win - a.win);
@@ -82,8 +82,6 @@ export default class CustomAllBets extends ViewBase {
             case baccarat.DeskStage.ReadyStage:
                 this.reset();
             case baccarat.DeskStage.StartBetStage:
-                this.updateData()
-                break;
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
                 if (reconnect) {

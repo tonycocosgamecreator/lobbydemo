@@ -34,9 +34,9 @@ export default class CustomBetArea extends ViewBase {
     _height: number;
     initData(area: number) {
         this._areaId = area;
+        this.reset();
         this._width = this.node.getComponent(UITransform).width / 2 - 20;
         this._height = this.node.getComponent(UITransform).height / 2 - 20;
-        this.reset();
     }
 
     reset() {
@@ -48,6 +48,8 @@ export default class CustomBetArea extends ViewBase {
 
     blink(node: cc.Node, duration: number, times: number) {
         const tween = cc.tween(node.getComponent(UIOpacity));
+        node.active = true;
+        node.getComponent(UIOpacity).opacity = 0;
         for (let i = 0; i < times; i++) {
             if (i === times - 1) {
                 // 最后一次闪烁：淡入后保持透明度255
@@ -76,7 +78,6 @@ export default class CustomBetArea extends ViewBase {
         if (x > _maxX) x = _maxX;
         if (y > _maxY) y = _maxY;
         return new Vec3(x, y, 0);
-
     }
 
     getDeskWorldPos(): Vec3 {
@@ -95,6 +96,12 @@ export default class CustomBetArea extends ViewBase {
             centerPoint.y + randomY,
             centerPoint.z,
         );
+    }
+    showResult() {
+        let winArea = WheelManager.WinArea;
+        if (winArea.indexOf(this._areaId) != -1) {
+            this.blink(this.light.node, 0.2, 3);
+        }
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

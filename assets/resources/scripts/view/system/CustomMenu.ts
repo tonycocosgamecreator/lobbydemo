@@ -57,14 +57,17 @@ export default class CustomMenu extends ViewBase {
         soundIcon.position = isSoundEnabled ? TOGGLE_ICON_POS_ON : TOGGLE_ICON_POS_OFF;
         musicIcon.position = isMusicEnabled ? TOGGLE_ICON_POS_ON : TOGGLE_ICON_POS_OFF;
     }
-
+    closeCb: () => void = null;
+    setCloseCb(callback: () => void = null) {
+        this.closeCb = callback
+    }
 
     /**
      * 显示/隐藏
      * @param bShow 
      * @param duration 
      */
-    public show(bShow: boolean, duration: number) {
+    public show(bShow: boolean, duration: number, callback: () => void = null) {
         if (bShow) {
             this.LabelNickName.string = CommonManager.showName(WheelManager.PlayerId);
             this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${WheelManager.Icon}`);
@@ -84,12 +87,16 @@ export default class CustomMenu extends ViewBase {
             this.root.position = v3(OUT_POS, y, 0);
             cc.tween(this.root)
                 .to(duration, { position: v3(NORMAL_POS, y, 0) }, { easing: cc.easing.backOut })
+                .call(() => {
+                    callback && callback();
+                })
                 .start();
         } else {
             cc.tween(this.root)
                 .to(duration, { position: v3(OUT_POS, y, 0) }, { easing: cc.easing.backIn })
                 .call(() => {
                     this.node.active = false;
+                    callback && callback();
                 })
                 .start();
         }
@@ -111,10 +118,10 @@ export default class CustomMenu extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
     private onClickButtonBg(event: cc.EventTouch) {
-        this.show(false, 0.35);
+        this.show(false, 0.35, this.closeCb);
     }
     private onClickButtonAvatar(event: cc.EventTouch) {
-        this.show(false, 0.35);
+        this.show(false, 0.35, this.closeCb);
         ViewManager.OpenPanel(this.module, 'PanelChangeAvatar', null, 'system');
     }
     private onClickButtonSound(event: cc.EventTouch) {
@@ -130,12 +137,12 @@ export default class CustomMenu extends ViewBase {
         this.updateToggles();
     }
     private onClickButtonHistory(event: cc.EventTouch) {
-        this.show(false, 0.35);
+        this.show(false, 0.35, this.closeCb);
         ViewManager.OpenPanel(this.module, 'PanelHistory', null, 'system');
     }
     private onClickButtonGameRule(event: cc.EventTouch) {
         ViewManager.OpenPanel(this.module, 'PanelGameRule', null, 'system');
-        this.show(false, 0.35);
+        this.show(false, 0.35, this.closeCb);
     }
     // @view export event end
 

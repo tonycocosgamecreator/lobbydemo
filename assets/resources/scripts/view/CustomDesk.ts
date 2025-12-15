@@ -6,10 +6,6 @@ import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomBetArea from 'db://assets/resources/scripts/view/CustomBetArea';
 import { Vec3 } from 'cc';
-import { Tween } from 'cc';
-import { UIOpacity } from 'cc';
-import { UITransform } from 'cc';
-import CommonManager from '../manager/common-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -49,6 +45,11 @@ export default class CustomDesk extends ViewBase {
         return world || null
     }
 
+    showResult(){
+         this.node.children.forEach(child => {
+            child.getComponent(CustomBetArea).showResult();
+        });
+    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

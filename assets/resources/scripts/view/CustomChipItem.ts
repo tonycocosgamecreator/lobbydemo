@@ -8,6 +8,7 @@ import ReusableBase from '../core/view/reusable-base';
 import { UIOpacity } from 'cc';
 import WalletManager from '../manager/wallet-manager';
 import { betInfo } from '../manager/common-manager';
+import { Vec3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -34,11 +35,10 @@ export default class CustomChipItem extends ReusableBase {
     //------------------------ 内部逻辑 ------------------------//
     _chipColor = ['#47506A', '#1A7401', '#1756A4', '#91017A', '#A31B09', '#A36407'];
     _info: betInfo = null;
-
+    _startLocalPos: Vec3 = null;
     get ChipInfo(): betInfo {
         return this._info;
     }
-
     /**
      * 设置筹码的样式
      * @param data 筹码数据

@@ -27,6 +27,7 @@ resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
     'CustomFlyChip': 'CustomFlyChip',
     'CustomGameItem': 'CustomGameItem',
     'CustomHandle': 'CustomHandle',
+    'CustomHistoryItem': 'CustomHistoryItem',
     'CustomMainHistory': 'CustomMainHistory',
     'CustomOnlineInRoom': 'CustomOnlineInRoom',
     'CustomOnline': 'CustomOnline',

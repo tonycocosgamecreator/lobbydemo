@@ -49,9 +49,6 @@ export default class CustomOtherBetUser extends ViewBase {
     }
 
     receiveData(icon: number) {
-        if (this._stage != baccarat.DeskStage.StartBetStage) {
-            return;
-        }
         const previousCount = this._currentData.length;
         this._currentData.push(icon);
         if (this._currentData.length > 3) {
@@ -174,13 +171,6 @@ export default class CustomOtherBetUser extends ViewBase {
         cc.tween(headNode)
             .to(this._animationDuration, { scale: scale })
             .start();
-    }
-
-    updateGameStage(stage: baccarat.DeskStage.StartBetStage) {
-        this._stage = stage;
-        if (this._stage == baccarat.DeskStage.EndBetStage) {
-            this.reset();
-        }
     }
 
     //------------------------ 网络消息 ------------------------//

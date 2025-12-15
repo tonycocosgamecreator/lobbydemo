@@ -38,7 +38,7 @@ export default class CustomRank extends ViewBase {
     }
 
     //------------------------ 内部逻辑 ------------------------//
-    _list: sevenupdown.SevenUpDownRankData[] = [];
+    _list: wheel.SevenUpDownRankData[] = [];
     _gid: number = 0;
     buildUi() {
         this.tabGroup.init();
@@ -65,10 +65,10 @@ export default class CustomRank extends ViewBase {
         this.reset();
         if (this._gid == _gid) return;
         this._gid = _gid;
-        MessageSender.SendMessage(sevenupdown.Message.MsgGetRankReq, { rank_type: _gid });
+        MessageSender.SendMessage(wheel.Message.MsgGetRankReq, { rank_type: _gid });
     }
 
-    updateRank(list: sevenupdown.SevenUpDownRankData[]) {
+    updateRank(list: wheel.SevenUpDownRankData[]) {
         const currency = WalletManager.currency;
         this._list = list;
         this.rankList.stopScrollTo();

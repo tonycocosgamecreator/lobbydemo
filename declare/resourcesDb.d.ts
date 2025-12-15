@@ -76,6 +76,7 @@ declare module resourcesDb {
         ['CustomFlyChip']: 'CustomFlyChip',
         ['CustomGameItem']: 'CustomGameItem',
         ['CustomHandle']: 'CustomHandle',
+        ['CustomHistoryItem']: 'CustomHistoryItem',
         ['CustomMainHistory']: 'CustomMainHistory',
         ['CustomOnlineInRoom']: 'CustomOnlineInRoom',
         ['CustomOnline']: 'CustomOnline',

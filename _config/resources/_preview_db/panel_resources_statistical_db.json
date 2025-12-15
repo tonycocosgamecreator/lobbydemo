@@ -90,6 +90,12 @@
         "desc": "",
         "statisticalId": 100001013
     },
+    "CustomHistoryItem": {
+        "viewName": "CustomHistoryItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001028
+    },
     "CustomMainHistory": {
         "viewName": "CustomMainHistory",
         "bundleName": "resources",

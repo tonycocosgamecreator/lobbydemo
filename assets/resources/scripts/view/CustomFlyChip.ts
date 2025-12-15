@@ -25,7 +25,6 @@ export default class CustomFlyChip extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -34,15 +33,42 @@ export default class CustomFlyChip extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    _max = v3(0.6, 0.6, 0.6)
-    _min = v3(0.4, 0.4, 0.4)
-    _middle = v3(0.5, 0.5, 0.5)
+    _max = v3(0.7, 0.7, 0.7)
+    _min = v3(0.5, 0.5, 0.5)
+    _middle = v3(0.6, 0.6, 0.6)
     _baseDuration: number = 0.2; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 500; // 基准距离(像素)
     _count = [];
     _chips: Map<number, betInfo[]> = new Map();
-    buildUi() {
-        this.reset();
+
+    initData() {
+        for (let i = 0; i < 50; i++) {
+            this._count[i] = this.getRandomInRange(5, 8);
+        }
+    }
+
+    updateGameStage(stage: number, reconnect: boolean = false) {
+        switch (stage) {
+            case baccarat.DeskStage.ReadyStage:
+                this.reset();
+                this.initData();
+                break;
+            case baccarat.DeskStage.StartBetStage:
+            case baccarat.DeskStage.EndBetStage:
+            case baccarat.DeskStage.OpenStage:
+                if (reconnect) {
+                    let list = WheelManager.getBetInfoByPlay();
+                    for (let i = 0; i < list.length; i++) {
+                        let item = list[i];
+                        item.forEach(d => {
+                            this.setReconnectChipData(d)
+                        })
+                    }
+                }
+                break
+            case baccarat.DeskStage.SettleStage:
+                break;
+        }
     }
 
     reset() {
@@ -52,12 +78,9 @@ export default class CustomFlyChip extends ViewBase {
             i--;
         }
         this._chips.clear();
-        for (let i = 0; i < 50; i++) {
-            this._count[i] = this.getRandomInRange(5, 8);
-        }
     }
 
-    getRandomInRange(min, max) {
+    getRandomInRange(min: number, max: number) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
@@ -116,7 +139,7 @@ export default class CustomFlyChip extends ViewBase {
             targetWorldPos = WheelManager.View.getDeskWorldPosByAid(data.bet_id);
         }
         const chip = PoolManager.Get(CustomChipItem);
-        chip.node.scale = order == -1 ? v3(0, 0, 0) : this._middle;
+        chip.node.scale = order == -1 ? v3(0, 0, 0) : v3(0.9, 0.9, 0.9);
         let startWorldPos = null
         startWorldPos = order == -1 ? WheelManager.View.getWorldPosByUid(data.player_id) : WheelManager.View.getChipWorldPos();
         let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
@@ -130,13 +153,11 @@ export default class CustomFlyChip extends ViewBase {
         });
     }
 
-    flyToTarget(flyObject: cc.Node, endPos: cc.Vec3, needScaleAnimation: boolean, callback: () => void = null) {
+    flyToTarget(flyObject: cc.Node, endPos: cc.Vec3, needScaleAnimation: boolean, callback: () => void = null, dur: number = 0) {
         let startPos = flyObject.position;
         let distance = Vec3.distance(startPos, endPos);
-        let flyDuration = this._calculateDurationByDistance(distance);
+        let flyDuration = dur ? dur : this._calculateDurationByDistance(distance);
         const opacity = flyObject.getComponent(UIOpacity);
-        Tween.stopAllByTarget(flyObject);
-        Tween.stopAllByTarget(opacity);
         // 创建基础动画
         let flyTween = tween(flyObject);
         // 可选：预备阶段
@@ -160,7 +181,7 @@ export default class CustomFlyChip extends ViewBase {
     }
 
     // 辅助方法：添加预备动画
-    _addPrepareAnimation(tweenChain) {
+    _addPrepareAnimation(tweenChain: cc.Tween<cc.Node>) {
         tweenChain
             .to(0.2, { scale: this._max })
             .to(0.15, { scale: this._min })
@@ -179,7 +200,6 @@ export default class CustomFlyChip extends ViewBase {
 
     // 辅助方法：飞行结束处理
     _onFlyEnd(flyObject: cc.Node, callback: () => void = null) {
-        // Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
         callback && callback()
         tween(flyObject)
             .to(0.15, {
@@ -188,8 +208,78 @@ export default class CustomFlyChip extends ViewBase {
             .start();
     }
 
+    flyToEnd(flyObject: cc.Node, endPos: cc.Vec3) {
+        let opacity = flyObject.getComponent(UIOpacity);
+        opacity.opacity = 255;
+        flyObject.scale = this._max;
+        tween(flyObject)
+            .to(0.5, { scale: this._min, position: endPos }, { easing: 'quadOut', })
+            .call(() => {
+                if (flyObject.getComponent(CustomChipItem)) {
+                    this.clearChip(flyObject);
+                }
+            })
+            .start();
+    }
+
     _calculateDurationByDistance(distance: number): number {
         return (distance / this._baseDistance) * this._baseDuration;
+    }
+
+    recycleChip() {
+        let winArea = WheelManager.WinArea;
+        let losePosWord = WheelManager.View.getLoseWorldPos();
+        let losePos = this.node.transform.convertToNodeSpaceAR(losePosWord);
+        this.node.children.forEach((child, idx) => {
+            let _d = child.getComponent(CustomChipItem).ChipInfo;
+            if (!_d || winArea.indexOf(_d.bet_id) == -1) {
+                this.flyToEnd(child, losePos);
+            }
+        });
+        if (winArea.length == 0) return;
+        this.scheduleOnce(() => {
+            for (let i = 0; i < winArea.length; i++) {
+                const data = WheelManager.getBetInfoByArea(winArea[i]);
+                const targetWorldPos = WheelManager.View.getDeskWorldPosByAid(winArea[i]);
+                const endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
+                data.forEach(betinfo => {
+                    this.setWinChipData(betinfo, losePos, endPos);
+                })
+            }
+        }, 0.5);
+        this.scheduleOnce(() => {
+            this.node.children.forEach((child, idx) => {
+                let startWorldPos = null;
+                const data = child.getComponent(CustomChipItem).ChipInfo;
+                if (data.player_id == WheelManager.PlayerId) {
+                    startWorldPos = WheelManager.View.getMyHeadWorldPos();
+                } else {
+                    startWorldPos = WheelManager.View.getWorldPosByUid(data.player_id)
+                }
+                let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
+                this.flyToEnd(child, startLocalPos);
+            })
+        }, 1)
+    }
+
+    setWinChipData(data: betInfo, startPos: Vec3, endPos: Vec3) {
+        const chip = PoolManager.Get(CustomChipItem);
+        chip.node.scale = this._middle;
+        chip.node.setPosition(startPos);
+        chip.setBetData(data);
+        this.node.addChild(chip.node);
+        this.flyToTarget(chip.node, endPos, false, null, 0.5);
+    }
+
+    setReconnectChipData(data: betInfo) {
+        let targetWorldPos = WheelManager.View.getDeskWorldPosByAid(data.bet_id);
+        let endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
+        const chip = PoolManager.Get(CustomChipItem);
+        chip.node.scale = this._middle;
+        chip.node.setPosition(endPos);
+        chip.setBetData(data);
+        this.node.addChild(chip.node);
+        this.checkBetChipCount(data);
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

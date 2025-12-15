@@ -89,7 +89,7 @@ export default class WheelManager extends BaseManager {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
                                 player_id: play.player_id,
-                                icon: +play.icon,
+                                icon: play.icon,
                                 win: +play.win_coin || 0
                             }
                             this.addPlayerData(_d);
@@ -144,7 +144,8 @@ export default class WheelManager extends BaseManager {
                         win: 0
                     }
                     this.addPlayerData(_d);
-                    this.addTopPlayerScore(this._playerId, +bet.bet_coin)
+                    this._betOrderIcon.push(this._icon);
+                    this.addTopPlayerScore(this._playerId, -bet.bet_coin)
                     this._order++;
                     this._view?.updateflyChip(_d, this._order);
                 }
@@ -164,11 +165,12 @@ export default class WheelManager extends BaseManager {
                                 bet_coin: bet.bet_coin,
                                 bet_id: bet.bet_id,
                                 player_id: play.player_id,
-                                icon: +play.icon,
+                                icon: play.icon,
                                 win: 0
                             }
-                            this.addTopPlayerScore(play.player_id, +bet.bet_coin)
                             this.addPlayerData(_d);
+                            this._betOrderIcon.push(play.icon);
+                            this.addTopPlayerScore(play.player_id, -bet.bet_coin)
                             this._view?.updateflyChip(_d, -1);
                         }
                     }
@@ -197,7 +199,7 @@ export default class WheelManager extends BaseManager {
                         icon: this.Icon,
                         win: 0,
                     }
-                    this.addTopPlayerScore(this._playerId, -bet.bet_coin)
+                    this.addTopPlayerScore(this._playerId, +bet.bet_coin)
                     this.subPlayerData(_d)
                     this._view?.updateDeletChip(_d, true);
                 }
@@ -220,12 +222,47 @@ export default class WheelManager extends BaseManager {
                                 icon: play.icon,
                                 win: 0
                             }
-                            this.addTopPlayerScore(play.player_id, -bet.bet_coin)
+                            this.addTopPlayerScore(play.player_id, +bet.bet_coin)
                             this.subPlayerData(_d)
                             this._view?.updateDeletChip(_d, false);
                         }
                     }
                 }
+                return true
+            }
+            case wheel.Message.MsgAllBetBaccaratNtf: {
+                const msg = data as wheel.MsgAllBetBaccaratNtf;
+                this.clearPlayerData();
+                const plays = msg.players || [];
+                if (plays && plays.length) {
+                    for (let i = 0; i < plays.length; i++) {
+                        const play = plays[i];
+                        for (let j = 0; j < play.bets.length; j++) {
+                            const bet = play.bets[j];
+                            const _d = {
+                                bet_coin: bet.bet_coin,
+                                bet_id: bet.bet_id,
+                                player_id: play.player_id,
+                                icon: play.icon,
+                                win: +(play.win_coin)
+                            }
+                            this.addPlayerData(_d);
+                            this.addTopPlayerScore(play.player_id, +play.win_coin);
+                        }
+                    }
+                }
+                return true
+            }
+            case wheel.Message.MsgSevenUpDownSettleNtf: {
+                const msg = data as wheel.MsgSevenUpDownSettleNtf;
+                if (msg.desk_id != this._deskId) return false;
+                const new_coin = msg.win_data?.new_coin || '0';
+                WalletManager.updatePlayerCoin(parseFloat(new_coin), false);
+                this._records.push({ win_type: [msg.win_type] });
+                this._winType = msg.win_type;
+                this.setWinAreaByType(this._winType);
+                CommonManager.LastbetInfo = this.getBetInfoByPlayId();
+                this.View?.updateGameStage();
                 return true
             }
             case baccarat.Message.MsgBaccaratKickOutNtf: {
@@ -302,6 +339,14 @@ export default class WheelManager extends BaseManager {
      * 自己下注位置记录
      */
     private static _tagetWorldPos: Vec3[] = [];
+    /**
+     * 玩家赢奖数字
+     */
+    private static _winType: number = 0;
+    /**
+     * 玩家赢奖区域数据
+     */
+    public static _winArea: number[] = []
 
     // private static 
     /**----------------绑定界面-------------------*/
@@ -326,15 +371,18 @@ export default class WheelManager extends BaseManager {
     public static get Icon(): number { return this._icon; }
     public static get Records(): wheel.SUDSevenUpDownWinType[] { return this._records; }
     public static get BetOrderIcon(): number[] { return this._betOrderIcon; }
+    public static get WinType(): number { return this._winType; }
+    public static get WinArea(): number[] { return this._winArea; }
     /**
      * 重置所有数据
      */
     public static reset() {
-        this._allPlayerBetInfo.clear();
-        this._allAreaBetInfo.clear();
+        this.clearPlayerData();
         this._betOrderIcon = [];
         this._order = -1;
         this._tagetWorldPos = [];
+        this._winArea = [];
+        this._winType = -1;
         // CommonManager.Agail = false;
     }
 
@@ -451,6 +499,10 @@ export default class WheelManager extends BaseManager {
         }
     }
 
+    public static clearPlayerData() {
+        this._allPlayerBetInfo.clear();
+        this._allAreaBetInfo.clear();
+    }
     /**
      * 查找对应id玩家下注的所有数据
      * @param playerId 玩家id,默认为自己的id
@@ -514,6 +566,42 @@ export default class WheelManager extends BaseManager {
         return _wordPos || null;
     }
 
+    public static setWinAreaByType(WinType: number) {
+        //单一数字
+        this._winArea.push(WinType + 1)//区域从1开始
+        //数字区间
+        if (WinType <= 36 && WinType >= 25) {
+            this._winArea.push(38);
+        } else if (WinType <= 24 && WinType >= 13) {
+            this._winArea.push(39);
+        } else if (WinType <= 12 && WinType >= 1) {
+            this._winArea.push(40);
+        }
+        //大或者小
+        if (WinType <= 18 && WinType >= 1) {
+            this._winArea.push(46);
+        } else if (WinType <= 36 && WinType >= 19) {
+            this._winArea.push(41);
+        }
+        //奇偶数
+        if (WinType > 0) {
+            WinType % 2 == 1 ? this._winArea.push(42) : this._winArea.push(45)
+        }
+        //2TO1
+        if (WinType > 0) {
+            let v = WinType % 3
+            v == 1 ? this._winArea.push(49) : v == 2 ? this._winArea.push(48) : this._winArea.push(47)
+        }
+        //颜色
+        let b = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35];
+        let r = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+        if (b.indexOf(WinType) != -1) {
+            this._winArea.push(43)
+        } else if (r.indexOf(WinType) != -1) {
+            this._winArea.push(44)
+        }
+
+    }
 
 }
 
