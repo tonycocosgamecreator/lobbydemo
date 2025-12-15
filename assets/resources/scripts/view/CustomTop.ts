@@ -30,13 +30,13 @@ export default class CustomTop extends ViewBase {
 
     protected start(): void {
         const deviceSize = view.getVisibleSize();
-        this.ndClick.getComponent(UITransform).width = deviceSize.width*2;
-        this.ndClick.getComponent(UITransform).height = deviceSize.height*2;
+        this.ndClick.getComponent(UITransform).width = deviceSize.width * 2;
+        this.ndClick.getComponent(UITransform).height = deviceSize.height * 2;
         let targetNode = this.node.parent.parent.parent.parent;
         let world = targetNode.parent.getComponent(UITransform).convertToWorldSpaceAR(targetNode.position);
         let local = this.node.getComponent(UITransform).convertToNodeSpaceAR(world);
         this.ndClick.setPosition(local);
-        this.ndClick.active = false
+        this.ndClick.active = false;
     }
     //------------------------ 内部逻辑 ------------------------//
     _showAnimation: boolean = false;
@@ -59,13 +59,27 @@ export default class CustomTop extends ViewBase {
     //------------------------ 事件定义 ------------------------//
     // @view export event begin
     private onClickButton_menu(event: cc.EventTouch) {
-        this.ndClick.active = true;
-        this.menu.show(true, 0.35);
+        if (this._showAnimation) return;
+        this._showAnimation = true;
+        if (this.ndClick.active) {
+            this.menu.show(false, 0.35, () => {
+                this.ndClick.active = false;
+                this._showAnimation = false;
+            });
+        } else {
+            this.ndClick.active = true;
+            this.menu.show(true, 0.35, () => {
+                this._showAnimation = false;
+            });
+        }
     }
 
     private onClickButtonClose(event: cc.EventTouch) {
+        if (this._showAnimation) return;
+        this._showAnimation = true;
         this.menu.show(false, 0.35, () => {
-            this.ndClick.active = false
+            this.ndClick.active = false;
+            this._showAnimation = false;
         });
     }
 
