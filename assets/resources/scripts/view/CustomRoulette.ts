@@ -3,12 +3,14 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-//------------------------特殊引用开始----------------------------//
-import CustomRouletteWheel from 'db://assets/resources/scripts/view/CustomRouletteWheel';
-import { v3 } from 'cc';
 import { Vec3 } from 'cc';
 import { math } from 'cc';
 import AudioManager from '../core/manager/audio-manager';
+import { tween } from 'cc';
+import { UIOpacity } from 'cc';
+//------------------------特殊引用开始----------------------------//
+import CustomRouletteWheel from 'db://assets/resources/scripts/view/CustomRouletteWheel';
+import { v3 } from 'cc';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -21,9 +23,8 @@ export default class CustomRoulette extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
         this.resetGame();
-        this.updatePosition();
-        this.calculateOrbitRadius();
     }
 
     protected onDestroy(): void {
@@ -31,8 +32,9 @@ export default class CustomRoulette extends ViewBase {
     }
 
     update(deltaTime: number): void {
+        const degrees = math.toDegree(this.wheel.currentAngle);
+        this.pointer.setRotationFromEuler(0, 0, -degrees);
         if (!this.ball.active) return;
-
         switch (this.ballState) {
             case 'fast':
                 // 注意：轮盘是顺时针转（角度增加），小球通常是逆时针转（角度减少）
@@ -62,6 +64,59 @@ export default class CustomRoulette extends ViewBase {
     innerRingRadius: number = 180;  // 内圈半径
     targetOnWheel: number = 0;
     targetNumber: number = 0;
+    private _enterPos: Vec3 = new Vec3();
+    private _hiddenPos: Vec3 = new Vec3();
+    private _uiOpacity: UIOpacity = null;
+    buildUi() {
+        // 记录“正常位置”
+        this._enterPos = v3(0, 180, 0);
+        // 上方隐藏位置（你也可以把 500 调大/调小）
+        this._hiddenPos = this._enterPos.clone();
+        this._hiddenPos.y += 500;
+        // 透明度组件（没有就加一个）
+        this._uiOpacity = this.pointer.getComponent(UIOpacity) || this.pointer.addComponent(UIOpacity);
+        // 默认先隐藏在上方（如果你希望场景初始可见，就别做这两行）
+        this.pointer.setPosition(this._hiddenPos);
+        this._uiOpacity.opacity = 0;
+    }
+    public playEnter(duration: number = 0.5): Promise<void> {
+        return new Promise((resolve) => {
+            this.pointer.active = true;
+
+            // 从上方落下 + 渐显 + 轻微回弹
+            tween(this.pointer)
+                .stop()
+                .set({ position: this._hiddenPos, scale: new Vec3(0.96, 0.96, 1) })
+                .to(duration, { position: this._enterPos }, { easing: 'backOut' })
+                .start();
+
+            tween(this._uiOpacity)
+                .stop()
+                .set({ opacity: 0 })
+                .to(duration * 0.9, { opacity: 255 }, { easing: 'quadOut' })
+                .call(resolve)
+                .start();
+        });
+    }
+
+    public playExit(duration: number = 0.45): Promise<void> {
+        return new Promise((resolve) => {
+            // 上收 + 渐隐
+            tween(this.pointer)
+                .stop()
+                .to(duration, { position: this._hiddenPos }, { easing: 'quadIn' })
+                .call(() => {
+                    this.pointer.active = false;
+                    resolve();
+                })
+                .start();
+
+            tween(this._uiOpacity)
+                .stop()
+                .to(duration * 0.9, { opacity: 0 }, { easing: 'quadIn' })
+                .start();
+        });
+    }
     // 获取数字在轮盘上的正确显示角度
     private getNumberDisplayOnWheel(targetNumber: number): number {
         const euroNumbers = [
@@ -86,6 +141,8 @@ export default class CustomRoulette extends ViewBase {
         this.isGameRunning = true;
         try {
             // 阶段1：轮盘启动 (1.0秒)
+            this.playEnter(0.55);
+            await this.wheel.playEnter(0.55);
             await this.phase1_WheelStart();
 
             // 阶段2：小球快速旋转 (2.0秒)
@@ -142,11 +199,17 @@ export default class CustomRoulette extends ViewBase {
 
     private async phase4_SlowDownTogether(): Promise<void> {
         console.log('阶段4：相对静止一起减速');
-        this.node.emit('phase-changed', 4);
         // 小球锁定到轮盘
         this.lockToWheel();
         // 一起减速
         await this.wheel.slowDownAndStop(2);
+        // 先淡出结果 UI（如果你想保留更久就把 duration 调大或 delay 一下）
+        await this.delay(600)
+        this.fadeOutNode(this.result, 0.5);
+        // ball 淡出（带轻微缩小）
+        await this.fadeOutBall(0.28);
+        this.playExit(0.45);
+        await this.wheel.playExit(0.45);
         this.isGameRunning = false;
     }
     private delay(ms: number): Promise<void> {
@@ -169,7 +232,7 @@ export default class CustomRoulette extends ViewBase {
                 // this.orbitRadius = this.innerRingRadius;
                 break;
             default:
-                this.orbitRadius = 200; // 默认值
+            // this.orbitRadius = 200; // 默认值
         }
     }
     private updatePosition(): void {
@@ -202,6 +265,10 @@ export default class CustomRoulette extends ViewBase {
             // 设置初始位置
             this.updatePosition();
             this.ballState = 'fast';
+            this.ball.active = true;
+            const op = this.ball.getComponent(cc.UIOpacity);
+            if (op) op.opacity = 255;
+            this.ball.setScale(new Vec3(1, 1, 1));
             console.log(`小球出现完成，初始角度: ${math.toDegree(this.ballAngle).toFixed(1)}°`);
             resolve();
         });
@@ -242,7 +309,6 @@ export default class CustomRoulette extends ViewBase {
         });
     }
 
-
     private async targetDecelerationPosition(): Promise<void> {
         return new Promise((resolve) => {
             this.ballState = 'slow';
@@ -272,32 +338,55 @@ export default class CustomRoulette extends ViewBase {
             this.schedule(slowDownUpdate, 0.016);
         });
     }
-
-
-
+    private hasBoostFx: boolean = false;
     private async slowDownAndStop(): Promise<void> {
         return new Promise((resolve) => {
-            const slowDown2Update = () => {
-                const wheelSpeed = this.wheel.rotationSpeed;
-                const minSpeed = Math.abs(wheelSpeed) * 0.8;
+            const dt = 0.016;
 
-                if (this.ballSpeed > minSpeed) {
-                    this.ballSpeed -= 0.2;
+            // 触发强化的半径
+            const triggerRadius = 220;
+            const triggerWindow = 6;
+
+            // 以“开始进入 slowDownAndStop 时的球速”为起点做进度
+            const startBallSpeed = Math.abs(this.ballSpeed);
+
+            const slowDown2Update = () => {
+                const wheelSpeedAbs = Math.abs(this.wheel.rotationSpeed);
+                const minSpeed = wheelSpeedAbs * 0.8;
+
+                // 1) 更新球速（用 abs 逻辑，不要让符号干扰）
+                let curSpeed = Math.abs(this.ballSpeed);
+
+                if (curSpeed > minSpeed) {
+                    curSpeed = Math.max(curSpeed - 0.1, minSpeed);
                 } else {
-                    this.ballSpeed = minSpeed;
+                    curSpeed = minSpeed;
+                }
+                this.ballSpeed = curSpeed;
+
+                // 2) 根据“减速进度”更新轨道半径（outer -> inner）
+                // t=0：刚进入 slowDownAndStop（外圈）
+                // t=1：降到 minSpeed（内圈）
+                const denom = Math.max(startBallSpeed - minSpeed, 0.0001);
+                const t = Math.max(0, Math.min(1, (startBallSpeed - curSpeed) / denom));
+                this.orbitRadius = this.outerRingRadius - t * (this.outerRingRadius - this.innerRingRadius);
+
+                // 3) 触发视觉强化：确保一定能扫到 220
+                if (!this.hasBoostFx && Math.abs(this.orbitRadius - triggerRadius) <= triggerWindow) {
+                    this.hasBoostFx = true;
+                    this.playBallBoostFx();
                 }
 
-                this.ballAngle += this.ballSpeed * 0.016;
+                // 4) 位置更新
+                this.ballAngle += this.ballSpeed * dt;
                 this.updatePosition();
-                // 计算相对角度和角度差
+
+                // 5) 角度差判断（保留你原逻辑）
                 const wheelDisplayAngle = -this.wheel.currentAngle;
                 let ballRelativeToWheel = this.ballAngle - wheelDisplayAngle;
                 ballRelativeToWheel = ((ballRelativeToWheel % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+
                 let angleDiff = this.targetOnWheel - ballRelativeToWheel;
-                // 根据减速进度调整轨道半径
-                const progress = Math.min(this.ballSpeed / wheelSpeed, 1);
-                this.orbitRadius = this.outerRingRadius - progress * (this.outerRingRadius - this.innerRingRadius);
-                // 调整到 [0, 2π) 范围
                 if (angleDiff < 0) angleDiff += 2 * Math.PI;
 
                 if (angleDiff <= 0.1) {
@@ -305,8 +394,19 @@ export default class CustomRoulette extends ViewBase {
                     resolve();
                 }
             };
-            this.schedule(slowDown2Update, 0.016);
+
+            this.schedule(slowDown2Update, dt);
         });
+    }
+
+    private playBallBoostFx(): void {
+        // 你 ball 节点不一定是 Sprite，这里用 scale 做最通用的强化
+        tween(this.ball)
+            .stop()
+            .to(0.08, { scale: new Vec3(1.18, 1.18, 1) }, { easing: 'quadOut' })
+            .to(0.10, { scale: new Vec3(0.98, 0.98, 1) }, { easing: 'quadIn' })
+            .to(0.08, { scale: new Vec3(1.00, 1.00, 1) }, { easing: 'backOut' })
+            .start();
     }
 
     // 锁定到轮盘相对位置
@@ -315,9 +415,59 @@ export default class CustomRoulette extends ViewBase {
         this.isRelativeLocked = true;
         this.ballSpeed = this.wheel.rotationSpeed;
     }
+    private fadeOutNode(node: cc.Node, duration: number = 0.25): Promise<void> {
+        return new Promise((resolve) => {
+            if (!node || !node.isValid || !node.active) {
+                resolve();
+                return;
+            }
+
+            const opacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity);
+
+            tween(opacity)
+                .stop()
+                .to(duration, { opacity: 0 }, { easing: 'quadIn' })
+                .call(() => {
+                    node.active = false;
+                    // 还原透明度，避免下次显示还是 0
+                    opacity.opacity = 255;
+                    resolve();
+                })
+                .start();
+        });
+    }
+
+    // ball 专用：顺便做一点缩小，更自然
+    private fadeOutBall(duration: number = 0.28): Promise<void> {
+        return new Promise((resolve) => {
+            if (!this.ball || !this.ball.isValid || !this.ball.active) {
+                resolve();
+                return;
+            }
+            const opacity = this.ball.getComponent(UIOpacity) || this.ball.addComponent(UIOpacity);
+
+            tween(this.ball)
+                .stop()
+                .to(duration, { scale: new Vec3(0.9, 0.9, 1) }, { easing: 'quadIn' })
+                .start();
+
+            tween(opacity)
+                .stop()
+                .to(duration, { opacity: 0 }, { easing: 'quadIn' })
+                .call(() => {
+                    this.ball.active = false;
+                    // 还原
+                    opacity.opacity = 255;
+                    this.ball.setScale(new Vec3(1, 1, 1));
+                    resolve();
+                })
+                .start();
+        });
+    }
 
     resetGame(): void {
         this.wheel.reset();
+        this.hasBoostFx = false;
         this.isGameRunning = false;
         this.ball.active = false;
         this.ballState = 'idle';
@@ -326,6 +476,9 @@ export default class CustomRoulette extends ViewBase {
         this.orbitRadius = this.outerRingRadius;
         this.isRelativeLocked = false;
         this.result.active = false;
+        this.result.getComponent(UIOpacity).opacity = 255;
+        this.pointer.setPosition(this._hiddenPos);
+        this._uiOpacity.opacity = 0;
         this.unscheduleAllCallbacks();
     }
     //4 红色 5黑色 6绿色
@@ -363,6 +516,7 @@ export default class CustomRoulette extends ViewBase {
         return {
             cc_ball: [cc.Node],
             cc_labelResult: [cc.Label],
+            cc_pointer: [cc.Node],
             cc_result: [cc.Node],
             cc_sprbg: [cc.Sprite],
             cc_wheel: [CustomRouletteWheel],
@@ -371,6 +525,7 @@ export default class CustomRoulette extends ViewBase {
     //------------------------ 所有可用变量 ------------------------//
     protected ball: cc.Node = null;
     protected labelResult: cc.Label = null;
+    protected pointer: cc.Node = null;
     protected result: cc.Node = null;
     protected sprbg: cc.Sprite = null;
     protected wheel: CustomRouletteWheel = null;

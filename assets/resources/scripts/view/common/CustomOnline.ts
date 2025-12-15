@@ -17,6 +17,7 @@ export default class CustomOnline extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {

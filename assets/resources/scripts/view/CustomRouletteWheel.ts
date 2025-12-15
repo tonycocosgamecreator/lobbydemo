@@ -5,6 +5,9 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { tween } from 'cc';
 import { math } from 'cc';
+import { Vec3 } from 'cc';
+import { UIOpacity } from 'cc';
+import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -16,6 +19,7 @@ export default class CustomRouletteWheel extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -36,7 +40,9 @@ export default class CustomRouletteWheel extends ViewBase {
     accelerationTime: number = 0.5; // 加速时间（秒）
     decelerationTime: number = 2.0; // 减速时间（秒），减少这个值可以更快停止
     minSpeedThreshold: number = 0.1; // 最小速度阈值（弧度/秒），低于这个值就停止
-
+    private _enterPos: Vec3 = new Vec3();
+    private _hiddenPos: Vec3 = new Vec3();
+    private _uiOpacity: UIOpacity = null;
     // 角度相关方法
     get currentAngle(): number {
         return this._currentAngle;
@@ -53,6 +59,58 @@ export default class CustomRouletteWheel extends ViewBase {
 
     set rotationSpeed(value: number) {
         this._rotationSpeed = value;
+    }
+    
+    buildUi() {
+        // 记录“正常位置”
+        this._enterPos = v3(0, 180, 0);
+        // 上方隐藏位置（你也可以把 500 调大/调小）
+        this._hiddenPos = this._enterPos.clone();
+        this._hiddenPos.y += 500;
+        // 透明度组件（没有就加一个）
+        this._uiOpacity = this.node.getComponent(UIOpacity) || this.node.addComponent(UIOpacity);
+        // 默认先隐藏在上方（如果你希望场景初始可见，就别做这两行）
+        this.node.setPosition(this._hiddenPos);
+        this._uiOpacity.opacity = 0;
+    }
+
+    public playEnter(duration: number = 0.5): Promise<void> {
+        return new Promise((resolve) => {
+            this.node.active = true;
+
+            // 从上方落下 + 渐显 + 轻微回弹
+            tween(this.node)
+                .stop()
+                .set({ position: this._hiddenPos, scale: new Vec3(0.96, 0.96, 1) })
+                .to(duration, { position: this._enterPos }, { easing: 'backOut' })
+                .start();
+
+            tween(this._uiOpacity)
+                .stop()
+                .set({ opacity: 0 })
+                .to(duration * 0.9, { opacity: 255 }, { easing: 'quadOut' })
+                .call(resolve)
+                .start();
+        });
+    }
+
+    public playExit(duration: number = 0.45): Promise<void> {
+        return new Promise((resolve) => {
+            // 上收 + 渐隐
+            tween(this.node)
+                .stop()
+                .to(duration, { position: this._hiddenPos }, { easing: 'quadIn' })
+                .call(() => {
+                    this.node.active = false;
+                    resolve();
+                })
+                .start();
+
+            tween(this._uiOpacity)
+                .stop()
+                .to(duration * 0.9, { opacity: 0 }, { easing: 'quadIn' })
+                .start();
+        });
     }
 
     // 更新轮盘旋转
@@ -144,6 +202,8 @@ export default class CustomRouletteWheel extends ViewBase {
         this.isSpinning = false;
         this._currentAngle = 0;
         this._rotationSpeed = 0;
+        this.node.setPosition(this._hiddenPos);
+        this._uiOpacity.opacity = 0;
         this.updateRotation();
         this.unscheduleAllCallbacks();
     }
@@ -153,7 +213,7 @@ export default class CustomRouletteWheel extends ViewBase {
         if (this.isSpinning && this._rotationSpeed > 0) {
             // 更新角度：速度 * 时间
             this._currentAngle += this._rotationSpeed * deltaTime;
-            if (this._currentAngle > 360) this._currentAngle -= 360;
+            this._currentAngle = ((this._currentAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
             this.updateRotation();
         }
     }

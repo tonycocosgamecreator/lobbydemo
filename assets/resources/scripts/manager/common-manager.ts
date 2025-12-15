@@ -75,8 +75,8 @@ export default class CommonManager extends BaseManager {
     private static _lastbetInfo: betInfo[] = [];
 
     public static async doGetlineNum() {
-        // const rsp = await HttpLobbyHelper.GetOnlineNum();
-        // this.Online = rsp;
+        const rsp = await HttpLobbyHelper.GetOnlineNum();
+        this.Online = rsp;
     }
 
     public static set Online(value: number) {

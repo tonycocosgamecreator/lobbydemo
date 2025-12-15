@@ -90,7 +90,7 @@ export default class WheelManager extends BaseManager {
                                 bet_id: bet.bet_id,
                                 player_id: play.player_id,
                                 icon: play.icon,
-                                win: +play.win_coin || 0
+                                win: j == 0 ? +play.win_coin : 0,
                             }
                             this.addPlayerData(_d);
                             this._betOrderIcon.push(+play.icon);
@@ -99,7 +99,7 @@ export default class WheelManager extends BaseManager {
                 }
 
                 if (msg.info.stage == baccarat.DeskStage.SettleStage) {
-                    this._winType = this._records[this._records.length - 1].win_type[0]||0;
+                    this._winType = this._records[this._records.length - 1].win_type[0] || 0;
                     this.setWinAreaByType(this._winType);
                 }
                 this._stage = msg.info.stage;
@@ -249,7 +249,7 @@ export default class WheelManager extends BaseManager {
                                 bet_id: bet.bet_id,
                                 player_id: play.player_id,
                                 icon: play.icon,
-                                win: +(play.win_coin)
+                                win: j == 0 ? +(play.win_coin) : 0
                             }
                             this.addPlayerData(_d);
                             this.addTopPlayerScore(play.player_id, +play.win_coin);
