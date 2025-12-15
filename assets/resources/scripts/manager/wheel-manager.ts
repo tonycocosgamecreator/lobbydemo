@@ -600,7 +600,7 @@ export default class WheelManager extends BaseManager {
         } else if (r.indexOf(WinType) != -1) {
             this._winArea.push(44)
         }
-
+        console.log(` this._winArea---------------${this._winArea}`)
     }
 
 }

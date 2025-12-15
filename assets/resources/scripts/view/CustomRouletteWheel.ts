@@ -27,9 +27,9 @@ export default class CustomRouletteWheel extends ViewBase {
     sectors: number = 37;
     startSpeed: number = 200; // 调整为合适的速度
     spinDuration: number = 5;
-    private _currentAngle: number = 0; // 当前角度（弧度）
-    private _rotationSpeed: number = 0; // 旋转速度（弧度/秒）
-    private isSpinning: boolean = false;
+    _currentAngle: number = 0; // 当前角度（弧度）
+    _rotationSpeed: number = 0; // 旋转速度（弧度/秒）
+    isSpinning: boolean = false;
 
     // 速度参数
     maxSpinSpeed: number = 30; // 最大旋转速度（弧度/秒），增加这个值可以让转盘转得更快
@@ -65,7 +65,6 @@ export default class CustomRouletteWheel extends ViewBase {
         }
         // 将弧度转换为度（用于显示）
         const degrees = math.toDegree(this._currentAngle);
-        // 在Cocos Creator 3.x中，应该使用节点的欧拉角
         this.node.setRotationFromEuler(0, 0, -degrees);
     }
 
@@ -76,15 +75,11 @@ export default class CustomRouletteWheel extends ViewBase {
                 resolve();
                 return;
             }
-
             this.isSpinning = true;
             const speedWrapper = { value: 0 };
-
             // 转换为弧度/秒：2π * 圈数/秒
             const targetSpeed = (2 * Math.PI) * targetRPS;
-
             console.log(`启动旋转: ${targetRPS}圈/秒, ${targetSpeed.toFixed(2)}弧度/秒`);
-
             tween(speedWrapper)
                 .to(1.2, { value: targetSpeed }, {
                     easing: 'quartIn',
@@ -101,20 +96,16 @@ export default class CustomRouletteWheel extends ViewBase {
     }
 
     // 减速停止 - 使用更激进的减速曲线
-    slowDownAndStop(duration: number = 3.5): Promise<void> {
+    slowDownAndStop(duration: number = 2): Promise<void> {
         return new Promise((resolve) => {
             if (!this.isSpinning) {
                 resolve();
                 return;
             }
-
             console.log(`开始减速: 当前速度 ${(this._rotationSpeed / (2 * Math.PI)).toFixed(2)}圈/秒`);
-
             let elapsedTime = 0;
-
             const slowDownUpdate = () => {
                 if (!this.isSpinning) return;
-
                 elapsedTime += 0.016;
                 const progress = Math.min(elapsedTime / duration, 1);
 
@@ -136,7 +127,6 @@ export default class CustomRouletteWheel extends ViewBase {
                     const currentRPS = this._rotationSpeed / (2 * Math.PI);
                     console.log(`减速中: ${currentRPS.toFixed(3)}圈/秒, 进度 ${(progress * 100).toFixed(1)}%`);
                 }
-
                 if (this._rotationSpeed < 0.02 || progress >= 1) { // 调整停止阈值
                     this._rotationSpeed = 0;
                     this.isSpinning = false;
@@ -147,10 +137,6 @@ export default class CustomRouletteWheel extends ViewBase {
             };
             this.schedule(slowDownUpdate, 0.016);
         });
-    }
-
-    stop() {
-        this.isSpinning = false;
     }
 
     // 重置

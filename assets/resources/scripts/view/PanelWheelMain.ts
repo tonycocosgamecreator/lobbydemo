@@ -85,7 +85,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
         this.flychip.updateGameStage(this._stage, true)
     }
 
-    updateGameStage() {
+    async updateGameStage() {
         this._stage = WheelManager.Stage;
         this.handle.updateGameStage(this._stage);
         this.buttom.updateGameStage(this._stage);
@@ -119,18 +119,34 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
                 break;
             case baccarat.DeskStage.SettleStage:
                 this.skeXiazhu.node.active = false;
-                // this.roulette.node.active = true;
-
-
-                this.desk.showResult();
+                this.roulette.node.active = true;
+                const win = WheelManager.WinType;
+                await this.roulette.startGame(win);
+                this.scheduleOnce(() => {
+                    this.roulette.node.active = false;
+                    this.desk.showResult();
+                    const data = WheelManager.getBetInfoByPlayId();
+                    if (!data || data.length == 0) return;
+                    let count = 0;
+                    data.forEach(v => {
+                        if (v.win > 0) {
+                            count = count.add(v.win);
+                        }
+                    })
+                    if (count > 0) {
+                        if (this._isGameInBackground == false) {
+                            AudioManager.playSound(this.bundleName, '当前玩家赢分播放音效');
+                        }
+                    }
+                }, 1)
                 this.scheduleOnce(() => {
                     this.flychip.recycleChip()
-                }, 1);
+                }, 2);
                 this.scheduleOnce(() => {
                     this.user.updateResult();
                     this.alluser.updateResult();
                     Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
-                }, 2.5)
+                }, 3.5)
                 break;
         }
     }
@@ -177,7 +193,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     reset() {
         this.skeStart.node.active = false;
         this.skeXiazhu.node.active = false;
-        // this.roulette.node.active = false;
+        this.roulette.node.active = false;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin

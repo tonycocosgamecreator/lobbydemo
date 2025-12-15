@@ -13,6 +13,7 @@ import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
 import WheelManager from '../../manager/wheel-manager';
 import CommonManager from '../../manager/common-manager';
+import AudioManager from '../../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -92,7 +93,9 @@ export default class CustomUser extends ViewBase {
                     scale: v3(1, 1, 1)
                 }, { easing: 'backOut' }),
                 tween().to(0.15, { opacity: 255 }, { easing: 'cubicOut' })
-            )
+            ).call(() => {
+                AudioManager.playSound(this.bundleName, '胜利收取金币');
+            })
             .delay(0.6)
             .to(0.15, { opacity: 0 }, { easing: 'cubicIn' })
             .call(() => {

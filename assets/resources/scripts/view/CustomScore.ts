@@ -28,27 +28,26 @@ export default class CustomScore extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-
+    _playId: string = '';
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
         });
+        this._playId = WheelManager.PlayerId;
     }
 
     updatePlayBetValue() {
         const currency = WalletManager.currency;
         this.node.children.forEach((child, idx) => {
             const data = WheelManager.getBetInfoByArea(idx + 1);
+            let bet = 0;
             if (data && data.length) {
-                let bet = 0;
                 data.forEach((val) => {
-                    bet = bet.add(+val.bet_coin);
+                    if (val.player_id == this._playId) bet = bet.add(+val.bet_coin);
                 })
-                child.getChildByName('bets').getComponent(cc.Label).string = CurrencyHelper.format(bet, currency, { showSymbol: true, minFractionDigits: 0 })
-                child.active = true;
-            } else {
-                child.active = false;
             }
+            child.getChildByName('bets').getComponent(cc.Label).string = CurrencyHelper.format(bet, currency, { showSymbol: true, minFractionDigits: 0 })
+            child.active = bet > 0 ? true : false;
         })
     }
 

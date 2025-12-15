@@ -63,8 +63,6 @@ export default class CustomTop extends ViewBase {
         this.menu.show(true, 0.35);
     }
 
-
-
     private onClickButtonClose(event: cc.EventTouch) {
         this.menu.show(false, 0.35, () => {
             this.ndClick.active = false

@@ -11,6 +11,7 @@ import ViewManager from '../core/manager/view-manager';
 import CustomDesk from 'db://assets/resources/scripts/view/CustomDesk';
 import JsonLoginManager from '../network/managers/json-login-manager';
 import HistoryManager from '../manager/history-manager';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -34,7 +35,7 @@ export default class PanelWheelInit extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     buildUi() {
-        // AudioManager.playBgm(this.bundleName, '背景')
+        AudioManager.playBgm(this.bundleName, '背景音乐')
         Managers.registe(CommonManager);
         Managers.registe(WheelManager);
         Managers.registe(HistoryManager);

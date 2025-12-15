@@ -14,6 +14,8 @@ import { GameEvent } from '../define';
 import { tween } from 'cc';
 import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
+import { BaseMessage } from '../core/message/base-message';
+import AudioManager from '../core/manager/audio-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -25,6 +27,7 @@ export default class CustomFlyChip extends ViewBase {
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -40,7 +43,20 @@ export default class CustomFlyChip extends ViewBase {
     _baseDistance: number = 500; // 基准距离(像素)
     _count = [];
     _chips: Map<number, betInfo[]> = new Map();
-
+    _isGameInBackground: boolean = false;
+    buildUi() {
+        Global.registerListeners(
+            this,
+            {
+                [BaseMessage.ON_ENTER_FORGOUND]: () => {
+                    this._isGameInBackground = false;
+                },
+                [BaseMessage.ON_ENTER_BACK_GROUND]: () => {
+                    this._isGameInBackground = true;
+                }
+            }
+        );
+    }
     initData() {
         for (let i = 0; i < 50; i++) {
             this._count[i] = this.getRandomInRange(5, 8);
@@ -150,6 +166,9 @@ export default class CustomFlyChip extends ViewBase {
         this.flyToTarget(chip.node, endPos, order == -1 ? true : false, () => {
             Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
             this.checkBetChipCount(data);
+            if (this._isGameInBackground == false) {
+                AudioManager.playSound(this.bundleName, '下注');
+            }
         });
     }
 
