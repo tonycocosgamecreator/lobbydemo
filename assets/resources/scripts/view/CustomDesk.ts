@@ -26,11 +26,15 @@ export default class CustomDesk extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    _stage = -1;
-    initData() {
+    initData(stage: number) {
         this.node.children.forEach((child, idx) => {
             child.getComponent(CustomBetArea).initData(idx + 1);
         });
+        if (stage == baccarat.DeskStage.SettleStage) {
+            this.node.children.forEach(child => {
+                child.getComponent(CustomBetArea).showResult(true);
+            });
+        }
     }
 
     reset() {
@@ -45,8 +49,8 @@ export default class CustomDesk extends ViewBase {
         return world || null
     }
 
-    showResult(){
-         this.node.children.forEach(child => {
+    showResult() {
+        this.node.children.forEach(child => {
             child.getComponent(CustomBetArea).showResult();
         });
     }

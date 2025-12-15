@@ -97,10 +97,15 @@ export default class CustomBetArea extends ViewBase {
             centerPoint.z,
         );
     }
-    showResult() {
+    showResult(isReconnect = false) {
         let winArea = WheelManager.WinArea;
         if (winArea.indexOf(this._areaId) != -1) {
-            this.blink(this.light.node, 0.2, 3);
+            if (isReconnect) {
+                this.light.node.active = true;
+                this.light.node.getComponent(UIOpacity).opacity = 255;
+            } else {
+                this.blink(this.light.node, 0.2, 3);
+            }
         }
     }
     //------------------------ 网络消息 ------------------------//

@@ -134,7 +134,7 @@ export namespace wheel{
         /**  桌子ID */
         desk_id? : number;
         /**  桌子阶段 */
-        stage? : sevenupdown.SUDDeskStage;
+        stage? : baccarat.DeskStage;
         /**  此阶段结束时间戳,这里是毫秒时间戳 */
         end_time? : number;
         /**  */

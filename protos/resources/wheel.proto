@@ -41,7 +41,7 @@ message PlayData {
 
 message SUDDeskInfo {
     optional int64 desk_id = 1;                       // 桌子ID
-    optional SUDDeskStage stage = 2;                     // 桌子阶段
+    optional DeskStage stage = 2;                     // 桌子阶段
     optional int64 end_time = 3;                      // 此阶段结束时间戳,这里是毫秒时间戳
     map<string,BetInfo> bets = 4;                         // 支持的下注列表 bets = 4;                         // 支持的下注列表
 

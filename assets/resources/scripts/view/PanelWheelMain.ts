@@ -73,7 +73,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
         this._stage = WheelManager.Stage;
         if (this._stage == -1) return;
         this.reset();
-        this.desk.initData();
+        this.desk.initData(this._stage);
         this.room.updateRoomData();
         this.history.updateHistory();
         this.win.updateList();
@@ -82,7 +82,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
         this.score.updateGameStage(this._stage);
         this.handle.updateGameStage(this._stage, true);
         this.buttom.updateGameStage(this._stage, true);
-        this.flychip.updateGameStage(this._stage, true)
+        this.flychip.updateGameStage(this._stage, true);
     }
 
     async updateGameStage() {

@@ -53,8 +53,8 @@ export default class WheelManager extends BaseManager {
      */
     public static onNetMessage(msgType: string, data: any): boolean {
         switch (msgType) {
-            case sevenupdown.Message.MsgEnterSevenUpDownRsp: {
-                const msg = data as sevenupdown.MsgEnterSevenUpDownRsp;
+            case wheel.Message.MsgEnterSevenUpDownRsp: {
+                const msg = data as wheel.MsgEnterSevenUpDownRsp;
                 const result = msg.result;
                 if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                     //如果有错误码，说明进入游戏失败了
@@ -97,6 +97,11 @@ export default class WheelManager extends BaseManager {
                         }
                     }
                 }
+
+                if (msg.info.stage == baccarat.DeskStage.SettleStage) {
+                    this._winType = this._records[this._records.length - 1].win_type[0]||0;
+                    this.setWinAreaByType(this._winType);
+                }
                 this._stage = msg.info.stage;
                 this._view?.updateReconnect()
                 return false;
@@ -121,7 +126,7 @@ export default class WheelManager extends BaseManager {
                 return true;
             }
             case wheel.Message.MsgBetSevenUpDownRsp: {
-                const msg = data as sevenupdown.MsgBetSevenUpDownRsp;
+                const msg = data as wheel.MsgBetSevenUpDownRsp;
                 const result = msg.result;
                 if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                     //如果有错误码，说明下注失败了
@@ -524,7 +529,7 @@ export default class WheelManager extends BaseManager {
     /**
      * 下注--自动下注 双倍下注按钮
      */
-    public static sendBetMessage(bets: sevenupdown.SUDBetData[], gold: number, isAuto: boolean = false, tagetWorldPos: Vec3[] | null) {
+    public static sendBetMessage(bets: wheel.SUDBetData[], gold: number, isAuto: boolean = false, tagetWorldPos: Vec3[] | null) {
         const myCoin = WalletManager.balance;
         if (gold > myCoin) {
             UIHelper.showMoneyNotEnough();
@@ -532,14 +537,14 @@ export default class WheelManager extends BaseManager {
             return;
         }
         this._tagetWorldPos = this._tagetWorldPos.concat(tagetWorldPos);
-        const BetSevenUpDownReq: sevenupdown.MsgBetSevenUpDownReq = {
+        const BetSevenUpDownReq: wheel.MsgBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
             desk_id: this._deskId,
             /**  下注列表 */
             bets: bets,
         }
-        MessageSender.SendMessage(sevenupdown.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
+        MessageSender.SendMessage(wheel.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
     }
 
     public static sendMyBetMessage(idx: number, tagetWorldPos: Vec3) {
@@ -550,7 +555,7 @@ export default class WheelManager extends BaseManager {
             UIHelper.showMoneyNotEnough();
             return;
         }
-        const BetSevenUpDownReq: sevenupdown.MsgBetSevenUpDownReq = {
+        const BetSevenUpDownReq: wheel.MsgBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
             desk_id: this._deskId,
@@ -558,7 +563,7 @@ export default class WheelManager extends BaseManager {
             bets: [{ bet_id: idx, bet_coin: gold + '', is_rebet: false }],
         }
         this._tagetWorldPos.push(tagetWorldPos);
-        MessageSender.SendMessage(sevenupdown.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
+        MessageSender.SendMessage(wheel.Message.MsgBetSevenUpDownReq, BetSevenUpDownReq);
     }
 
     public static getFlyChipClickWorldPos(order: number): Vec3 | null {
