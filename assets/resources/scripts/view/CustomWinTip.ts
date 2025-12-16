@@ -46,7 +46,9 @@ export default class CustomWinTip extends ViewBase {
     setData() {
         const _data = this._list[0];
         this.spr_head.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_data.avatar || 1}`);
-        this.labelname.string = _data.username;
+        let str = _data.username;
+        if (str.length > 3) str = str.slice(0, 3) + '...';
+        this.labelname.string = "Player_" + str;
         this.labelwin.string = 'WIN+' + _data.winAmount;
     }
 

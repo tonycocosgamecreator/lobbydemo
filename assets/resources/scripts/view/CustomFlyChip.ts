@@ -178,6 +178,7 @@ export default class CustomFlyChip extends ViewBase {
         this._flyToTarget2(chip.node, endPos, type);
 
     }
+    _play: boolean = false;
     /**
     * 回收筹码
     * * @param recycleWorldPos 回收筹码终点的世界坐标
@@ -192,6 +193,7 @@ export default class CustomFlyChip extends ViewBase {
             }
         })
         this.scheduleOnce(() => {
+            this._play = true;
             AllbetInfo.forEach(v => {
                 if (wintype.indexOf(v.bet_id) != -1) {
                     let index = 0;
@@ -296,7 +298,6 @@ export default class CustomFlyChip extends ViewBase {
             .start();
     }
     _flyToTarget2(flyObject: cc.Node, endPos: cc.Vec3, type: number): void {
-        let startPos = flyObject.position;
         const opacity = flyObject.getComponent(UIOpacity);
         opacity.opacity = 255;
         Tween.stopAllByTarget(flyObject);
@@ -309,7 +310,8 @@ export default class CustomFlyChip extends ViewBase {
 
             // 落地效果：直接缩回到原始大小
             .call(() => {
-                if (this._isGameInBackground == false) {
+                if (this._play && this._isGameInBackground == false) {
+                    this._play = false;
                     AudioManager.playSound(this.bundleName, '下注筹码声');
                 }
                 Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
