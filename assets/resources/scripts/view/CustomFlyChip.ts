@@ -36,9 +36,9 @@ export default class CustomFlyChip extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    _max = v3(0.7, 0.7, 0.7)
-    _min = v3(0.5, 0.5, 0.5)
-    _middle = v3(0.6, 0.6, 0.6)
+    _max = v3(0.6, 0.6, 0.6)
+    _min = v3(0.4, 0.4, 0.4)
+    _middle = v3(0.5, 0.5, 0.5)
     _baseDuration: number = 0.2; // 基础飞行时间(用于基准距离)
     _baseDistance: number = 500; // 基准距离(像素)
     _count = [];
@@ -155,7 +155,7 @@ export default class CustomFlyChip extends ViewBase {
             targetWorldPos = WheelManager.View.getDeskWorldPosByAid(data.bet_id);
         }
         const chip = PoolManager.Get(CustomChipItem);
-        chip.node.scale = order == -1 ? v3(0, 0, 0) : v3(0.9, 0.9, 0.9);
+        chip.node.scale = order == -1 ? v3(0, 0, 0) : v3(0.8, 0.8, 0.8);
         let startWorldPos = null
         startWorldPos = order == -1 ? WheelManager.View.getWorldPosByUid(data.player_id) : WheelManager.View.getChipWorldPos();
         let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);

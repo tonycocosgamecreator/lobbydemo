@@ -72,7 +72,7 @@ export default class CustomWin extends ViewBase {
     setData() {
         const _data = this._list[0];
         this.sprHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${_data.avatar || 1}`);
-        this.labelName.string = _data.username;
+        this.labelName.string = CommonManager.showName(_data.username, 3);
         this.labelWin.string = `WIN+${_data.winAmount}`;
     }
 

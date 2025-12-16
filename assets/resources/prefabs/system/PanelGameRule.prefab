@@ -140,7 +140,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 720,
-      "height": 1560
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -354,7 +354,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 268,
+      "y": 413,
       "z": 0
     },
     "_lrot": {
@@ -488,7 +488,7 @@
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_font": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
@@ -964,7 +964,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 245,
+      "y": 390,
       "z": 0
     },
     "_lrot": {
@@ -1005,7 +1005,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 520,
-      "height": 490.4
+      "height": 776.32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1040,13 +1040,13 @@
       "b": 255,
       "a": 255
     },
-    "_string": "      1.This is a simple game that uses only two 6 sided dice and determines its result based on the sum of these two dice.\n\n      2.There is a variety of items you can bet on. As long as the sum of your dice matches the item number, you win prizes.\n\n      3.If the outcome of any round cannot be determined due to malfunction, the round will be deemed as invalid.",
+    "_string": "1. European Roulette is a traditional and popular game. On the game table, there is a rotating wheel with 36 numbered slots ranging from 1 to 36, each with a color alternating between red and black. Additionally, there is a green 0.\n\n2. At the beginning of the game, players can place bets on various options such as numbers, red, black, odd, even, etc., on the roulette wheel. The wheel is spun by the croupier, and a small ball is launched onto the wheel, eventually coming to rest in one of the numbered slots.\n\n3. Depending on where the ball stops, winning bets are paid out according to different odds. European Roulette, compared to other variants like American Roulette, has only one 0, slightly increasing the players' odds of winning.\n\n4. This simple yet exciting game has always been a classic in casinos",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 28,
     "_fontSize": 28,
     "_fontFamily": "Arial",
-    "_lineHeight": 40,
+    "_lineHeight": 32,
     "_overflow": 3,
     "_enableWrapText": true,
     "_font": null,
@@ -1150,7 +1150,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 560,
-      "height": 510
+      "height": 800
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1227,7 +1227,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 600,
-      "height": 630
+      "height": 920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1313,7 +1313,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 720,
-      "height": 1560
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

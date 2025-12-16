@@ -124,8 +124,8 @@ export default class CommonManager extends BaseManager {
         this._userWinList.splice(0, 1);
     }
 
-    public static showName(str: string): string {
-        if (str.length > 6) str = str.slice(0, 6) + '...';
+    public static showName(str: string, maxLen: number = 6): string {
+        if (str.length > maxLen) str = str.slice(0, maxLen) + '...';
         return "Player_" + str;
     }
 
