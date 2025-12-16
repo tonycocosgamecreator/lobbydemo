@@ -8,6 +8,8 @@ import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
 import WalletManager from '../manager/wallet-manager';
 import { CurrencyHelper } from '../helper/currency-helper';
+import { UITransform } from 'cc';
+import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -34,7 +36,6 @@ export default class CustomScore extends ViewBase {
         this.reset();
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
-            [GameEvent.UPDATE_ADDBET]: this.updateAddBet,
         });
     }
 
@@ -48,7 +49,6 @@ export default class CustomScore extends ViewBase {
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
                 this.updatePlayBetValue();
-                this.updateAddBet();
                 break;
         }
     }
@@ -82,47 +82,18 @@ export default class CustomScore extends ViewBase {
                 //比例
                 if (child.getChildByName('progressbar')) {
                     child.getChildByName('label').getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                    this.adjustRichText(child.getChildByName('label').getChildByName('labelbet'))
                     child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = id[idx].length + '';
                     child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = total[idx] / all;
                     let tt = Math.ceil(total[idx] / all * 100);
                     child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = tt + "%";
                 } else {
                     child.getChildByName('labelbet').getComponent(cc.RichText).string = str;
+                    this.adjustRichText(child.getChildByName('labelbet'))
                 }
 
             }
         });
-
-    }
-
-    updateAddBet() {
-        return;
-        if (this._stage == baccarat.DeskStage.SettleStage) return;
-        const data = SevenUpSevenDownManager.BetDetail;
-        let all = 0;
-        let id: number[] = [];
-        let num: number[] = [];
-        data.forEach(val => {
-            if (!id[val.pos_id]) id[val.pos_id] = 0;
-            id[val.pos_id] += val.bet_sum;
-            all += val.bet_sum;
-            if (!num[val.pos_id]) num[val.pos_id] = 0;
-            num[val.pos_id] += 1;
-        });
-        this.node.children.forEach((child, idx) => {
-            let index = idx + 1;
-            if (!id[index]) id[index] = 0;
-            if (!num[index]) num[index] = 0;
-            child.getChildByName('label').getChildByName('labelpeople').getComponent(cc.Label).string = num[index] + '';
-            if (all == 0) {
-                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = 0;
-                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = '0%';
-            } else {
-                child.getChildByName('progressbar').getComponent(cc.ProgressBar).progress = id[index] / all;
-                let str = Math.round(id[index] / all * 100);
-                child.getChildByName('progressbar').getChildByName('labelprogress').getComponent(cc.Label).string = str + "%";
-            }
-        })
 
     }
 
@@ -139,6 +110,23 @@ export default class CustomScore extends ViewBase {
             }
         })
     }
+
+    maxWidth = 110
+    // 调整富文本
+    private adjustRichText(richTextNode: cc.Node) {
+        this.scheduleOnce(() => {
+            const transform = richTextNode.getComponent(UITransform)!;
+            const actualWidth = transform.width;
+            if (actualWidth > this.maxWidth) {
+                // 计算需要缩小的比例
+                const scale = this.maxWidth / actualWidth;
+                richTextNode.scale = v3(scale, scale, scale);
+            } else {
+                richTextNode.scale = v3(1, 1, 1);
+            }
+        });
+    }
+
 
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
