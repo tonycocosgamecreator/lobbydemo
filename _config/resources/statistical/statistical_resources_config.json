@@ -54,5 +54,69 @@
     "CustomTime": {
         "statisticalId": 100001013,
         "panelId": 13
+    },
+    "CustomChipItem": {
+        "statisticalId": 100001014,
+        "panelId": 14
+    },
+    "CustomFlyChip": {
+        "statisticalId": 100001015,
+        "panelId": 15
+    },
+    "CustomRecord": {
+        "statisticalId": 100001016,
+        "panelId": 16
+    },
+    "CustomWinTip": {
+        "statisticalId": 100001017,
+        "panelId": 17
+    },
+    "CustomRank": {
+        "statisticalId": 100001018,
+        "panelId": 18
+    },
+    "CustomUser": {
+        "statisticalId": 100001019,
+        "panelId": 19
+    },
+    "CustomResult": {
+        "statisticalId": 100001020,
+        "panelId": 20
+    },
+    "CustomBaccaratTop": {
+        "statisticalId": 100001021,
+        "panelId": 21
+    },
+    "CustomHistoryItem": {
+        "statisticalId": 100001022,
+        "panelId": 22
+    },
+    "CustomUserIcon": {
+        "statisticalId": 100001023,
+        "panelId": 23
+    },
+    "CustomDouble": {
+        "statisticalId": 100001024,
+        "panelId": 24
+    },
+    "CustomScore": {
+        "statisticalId": 100001025,
+        "panelId": 25
+    },
+    "PanelUserCenter": {
+        "statisticalId": 100001026,
+        "panelId": 26
+    },
+    "CustomStar": {
+        "statisticalId": 100001027,
+        "panelId": 27
+    },
+    "CustomRoomData": {
+        "statisticalId": 100001028,
+        "panelId": 28
+    },
+    "CustomEndAnimation": {
+        "statisticalId": 100001029,
+        "panelId": 29
     }
 }

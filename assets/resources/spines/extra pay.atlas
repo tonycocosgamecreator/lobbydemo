@@ -1,0 +1,167 @@
+
+extra pay.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+2EXTRA PAY
+  rotate: false
+  xy: 2, 468
+  size: 338, 61
+  orig: 346, 65
+  offset: 4, 2
+  index: -1
+2big
+  rotate: false
+  xy: 2, 531
+  size: 456, 460
+  orig: 484, 488
+  offset: 14, 15
+  index: -1
+2dikuang1
+  rotate: false
+  xy: 2, 99
+  size: 618, 155
+  orig: 618, 155
+  offset: 0, 0
+  index: -1
+2guan1
+  rotate: true
+  xy: 460, 438
+  size: 553, 180
+  orig: 562, 190
+  offset: 4, 5
+  index: -1
+2guan2
+  rotate: false
+  xy: 2, 256
+  size: 553, 180
+  orig: 653, 190
+  offset: 95, 5
+  index: -1
+2jinbi
+  rotate: false
+  xy: 2, 2
+  size: 502, 95
+  orig: 502, 95
+  offset: 0, 0
+  index: -1
+2mask
+  rotate: false
+  xy: 342, 472
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+caidai/caidai_01
+  rotate: false
+  xy: 169, 450
+  size: 16, 16
+  orig: 29, 29
+  offset: 6, 7
+  index: -1
+caidai/caidai_02
+  rotate: false
+  xy: 144, 439
+  size: 17, 14
+  orig: 29, 29
+  offset: 6, 6
+  index: -1
+caidai/caidai_03
+  rotate: false
+  xy: 233, 439
+  size: 18, 11
+  orig: 29, 29
+  offset: 5, 9
+  index: -1
+caidai/caidai_04
+  rotate: false
+  xy: 112, 447
+  size: 14, 19
+  orig: 29, 29
+  offset: 5, 4
+  index: -1
+caidai/caidai_05
+  rotate: false
+  xy: 233, 452
+  size: 17, 14
+  orig: 29, 29
+  offset: 3, 5
+  index: -1
+caidai/caidai_06
+  rotate: false
+  xy: 42, 448
+  size: 18, 18
+  orig: 29, 29
+  offset: 4, 2
+  index: -1
+caidai/caidai_07
+  rotate: false
+  xy: 78, 445
+  size: 13, 21
+  orig: 29, 29
+  offset: 9, 2
+  index: -1
+caidai/caidai_08
+  rotate: false
+  xy: 128, 447
+  size: 14, 19
+  orig: 29, 29
+  offset: 7, 4
+  index: -1
+caidai/caidai_09
+  rotate: false
+  xy: 93, 450
+  size: 17, 16
+  orig: 29, 29
+  offset: 5, 6
+  index: -1
+caidai/caidai_10
+  rotate: false
+  xy: 187, 451
+  size: 17, 15
+  orig: 29, 29
+  offset: 5, 6
+  index: -1
+caidai/caidai_11
+  rotate: false
+  xy: 144, 455
+  size: 23, 11
+  orig: 29, 29
+  offset: 4, 9
+  index: -1
+caidai/caidai_12
+  rotate: false
+  xy: 62, 444
+  size: 14, 22
+  orig: 29, 29
+  offset: 10, 0
+  index: -1
+caidai/caidai_13
+  rotate: false
+  xy: 220, 444
+  size: 11, 22
+  orig: 29, 29
+  offset: 9, 1
+  index: -1
+caidai/caidai_14
+  rotate: false
+  xy: 206, 445
+  size: 12, 21
+  orig: 29, 29
+  offset: 8, 2
+  index: -1
+caidai/caidai_15
+  rotate: false
+  xy: 2, 445
+  size: 18, 21
+  orig: 29, 29
+  offset: 5, 2
+  index: -1
+caidai/caidai_16
+  rotate: false
+  xy: 22, 446
+  size: 18, 20
+  orig: 29, 29
+  offset: 5, 0
+  index: -1

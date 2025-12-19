@@ -18,11 +18,38 @@ resourcesDb.CUSTOMIZE_RESOURCES_STATISTICAL_DB_CUSTOMEVENTKEY = {
 
     /** 界面名字 */
 resourcesDb.PANEL_RESOURCES_STATISTICAL_DB_VIEWNAME = {
+    'CustomBaccaratTop': 'CustomBaccaratTop',
+    'CustomBigWinner': 'CustomBigWinner',
+    'CustomChipItem': 'CustomChipItem',
+    'CustomChip': 'CustomChip',
+    'CustomDesk': 'CustomDesk',
+    'CustomDouble': 'CustomDouble',
+    'CustomEndAnimation': 'CustomEndAnimation',
+    'CustomFlyChip': 'CustomFlyChip',
     'CustomGameItem': 'CustomGameItem',
+    'CustomHandle': 'CustomHandle',
+    'CustomHead': 'CustomHead',
+    'CustomHistoryItem': 'CustomHistoryItem',
+    'CustomMainHistory': 'CustomMainHistory',
+    'CustomOnline': 'CustomOnline',
+    'CustomRank': 'CustomRank',
+    'CustomRecord': 'CustomRecord',
+    'CustomResult': 'CustomResult',
+    'CustomRoomData': 'CustomRoomData',
+    'CustomScore': 'CustomScore',
+    'CustomStar': 'CustomStar',
+    'CustomTime': 'CustomTime',
     'CustomToast': 'CustomToast',
+    'CustomTop': 'CustomTop',
+    'CustomUserIcon': 'CustomUserIcon',
+    'CustomUser': 'CustomUser',
+    'CustomWinTip': 'CustomWinTip',
     'PanelCircleLoading': 'PanelCircleLoading',
     'PanelLobby': 'PanelLobby',
+    'PanelSevenUpSevenDownInit': 'PanelSevenUpSevenDownInit',
+    'PanelSevenUpSevenDownMain': 'PanelSevenUpSevenDownMain',
     'PanelThirdGame': 'PanelThirdGame',
+    'PanelUserCenter': 'PanelUserCenter',
 }
 
     /** 唯一id */
@@ -37,10 +64,47 @@ resourcesDb.I18N_RESOURCES_DB_INDEX = {
     'Close': 'Close',
     'ExitGame': 'ExitGame',
     'Retry': 'Retry',
+    'Tip_ReconnectFailed': 'Tip_ReconnectFailed',
+    'Tip_Reconnecting': 'Tip_Reconnecting',
+    'TIP_ENTER_GAME_FAILED': 'TIP_ENTER_GAME_FAILED',
+    'TIP_AB_BET_FAILED': 'TIP_AB_BET_FAILED',
+    'Tip_No_More_Historys': 'Tip_No_More_Historys',
+    'TIP_HISTORY_GET_FAILED': 'TIP_HISTORY_GET_FAILED',
+    'CustomSystemTopFoot_totalbet_info_i18n': 'CustomSystemTopFoot_totalbet_info_i18n',
+    'CustomSystemTopFoot_balance_info_i18n': 'CustomSystemTopFoot_balance_info_i18n',
+    'CustomSystemTopFoot_label_period_i18n_skin': 'CustomSystemTopFoot_label_period_i18n_skin',
+    'PanelMessageBox_cc_title_i18n': 'PanelMessageBox_cc_title_i18n',
+    'PanelMessageBox_cc_cancelTitle_i18n': 'PanelMessageBox_cc_cancelTitle_i18n',
+    'PanelMessageBox_cc_okTitle_i18n': 'PanelMessageBox_cc_okTitle_i18n',
+    'PanelSystemMenu_title_i18n_button_records': 'PanelSystemMenu_title_i18n_button_records',
+    'PanelSystemMenu_title_i18n_button_rules': 'PanelSystemMenu_title_i18n_button_rules',
+    'PanelSystemMenu_title_i18n_button_sound': 'PanelSystemMenu_title_i18n_button_sound',
+    'PanelSystemMenu_title_i18n_button_exit': 'PanelSystemMenu_title_i18n_button_exit',
+    'AVATAR_CHANGED_FAILED': 'AVATAR_CHANGED_FAILED',
+    'Tip_BaccaratKickOutNtf': 'Tip_BaccaratKickOutNtf',
+}
+
+    /** 游戏ID */
+resourcesDb.GAME_THEMEID_BUNDLE = {
+    '0': 'lobby',
+    '1040': 'SevenUpSevenDown',
+}
+    /** 游戏id（bundleId） */
+resourcesDb.GAME_ENTRANCE_CONFIG_DB_ID = {
+    'SevenUpSevenDown': 'SevenUpSevenDown',
+    'lobby': 'lobby',
 }
 
     /** 变量的名字 */
 resourcesDb.GAME_CONFIG_DB_ID = {
+}
+
+    /** 顶部菜单名字 */
+resourcesDb.MENU_TITLE_ID = {
+    'Records': 0,
+    'Rules': 1,
+    'Sound': 2,
+    'Exit': 3,
 }
 
     /** 服务器定义 */
@@ -103,6 +167,10 @@ export function _AutoResourcesExportDb_init(){
     resourcesDb.get_from_i18n_resources_db = (index: string, bQuiet?: boolean): resourcesDb.i18n_resources_db_data => { return DbManager.getDataBase('i18n_resources_db')._get1(index, bQuiet); }
     resourcesDb.foreach_from_i18n_resources_db = (callback: (indexKey: string, data: resourcesDb.i18n_resources_db_data) => (void | boolean)) => { DbManager.getDataBase('i18n_resources_db')._foreachData1(callback); }
 
+    resourcesDb.get_game_entrance_config_db = (): resourcesDb.game_entrance_config_db => { return DbManager.getDataBase('game_entrance_config_db').datas; }
+    resourcesDb.get_from_game_entrance_config_db = (id: string, bQuiet?: boolean): resourcesDb.game_entrance_config_db_data => { return DbManager.getDataBase('game_entrance_config_db')._get1(id, bQuiet); }
+    resourcesDb.foreach_from_game_entrance_config_db = (callback: (idKey: string, data: resourcesDb.game_entrance_config_db_data) => (void | boolean)) => { DbManager.getDataBase('game_entrance_config_db')._foreachData1(callback); }
+
     resourcesDb.get_game_config_db = (): resourcesDb.game_config_db => { return DbManager.getDataBase('game_config_db').datas; }
     resourcesDb.get_from_game_config_db = (id: string, bQuiet?: boolean): resourcesDb.game_config_db_data => { return DbManager.getDataBase('game_config_db')._get1(id, bQuiet); }
     resourcesDb.foreach_from_game_config_db = (callback: (idKey: string, data: resourcesDb.game_config_db_data) => (void | boolean)) => { DbManager.getDataBase('game_config_db')._foreachData1(callback); }
@@ -112,6 +180,10 @@ export function _AutoResourcesExportDb_init(){
     resourcesDb.foreach_from_skin_resources_db = (callback: (prefabIdKey: string, nodeNameKey: string, data: resourcesDb.skin_resources_db_data) => (void | boolean)) => { DbManager.getDataBase('skin_resources_db')._foreachData2(callback); }
     resourcesDb.getMap_from_skin_resources_db = (prefabId: string, bQuiet?: boolean): { [nodeName: string]: resourcesDb.skin_resources_db_data } => { return DbManager.getDataBase('skin_resources_db')._get1(prefabId, bQuiet); }
     resourcesDb.foreachMap_from_skin_resources_db = (callback: (prefabIdKey: string, datas: { [nodeName: string]: resourcesDb.skin_resources_db_data }) => (void | boolean)) => { DbManager.getDataBase('skin_resources_db')._foreachData1(callback); }
+
+    resourcesDb.get_system_menu_db = (): resourcesDb.system_menu_db => { return DbManager.getDataBase('system_menu_db').datas; }
+    resourcesDb.get_from_system_menu_db = (index: number, bQuiet?: boolean): resourcesDb.system_menu_db_data => { return DbManager.getDataBase('system_menu_db')._get1(index, bQuiet); }
+    resourcesDb.foreach_from_system_menu_db = (callback: (index: number, data: resourcesDb.system_menu_db_data) => (void | boolean)) => { DbManager.getDataBase('system_menu_db')._foreachData1(callback); }
 
     resourcesDb.get_prummy_event_message_config_db = (): resourcesDb.prummy_event_message_config_db => { return DbManager.getDataBase('prummy_event_message_config_db').datas; }
     resourcesDb.get_from_prummy_event_message_config_db = (id: number | string, bQuiet?: boolean): resourcesDb.prummy_event_message_config_db_data => { return DbManager.getDataBase('prummy_event_message_config_db')._get1(id, bQuiet); }

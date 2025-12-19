@@ -44,6 +44,15 @@
     }
 ],
 'datas': {
+    "CustomBaccaratTop": {
+        "cc_buttonMenu": {
+            "viewName": "CustomBaccaratTop",
+            "buttonName": "cc_buttonMenu",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003200
+        }
+    },
     "CustomChip": {
         "cc_buttonclick": {
             "viewName": "CustomChip",
@@ -200,6 +209,22 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001912
+        },
+        "cc_button_click13": {
+            "viewName": "CustomDesk",
+            "buttonName": "cc_button_click13",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001913
+        }
+    },
+    "CustomGameItem": {
+        "cc_buttonIcon": {
+            "viewName": "CustomGameItem",
+            "buttonName": "cc_buttonIcon",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001200
         }
     },
     "CustomHandle": {
@@ -237,6 +262,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100002004
+        },
+        "cc_button_unauto": {
+            "viewName": "CustomHandle",
+            "buttonName": "cc_button_unauto",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002005
         }
     },
     "CustomMainHistory": {
@@ -253,6 +285,66 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001701
+        }
+    },
+    "CustomRank": {
+        "cc_buttonallbets": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonallbets",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002900
+        },
+        "cc_buttontop": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttontop",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002901
+        },
+        "cc_buttontop-001": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttontop-001",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002902
+        },
+        "cc_buttonallday": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonallday",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        },
+        "cc_buttonweek": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonweek",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        },
+        "cc_buttonmonth": {
+            "viewName": "CustomRank",
+            "buttonName": "cc_buttonmonth",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002903
+        }
+    },
+    "CustomRecord": {
+        "cc_buttonallbets": {
+            "viewName": "CustomRecord",
+            "buttonName": "cc_buttonallbets",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002700
+        },
+        "cc_buttontop": {
+            "viewName": "CustomRecord",
+            "buttonName": "cc_buttontop",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100002701
         }
     },
     "CustomTop": {
@@ -292,6 +384,29 @@
             "statisticalId": 100001601
         }
     },
+    "CustomUser": {
+        "cc_buttonOne": {
+            "viewName": "CustomUser",
+            "buttonName": "cc_buttonOne",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003000
+        },
+        "cc_buttonTwo": {
+            "viewName": "CustomUser",
+            "buttonName": "cc_buttonTwo",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003001
+        },
+        "cc_buttonThree": {
+            "viewName": "CustomUser",
+            "buttonName": "cc_buttonThree",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003002
+        }
+    },
     "PanelSevenUpSevenDownMain": {
         "cc_buttonHistory": {
             "viewName": "PanelSevenUpSevenDownMain",
@@ -299,6 +414,24 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001500
+        }
+    },
+    "PanelThirdGame": {
+        "cc_buttonBack": {
+            "viewName": "PanelThirdGame",
+            "buttonName": "cc_buttonBack",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100001400
+        }
+    },
+    "PanelUserCenter": {
+        "cc_buttonClose": {
+            "viewName": "PanelUserCenter",
+            "buttonName": "cc_buttonClose",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003700
         }
     }
 }

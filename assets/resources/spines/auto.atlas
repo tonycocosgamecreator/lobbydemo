@@ -1,0 +1,13 @@
+
+auto.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+22
+  rotate: false
+  xy: 2, 2
+  size: 104, 90
+  orig: 256, 256
+  offset: 75, 83
+  index: -1

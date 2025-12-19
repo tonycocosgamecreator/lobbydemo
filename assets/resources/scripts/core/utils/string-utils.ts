@@ -132,6 +132,7 @@ export class StringUtils {
     label.string = text;
   }
 
+
   /**
    * 随机字符串
    * @param maxLength 字符长度最大位数

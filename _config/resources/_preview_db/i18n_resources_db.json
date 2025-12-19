@@ -52,6 +52,14 @@
     },
     {
         "originCol": 8,
+        "name": "pt_br",
+        "type": "S",
+        "tsType": "string",
+        "desc": "葡萄牙语（巴西）",
+        "verifyers": []
+    },
+    {
+        "originCol": 9,
         "name": "hi_in",
         "type": "S",
         "tsType": "string",
@@ -59,11 +67,31 @@
         "verifyers": []
     },
     {
-        "originCol": 9,
-        "name": "en_in",
+        "originCol": 10,
+        "name": "my_mm",
         "type": "S",
         "tsType": "string",
-        "desc": "英语-印度",
+        "verifyers": []
+    },
+    {
+        "originCol": 11,
+        "name": "bn_bd",
+        "type": "S",
+        "tsType": "string",
+        "verifyers": []
+    },
+    {
+        "originCol": 12,
+        "name": "vi_vn",
+        "type": "S",
+        "tsType": "string",
+        "verifyers": []
+    },
+    {
+        "originCol": 13,
+        "name": "th_th",
+        "type": "S",
+        "tsType": "string",
         "verifyers": []
     }
 ],
@@ -75,8 +103,12 @@
         "nodeName": "",
         "zh_cn": "NetWork connect failed",
         "en_us": "NetWork connect failed",
-        "hi_in": "O link da Web falhou",
-        "en_in": "नेटवर्क कनेक्शन विफलता"
+        "pt_br": "O link da Web falhou",
+        "hi_in": "नेटवर्क कनेक्शन विफलता",
+        "my_mm": "နက်ဝတ်ကွန်နက်ရှင် မအောင်မြင်ပါ",
+        "bn_bd": "নেটওয়ার্ক সংযোগ ব্যর্থ হয়েছে",
+        "vi_vn": "Kết nối mạng thất bại",
+        "th_th": "การเชื่อมต่อเครือข่ายล้มเหลว"
     },
     "EC_COIN_NO_ENOUGH": {
         "index": "EC_COIN_NO_ENOUGH",
@@ -85,8 +117,12 @@
         "nodeName": "",
         "zh_cn": "Insufficient coins",
         "en_us": "Insufficient coins",
-        "hi_in": "Moedas insuficientes",
-        "en_in": "अपर्याप्त सिक्के"
+        "pt_br": "Moedas insuficientes",
+        "hi_in": "अपर्याप्त सिक्के",
+        "my_mm": "ငွေသားမလုံလောက်ပါ။",
+        "bn_bd": "অপর্যাপ্ত কয়েন",
+        "vi_vn": "Không đủ xu",
+        "th_th": "เงินเหรียญไม่เพียงพอ"
     },
     "Error": {
         "index": "Error",
@@ -95,8 +131,12 @@
         "nodeName": "",
         "zh_cn": "Error",
         "en_us": "Error",
-        "hi_in": "Erro",
-        "en_in": "गलती"
+        "pt_br": "Erro",
+        "hi_in": "गलती",
+        "my_mm": "အမှား",
+        "bn_bd": "ত্রুটি",
+        "vi_vn": "Lỗi",
+        "th_th": "ข้อผิดพลาด"
     },
     "Warn": {
         "index": "Warn",
@@ -105,8 +145,12 @@
         "nodeName": "",
         "zh_cn": "Warn",
         "en_us": "Warn",
-        "hi_in": "Advertir",
-        "en_in": "सूचना"
+        "pt_br": "Advertir",
+        "hi_in": "सूचना",
+        "my_mm": "သတိပေးပါသည်",
+        "bn_bd": "সতর্ক করুন",
+        "vi_vn": "Cảnh báo",
+        "th_th": "เตือน"
     },
     "Notice": {
         "index": "Notice",
@@ -115,8 +159,12 @@
         "nodeName": "",
         "zh_cn": "Notice",
         "en_us": "Notice",
-        "hi_in": "Notar",
-        "en_in": "अधिसूचना"
+        "pt_br": "Notar",
+        "hi_in": "अधिसूचना",
+        "my_mm": "သတိပြုပါ",
+        "bn_bd": "নোটিশ",
+        "vi_vn": "Thông báo",
+        "th_th": "ประกาศ"
     },
     "Confirm": {
         "index": "Confirm",
@@ -125,8 +173,12 @@
         "nodeName": "",
         "zh_cn": "Confirm",
         "en_us": "Confirm",
-        "hi_in": "Confirmar",
-        "en_in": "पुष्टि करना"
+        "pt_br": "Confirmar",
+        "hi_in": "पुष्टि करना",
+        "my_mm": "အတည်ပြုပါသည်",
+        "bn_bd": "নিশ্চিত করুন",
+        "vi_vn": "Xác nhận",
+        "th_th": "ยืนยัน"
     },
     "Cancel": {
         "index": "Cancel",
@@ -135,8 +187,12 @@
         "nodeName": "",
         "zh_cn": "Cancel",
         "en_us": "Cancel",
-        "hi_in": "Cancelar",
-        "en_in": "रद्द करना"
+        "pt_br": "Cancelar",
+        "hi_in": "रद्द करना",
+        "my_mm": "ငြင်းပယ်ပါ",
+        "bn_bd": "বাতিল করুন",
+        "vi_vn": "Hủy bỏ",
+        "th_th": "ยกเลิก"
     },
     "Close": {
         "index": "Close",
@@ -145,8 +201,12 @@
         "nodeName": "",
         "zh_cn": "Close",
         "en_us": "Close",
-        "hi_in": "Fechar",
-        "en_in": "बंद कर देना"
+        "pt_br": "Fechar",
+        "hi_in": "बंद कर देना",
+        "my_mm": "ပိတ်ပါ",
+        "bn_bd": "বন্ধ করুন",
+        "vi_vn": "Đóng",
+        "th_th": "ปิด"
     },
     "ExitGame": {
         "index": "ExitGame",
@@ -155,8 +215,12 @@
         "nodeName": "",
         "zh_cn": "Exit Game",
         "en_us": "Exit Game",
+        "pt_br": "Exit Game",
         "hi_in": "Exit Game",
-        "en_in": "Exit Game"
+        "my_mm": "ဂိမ်းထွက်ပါ",
+        "bn_bd": "গেম থেকে বের হও",
+        "vi_vn": "Thoát Game",
+        "th_th": "ออกจากเกม"
     },
     "Retry": {
         "index": "Retry",
@@ -165,8 +229,12 @@
         "nodeName": "",
         "zh_cn": "Retry",
         "en_us": "Retry",
+        "pt_br": "Retry",
         "hi_in": "Retry",
-        "en_in": "Retry"
+        "my_mm": " ပြန်လည်ကြိုးစားပါ။",
+        "bn_bd": "পুনরায় চেষ্টা করুন",
+        "vi_vn": "Thử lại",
+        "th_th": "ลองใหม่"
     },
     "Tip_ReconnectFailed": {
         "index": "Tip_ReconnectFailed",
@@ -175,8 +243,12 @@
         "nodeName": "",
         "zh_cn": "The network reconnection fails, please try again",
         "en_us": "The network reconnection fails, please try again",
-        "hi_in": "A reconexão de rede falhar, tente novamente",
-        "en_in": "नेटवर्क पुन:कनेक्शन विफल रहा. पुनः प्रयास करें"
+        "pt_br": "A reconexão de rede falhar, tente novamente",
+        "hi_in": "नेटवर्क पुन:कनेक्शन विफल रहा. पुनः प्रयास करें",
+        "my_mm": "ကွန်ယက်ချိတ်ဆက်မှု ပြန်လည်ချိတ်ဆက်ခြင်း တိုက်ရိုက်လ失败ပါသည်၊ ကျေးဇူးပြု၍ ပြန်လုပ်ကြည့်ပါ",
+        "bn_bd": "নেটওয়ার্ক পুনরায় সংযোগের চেষ্টা ব্যর্থ হয়েছে, দয়া করে আবার চেষ্টা করুন",
+        "vi_vn": "Kết nối mạng không thành công, vui lòng thử lại",
+        "th_th": "การเชื่อมต่อเครือข่ายล้มเหลว โปรดลองอีกครั้ง"
     },
     "Tip_Reconnecting": {
         "index": "Tip_Reconnecting",
@@ -185,8 +257,12 @@
         "nodeName": "",
         "zh_cn": "The network is reconnecting, please wait.",
         "en_us": "The network is reconnecting, please wait.",
-        "hi_in": "A rede está se reconectando, aguarde.",
-        "en_in": "नेटवर्क पुन:कनेक्शन, कृपया प्रतीक्षा करें"
+        "pt_br": "A rede está se reconectando, aguarde.",
+        "hi_in": "नेटवर्क पुन:कनेक्शन, कृपया प्रतीक्षा करें",
+        "my_mm": "ကွန်ယက်သည် ပြန်လည်ချိတ်ဆက်နေသည်၊ ကျေးဇူးပြုပြီး စောင့်ပါ။",
+        "bn_bd": "নেটওয়ার্ক পুনরায় সংযোগ করছে, অনুগ্রহপূর্বক অপেক্ষা করুন।",
+        "vi_vn": "Mạng đang kết nối lại, vui lòng chờ.",
+        "th_th": "เครือข่ายกำลังเชื่อมต่อใหม่ กรุณารอสักครู่."
     },
     "TIP_ENTER_GAME_FAILED": {
         "index": "TIP_ENTER_GAME_FAILED",
@@ -195,8 +271,12 @@
         "nodeName": "",
         "zh_cn": "Enter game failed",
         "en_us": "Enter game failed",
+        "pt_br": "Enter game failed",
         "hi_in": "Enter game failed",
-        "en_in": "Enter game failed"
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "TIP_AB_BET_FAILED": {
         "index": "TIP_AB_BET_FAILED",
@@ -205,8 +285,12 @@
         "nodeName": "",
         "zh_cn": "Bet failed",
         "en_us": "Bet failed",
+        "pt_br": "Bet failed",
         "hi_in": "Bet failed",
-        "en_in": "Bet failed"
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "Tip_No_More_Historys": {
         "index": "Tip_No_More_Historys",
@@ -215,8 +299,12 @@
         "nodeName": "",
         "zh_cn": "No more history!",
         "en_us": "No more history!",
-        "hi_in": "Não há mais histórias!",
-        "en_in": "और कोई इतिहास नहीं"
+        "pt_br": "Não há mais histórias!",
+        "hi_in": "और कोई इतिहास नहीं",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "TIP_HISTORY_GET_FAILED": {
         "index": "TIP_HISTORY_GET_FAILED",
@@ -225,8 +313,12 @@
         "nodeName": "",
         "zh_cn": "History get failed",
         "en_us": "History get failed",
+        "pt_br": "History get failed",
         "hi_in": "History get failed",
-        "en_in": "History get failed"
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "CustomSystemTopFoot_totalbet_info_i18n": {
         "index": "CustomSystemTopFoot_totalbet_info_i18n",
@@ -235,8 +327,12 @@
         "nodeName": "totalbet_info_i18n",
         "zh_cn": "Total Bet:",
         "en_us": "Total Bet:",
-        "hi_in": "Aposta Total:",
-        "en_in": "कुल दांव:"
+        "pt_br": "Aposta Total:",
+        "hi_in": "कुल दांव:",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "CustomSystemTopFoot_balance_info_i18n": {
         "index": "CustomSystemTopFoot_balance_info_i18n",
@@ -245,8 +341,12 @@
         "nodeName": "balance_info_i18n",
         "zh_cn": "Balance:",
         "en_us": "Balance:",
-        "hi_in": "Equilíbrio:",
-        "en_in": "संतुलन:"
+        "pt_br": "Equilíbrio:",
+        "hi_in": "संतुलन:",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "CustomSystemTopFoot_label_period_i18n_skin": {
         "index": "CustomSystemTopFoot_label_period_i18n_skin",
@@ -255,8 +355,12 @@
         "nodeName": "label_period_i18n_skin",
         "zh_cn": "Period:",
         "en_us": "Period:",
-        "hi_in": "Período:",
-        "en_in": "अवधि:"
+        "pt_br": "Período:",
+        "hi_in": "अवधि:",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelMessageBox_cc_title_i18n": {
         "index": "PanelMessageBox_cc_title_i18n",
@@ -265,8 +369,12 @@
         "nodeName": "cc_title_i18n",
         "zh_cn": "Notice",
         "en_us": "Notification",
-        "hi_in": "Notificação",
-        "en_in": "अधिसूचना"
+        "pt_br": "Notificação",
+        "hi_in": "अधिसूचना",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelMessageBox_cc_cancelTitle_i18n": {
         "index": "PanelMessageBox_cc_cancelTitle_i18n",
@@ -275,8 +383,12 @@
         "nodeName": "cc_cancelTitle_i18n",
         "zh_cn": "Cancel",
         "en_us": "Cancel",
-        "hi_in": "Cancelar",
-        "en_in": "रद्द करना"
+        "pt_br": "Cancelar",
+        "hi_in": "रद्द करना",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelMessageBox_cc_okTitle_i18n": {
         "index": "PanelMessageBox_cc_okTitle_i18n",
@@ -285,8 +397,12 @@
         "nodeName": "cc_okTitle_i18n",
         "zh_cn": "Confirm",
         "en_us": "Confirm",
-        "hi_in": "Confirme",
-        "en_in": "पुष्टि करना"
+        "pt_br": "Confirme",
+        "hi_in": "पुष्टि करना",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelSystemMenu_title_i18n_button_records": {
         "index": "PanelSystemMenu_title_i18n_button_records",
@@ -295,8 +411,12 @@
         "nodeName": "title_i18n_button_records",
         "zh_cn": "Records",
         "en_us": "Records",
-        "hi_in": "Registros",
-        "en_in": "अभिलेख"
+        "pt_br": "Registros",
+        "hi_in": "अभिलेख",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelSystemMenu_title_i18n_button_rules": {
         "index": "PanelSystemMenu_title_i18n_button_rules",
@@ -305,8 +425,12 @@
         "nodeName": "title_i18n_button_rules",
         "zh_cn": "Rules",
         "en_us": "Rules",
-        "hi_in": "Regras",
-        "en_in": "नियम"
+        "pt_br": "Regras",
+        "hi_in": "नियम",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelSystemMenu_title_i18n_button_sound": {
         "index": "PanelSystemMenu_title_i18n_button_sound",
@@ -315,8 +439,12 @@
         "nodeName": "title_i18n_button_sound",
         "zh_cn": "Sound",
         "en_us": "Sound",
-        "hi_in": "Som",
-        "en_in": "आवाज़"
+        "pt_br": "Som",
+        "hi_in": "आवाज़",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "PanelSystemMenu_title_i18n_button_exit": {
         "index": "PanelSystemMenu_title_i18n_button_exit",
@@ -325,8 +453,12 @@
         "nodeName": "title_i18n_button_exit",
         "zh_cn": "Exit",
         "en_us": "Exit",
-        "hi_in": "Sair",
-        "en_in": "निकास"
+        "pt_br": "Sair",
+        "hi_in": "निकास",
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
     },
     "AVATAR_CHANGED_FAILED": {
         "index": "AVATAR_CHANGED_FAILED",
@@ -335,8 +467,26 @@
         "nodeName": "",
         "zh_cn": "Avatar change failed",
         "en_us": "Avatar change failed",
+        "pt_br": "",
         "hi_in": "",
-        "en_in": ""
+        "my_mm": "",
+        "bn_bd": "",
+        "vi_vn": "",
+        "th_th": ""
+    },
+    "Tip_BaccaratKickOutNtf": {
+        "index": "Tip_BaccaratKickOutNtf",
+        "nodeType": 0,
+        "panelName": "",
+        "nodeName": "",
+        "zh_cn": "You haven't operated the game for a long time and you're kicked out of the game",
+        "en_us": "You haven't operated the game for a long time and you're kicked out of the game",
+        "pt_br": "Você não opera o jogo há muito tempo e é expulso do jogo",
+        "hi_in": "आपने लंबे समय से गेम का संचालन नहीं किया है और आपको गेम से बाहर कर दिया गया है",
+        "my_mm": "သင်သည်ဂိမ်းကို တော်တော်လေးကြာအောင် အလှည့်အပြန်စီမံခြင်းမလုပ်ခဲ့ပါဘူး၊ ထို့ကြောင့် သင်ကိုဂိမ်းက ထုတ်မိသည်။",
+        "bn_bd": "তুমি দীর্ঘ সময় ধরে খেলাটি চালনা করোনি এবং তোমাকে খেলাটি থেকে বের করে দেওয়া হয়েছে",
+        "vi_vn": "Bạn đã không chơi game trong một thời gian dài và bạn bị đá ra khỏi game.",
+        "th_th": "คุณไม่ได้เล่นเกมนี้มานานและคุณถูกให้ออกจากเกม"
     }
 }
 }
