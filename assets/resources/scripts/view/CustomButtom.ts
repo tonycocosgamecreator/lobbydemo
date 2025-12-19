@@ -33,7 +33,7 @@ export default class CustomButtom extends ViewBase {
         this.tabGroup.init();
         this.tabGroup.iconSpriteFrames = [
             null,
-            this.getSpriteFrame("textures/ui/7up_Img_27"),
+            this.getSpriteFrame("textures/common/7up_Img_27"),
         ];
         this.tabGroup.titleColors = [
             cc.color("#A4AAB3"),

@@ -7,7 +7,7 @@ import AudioManager from '../../core/manager/audio-manager';
 import { v3 } from 'cc';
 import ViewManager from '../../core/manager/view-manager';
 import CommonManager from '../../manager/common-manager';
-import WheelManager from '../../manager/wheel-manager';
+import GameManager from '../../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -69,8 +69,8 @@ export default class CustomMenu extends ViewBase {
      */
     public show(bShow: boolean, duration: number, callback: () => void = null) {
         if (bShow) {
-            this.LabelNickName.string = CommonManager.showName(WheelManager.PlayerId);
-            this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${WheelManager.Icon}`);
+            this.LabelNickName.string = CommonManager.showName(GameManager.PlayerId);
+            this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${GameManager.Icon}`);
         }
         let y = this.root.position.y;
         if (duration <= 0) {

@@ -5,9 +5,7 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import List from 'db://assets/resources/scripts/core/view/list-view';
-import BaseGlobal from '../core/message/base-global';
-import { GameEvent } from '../define';
-import WheelManager from '../manager/wheel-manager';
+import GameManager from '../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -29,11 +27,11 @@ export default class CustomMainHistory extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
     updateHistory() {
-        const _data = WheelManager.Records;
+        const _data = GameManager.Records;
         const _records = [..._data].reverse();
         this.historyList.itemRender = (item: cc.Node, i: number) => {
             item.getChildByName('labeldice').getComponent(cc.Label).string = `${_records[i].win_type[0]}`;
-            item.getChildByName('sprbg').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/wheel/LP_Img_${this.getColorByIdx(_records[i].win_type[0])}/spriteFrame`);
+            item.getChildByName('sprbg').getComponent(cc.Sprite).spriteFrame = this.getSpriteFrame(`textures/ui/LP_Img_${this.getColorByIdx(_records[i].win_type[0])}/spriteFrame`);
         }
 
         let len = _data.length;

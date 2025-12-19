@@ -6,7 +6,6 @@ import * as cc from 'cc';
 import { betInfo } from '../manager/common-manager';
 import PoolManager from '../core/manager/pool-manager';
 import CustomChipItem from './CustomChipItem';
-import WheelManager from '../manager/wheel-manager';
 import { Vec3 } from 'cc';
 import { v3 } from 'cc';
 import { Global } from '../global';
@@ -16,6 +15,7 @@ import { UIOpacity } from 'cc';
 import { Tween } from 'cc';
 import { BaseMessage } from '../core/message/base-message';
 import AudioManager from '../core/manager/audio-manager';
+import GameManager from '../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -73,7 +73,7 @@ export default class CustomFlyChip extends ViewBase {
             case baccarat.DeskStage.EndBetStage:
             case baccarat.DeskStage.OpenStage:
                 if (reconnect) {
-                    let list = WheelManager.getBetInfoByPlay();
+                    let list = GameManager.getBetInfoByPlay();
                     for (let i = 0; i < list.length; i++) {
                         let item = list[i];
                         item.forEach(d => {
@@ -149,15 +149,15 @@ export default class CustomFlyChip extends ViewBase {
     updateflyChip(data: betInfo, order: number) {
         let targetWorldPos = null;
         if (order != -1) {
-            targetWorldPos = WheelManager.getFlyChipClickWorldPos(order);
+            targetWorldPos = GameManager.getFlyChipClickWorldPos(order);
         }
         if (!targetWorldPos) {
-            targetWorldPos = WheelManager.View.getDeskWorldPosByAid(data.bet_id);
+            targetWorldPos = GameManager.View.getDeskWorldPosByAid(data.bet_id);
         }
         const chip = PoolManager.Get(CustomChipItem);
         chip.node.scale = order == -1 ? v3(0, 0, 0) : v3(0.8, 0.8, 0.8);
         let startWorldPos = null
-        startWorldPos = order == -1 ? WheelManager.View.getWorldPosByUid(data.player_id) : WheelManager.View.getChipWorldPos();
+        startWorldPos = order == -1 ? GameManager.View.getWorldPosByUid(data.player_id) : GameManager.View.getChipWorldPos();
         let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
         chip.node.setPosition(startLocalPos);
         chip.setBetData(data);
@@ -210,7 +210,7 @@ export default class CustomFlyChip extends ViewBase {
 
     // 辅助方法：添加飞行动画
     _addFlyAnimation(tweenChain: cc.Tween<cc.Node>, flyDuration: number, endPos: Vec3) {
-        const scale = new Vec3(this._min.x * 1.2, this._min.y * 1.2, 1)
+        const scale = new Vec3(this._middle.x * 1.2, this._middle.y * 1.2, 1)
         tweenChain.to(flyDuration, {
             position: endPos,
             scale: scale
@@ -222,7 +222,7 @@ export default class CustomFlyChip extends ViewBase {
         callback && callback()
         tween(flyObject)
             .to(0.15, {
-                scale: new Vec3(this._min.x, this._min.y, 1)
+                scale: new Vec3(this._middle.x, this._middle.y, 1)
             }, { easing: 'sineOut' })
             .start();
     }
@@ -232,7 +232,7 @@ export default class CustomFlyChip extends ViewBase {
         opacity.opacity = 255;
         flyObject.scale = this._max;
         tween(flyObject)
-            .to(0.5, { scale: this._min, position: endPos }, { easing: 'quadOut', })
+            .to(0.5, { scale: this._middle, position: endPos }, { easing: 'quadOut', })
             .call(() => {
                 if (flyObject.getComponent(CustomChipItem)) {
                     this.clearChip(flyObject);
@@ -246,8 +246,8 @@ export default class CustomFlyChip extends ViewBase {
     }
 
     recycleChip() {
-        let winArea = WheelManager.WinArea;
-        let losePosWord = WheelManager.View.getLoseWorldPos();
+        let winArea = GameManager.WinArea;
+        let losePosWord = GameManager.View.getLoseWorldPos();
         let losePos = this.node.transform.convertToNodeSpaceAR(losePosWord);
         this.node.children.forEach((child, idx) => {
             let _d = child.getComponent(CustomChipItem).ChipInfo;
@@ -258,8 +258,8 @@ export default class CustomFlyChip extends ViewBase {
         if (winArea.length == 0) return;
         this.scheduleOnce(() => {
             for (let i = 0; i < winArea.length; i++) {
-                const data = WheelManager.getBetInfoByArea(winArea[i]);
-                const targetWorldPos = WheelManager.View.getDeskWorldPosByAid(winArea[i]);
+                const data = GameManager.getBetInfoByArea(winArea[i]);
+                const targetWorldPos = GameManager.View.getDeskWorldPosByAid(winArea[i]);
                 const endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
                 data.forEach(betinfo => {
                     this.setWinChipData(betinfo, losePos, endPos);
@@ -270,10 +270,10 @@ export default class CustomFlyChip extends ViewBase {
             this.node.children.forEach((child, idx) => {
                 let startWorldPos = null;
                 const data = child.getComponent(CustomChipItem).ChipInfo;
-                if (data.player_id == WheelManager.PlayerId) {
-                    startWorldPos = WheelManager.View.getMyHeadWorldPos();
+                if (data.player_id == GameManager.PlayerId) {
+                    startWorldPos = GameManager.View.getMyHeadWorldPos();
                 } else {
-                    startWorldPos = WheelManager.View.getWorldPosByUid(data.player_id)
+                    startWorldPos = GameManager.View.getWorldPosByUid(data.player_id)
                 }
                 let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
                 this.flyToEnd(child, startLocalPos);
@@ -291,7 +291,7 @@ export default class CustomFlyChip extends ViewBase {
     }
 
     setReconnectChipData(data: betInfo) {
-        let targetWorldPos = WheelManager.View.getDeskWorldPosByAid(data.bet_id);
+        let targetWorldPos = GameManager.View.getDeskWorldPosByAid(data.bet_id);
         let endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
         const chip = PoolManager.Get(CustomChipItem);
         chip.node.scale = this._middle;

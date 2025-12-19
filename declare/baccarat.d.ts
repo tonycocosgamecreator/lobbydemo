@@ -2,6 +2,20 @@ declare namespace baccarat{
 
     const PACKAGE_NAME = 'baccarat';
 
+    /** 阶段 */
+    enum DeskStage{
+        /** ReadyStage 准备阶段 */
+        ReadyStage = 0,
+        /** StartBetStage 开始下注阶段 */
+        StartBetStage = 1,
+        /** EndBetStage 结束下注阶段 */
+        EndBetStage = 2,
+        /** OpenStage 开奖阶段 */
+        OpenStage = 3,
+        /** SettleStage 结算阶段 */
+        SettleStage = 4,
+    }
+
     /** ID */
     enum BaccaratID{
         /**  水果 */
@@ -145,6 +159,78 @@ declare namespace baccarat{
     }
 
     enum Message {
+        /** 阶段 */
+        BetData = 'BetData',
+        /** EnterBaccaratReq 进入百人场请求 */
+        MsgEnterBaccaratReq = 'MsgEnterBaccaratReq',
+        /** EnterBaccaratReq 进入百人场请求 */
+        BetInfo = 'BetInfo',
+        /** EnterBaccaratReq 进入百人场请求 */
+        WalletInfo = 'WalletInfo',
+        /** EnterBaccaratRsp 进入百人场请求响应 */
+        MsgEnterBaccaratRsp = 'MsgEnterBaccaratRsp',
+        /** LeaveBaccaratReq 离开百人场请求 */
+        MsgLeaveBaccaratReq = 'MsgLeaveBaccaratReq',
+        /** LeaveBaccaratRsp 离开百人场请求响应 */
+        MsgLeaveBaccaratRsp = 'MsgLeaveBaccaratRsp',
+        /** BetBaccaratReq 百人场下注请求 */
+        MsgBetBaccaratReq = 'MsgBetBaccaratReq',
+        /** BetBaccaratRsp 百人场下注请求响应 */
+        MsgBetBaccaratRsp = 'MsgBetBaccaratRsp',
+        /** BetBaccaratCancelReq 百人场下注取消请求 */
+        MsgBetBaccaratCancelReq = 'MsgBetBaccaratCancelReq',
+        /** BetBaccaratCancelRsp 百人场下注取消请求响应 */
+        MsgBetBaccaratCancelRsp = 'MsgBetBaccaratCancelRsp',
+        /** PauseBaccaratReq 暂停百人场请求 */
+        MsgPauseBaccaratReq = 'MsgPauseBaccaratReq',
+        /** PauseBaccaratRsp 暂停百人场请求响应 */
+        MsgPauseBaccaratRsp = 'MsgPauseBaccaratRsp',
+        /** BetPlayer 百人场下注请求 */
+        BetPlayer = 'BetPlayer',
+        /** BetBaccaratNtf 最新玩家下注通知消息 */
+        MsgBetBaccaratNtf = 'MsgBetBaccaratNtf',
+        /** BaccaratNextStageNtf 阶段变化通知消息 */
+        MsgBaccaratNextStageNtf = 'MsgBaccaratNextStageNtf',
+        /** BaccaratOnlineNtf 在线人数变化通知消息 */
+        MsgBaccaratOnlineNtf = 'MsgBaccaratOnlineNtf',
+        /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
+        MsgBaccaratAreaUserBetsNtf = 'MsgBaccaratAreaUserBetsNtf',
+        /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
+        AreaUserBetsNum = 'AreaUserBetsNum',
+        /** BaccaratKickOutNtf 长时间未下注踢出通知消息 */
+        MsgBaccaratKickOutNtf = 'MsgBaccaratKickOutNtf',
+        /** //////////////////////////// 5d   ///////////////////// */
+        MsgLotteryHistoryReq = 'MsgLotteryHistoryReq',
+        /** //////////////////////////// 5d   ///////////////////// */
+        MsgLotteryHistoryRsp = 'MsgLotteryHistoryRsp',
+        /** //////////////////////////// 5d   ///////////////////// */
+        LotteryHistory = 'LotteryHistory',
+        /** //////////////////////////// 5d   ///////////////////// */
+        MsgEncryptedDataReq = 'MsgEncryptedDataReq',
+        /** //////////////////////////// 5d   ///////////////////// */
+        MsgEncryptedDataRsp = 'MsgEncryptedDataRsp',
+        /** //////////////////////////// 5d   ///////////////////// */
+        MsgPlayerHistoryReq = 'MsgPlayerHistoryReq',
+        /** 玩家下注信息 */
+        MsgPlayerHistoryRsp = 'MsgPlayerHistoryRsp',
+        /** 玩家下注信息 */
+        PlayerHistory = 'PlayerHistory',
+        /** 玩家下注信息 */
+        MsgStockPlayerHistoryReq = 'MsgStockPlayerHistoryReq',
+        /** 玩家下注信息 */
+        MsgStockPlayerHistoryRsp = 'MsgStockPlayerHistoryRsp',
+        /** 玩家下注信息 */
+        MsgStockPlayerHistory = 'MsgStockPlayerHistory',
+        /** 公平性验证 */
+        MsgStockEncryptedDataReq = 'MsgStockEncryptedDataReq',
+        /** 公平性验证 */
+        MsgStockEncryptedDataRsp = 'MsgStockEncryptedDataRsp',
+        /** StockSettleNtf 结算通知消息 */
+        MsgStockSettleNtf = 'MsgStockSettleNtf',
+        /** StockSettleData 结算数据 */
+        MsgStockSettleData = 'MsgStockSettleData',
+        /** StockWinData 胜利者数据 */
+        MsgStockWinData = 'MsgStockWinData',
         /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
         BetData = 'BetData',
         /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
@@ -407,6 +493,452 @@ declare namespace baccarat{
         MsgAndarBaharPlayerHistoryReq = 'MsgAndarBaharPlayerHistoryReq',
         /** 玩家下注信息 */
         MsgAndarBaharPlayerHistoryRsp = 'MsgAndarBaharPlayerHistoryRsp',
+        /** 玩家获胜通知(跑马灯形式展示) */
+        MsgLastWinNtf = 'MsgLastWinNtf',
+        /** 前三名数据 */
+        MsgPlayerRankNtf = 'MsgPlayerRankNtf',
+        /** 前三名数据 */
+        RankList = 'RankList',
+        /** 前三名数据 */
+        MsgStockDeskHistoryReq = 'MsgStockDeskHistoryReq',
+        /** 前三名数据 */
+        MsgStockDeskHistory = 'MsgStockDeskHistory',
+        /** 前三名数据 */
+        StockInfo = 'StockInfo',
+        /** 股票历史列表请求 */
+        MsgStockDeskHistoryRsp = 'MsgStockDeskHistoryRsp',
+        /** 玩家获胜通知(跑马灯形式展示) */
+        MsgLastWinNtf = 'MsgLastWinNtf',
+        /** 前三名数据 */
+        MsgPlayerRankNtf = 'MsgPlayerRankNtf',
+        /** 前三名数据 */
+        RankInfo = 'RankInfo',
+        /** 前三名数据 */
+        RankList = 'RankList',
+        /** 请求排行榜 */
+        MsgGetRankReq = 'MsgGetRankReq',
+        /** 请求排行榜回复 */
+        MsgGetRankRsp = 'MsgGetRankRsp',
+    }
+
+    /** 阶段 */
+    interface BetData{
+        /**  下注元素ID */
+        bet_id? : number;
+        /**  下注金额 */
+        bet_coin? : string;
+        /** 是否是自动cashOut */
+        autoCashOut? : boolean;
+        /** 自动cashOutRate */
+        out_rate? : string;
+        /** 已经结算 */
+        is_settle? : boolean;
+        /** 结算的rate */
+        settle_out_rate? : string;
+        /** 是否是rebet */
+        is_rebet? : boolean;
+    }
+
+    /** EnterBaccaratReq 进入百人场请求 */
+    interface MsgEnterBaccaratReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  是否是换桌 */
+        change? : boolean;
+        /**  桌子类型 */
+        desk_type? : number;
+    }
+
+    /** EnterBaccaratReq 进入百人场请求 */
+    interface BetInfo{
+        /** 币种 */
+        currency : string;
+        /** 底注列表 */
+        bet_size : number[];
+        /** 倍数列表 */
+        multiple : number[];
+        /** 底注倍数列表 */
+        bet_index_rule : number[];
+        /** 最小下注 */
+        min_bet? : number;
+        /** 最大下注 */
+        max_bet? : number;
+        /** 快速下注列表 */
+        fast_bet_size : number[];
+        /** 默认显示选中底注 */
+        default_index : number;
+    }
+
+    /** EnterBaccaratReq 进入百人场请求 */
+    interface WalletInfo{
+        /** 币种 */
+        currency : string;
+        /** 余额 */
+        balance : number;
+    }
+
+    /** EnterBaccaratRsp 进入百人场请求响应 */
+    interface MsgEnterBaccaratRsp{
+    }
+
+    /** LeaveBaccaratReq 离开百人场请求 */
+    interface MsgLeaveBaccaratReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+    }
+
+    /** LeaveBaccaratRsp 离开百人场请求响应 */
+    interface MsgLeaveBaccaratRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+    }
+
+    /** BetBaccaratReq 百人场下注请求 */
+    interface MsgBetBaccaratReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  上次底注金额 */
+        prev_bet? : string;
+        /**  下注列表 */
+        bets : BetData[];
+    }
+
+    /** BetBaccaratRsp 百人场下注请求响应 */
+    interface MsgBetBaccaratRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  扣除金币 */
+        cost_coin? : string;
+        /**  我的最新金币余额 */
+        new_coin? : string;
+        /**  下注列表 */
+        bets : BetData[];
+    }
+
+    /** BetBaccaratCancelReq 百人场下注取消请求 */
+    interface MsgBetBaccaratCancelReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /** 取消下注的ID */
+        bet_id? : number;
+    }
+
+    /** BetBaccaratCancelRsp 百人场下注取消请求响应 */
+    interface MsgBetBaccaratCancelRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /** 取消下注的ID */
+        bet_id? : number;
+        /**  我的最新金币余额 */
+        new_coin? : string;
+    }
+
+    /** PauseBaccaratReq 暂停百人场请求 */
+    interface MsgPauseBaccaratReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+    }
+
+    /** PauseBaccaratRsp 暂停百人场请求响应 */
+    interface MsgPauseBaccaratRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+    }
+
+    /** BetPlayer 百人场下注请求 */
+    interface BetPlayer{
+        /**  昵称 */
+        name? : string;
+        /**  下注列表 */
+        bets : BetData[];
+        /**  玩家ID */
+        player_id? : number;
+        /**  头像 */
+        icon? : string;
+        /**  玩家信息 */
+        player_info? : string;
+        /**  lottery 期数 */
+        period? : string;
+        /**  是否机器人 */
+        is_robot? : boolean;
+    }
+
+    /** BetBaccaratNtf 最新玩家下注通知消息 */
+    interface MsgBetBaccaratNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  最新的下注玩家信息 */
+        players : BetPlayer[];
+    }
+
+    /** BaccaratNextStageNtf 阶段变化通知消息 */
+    interface MsgBaccaratNextStageNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  桌子阶段 */
+        stage? : baccarat.DeskStage;
+        /**  此阶段结束时间戳 */
+        end_time? : number;
+        /**  此阶段剩余秒数 */
+        have_sec? : number;
+        /** 当前期号 */
+        period_id? : string;
+        /** 股票点位（开奖和结算阶段会发） */
+        stock_info? : StockInfo;
+    }
+
+    /** BaccaratOnlineNtf 在线人数变化通知消息 */
+    interface MsgBaccaratOnlineNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  最新在线人数 */
+        online_sum? : number;
+    }
+
+    /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
+    interface MsgBaccaratAreaUserBetsNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  */
+        bet_num : AreaUserBetsNum[];
+    }
+
+    /** BaccaratAreaUserBetsNtf 每个区域用户下注累计值 */
+    interface AreaUserBetsNum{
+        /**  位置ID */
+        pos_id? : number;
+        /**  下注人数 */
+        user_sum? : number;
+        /**  下注和 */
+        bet_sum? : number;
+    }
+
+    /** BaccaratKickOutNtf 长时间未下注踢出通知消息 */
+    interface MsgBaccaratKickOutNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  玩家ID */
+        uid? : number;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface MsgLotteryHistoryReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  桌子类型 */
+        desk_type? : number;
+        /**  第几页 */
+        page? : number;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface MsgLotteryHistoryRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  历史开奖 */
+        history : LotteryHistory[];
+        /** 是否最后一页 */
+        IsLast? : boolean;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  桌子类型 */
+        desk_type? : number;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface LotteryHistory{
+        /**  期数 */
+        period? : string;
+        /**  开奖结果 */
+        open_res? : number;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface MsgEncryptedDataReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  期数 */
+        period? : string;
+        /** 桌子id */
+        desk_id? : number;
+        /** 桌子类型 */
+        desk_type? : number;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface MsgEncryptedDataRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  */
+        period? : string;
+        /** 明文 */
+        plain_text? : string;
+        /** 密文 */
+        encrypt_text? : string;
+    }
+
+    /** //////////////////////////// 5d   ///////////////////// */
+    interface MsgPlayerHistoryReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  桌子类型 */
+        desk_type? : number;
+        /**  第几页 */
+        page? : number;
+    }
+
+    /** 玩家下注信息 */
+    interface MsgPlayerHistoryRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  历史下注 */
+        history : PlayerHistory[];
+        /** 是否最后一页 */
+        IsLast? : boolean;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  桌子类型 */
+        desk_type? : number;
+    }
+
+    /** 玩家下注信息 */
+    interface PlayerHistory{
+        /**  期数 */
+        period? : string;
+        /**  下注位置id */
+        select? : number;
+        /**  下注金额 */
+        point? : string;
+        /**  开奖id */
+        pos_id? : number;
+        /**  赢奖数量 */
+        amount? : string;
+        /**  是否开奖 */
+        is_open? : boolean;
+    }
+
+    /** 玩家下注信息 */
+    interface MsgStockPlayerHistoryReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  第几页 （从1开始） */
+        page? : number;
+    }
+
+    /** 玩家下注信息 */
+    interface MsgStockPlayerHistoryRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  历史下注 */
+        history : MsgStockPlayerHistory[];
+        /**  第几页 */
+        page? : number;
+        /**  最大页数 */
+        max_page? : number;
+    }
+
+    /** 玩家下注信息 */
+    interface MsgStockPlayerHistory{
+        /**  期数 */
+        period? : string;
+        /**  下注位置id */
+        bet_id? : number;
+        /**  下注金额 */
+        bet_coin? : string;
+        /**  开奖id */
+        open_id? : number;
+        /**  开奖倍率 */
+        open_rate? : number;
+        /**  赢奖数量 */
+        win_coin? : string;
+        /**  是否开奖 */
+        is_open? : boolean;
+    }
+
+    /** 公平性验证 */
+    interface MsgStockEncryptedDataReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  期数 */
+        period? : string;
+        /** 桌子id */
+        desk_id? : number;
+    }
+
+    /** 公平性验证 */
+    interface MsgStockEncryptedDataRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  */
+        period? : string;
+        /** 明文 */
+        plain_text? : string;
+        /** 密文 */
+        encrypt_text? : string;
+    }
+
+    /** StockSettleNtf 结算通知消息 */
+    interface MsgStockSettleNtf{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  开奖位置ID */
+        open_id? : number;
+        /**  赢倍数 */
+        win_rate? : string;
+        /**  我的开奖数据 */
+        my_data? : MsgStockSettleData;
+        /**  开奖期数 */
+        period? : string;
+        /**  赢钱玩家列表 */
+        win_list : MsgStockWinData[];
+    }
+
+    /** StockSettleData 结算数据 */
+    interface MsgStockSettleData{
+        /**  位置ID */
+        bet_pos? : number;
+        /**  赢金币数 */
+        win_coin? : string;
+        /**  最新金币余额 */
+        new_coin? : string;
+    }
+
+    /** StockWinData 胜利者数据 */
+    interface MsgStockWinData{
+        /**  赢金币数 */
+        name? : string;
+        /**  赢金币数 */
+        win_coin? : string;
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
@@ -779,8 +1311,6 @@ declare namespace baccarat{
         max_bet? : number;
         /** 快速下注列表 */
         fast_bet_size : number[];
-        /** 默认显示选中底注 */
-        default_index : number;
     }
 
     /** EnterBaccaratReq 进入百人场请求 */
@@ -2119,6 +2649,132 @@ declare namespace baccarat{
         is_last? : boolean;
         /**  最大页数 */
         max_page_num? : number;
+    }
+
+    /** 玩家获胜通知(跑马灯形式展示) */
+    interface MsgLastWinNtf{
+        /**  玩家头像 */
+        avatar? : number;
+        /**  */
+        countryCode? : string;
+        /** 货币类型     */
+        currency? : string;
+        /** 玩家名字   */
+        username? : string;
+        /** 赢分      */
+        winAmount? : string;
+    }
+
+    /** 前三名数据 */
+    interface MsgPlayerRankNtf{
+        /** 前几名信息 */
+        ranks : RankList[];
+    }
+
+    /** 前三名数据 */
+    interface RankList{
+        /** 玩家id */
+        player_id? : string;
+        /** 玩家金额 */
+        balance? : number;
+        /** 玩家icon */
+        icon? : number;
+    }
+
+    /** 前三名数据 */
+    interface MsgStockDeskHistoryReq{
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /** 第几页 （从1开始） */
+        page? : number;
+    }
+
+    /** 前三名数据 */
+    interface MsgStockDeskHistory{
+        /**  */
+        period? : string;
+        /** 股票曲线点位 */
+        stock_info? : StockInfo;
+    }
+
+    /** 前三名数据 */
+    interface StockInfo{
+        /** 基础值 */
+        base? : number;
+        /** 涨跌值列表 */
+        points : number[];
+        /** 当前期号 */
+        period_id? : string;
+        /** 配置时间（下注时间） */
+        cfg_bet_time? : number;
+    }
+
+    /** 股票历史列表请求 */
+    interface MsgStockDeskHistoryRsp{
+        /**  请求结果信息 */
+        result? : commonrummy.RummyResult;
+        /**  主题ID */
+        theme_id? : number;
+        /**  桌子ID */
+        desk_id? : number;
+        /**  历史信息 */
+        infos : MsgStockDeskHistory[];
+        /**  第几页 */
+        page? : number;
+        /**  最大页数 */
+        max_page? : number;
+    }
+
+    /** 玩家获胜通知(跑马灯形式展示) */
+    interface MsgLastWinNtf{
+        /**  玩家头像 */
+        avatar? : number;
+        /**  */
+        countryCode? : string;
+        /** 货币类型     */
+        currency? : string;
+        /** 玩家名字   */
+        username? : string;
+        /** 赢分      */
+        winAmount? : string;
+    }
+
+    /** 前三名数据 */
+    interface MsgPlayerRankNtf{
+        /** 前三名信息 */
+        ranks : RankList[];
+    }
+
+    /** 前三名数据 */
+    interface RankInfo{
+        /** 前三名信息 */
+        ranks : RankList[];
+    }
+
+    /** 前三名数据 */
+    interface RankList{
+        /** 玩家id */
+        player_id? : string;
+        /** 玩家金额 */
+        balance? : number;
+        /** 玩家icon */
+        icon? : number;
+    }
+
+    /** 请求排行榜 */
+    interface MsgGetRankReq{
+        /**  147，日榜，258，月，369，年 */
+        rank_type? : number;
+    }
+
+    /** 请求排行榜回复 */
+    interface MsgGetRankRsp{
+        /** 请求时间  */
+        save_time? : string;
+        /**  我的开奖数据 */
+        rank : game.SevenUpDownRankData[];
     }
 
 }

@@ -6,7 +6,6 @@ import * as cc from 'cc';
 import { Node } from 'cc';
 import { UIOpacity } from 'cc';
 import { v3 } from 'cc';
-import WheelManager from '../../manager/wheel-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 

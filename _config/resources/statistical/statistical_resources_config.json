@@ -114,5 +114,13 @@
     "CustomHistoryItem": {
         "statisticalId": 100001028,
         "panelId": 28
+    },
+    "CustomRoulettePointer": {
+        "statisticalId": 100001029,
+        "panelId": 29
+    },
+    "CustomResult": {
+        "statisticalId": 100001030,
+        "panelId": 30
     }
 }

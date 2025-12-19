@@ -6,7 +6,7 @@ import * as cc from 'cc';
 import AudioManager from '../core/manager/audio-manager';
 import { Global } from '../global';
 import { BaseMessage } from '../core/message/base-message';
-import WheelManager from '../manager/wheel-manager';
+import GameManager from '../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -46,20 +46,20 @@ export default class CustomTime extends ViewBase {
     }
 
     updateGameStage() {
-        this._stage = WheelManager.Stage;
+        this._stage = GameManager.Stage;
         this.node.active = (this._stage == baccarat.DeskStage.StartBetStage || this._stage == baccarat.DeskStage.SettleStage) ? true : false;
     }
 
     private _currentHaveSec: number = 0;
     protected lateUpdate(dt: number): void {
         if (this._stage != baccarat.DeskStage.StartBetStage && this._stage != baccarat.DeskStage.SettleStage) return;
-        const left = WheelManager.minusHaveSec(dt);
-        const maxSec = WheelManager.Dur;
+        const left = GameManager.minusHaveSec(dt);
+        const maxSec = GameManager.Dur;
         const secNow = Math.ceil(left);
         if (secNow !== this._currentHaveSec) {
             this._currentHaveSec = secNow;
             this.labeltime.string = secNow.toString();
-            if (WheelManager.Stage == baccarat.DeskStage.StartBetStage) {
+            if (GameManager.Stage == baccarat.DeskStage.StartBetStage) {
                 if (this._isGameInBackground == false) {
                     if (secNow == 5) {
                         AudioManager.playSound(this.bundleName, '倒计时剩余五秒时候播放');

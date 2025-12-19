@@ -51,7 +51,7 @@ export default class CustomChipItem extends ReusableBase {
             if (+data.bet_coin == value) index = idx;
         })
         this.node.getComponent(UIOpacity).opacity = 255;
-        this.spricon.spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + index) + "/spriteFrame");
+        this.spricon.spriteFrame = this.getSpriteFrame("textures/common/AB_Img_" + (22 + index) + "/spriteFrame");
         this.labeltitle.string = _chipButtons[index] ? _chipButtons[index] + '' : '';
         this.labeltitle.color = new Color(this._chipColor[index]);
     }

@@ -7,8 +7,7 @@ import * as cc from 'cc';
 import CustomOnlineInRoom from 'db://assets/resources/scripts/view/common/CustomOnlineInRoom';
 import CustomOtherBetUser from 'db://assets/resources/scripts/view/common/CustomOtherBetUser';
 import CustomTopRankUser from 'db://assets/resources/scripts/view/common/CustomTopRankUser';
-import WheelManager from '../../manager/wheel-manager';
-import { betInfo } from '../../manager/common-manager';
+import CommonManager, { betInfo } from '../../manager/common-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -29,10 +28,10 @@ export default class CustomAllUser extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
-    topUserList: wheel.RankList[] = [];
+    topUserList: baccarat.RankList[] = [];
     initPlayer() {
         this.onlineInRoom.updateOnlineInRoom();
-        this.topUserList = WheelManager.getTopPlayerData();
+        this.topUserList = CommonManager.getTopPlayerData();
         this.ndTopRankUser.children.forEach((child, idx) => {
             child.getComponent(CustomTopRankUser).init(idx, this.topUserList[idx] || null);
         })
@@ -40,7 +39,7 @@ export default class CustomAllUser extends ViewBase {
     }
 
     updatePlayer() {
-        this.topUserList = WheelManager.getTopPlayerData();
+        this.topUserList = CommonManager.getTopPlayerData();
         this.ndTopRankUser.children.forEach((child, idx) => {
             child.getComponent(CustomTopRankUser).updateUserHead(this.topUserList[idx] || null);
         })
@@ -60,7 +59,7 @@ export default class CustomAllUser extends ViewBase {
 
     getWorldPosByUid(playerid: string): cc.Vec3 {
         let wordPos = this.otherUser.node.parent.transform.convertToWorldSpaceAR(this.otherUser.node.position);;
-        this.topUserList.forEach((value: wheel.RankList, idx: number) => {
+        this.topUserList.forEach((value: baccarat.RankList, idx: number) => {
             if (value.player_id == playerid) {
                 const child = this.ndTopRankUser.children[idx];
                 child.getComponent(CustomTopRankUser).playBetHeadAnimation();

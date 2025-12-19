@@ -11,7 +11,8 @@ import WalletManager from '../../manager/wallet-manager';
 import { tween } from 'cc';
 import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
-import WheelManager from '../../manager/wheel-manager';
+import CommonManager from '../../manager/common-manager';
+import GameManager from '../../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -47,9 +48,9 @@ export default class CustomTopRankUser extends ViewBase {
     }
     
     @ViewBase.requireResourceLoaded
-    init(index: number, data: wheel.RankList | null) {
+    init(index: number, data: baccarat.RankList | null) {
         this._index = index;
-        this.sprRank.spriteFrame = this.getSpriteFrame(`textures/common/YXXYH_Img_${index + 1}`);
+        this.sprRank.spriteFrame = this.getSpriteFrame(`textures/common/rankings_${index + 1}`);
         this.ndCrown.active = index == 0 ? true : false;
         if (!data) {
             this._playerId = '-1';
@@ -63,7 +64,7 @@ export default class CustomTopRankUser extends ViewBase {
         this.ndMask.active = false;
     }
 
-    updateUserHead(data: wheel.RankList | null) {
+    updateUserHead(data: baccarat.RankList | null) {
         if (!data) {
             this._playerId = '-1';
             this.node.active = false;
@@ -79,7 +80,7 @@ export default class CustomTopRankUser extends ViewBase {
 
     updatePlayBalance() {
         if (this._playerId == '-1') return;
-        const data = WheelManager.getTopPlayerDataById(this._playerId);
+        const data = CommonManager.getTopPlayerDataById(this._playerId);
         if (!data) return;
         this.labelCoin.string = CurrencyHelper.format(data.balance, this._currency, { showSymbol: true });
     }
@@ -134,7 +135,7 @@ export default class CustomTopRankUser extends ViewBase {
 
     updateResult() {
         if (this._playerId == '-1') return;
-        const data = WheelManager.getBetInfoByPlayId(this._playerId);
+        const data = GameManager.getBetInfoByPlayId(this._playerId);
         if (!data || data.length == 0) return;
         let count = 0;
         data.forEach(v => {

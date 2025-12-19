@@ -6,8 +6,6 @@ import * as cc from 'cc';
 import { tween } from 'cc';
 import { math } from 'cc';
 import { Vec3 } from 'cc';
-import { UIOpacity } from 'cc';
-import { v3 } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -26,126 +24,130 @@ export default class CustomRouletteWheel extends ViewBase {
         super.onDestroy();
     }
 
+    update(dt: number): void {
+        if (this._isSpinning && this._rotationSpeed > 0) {
+            this._currentAngle += this._rotationSpeed * dt;
+            this._currentAngle = ((this._currentAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+            this.updateRotation();
+        }
+    }
     //------------------------ 内部逻辑 ------------------------//
-    wheelRadius = 328;
-    sectors: number = 37;
-    startSpeed: number = 200; // 调整为合适的速度
-    spinDuration: number = 5;
     _currentAngle: number = 0; // 当前角度（弧度）
     _rotationSpeed: number = 0; // 旋转速度（弧度/秒）
-    isSpinning: boolean = false;
-
-    // 速度参数
-    maxSpinSpeed: number = 30; // 最大旋转速度（弧度/秒），增加这个值可以让转盘转得更快
-    accelerationTime: number = 0.5; // 加速时间（秒）
-    decelerationTime: number = 2.0; // 减速时间（秒），减少这个值可以更快停止
-    minSpeedThreshold: number = 0.1; // 最小速度阈值（弧度/秒），低于这个值就停止
-    private _enterPos: Vec3 = new Vec3();
-    private _hiddenPos: Vec3 = new Vec3();
-    private _uiOpacity: UIOpacity = null;
+    _isSpinning: boolean = false;
+    _enterPos: Vec3 = new Vec3();
+    _hiddenPos: Vec3 = new Vec3();
     // 角度相关方法
     get currentAngle(): number {
         return this._currentAngle;
-    }
-
-    set currentAngle(value: number) {
-        this._currentAngle = value;
-        this.updateRotation();
     }
 
     get rotationSpeed(): number {
         return this._rotationSpeed;
     }
 
-    set rotationSpeed(value: number) {
-        this._rotationSpeed = value;
-    }
-    
-    buildUi() {
-        // 记录“正常位置”
-        this._enterPos = v3(0, 180, 0);
-        // 上方隐藏位置（你也可以把 500 调大/调小）
-        this._hiddenPos = this._enterPos.clone();
-        this._hiddenPos.y += 500;
-        // 透明度组件（没有就加一个）
-        this._uiOpacity = this.node.getComponent(UIOpacity) || this.node.addComponent(UIOpacity);
-        // 默认先隐藏在上方（如果你希望场景初始可见，就别做这两行）
-        this.node.setPosition(this._hiddenPos);
-        this._uiOpacity.opacity = 0;
+    get Position(): Vec3 {
+        return this.node.getPosition()
     }
 
-    public playEnter(duration: number = 0.5): Promise<void> {
+    buildUi() {
+        this._enterPos = new Vec3(0, 180, 0);
+        this._hiddenPos = this._enterPos.clone();
+        this._hiddenPos.y += 630;
+        this.node.setPosition(this._hiddenPos);
+    }
+
+    async playEnter(duration: number = 0.5): Promise<void> {
         return new Promise((resolve) => {
             this.node.active = true;
-
-            // 从上方落下 + 渐显 + 轻微回弹
             tween(this.node)
                 .stop()
                 .set({ position: this._hiddenPos, scale: new Vec3(0.96, 0.96, 1) })
                 .to(duration, { position: this._enterPos }, { easing: 'backOut' })
-                .start();
-
-            tween(this._uiOpacity)
-                .stop()
-                .set({ opacity: 0 })
-                .to(duration * 0.9, { opacity: 255 }, { easing: 'quadOut' })
-                .call(resolve)
+                .call(() => {
+                    resolve();
+                })
                 .start();
         });
     }
 
-    public playExit(duration: number = 0.45): Promise<void> {
+    async playExit(duration: number = 0.45): Promise<void> {
         return new Promise((resolve) => {
-            // 上收 + 渐隐
             tween(this.node)
                 .stop()
                 .to(duration, { position: this._hiddenPos }, { easing: 'quadIn' })
                 .call(() => {
-                    this.node.active = false;
                     resolve();
                 })
-                .start();
-
-            tween(this._uiOpacity)
-                .stop()
-                .to(duration * 0.9, { opacity: 0 }, { easing: 'quadIn' })
                 .start();
         });
     }
 
-    // 更新轮盘旋转
-    private updateRotation(): void {
-        // 1. 标准化角度到 [0, 2π) 范围
+    updateRotation(): void {
         if (this._currentAngle >= 2 * Math.PI) {
             this._currentAngle -= 2 * Math.PI;
         } else if (this._currentAngle < 0) {
             this._currentAngle += 2 * Math.PI;
         }
-        // 将弧度转换为度（用于显示）
         const degrees = math.toDegree(this._currentAngle);
         this.node.setRotationFromEuler(0, 0, -degrees);
     }
 
-    // 开始旋转 - 加速到目标速度
-    startSpin(targetRPS: number = 2.5): Promise<void> {  // RPS = Revolutions Per Second 每秒圈数
+    async startSpin(targetRPS: number = 1, speedTime: number = 1): Promise<void> {
         return new Promise((resolve) => {
-            if (this.isSpinning) {
+            if (this._isSpinning) {
                 resolve();
                 return;
             }
-            this.isSpinning = true;
+            this._isSpinning = true;
             const speedWrapper = { value: 0 };
             // 转换为弧度/秒：2π * 圈数/秒
             const targetSpeed = (2 * Math.PI) * targetRPS;
-            console.log(`启动旋转: ${targetRPS}圈/秒, ${targetSpeed.toFixed(2)}弧度/秒`);
             tween(speedWrapper)
-                .to(1.2, { value: targetSpeed }, {
+                .to(speedTime, { value: targetSpeed }, {
                     easing: 'quartIn',
                     onUpdate: (target: any) => {
-                        this.rotationSpeed = target.value;
+                        this._rotationSpeed = target.value;
                     },
                     onComplete: () => {
-                        console.log(`轮盘达到稳定速度: ${(this.rotationSpeed / (2 * Math.PI)).toFixed(2)}圈/秒`);
+                        console.log(`轮盘达到稳定速度: ${(this._rotationSpeed / (2 * Math.PI)).toFixed(2)}圈/秒`);
+                        resolve();
+                    }
+                })
+                .start();
+        });
+    }
+    /**
+     * 软减速：把轮盘速度从当前值缓慢降到一个“仍在转”的最小速度（不会停）
+     * 用于在球 slowDownAndStop 期间提前让 wheel 开始减速，但真正停止留给后续 slowDownAndStop/lockToWheel 阶段。
+     */
+    async softSlowDown(duration: number = 1.6, keepSpeedRatio: number = 0.6): Promise<void> {
+        return new Promise((resolve) => {
+            if (!this._isSpinning) {
+                resolve();
+                return;
+            }
+            const startSpeed = this._rotationSpeed;
+            const startAbs = Math.abs(startSpeed);
+            const sign = startSpeed >= 0 ? 1 : -1;
+
+            // 确保不会减到 0（至少留一点点速度）
+            const minAbs = Math.max(startAbs * keepSpeedRatio, 0.03);
+
+            const speedWrapper = { value: startAbs };
+            tween(speedWrapper)
+                .stop()
+                .to(duration, { value: minAbs }, {
+                    easing: 'quadOut',
+                    onUpdate: (target: any) => {
+                        // 只要还在 spinning，就持续更新；否则退出
+                        if (!this._isSpinning) return;
+                        this._rotationSpeed = sign * Math.max(target.value, minAbs);
+                    },
+                    onComplete: () => {
+                        if (this._isSpinning) {
+                            this._rotationSpeed = sign * minAbs;
+                        }
                         resolve();
                     }
                 })
@@ -153,84 +155,42 @@ export default class CustomRouletteWheel extends ViewBase {
         });
     }
 
-    // 减速停止 - 使用更激进的减速曲线
-    slowDownAndStop(duration: number = 2): Promise<void> {
+    async slowDownAndStop(duration: number = 2): Promise<void> {
         return new Promise((resolve) => {
-            if (!this.isSpinning) {
+            if (!this._isSpinning) {
                 resolve();
                 return;
             }
-            console.log(`开始减速: 当前速度 ${(this._rotationSpeed / (2 * Math.PI)).toFixed(2)}圈/秒`);
-            let elapsedTime = 0;
-            const slowDownUpdate = () => {
-                if (!this.isSpinning) return;
-                elapsedTime += 0.016;
-                const progress = Math.min(elapsedTime / duration, 1);
+            const startSpeed = this._rotationSpeed;
+            let elapsed = 0;
+            const update = (dt: number) => {
+                if (!this._isSpinning) return;
 
-                // 更真实的减速曲线
-                let friction;
-                if (progress < 0.3) {
-                    friction = 0.996; // 开始阶段减速较慢
-                } else if (progress < 0.6) {
-                    friction = 0.990; // 中间阶段正常减速
-                } else if (progress < 0.85) {
-                    friction = 0.980; // 接近停止时减速加快
-                } else {
-                    friction = 0.960; // 最后阶段快速停止
-                }
-                this._rotationSpeed *= friction;
-
-                // 显示当前速度
-                if (Math.floor(elapsedTime * 10) % 10 === 0) { // 每0.1秒显示一次
-                    const currentRPS = this._rotationSpeed / (2 * Math.PI);
-                    console.log(`减速中: ${currentRPS.toFixed(3)}圈/秒, 进度 ${(progress * 100).toFixed(1)}%`);
-                }
-                if (this._rotationSpeed < 0.02 || progress >= 1) { // 调整停止阈值
+                elapsed += dt;
+                const progress = Math.min(elapsed / duration, 1);
+                // easeOutCubic（前快后慢，很适合轮盘）
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                this._rotationSpeed = startSpeed * (1 - easeOut);
+                if (this._rotationSpeed < 0.02 || progress >= 1) {
                     this._rotationSpeed = 0;
-                    this.isSpinning = false;
-                    console.log('轮盘停止旋转');
-                    this.unschedule(slowDownUpdate);
+                    this._isSpinning = false;
+                    this.unschedule(update);
                     resolve();
                 }
             };
-            this.schedule(slowDownUpdate, 0.016);
+            this.schedule(update);
         });
     }
 
-    // 重置
     reset(): void {
-        this.isSpinning = false;
+        this._isSpinning = false;
         this._currentAngle = 0;
         this._rotationSpeed = 0;
         this.node.setPosition(this._hiddenPos);
-        this._uiOpacity.opacity = 0;
         this.updateRotation();
         this.unscheduleAllCallbacks();
     }
 
-    // 更新函数
-    update(deltaTime: number): void {
-        if (this.isSpinning && this._rotationSpeed > 0) {
-            // 更新角度：速度 * 时间
-            this._currentAngle += this._rotationSpeed * deltaTime;
-            this._currentAngle = ((this._currentAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
-            this.updateRotation();
-        }
-    }
-
-    // 辅助方法：等待轮盘稳定
-    waitForWheelStable(): Promise<void> {
-        return new Promise((resolve) => {
-            const checkStable = () => {
-                if (Math.abs(this.rotationSpeed) > 0.1) { // 有足够速度
-                    resolve();
-                } else {
-                    setTimeout(checkStable, 50);
-                }
-            };
-            checkStable();
-        });
-    }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 

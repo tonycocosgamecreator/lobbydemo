@@ -138,6 +138,13 @@
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100003600
+        },
+        "cc_buttonA": {
+            "viewName": "CustomRoulette",
+            "buttonName": "cc_buttonA",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100003601
         }
     },
     "CustomTopRankUser": {

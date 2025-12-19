@@ -11,9 +11,9 @@ import { tween } from 'cc';
 import WalletManager from '../../manager/wallet-manager';
 import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
-import WheelManager from '../../manager/wheel-manager';
 import CommonManager from '../../manager/common-manager';
 import AudioManager from '../../core/manager/audio-manager';
+import GameManager from '../../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -45,13 +45,13 @@ export default class CustomUser extends ViewBase {
     }
 
     updatePlayer() {
-        this.labelName.string = CommonManager.showName(WheelManager.PlayerId);
+        this.labelName.string = CommonManager.showName(GameManager.PlayerId);
         this.updateHead();
         this.updatePlayBalance();
     }
 
     updateHead() {
-        this.sprHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${WheelManager.Icon}`);
+        this.sprHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${GameManager.Icon}`);
     }
 
     updateTotalBalance(balance: number): void {
@@ -64,7 +64,7 @@ export default class CustomUser extends ViewBase {
     }
 
     updateResult() {
-        const data = WheelManager.getBetInfoByPlayId();
+        const data = GameManager.getBetInfoByPlayId();
         if (!data || data.length == 0) return;
         let count = 0;
         data.forEach(v => {

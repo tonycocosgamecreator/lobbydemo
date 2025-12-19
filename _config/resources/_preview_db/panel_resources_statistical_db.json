@@ -120,6 +120,12 @@
         "desc": "",
         "statisticalId": 100001012
     },
+    "CustomResult": {
+        "viewName": "CustomResult",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001030
+    },
     "CustomRoomData": {
         "viewName": "CustomRoomData",
         "bundleName": "resources",
@@ -143,6 +149,12 @@
         "bundleName": "resources",
         "desc": "",
         "statisticalId": 100001027
+    },
+    "CustomRoulettePointer": {
+        "viewName": "CustomRoulettePointer",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001029
     },
     "CustomRouletteWheel": {
         "viewName": "CustomRouletteWheel",

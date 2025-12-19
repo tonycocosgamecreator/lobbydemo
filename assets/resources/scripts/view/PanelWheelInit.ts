@@ -5,13 +5,12 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import Managers from '../core/manager/managers';
 import CommonManager from '../manager/common-manager';
-import WheelManager from '../manager/wheel-manager';
 import ViewManager from '../core/manager/view-manager';
 //------------------------特殊引用开始----------------------------//
-import CustomDesk from 'db://assets/resources/scripts/view/CustomDesk';
 import JsonLoginManager from '../network/managers/json-login-manager';
 import HistoryManager from '../manager/history-manager';
 import AudioManager from '../core/manager/audio-manager';
+import GameManager from '../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -37,7 +36,7 @@ export default class PanelWheelInit extends ViewBase {
     buildUi() {
         AudioManager.playBgm(this.bundleName, '背景音乐')
         Managers.registe(CommonManager);
-        Managers.registe(WheelManager);
+        Managers.registe(GameManager);
         Managers.registe(HistoryManager);
         JsonLoginManager.Login();
     }
@@ -46,7 +45,7 @@ export default class PanelWheelInit extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == wheel.Message.MsgEnterSevenUpDownRsp) {
+        if (msgType == game.Message.MsgEnterSevenUpDownRsp) {
             ViewManager.OpenPanel(this.module, "PanelWheelMain");
             this.close();
             return true

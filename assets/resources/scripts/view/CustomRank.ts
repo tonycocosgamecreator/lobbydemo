@@ -38,13 +38,13 @@ export default class CustomRank extends ViewBase {
     }
 
     //------------------------ 内部逻辑 ------------------------//
-    _list: wheel.SevenUpDownRankData[] = [];
+    _list: game.SevenUpDownRankData[] = [];
     _gid: number = 0;
     buildUi() {
         this.tabGroup.init();
         this.tabGroup.iconSpriteFrames = [
             null,
-            this.getSpriteFrame("textures/ui/7up_Img_27"),
+            this.getSpriteFrame("textures/common/7up_Img_27"),
         ];
         this.tabGroup.titleColors = [
             cc.color("#A4AAB3"),
@@ -65,10 +65,10 @@ export default class CustomRank extends ViewBase {
         this.reset();
         if (this._gid == _gid) return;
         this._gid = _gid;
-        MessageSender.SendMessage(wheel.Message.MsgGetRankReq, { rank_type: _gid });
+        MessageSender.SendMessage(game.Message.MsgGetRankReq, { rank_type: _gid });
     }
 
-    updateRank(list: wheel.SevenUpDownRankData[]) {
+    updateRank(list: game.SevenUpDownRankData[]) {
         const currency = WalletManager.currency;
         this._list = list;
         this.rankList.stopScrollTo();

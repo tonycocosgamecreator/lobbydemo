@@ -8,8 +8,8 @@ import { UIOpacity } from 'cc';
 import { Vec3 } from 'cc';
 import { Vec2 } from 'cc';
 import { UITransform } from 'cc';
-import WheelManager from '../manager/wheel-manager';
 import { randomRange } from 'cc';
+import GameManager from '../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -98,7 +98,7 @@ export default class CustomBetArea extends ViewBase {
         );
     }
     showResult(isReconnect = false) {
-        let winArea = WheelManager.WinArea;
+        let winArea = GameManager.WinArea;
         if (winArea.indexOf(this._areaId) != -1) {
             if (isReconnect) {
                 this.light.node.active = true;
@@ -120,7 +120,7 @@ export default class CustomBetArea extends ViewBase {
     private onClickButtonClick(event: cc.EventTouch) {
         const touchPos = event.getUILocation();
         let world = this.checkPos(touchPos);
-        WheelManager.sendMyBetMessage(this._areaId, world)
+        GameManager.sendMyBetMessage(this._areaId, world)
     }
     // @view export event end
 

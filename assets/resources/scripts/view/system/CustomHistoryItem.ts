@@ -26,7 +26,7 @@ export default class CustomHistoryItem extends ViewBase {
     //------------------------ 内部逻辑 ------------------------//
 
     @ViewBase.requireResourceLoaded
-    fillData(data: wheel.SevenUpDownPlayerHistory, index: number) {
+    fillData(data: game.SevenUpDownPlayerHistory, index: number) {
         const urls1 = ['textures/system/icon_tc_bz_02/spriteFrame', 'textures/system/XFJ_Img_9/spriteFrame'];
         this.itemBg.spriteFrame = this.getSpriteFrame(urls1[index % 2]);
         this.labelPeriod.string = data.period;
@@ -34,7 +34,7 @@ export default class CustomHistoryItem extends ViewBase {
         this.labelBetVal.string = CurrencyHelper.format(+data.bet, currency);
         this.labelWinBet.string = CurrencyHelper.format(+data.win_coin, currency);
         this.labelDice.string = data.win_type[0] + '';
-        this.sprbg.getComponent(cc.Sprite).spriteFrame= this.getSpriteFrame(`textures/wheel/LP_Img_${this.getColorByIdx(data.win_type[0])}/spriteFrame`);
+        this.sprbg.getComponent(cc.Sprite).spriteFrame= this.getSpriteFrame(`textures/ui/LP_Img_${this.getColorByIdx(data.win_type[0])}/spriteFrame`);
     }
      //1 红色 2黑色 3绿色
     getColorByIdx(idx: number): number {

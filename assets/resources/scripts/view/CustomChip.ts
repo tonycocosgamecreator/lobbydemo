@@ -91,7 +91,7 @@ export default class CustomChip extends ViewBase {
             button.getComponentInChildren(cc.Label).string = num + '';
             if (idx >= this._chipColor.length) idx -= this._chipColor.length;
             button.getComponentInChildren(cc.Label).color = new Color(this._chipColor[idx]);
-            button.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + idx) + "/spriteFrame");
+            button.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/common/AB_Img_" + (22 + idx) + "/spriteFrame");
             button.name = idx + '';
             button.active = false;
             button.on(NodeEventType.TOUCH_START, (event: EventTouch) => {
@@ -127,7 +127,7 @@ export default class CustomChip extends ViewBase {
         if (idx >= this._chipColor.length) idx -= this._chipColor.length;
         this.buttonclick.getComponentInChildren(cc.Label).string = this._chipButtons[idx] + '';
         this.buttonclick.getComponentInChildren(cc.Label).color = new Color(this._chipColor[idx]);
-        this.buttonclick.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/ui/AB_Img_" + (22 + idx) + "/spriteFrame");
+        this.buttonclick.getComponentInChildren(cc.Sprite).spriteFrame = this.getSpriteFrame("textures/common/AB_Img_" + (22 + idx) + "/spriteFrame");
     }
 
     playAnimation(show: boolean) {

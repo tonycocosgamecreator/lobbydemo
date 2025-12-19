@@ -38,6 +38,9 @@ export default class HttpLobbyHelper {
         return msg;
 
     }
+    /**
+     * 获取游戏在线人数
+     */
     public static async GetOnlineNum(): Promise<any | null> {
         const data = await HttpLobbyConnector.instance.send({
             type: 'GET',

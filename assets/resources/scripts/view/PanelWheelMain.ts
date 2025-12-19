@@ -12,13 +12,12 @@ import CustomFlyChip from 'db://assets/resources/scripts/view/CustomFlyChip';
 import CustomHandle from 'db://assets/resources/scripts/view/CustomHandle';
 import CustomMainHistory from 'db://assets/resources/scripts/view/CustomMainHistory';
 import CustomOnline from 'db://assets/resources/scripts/view/common/CustomOnline';
-import CustomRoomData from 'db://assets/resources/scripts/view/CustomRoomData';
 import CustomRoulette from 'db://assets/resources/scripts/view/CustomRoulette';
 import CustomScore from 'db://assets/resources/scripts/view/CustomScore';
 import CustomTop from 'db://assets/resources/scripts/view/CustomTop';
+import CustomRoomData from 'db://assets/resources/scripts/view/common/CustomRoomData';
 import CustomUser from 'db://assets/resources/scripts/view/common/CustomUser';
 import CustomWin from 'db://assets/resources/scripts/view/common/CustomWin';
-import WheelManager from '../manager/wheel-manager';
 import { Global } from '../global';
 import { BaseMessage } from '../core/message/base-message';
 import AudioManager from '../core/manager/audio-manager';
@@ -26,6 +25,7 @@ import { betInfo } from '../manager/common-manager';
 import { Vec3 } from 'cc';
 import { IPanelWheelMainView } from '../define/ipanel-wheel-main-view';
 import { GameEvent } from '../define';
+import GameManager from '../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -38,13 +38,13 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
-        WheelManager.View = this;
+        GameManager.View = this;
         this.buildUi();
     }
 
     protected onDestroy(): void {
         super.onDestroy();
-        WheelManager.View = null;
+        GameManager.View = null;
     }
 
     protected start(): void {
@@ -70,7 +70,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     }
 
     updateReconnect() {
-        this._stage = WheelManager.Stage;
+        this._stage = GameManager.Stage;
         if (this._stage == -1) return;
         this.reset();
         this.desk.initData(this._stage);
@@ -86,7 +86,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     }
 
     async updateGameStage() {
-        this._stage = WheelManager.Stage;
+        this._stage = GameManager.Stage;
         this.handle.updateGameStage(this._stage);
         this.buttom.updateGameStage(this._stage);
         this.score.updateGameStage(this._stage);
@@ -120,33 +120,34 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
             case baccarat.DeskStage.SettleStage:
                 this.skeXiazhu.node.active = false;
                 this.roulette.node.active = true;
-                const win = WheelManager.WinType;
+                const win = GameManager.WinType;
+                this.roulette.reset();
+                this.deskRoulette.node.active = false;
                 await this.roulette.startGame(win);
-                this.scheduleOnce(() => {
-                    this.roulette.node.active = false;
-                    this.desk.showResult();
-                    const data = WheelManager.getBetInfoByPlayId();
-                    if (!data || data.length == 0) return;
-                    let count = 0;
-                    data.forEach(v => {
-                        if (v.win > 0) {
-                            count = count.add(v.win);
-                        }
-                    })
-                    if (count > 0) {
-                        if (this._isGameInBackground == false) {
-                            AudioManager.playSound(this.bundleName, '当前玩家赢分播放音效');
-                        }
+                this.deskRoulette.node.active = true;
+                this.roulette.node.active = false;
+                this.desk.showResult();
+                const data = GameManager.getBetInfoByPlayId();
+                if (!data || data.length == 0) return;
+                let count = 0;
+                data.forEach(v => {
+                    if (v.win > 0) {
+                        count = count.add(v.win);
                     }
-                }, 1)
+                })
+                if (count > 0) {
+                    if (this._isGameInBackground == false) {
+                        AudioManager.playSound(this.bundleName, '当前玩家赢分播放音效');
+                    }
+                }
                 this.scheduleOnce(() => {
                     this.flychip.recycleChip()
-                }, 2);
+                }, 1);
                 this.scheduleOnce(() => {
                     this.user.updateResult();
                     this.alluser.updateResult();
                     Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
-                }, 3.5)
+                }, 2.5)
                 break;
         }
     }
@@ -194,6 +195,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
         this.skeStart.node.active = false;
         this.skeXiazhu.node.active = false;
         this.roulette.node.active = false;
+        this.deskRoulette.node.active = true;
     }
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
@@ -218,6 +220,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
             cc_buttom: [CustomButtom],
             cc_chip: [CustomChip],
             cc_desk: [CustomDesk],
+            cc_deskRoulette: [cc.Sprite],
             cc_flychip: [CustomFlyChip],
             cc_handle: [CustomHandle],
             cc_history: [CustomMainHistory],
@@ -225,7 +228,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
             cc_room: [CustomRoomData],
             cc_roulette: [CustomRoulette],
             cc_score: [CustomScore],
-            cc_scroll: [cc.Sprite],
+            cc_scroll: [cc.ScrollView],
             cc_skeStart: [cc.sp.Skeleton],
             cc_skeXiazhu: [cc.sp.Skeleton],
             cc_top: [CustomTop],
@@ -239,6 +242,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     protected buttom: CustomButtom = null;
     protected chip: CustomChip = null;
     protected desk: CustomDesk = null;
+    protected deskRoulette: cc.Sprite = null;
     protected flychip: CustomFlyChip = null;
     protected handle: CustomHandle = null;
     protected history: CustomMainHistory = null;
@@ -246,7 +250,7 @@ export default class PanelWheelMain extends ViewBase implements IPanelWheelMainV
     protected room: CustomRoomData = null;
     protected roulette: CustomRoulette = null;
     protected score: CustomScore = null;
-    protected scroll: cc.Sprite = null;
+    protected scroll: cc.ScrollView = null;
     protected skeStart: cc.sp.Skeleton = null;
     protected skeXiazhu: cc.sp.Skeleton = null;
     protected top: CustomTop = null;

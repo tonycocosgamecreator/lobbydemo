@@ -6,10 +6,10 @@ import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import { v3 } from 'cc';
-import WheelManager from '../manager/wheel-manager';
 import WalletManager from '../manager/wallet-manager';
 import { CurrencyHelper } from '../helper/currency-helper';
 import CommonManager from '../manager/common-manager';
+import GameManager from '../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -44,7 +44,7 @@ export default class CustomAllBets extends ViewBase {
     updateData(result: boolean = false) {
         if (result) {
             this.updateBetsPlayer();
-            let list = WheelManager.getBetInfoByPlay();
+            let list = GameManager.getBetInfoByPlay();
             let arr = [];
             let allwin = 0;
             for (let i = 0; i < list.length; i++) {
@@ -95,7 +95,7 @@ export default class CustomAllBets extends ViewBase {
     }
 
     updateBetsPlayer() {
-        let list = WheelManager.getBetInfoByPlay();
+        let list = GameManager.getBetInfoByPlay();
         this.recordList.stopScrollTo();
         this.recordList.itemRender = (item: cc.Node, i: number) => {
             const data = list[i];
@@ -116,7 +116,7 @@ export default class CustomAllBets extends ViewBase {
     }
 
     updateBetPlayerHead(result: number[] = null) {
-        const info = result ? result : WheelManager.BetOrderIcon;
+        const info = result ? result : GameManager.BetOrderIcon;
         const displayUsers = this.getDisplayUsers(info);
         this.ndHead.children.forEach((child, idx) => {
             const user = displayUsers[idx];

@@ -48,7 +48,6 @@ export enum GameEvent {
      * 玩家总下注额度更新
      */
     PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
-
     /**
     *RANK
     */
@@ -61,12 +60,6 @@ export enum GameEvent {
     *用户累计下注值
     */
     UPDATE_ADDBET = 'UPDATE_ADDBET',
-    /**
-    *sta动画
-    */
-    UPDATE_STAR = 'UPDATE_STAR',
-
-
     /**
      *实时在线人数
      */

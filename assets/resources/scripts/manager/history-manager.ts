@@ -48,8 +48,8 @@ export default class HistoryManager extends BaseManager {
      * @returns 如果返回true，说明消息被框架拦截了，不需要继续向下传递
      */
     public static onNetMessage(msgType: string, data: any): boolean {
-        if (msgType == wheel.Message.MsgSevenUpDownPlayerHistoryRsp) {
-            const msg = data as wheel.MsgSevenUpDownPlayerHistoryRsp;
+        if (msgType == game.Message.MsgSevenUpDownPlayerHistoryRsp) {
+            const msg = data as game.MsgSevenUpDownPlayerHistoryRsp;
             const result = msg.result;
             if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入游戏失败了
@@ -88,12 +88,12 @@ export default class HistoryManager extends BaseManager {
             //如果已经是最后一页了，就不需要再请求了
             return false;
         }
-        const data: wheel.MsgSevenUpDownPlayerHistoryReq = {
+        const data: game.MsgSevenUpDownPlayerHistoryReq = {
             theme_id: THEME_ID,
             // desk_id: SevenUpSevenDownManager.DeskId,
             page: this._pageIndex,
         };
-        MessageSender.SendMessage(wheel.Message.MsgSevenUpDownPlayerHistoryReq, data);
+        MessageSender.SendMessage(game.Message.MsgSevenUpDownPlayerHistoryReq, data);
         return true;
     }
 
@@ -120,9 +120,9 @@ export default class HistoryManager extends BaseManager {
         return this._isLastPage;
     }
 
-    private static _datas: wheel.SevenUpDownPlayerHistory[] = [];
+    private static _datas: game.SevenUpDownPlayerHistory[] = [];
 
-    public static get datas(): wheel.SevenUpDownPlayerHistory[] {
+    public static get datas(): game.SevenUpDownPlayerHistory[] {
         return this._datas;
     }
 

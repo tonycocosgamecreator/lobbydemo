@@ -67,6 +67,6 @@ export class EnterGameManager extends BaseManager {
         const data: baccarat.MsgEnterBaccaratReq = {};
         //直接发送进入游戏的消息,只负责发消息，不负责接消息，因为快速线游戏已经在游戏里面了
         //根据游戏服务器的消息定义看来，每一个游戏都有一套自己的进入游戏的玩意儿在里面，所以 这里我们无需处理
-        MessageSender.SendMessage(wheel.Message.MsgEnterSevenUpDownReq, data);
+        MessageSender.SendMessage(game.Message.MsgEnterSevenUpDownReq, data);
     }
 }

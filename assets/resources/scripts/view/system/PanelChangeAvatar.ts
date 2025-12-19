@@ -8,7 +8,7 @@ import List from 'db://assets/resources/scripts/core/view/list-view';
 import { ViewOpenAnimationType } from '../../core/view/view-define';
 import UIHelper from '../../network/helper/ui-helper';
 import { MessageSender } from '../../network/net/message-sender';
-import WheelManager from '../../manager/wheel-manager';
+import GameManager from '../../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -33,7 +33,7 @@ export default class PanelChangeAvatar extends ViewBase {
 
     protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.BOTTOM_TO_CENTER;
     protected buildUi() {
-        const player_avatar_id = WheelManager.Icon;
+        const player_avatar_id = GameManager.Icon;
 
         this.listAvatars.itemRender = (item: cc.Node, index: number) => {
             const id = index + 1;
@@ -48,10 +48,10 @@ export default class PanelChangeAvatar extends ViewBase {
             //选中
             const id = index + 1;
             if (id != player_avatar_id) {
-                const req: wheel.MsgUpdatePlayerDataReq = {
+                const req: game.MsgUpdatePlayerDataReq = {
                     icon: id
                 }
-                MessageSender.SendMessage(wheel.Message.MsgUpdatePlayerDataReq, req);
+                MessageSender.SendMessage(game.Message.MsgUpdatePlayerDataReq, req);
             }
         });
         this.listAvatars.numItems = 64;
@@ -61,15 +61,15 @@ export default class PanelChangeAvatar extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == wheel.Message.MsgUpdatePlayerDataRsp) {
-            const msg = data as wheel.MsgUpdatePlayerDataRsp;
+        if (msgType == game.Message.MsgUpdatePlayerDataRsp) {
+            const msg = data as game.MsgUpdatePlayerDataRsp;
             if (msg && msg.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //更新失败了
                 UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.AVATAR_CHANGED_FAILED);
                 return;
             }
             //更新成功了
-            WheelManager.Icon = msg.icon || 1;
+            GameManager.Icon = msg.icon || 1;
             this.close();
             return true;
         }

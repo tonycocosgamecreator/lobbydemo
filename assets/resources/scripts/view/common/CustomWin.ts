@@ -58,7 +58,7 @@ export default class CustomWin extends ViewBase {
     }
     //------------------------ 内部逻辑 ------------------------//
     _duration: number = 0.4; // 动画持续时间
-    _list: wheel.MsgLastWinNtf[] = [];
+    _list: baccarat.MsgLastWinNtf[] = [];
     _showAnimation: boolean = false;
     _displayTime: number = 1; // 停留时间
 

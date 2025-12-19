@@ -5,9 +5,9 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
-import WheelManager from '../manager/wheel-manager';
 import { CurrencyHelper } from '../helper/currency-helper';
 import WalletManager from '../manager/wallet-manager';
+import GameManager from '../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -33,13 +33,13 @@ export default class CustomScore extends ViewBase {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBetValue,
         });
-        this._playId = WheelManager.PlayerId;
+        this._playId = GameManager.PlayerId;
     }
 
     updatePlayBetValue() {
         const currency = WalletManager.currency;
         this.node.children.forEach((child, idx) => {
-            const data = WheelManager.getBetInfoByArea(idx + 1);
+            const data = GameManager.getBetInfoByArea(idx + 1);
             let bet = 0;
             if (data && data.length) {
                 data.forEach((val) => {

@@ -5,11 +5,9 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { GButtonDisableStyle, GButtonTouchStyle } from '../core/view/view-define';
 import CommonManager, { betInfo } from '../manager/common-manager';
-import WheelManager from '../manager/wheel-manager';
 import { THEME_ID } from '../define';
 import { MessageSender } from '../network/net/message-sender';
-import WalletManager from '../manager/wallet-manager';
-import UIHelper from '../network/helper/ui-helper';
+import GameManager from '../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -90,16 +88,16 @@ export default class CustomHandle extends ViewBase {
         this._lastBetInfo.forEach(t => {
             betcoin += parseInt(t.bet_coin);
             bets.push({ bet_id: t.bet_id, bet_coin: t.bet_coin, is_rebet: false })
-            let pos = WheelManager.View.getDeskWorldPosByAid(t.bet_id);
+            let pos = GameManager.View.getDeskWorldPosByAid(t.bet_id);
             area.push(pos);
         })
         CommonManager.Agail = true;
-        WheelManager.sendBetMessage(bets, betcoin, true, area);
+        GameManager.sendBetMessage(bets, betcoin, true, area);
     }
 
     updateButtonState(click: boolean = false) {
         let betStage = this._stage == baccarat.DeskStage.StartBetStage;
-        this._myBetInfo = WheelManager.getBetInfoByPlayId();
+        this._myBetInfo = GameManager.getBetInfoByPlayId();
         if (!click && this._agail && this._myBetInfo.length == 0) {
             //点了下注上一局又点撤销
             this._agail = false;
@@ -150,26 +148,26 @@ export default class CustomHandle extends ViewBase {
     private onClickButtonUndo(event: cc.EventTouch) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         if (this._myBetInfo.length == 0) return;
-        const CancelBetSevenUpDownReq: wheel.MsgCancelBetSevenUpDownReq = {
+        const CancelBetSevenUpDownReq: game.MsgCancelBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
-            desk_id: WheelManager.DeskId,
+            desk_id: GameManager.DeskId,
             cancel_type: 1
         }
-        MessageSender.SendMessage(wheel.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
+        MessageSender.SendMessage(game.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
     }
 
 
     private onClickButtonClear(event: cc.EventTouch) {
         if (this._stage != baccarat.DeskStage.StartBetStage) return;
         if (this._myBetInfo.length == 0) return;
-        const CancelBetSevenUpDownReq: wheel.MsgCancelBetSevenUpDownReq = {
+        const CancelBetSevenUpDownReq: game.MsgCancelBetSevenUpDownReq = {
             theme_id: THEME_ID,
             /**  桌子ID */
-            desk_id: WheelManager.DeskId,
+            desk_id: GameManager.DeskId,
             cancel_type: 2
         }
-        MessageSender.SendMessage(wheel.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
+        MessageSender.SendMessage(game.Message.MsgCancelBetSevenUpDownReq, CancelBetSevenUpDownReq);
     }
 
 
@@ -183,10 +181,10 @@ export default class CustomHandle extends ViewBase {
         betcoin = (+(_data.bet_coin)).mul(2);
         for (let i = 0; i < 2; i++) {
             bets.push({ bet_id: _data.bet_id, bet_coin: _data.bet_coin + '', is_rebet: false });
-            let pos = WheelManager.View.getDeskWorldPosByAid(_data.bet_id);;
+            let pos = GameManager.View.getDeskWorldPosByAid(_data.bet_id);;
             area.push(pos);
         }
-        WheelManager.sendBetMessage(bets, betcoin, false, area);
+        GameManager.sendBetMessage(bets, betcoin, false, area);
     }
 
     // @view export event end
