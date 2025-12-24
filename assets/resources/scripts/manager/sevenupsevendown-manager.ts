@@ -219,7 +219,7 @@ export default class SevenUpSevenDownManager extends BaseManager {
             this._stage = msg.stage;
             this._haveSec = msg.have_sec || 0;
             this._dur = msg.have_sec || 0;
-            if (msg.stage == baccarat.DeskStage.SettleStage) return false;
+            if (msg.stage == baccarat.DeskStage.SettleStage) return true;
             if (msg.stage == baccarat.DeskStage.ReadyStage) {
                 this.reset();
                 const period_id = msg.period_id || '';
