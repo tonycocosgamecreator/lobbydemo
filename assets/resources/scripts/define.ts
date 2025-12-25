@@ -45,31 +45,31 @@ export enum GameEvent {
      */
     UPDATE_AUTO = 'UPDATE_AUTO',
     /**
-     * 玩家总下注额度更新
+     * 玩家下注动画完成后刷新界面
      */
-    PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
+    ANIMATION_END_UPDATE = 'ANIMATION_END_UPDATE',
     /**
-    *RANK
-    */
+     * buttom TopRank
+     */
     UPDATE_RANK = 'UPDATE_RANK',
     /**
-    *更换头像
-    */
+     * 更换头像
+     */
     PLAYER_CHANGE_AVATAR = 'PLAYER_CHANGE_AVATAR',
     /**
-    *用户累计下注值
-    */
+     * 用户累计下注值
+     */
     UPDATE_ADDBET = 'UPDATE_ADDBET',
     /**
-     *实时在线人数
+     * 实时在线人数
      */
     UPDATE_ONLINE = 'UPDATE_ONLINE',
     /**
-     *玩家获胜通知
+     * 玩家获胜通知
      */
     UPDATE_USERWIN = 'UPDATE_USERWIN',
     /**
-     *房间在线人数
+     * 房间在线人数
      */
     UPDATE_ONLINE_ROOM = 'UPDATE_ONLINE_ROOM',
 }

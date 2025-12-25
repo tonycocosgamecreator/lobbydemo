@@ -343,28 +343,28 @@ export default class CustomRouletteBall extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_ndBall: [cc.Node],
+            cc_ndBall    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected ndBall: cc.Node = null;
+   protected ndBall: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomRouletteBall';
+   public static readonly VIEW_NAME    = 'CustomRouletteBall';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomRouletteBall.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomRouletteBall.VIEW_NAME;
     }
     // @view export resource end

@@ -4,19 +4,20 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { UIOpacity } from 'cc';
-import { tween } from 'cc';
 import { Tween } from 'cc';
+import { tween } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass('CustomResult')
+@ccclass('CustomRouletteResult')
 export default class CustomRouletteResult extends ViewBase {
 
     //------------------------ 生命周期 ------------------------//
     protected onLoad(): void {
         super.onLoad();
+        this.buildUi();
     }
 
     protected onDestroy(): void {
@@ -25,6 +26,10 @@ export default class CustomRouletteResult extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+    buildUi() {
+        this.labelResult.string = ''
+    }
+
     showResult(targetNumber: number) {
         this.node.active = true;
         const opacity = this.node.getComponent(UIOpacity)
@@ -83,7 +88,6 @@ export default class CustomRouletteResult extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_labelResult: [cc.Label],
@@ -97,7 +101,7 @@ export default class CustomRouletteResult extends ViewBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomResult';
+    public static readonly VIEW_NAME = 'CustomRouletteResult';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
@@ -112,6 +116,5 @@ export default class CustomRouletteResult extends ViewBase {
     public get viewName() {
         return CustomRouletteResult.VIEW_NAME;
     }
-
     // @view export resource end
 }

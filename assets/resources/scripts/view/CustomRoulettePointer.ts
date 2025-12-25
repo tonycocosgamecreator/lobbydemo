@@ -1,12 +1,10 @@
 // @view export import begin
 import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
+import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { math } from 'cc';
 import CustomRouletteWheel from './CustomRouletteWheel';
-import { Vec3 } from 'cc';
-import { UIOpacity } from 'cc';
-import { tween } from 'cc';
+import { math } from 'cc';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -51,7 +49,6 @@ export default class CustomRoulettePointer extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -61,21 +58,20 @@ export default class CustomRoulettePointer extends ViewBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomRoulettePointer';
+   public static readonly VIEW_NAME    = 'CustomRoulettePointer';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomRoulettePointer.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomRoulettePointer.VIEW_NAME;
     }
-
     // @view export resource end
 }

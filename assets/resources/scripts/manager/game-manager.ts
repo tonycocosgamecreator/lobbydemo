@@ -1,6 +1,6 @@
 import { _decorator, Component, Node } from 'cc';
 import BaseManager from '../core/manager/base-manager';
-import { IPanelWheelMainView } from '../define/ipanel-wheel-main-view';
+import { IPanelGameMainView } from '../define/ipanel-game-main-view';
 import CommonManager, { betInfo } from './common-manager';
 import UIHelper from '../network/helper/ui-helper';
 import WalletManager from './wallet-manager';
@@ -78,22 +78,20 @@ export default class GameManager extends BaseManager {
                 this._icon = msg.player_data?.icon || 1;
                 this._records = msg.info?.seven_up_down_info?.win_type_list || [];
                 CommonManager.setTopPlayerData(msg.info?.player_rank_ntf?.ranks || []);
-                if (msg.info?.bet_ntf?.desk_id == this._deskId) {
-                    const plays = msg.info?.bet_ntf?.players || [];
-                    for (let i = 0; i < plays.length; i++) {
-                        const play = plays[i];
-                        for (let j = 0; j < play.bets.length; j++) {
-                            const bet = play.bets[j];
-                            const _d = {
-                                bet_coin: bet.bet_coin,
-                                bet_id: bet.bet_id,
-                                player_id: play.player_id,
-                                icon: play.icon,
-                                win: j == 0 ? +play.win_coin : 0,
-                            }
-                            this.addPlayerData(_d);
-                            this._betOrderIcon.push(+play.icon);
+                const plays = msg.info?.bet_ntf?.players || [];
+                for (let i = 0; i < plays.length; i++) {
+                    const play = plays[i];
+                    for (let j = 0; j < play.bets.length; j++) {
+                        const bet = play.bets[j];
+                        const _d = {
+                            bet_coin: bet.bet_coin,
+                            bet_id: bet.bet_id,
+                            player_id: play.player_id,
+                            icon: play.icon,
+                            win: j == 0 ? +play.win_coin : 0,
                         }
+                        this.addPlayerData(_d);
+                        this._betOrderIcon.push(+play.icon);
                     }
                 }
 
@@ -105,7 +103,6 @@ export default class GameManager extends BaseManager {
                 this._view?.updateReconnect()
                 return false;
             }
-
             case baccarat.Message.MsgBaccaratNextStageNtf: {
                 const msg = data as baccarat.MsgBaccaratNextStageNtf;
                 if (msg.desk_id != this._deskId) return false;
@@ -203,7 +200,7 @@ export default class GameManager extends BaseManager {
                     this.subPlayerData(_d)
                     this._view?.updateDeletChip(_d, true);
                 }
-                Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+                Global.sendMsg(GameEvent.ANIMATION_END_UPDATE);
                 return true
             }
             case game.Message.MsgCancelBetBaccaratNtf: {
@@ -324,7 +321,7 @@ export default class GameManager extends BaseManager {
      */
     private static _allAreaBetInfo: Map<number, betInfo[]> = new Map();
     /**
-     * 当局下注玩家顺序
+     * 按下注顺序展示的玩家头像
      */
     private static _betOrderIcon: number[] = [];
     /** 
@@ -346,10 +343,10 @@ export default class GameManager extends BaseManager {
 
     // private static 
     /**----------------绑定界面-------------------*/
-    private static _view: IPanelWheelMainView | null = null;
+    private static _view: IPanelGameMainView | null = null;
 
 
-    public static set View(value: IPanelWheelMainView | null) {
+    public static set View(value: IPanelGameMainView | null) {
         this._view = value;
     }
 
@@ -357,7 +354,7 @@ export default class GameManager extends BaseManager {
         this._icon = value;
         Global.sendMsg(GameEvent.PLAYER_CHANGE_AVATAR);
     }
-    public static get View(): IPanelWheelMainView | null { return this._view; }
+    public static get View(): IPanelGameMainView | null { return this._view; }
     public static get HaveSec(): number { return this._haveSec; }
     public static get Stage(): number { return this._stage; }
     public static get Dur(): number { return this._dur; }
@@ -467,12 +464,34 @@ export default class GameManager extends BaseManager {
     }
 
     /**
+     * 查找对应id玩家赢取的金额
+     * @param playerId 玩家id,默认为自己的id
+     */
+    public static getWinByPlayId(playerId: string = this._playerId): number {
+        let win = 0;
+        const data = this.getBetInfoByPlayId(playerId);
+        if (!data || data.length == 0) {
+            return win;
+        }
+        data.forEach(v => {
+            if (v.win > 0) {
+                win = win.add(v.win);
+            }
+        });
+        return win;
+    }
+    
+    /**
      * 查找所有玩家下注的数据
      */
     public static getBetInfoByPlay(): betInfo[][] {
         return Array.from(this._allPlayerBetInfo.values());
     }
 
+    /**
+     * 查找对应区域玩家下注的所有数据
+     * @param betId 区域id
+     */
     public static getBetInfoByArea(betId: number) {
         return this._allAreaBetInfo.get(betId) || [];
     }
@@ -523,6 +542,7 @@ export default class GameManager extends BaseManager {
     }
 
     public static setWinAreaByType(WinType: number) {
+        this._winArea = [];
         //单一数字
         this._winArea.push(WinType + 1)//区域从1开始
         //数字区间

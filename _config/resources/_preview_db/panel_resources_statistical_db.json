@@ -36,125 +36,125 @@
     }
 ],
 'datas': {
-    "CustomAllBets": {
-        "viewName": "CustomAllBets",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001019
-    },
-    "CustomAllBet": {
-        "viewName": "CustomAllBet",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001018
-    },
     "CustomAllUser": {
         "viewName": "CustomAllUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001016
+        "statisticalId": 100001000
+    },
+    "CustomBaccaratTop": {
+        "viewName": "CustomBaccaratTop",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001010
     },
     "CustomBetArea": {
         "viewName": "CustomBetArea",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001022
+        "statisticalId": 100001017
+    },
+    "CustomButtomRank": {
+        "viewName": "CustomButtomRank",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001014
+    },
+    "CustomButtomUserBets": {
+        "viewName": "CustomButtomUserBets",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001015
     },
     "CustomButtom": {
         "viewName": "CustomButtom",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001020
+        "statisticalId": 100001016
+    },
+    "CustomChipItem": {
+        "viewName": "CustomChipItem",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001002
+    },
+    "CustomChip": {
+        "viewName": "CustomChip",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001001
     },
     "CustomDesk": {
         "viewName": "CustomDesk",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001021
+        "statisticalId": 100001018
     },
     "CustomFlyChip": {
         "viewName": "CustomFlyChip",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001023
-    },
-    "CustomGameItem": {
-        "viewName": "CustomGameItem",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001001
+        "statisticalId": 100001019
     },
     "CustomHandle": {
         "viewName": "CustomHandle",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001013
+        "statisticalId": 100001020
     },
     "CustomHistoryItem": {
         "viewName": "CustomHistoryItem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001028
+        "statisticalId": 100001011
     },
     "CustomMainHistory": {
         "viewName": "CustomMainHistory",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001008
+        "statisticalId": 100001021
     },
     "CustomOnlineInRoom": {
         "viewName": "CustomOnlineInRoom",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001011
+        "statisticalId": 100001004
     },
     "CustomOnline": {
         "viewName": "CustomOnline",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001004
+        "statisticalId": 100001003
     },
     "CustomOtherBetUser": {
         "viewName": "CustomOtherBetUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001012
-    },
-    "CustomResult": {
-        "viewName": "CustomResult",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001030
+        "statisticalId": 100001005
     },
     "CustomRoomData": {
         "viewName": "CustomRoomData",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001017
-    },
-    "CustomRoomPeopleNum": {
-        "viewName": "CustomRoomPeopleNum",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001010
-    },
-    "CustomRoomPeople": {
-        "viewName": "CustomRoomPeople",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001009
+        "statisticalId": 100001006
     },
     "CustomRouletteBall": {
         "viewName": "CustomRouletteBall",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001027
+        "statisticalId": 100001023
     },
     "CustomRoulettePointer": {
         "viewName": "CustomRoulettePointer",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001029
+        "statisticalId": 100001024
+    },
+    "CustomRouletteResult": {
+        "viewName": "CustomRouletteResult",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001025
     },
     "CustomRouletteWheel": {
         "viewName": "CustomRouletteWheel",
@@ -166,73 +166,67 @@
         "viewName": "CustomRoulette",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001025
+        "statisticalId": 100001022
     },
     "CustomScore": {
         "viewName": "CustomScore",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001024
+        "statisticalId": 100001027
+    },
+    "CustomTime": {
+        "viewName": "CustomTime",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001028
     },
     "CustomToast": {
         "viewName": "CustomToast",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001019
+        "statisticalId": 100001012
     },
     "CustomTopRankUser": {
         "viewName": "CustomTopRankUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001006
+        "statisticalId": 100001007
     },
     "CustomTop": {
         "viewName": "CustomTop",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001014
+        "statisticalId": 100001029
     },
     "CustomUser": {
         "viewName": "CustomUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001007
+        "statisticalId": 100001008
     },
     "CustomWin": {
         "viewName": "CustomWin",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001005
+        "statisticalId": 100001009
     },
     "PanelCircleLoading": {
         "viewName": "PanelCircleLoading",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001020
+        "statisticalId": 100001013
     },
-    "PanelLobby": {
-        "viewName": "PanelLobby",
+    "PanelGameInit": {
+        "viewName": "PanelGameInit",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001000
+        "statisticalId": 100001031
     },
-    "PanelThirdGame": {
-        "viewName": "PanelThirdGame",
+    "PanelGameMain": {
+        "viewName": "PanelGameMain",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001003
-    },
-    "PanelWheelInit": {
-        "viewName": "PanelWheelInit",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001003
-    },
-    "PanelWheelMain": {
-        "viewName": "PanelWheelMain",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001015
+        "statisticalId": 100001030
     }
 }
 }

@@ -68,40 +68,40 @@ export default class CustomHistoryItem extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_itemBg: [cc.Sprite],
-            cc_labelBetVal: [cc.Label],
-            cc_labelDice: [cc.Label],
-            cc_labelPeriod: [cc.Label],
-            cc_labelWinBet: [cc.Label],
-            cc_result: [cc.Node],
-            cc_sprbg: [cc.Sprite],
+            cc_itemBg    : [cc.Sprite],
+            cc_labelBetVal    : [cc.Label],
+            cc_labelDice    : [cc.Label],
+            cc_labelPeriod    : [cc.Label],
+            cc_labelWinBet    : [cc.Label],
+            cc_result    : [cc.Node],
+            cc_sprbg    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected itemBg: cc.Sprite = null;
-    protected labelBetVal: cc.Label = null;
-    protected labelDice: cc.Label = null;
-    protected labelPeriod: cc.Label = null;
-    protected labelWinBet: cc.Label = null;
-    protected result: cc.Node = null;
-    protected sprbg: cc.Sprite = null;
+   protected itemBg: cc.Sprite    = null;
+   protected labelBetVal: cc.Label    = null;
+   protected labelDice: cc.Label    = null;
+   protected labelPeriod: cc.Label    = null;
+   protected labelWinBet: cc.Label    = null;
+   protected result: cc.Node    = null;
+   protected sprbg: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomHistoryItem';
+   public static readonly VIEW_NAME    = 'CustomHistoryItem';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomHistoryItem.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomHistoryItem.VIEW_NAME;
     }
     // @view export resource end

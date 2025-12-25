@@ -128,30 +128,30 @@ export default class CustomBetArea extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonClick: [GButton, this.onClickButtonClick.bind(this)],
-            cc_light: [cc.Sprite],
+            cc_buttonClick    : [GButton,this.onClickButtonClick.bind(this)],
+            cc_light    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected buttonClick: GButton = null;
-    protected light: cc.Sprite = null;
+   protected buttonClick: GButton    = null;
+   protected light: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomBetArea';
+   public static readonly VIEW_NAME    = 'CustomBetArea';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomBetArea.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomBetArea.VIEW_NAME;
     }
     // @view export resource end

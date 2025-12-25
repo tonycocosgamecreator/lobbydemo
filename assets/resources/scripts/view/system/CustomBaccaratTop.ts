@@ -5,10 +5,10 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomMenu from 'db://assets/resources/scripts/view/system/CustomMenu';
-import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
 import WalletManager from '../../manager/wallet-manager';
 import { CurrencyHelper } from '../../helper/currency-helper';
+import BaseGlobal from '../../core/message/base-global';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -34,7 +34,7 @@ export default class CustomBaccaratTop extends ViewBase {
     buildUi() {
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
-            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
+            [GameEvent.ANIMATION_END_UPDATE]: this.updatePlayBalance,
         });
         this.labelGameTitle.string = 'wheel';
         this.menu.show(false, 0);
@@ -69,38 +69,38 @@ export default class CustomBaccaratTop extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bg: [cc.Sprite],
-            cc_buttonMenu: [GButton, this.onClickButtonMenu.bind(this)],
-            cc_labelCoin: [cc.Label],
-            cc_labelCurrency: [cc.Label],
-            cc_labelGameTitle: [cc.Label],
-            cc_menu: [CustomMenu],
+            cc_bg    : [cc.Sprite],
+            cc_buttonMenu    : [GButton,this.onClickButtonMenu.bind(this)],
+            cc_labelCoin    : [cc.Label],
+            cc_labelCurrency    : [cc.Label],
+            cc_labelGameTitle    : [cc.Label],
+            cc_menu    : [CustomMenu],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bg: cc.Sprite = null;
-    protected buttonMenu: GButton = null;
-    protected labelCoin: cc.Label = null;
-    protected labelCurrency: cc.Label = null;
-    protected labelGameTitle: cc.Label = null;
-    protected menu: CustomMenu = null;
+   protected bg: cc.Sprite    = null;
+   protected buttonMenu: GButton    = null;
+   protected labelCoin: cc.Label    = null;
+   protected labelCurrency: cc.Label    = null;
+   protected labelGameTitle: cc.Label    = null;
+   protected menu: CustomMenu    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomBaccaratTop';
+   public static readonly VIEW_NAME    = 'CustomBaccaratTop';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomBaccaratTop.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomBaccaratTop.VIEW_NAME;
     }
     // @view export resource end

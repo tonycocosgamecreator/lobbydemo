@@ -123,38 +123,38 @@ export default class PanelHistory extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bg: [cc.Sprite],
-            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
-            cc_list: [List],
-            cc_noHistory: [cc.Sprite],
-            cc_root: [cc.Sprite],
-            cc_topRoot: [cc.Node],
+            cc_bg    : [cc.Sprite],
+            cc_buttonClose    : [GButton,this.onClickButtonClose.bind(this)],
+            cc_list    : [List],
+            cc_noHistory    : [cc.Sprite],
+            cc_root    : [cc.Sprite],
+            cc_topRoot    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bg: cc.Sprite = null;
-    protected buttonClose: GButton = null;
-    protected list: List = null;
-    protected noHistory: cc.Sprite = null;
-    protected root: cc.Sprite = null;
-    protected topRoot: cc.Node = null;
+   protected bg: cc.Sprite    = null;
+   protected buttonClose: GButton    = null;
+   protected list: List    = null;
+   protected noHistory: cc.Sprite    = null;
+   protected root: cc.Sprite    = null;
+   protected topRoot: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelHistory';
+   public static readonly VIEW_NAME    = 'PanelHistory';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelHistory.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelHistory.VIEW_NAME;
     }
     // @view export resource end

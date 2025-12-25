@@ -32,7 +32,7 @@ export default class CustomWin extends ViewBase {
         if (this._showAnimation) return;
         if (!this._list.length) return;
         this._showAnimation = true;
-        const uiOpacity = this.ndBg.getComponent(UIOpacity);
+        const uiOpacity = this.ndBg.getComponent(UIOpacity)||this.ndBg.addComponent(UIOpacity);
         Tween.stopAllByTarget(this.ndBg);
         Tween.stopAllByTarget(uiOpacity);
         this.setData();
@@ -95,34 +95,34 @@ export default class CustomWin extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_labelName: [cc.Label],
-            cc_labelWin: [cc.Label],
-            cc_ndBg: [cc.Node],
-            cc_sprHead: [cc.Sprite],
+            cc_labelName    : [cc.Label],
+            cc_labelWin    : [cc.Label],
+            cc_ndBg    : [cc.Node],
+            cc_sprHead    : [cc.Sprite],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected labelName: cc.Label = null;
-    protected labelWin: cc.Label = null;
-    protected ndBg: cc.Node = null;
-    protected sprHead: cc.Sprite = null;
+   protected labelName: cc.Label    = null;
+   protected labelWin: cc.Label    = null;
+   protected ndBg: cc.Node    = null;
+   protected sprHead: cc.Sprite    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomWin';
+   public static readonly VIEW_NAME    = 'CustomWin';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomWin.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomWin.VIEW_NAME;
     }
     // @view export resource end

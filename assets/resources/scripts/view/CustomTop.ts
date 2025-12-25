@@ -5,8 +5,6 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { UITransform } from 'cc';
 import { view } from 'cc';
-import { NodeEventType } from 'cc';
-import { EventTouch } from 'cc';
 //------------------------特殊引用开始----------------------------//
 import CustomMenu from 'db://assets/resources/scripts/view/system/CustomMenu';
 //------------------------特殊引用完毕----------------------------//
@@ -89,34 +87,34 @@ export default class CustomTop extends ViewBase {
     // @view export resource begin
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
-            cc_button_menu: [GButton, this.onClickButton_menu.bind(this)],
-            cc_menu: [CustomMenu],
-            cc_ndClick: [cc.Node],
+            cc_buttonClose    : [GButton,this.onClickButtonClose.bind(this)],
+            cc_button_menu    : [GButton,this.onClickButton_menu.bind(this)],
+            cc_menu    : [CustomMenu],
+            cc_ndClick    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected buttonClose: GButton = null;
-    protected button_menu: GButton = null;
-    protected menu: CustomMenu = null;
-    protected ndClick: cc.Node = null;
+   protected buttonClose: GButton    = null;
+   protected button_menu: GButton    = null;
+   protected menu: CustomMenu    = null;
+   protected ndClick: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomTop';
+   public static readonly VIEW_NAME    = 'CustomTop';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomTop.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomTop.VIEW_NAME;
     }
     // @view export resource end

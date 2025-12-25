@@ -5,7 +5,6 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import { betInfo } from '../manager/common-manager';
 import PoolManager from '../core/manager/pool-manager';
-import CustomChipItem from './CustomChipItem';
 import { Vec3 } from 'cc';
 import { v3 } from 'cc';
 import { Global } from '../global';
@@ -16,6 +15,7 @@ import { Tween } from 'cc';
 import { BaseMessage } from '../core/message/base-message';
 import AudioManager from '../core/manager/audio-manager';
 import GameManager from '../manager/game-manager';
+import CustomChipItem from './common/CustomChipItem';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -154,17 +154,16 @@ export default class CustomFlyChip extends ViewBase {
         if (!targetWorldPos) {
             targetWorldPos = GameManager.View.getDeskWorldPosByAid(data.bet_id);
         }
-        const chip = PoolManager.Get(CustomChipItem);
+        const chip = PoolManager.Get(CustomChipItem, null, 'common');
         chip.node.scale = order == -1 ? v3(0, 0, 0) : v3(0.8, 0.8, 0.8);
-        let startWorldPos = null
-        startWorldPos = order == -1 ? GameManager.View.getWorldPosByUid(data.player_id) : GameManager.View.getChipWorldPos();
-        let startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
+        const startWorldPos = order == -1 ? GameManager.View.getWorldPosByUid(data.player_id) : GameManager.View.getChipWorldPos();
+        const startLocalPos = this.node.transform.convertToNodeSpaceAR(startWorldPos);
         chip.node.setPosition(startLocalPos);
         chip.setBetData(data);
         this.node.addChild(chip.node);
         let endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
         this.flyToTarget(chip.node, endPos, order == -1 ? true : false, () => {
-            Global.sendMsg(GameEvent.PLYER_TOTAL_BET_UPDATE);
+            Global.sendMsg(GameEvent.ANIMATION_END_UPDATE);
             this.checkBetChipCount(data);
             if (this._isGameInBackground == false) {
                 AudioManager.playSound(this.bundleName, '下注');
@@ -175,7 +174,7 @@ export default class CustomFlyChip extends ViewBase {
     flyToTarget(flyObject: cc.Node, endPos: cc.Vec3, needScaleAnimation: boolean, callback: () => void = null, dur: number = 0) {
         let startPos = flyObject.position;
         let distance = Vec3.distance(startPos, endPos);
-        let flyDuration = dur ? dur : this._calculateDurationByDistance(distance);
+        let flyDuration = dur ? dur : this.calculateDurationByDistance(distance);
         const opacity = flyObject.getComponent(UIOpacity);
         // 创建基础动画
         let flyTween = tween(flyObject);
@@ -241,7 +240,7 @@ export default class CustomFlyChip extends ViewBase {
             .start();
     }
 
-    _calculateDurationByDistance(distance: number): number {
+    calculateDurationByDistance(distance: number): number {
         return (distance / this._baseDistance) * this._baseDuration;
     }
 
@@ -282,7 +281,7 @@ export default class CustomFlyChip extends ViewBase {
     }
 
     setWinChipData(data: betInfo, startPos: Vec3, endPos: Vec3) {
-        const chip = PoolManager.Get(CustomChipItem);
+        const chip = PoolManager.Get(CustomChipItem, null, 'common');
         chip.node.scale = this._middle;
         chip.node.setPosition(startPos);
         chip.setBetData(data);
@@ -293,7 +292,7 @@ export default class CustomFlyChip extends ViewBase {
     setReconnectChipData(data: betInfo) {
         let targetWorldPos = GameManager.View.getDeskWorldPosByAid(data.bet_id);
         let endPos = this.node.transform.convertToNodeSpaceAR(targetWorldPos);
-        const chip = PoolManager.Get(CustomChipItem);
+        const chip = PoolManager.Get(CustomChipItem, null, 'common');
         chip.node.scale = this._middle;
         chip.node.setPosition(endPos);
         chip.setBetData(data);
@@ -313,7 +312,6 @@ export default class CustomFlyChip extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -338,6 +336,5 @@ export default class CustomFlyChip extends ViewBase {
     public get viewName() {
         return CustomFlyChip.VIEW_NAME;
     }
-
     // @view export resource end
 }

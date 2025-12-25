@@ -148,49 +148,47 @@ export default class CustomMenu extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_LabelNickName: [cc.Label],
-            cc_buttonAvatar: [GButton, this.onClickButtonAvatar.bind(this)],
-            cc_buttonBg: [GButton, this.onClickButtonBg.bind(this)],
-            cc_buttonGameRule: [GButton, this.onClickButtonGameRule.bind(this)],
-            cc_buttonHistory: [GButton, this.onClickButtonHistory.bind(this)],
-            cc_buttonMusic: [GButton, this.onClickButtonMusic.bind(this)],
-            cc_buttonSound: [GButton, this.onClickButtonSound.bind(this)],
-            cc_playerHead: [cc.Sprite],
-            cc_root: [cc.Node],
+            cc_LabelNickName    : [cc.Label],
+            cc_buttonAvatar    : [GButton,this.onClickButtonAvatar.bind(this)],
+            cc_buttonBg    : [GButton,this.onClickButtonBg.bind(this)],
+            cc_buttonGameRule    : [GButton,this.onClickButtonGameRule.bind(this)],
+            cc_buttonHistory    : [GButton,this.onClickButtonHistory.bind(this)],
+            cc_buttonMusic    : [GButton,this.onClickButtonMusic.bind(this)],
+            cc_buttonSound    : [GButton,this.onClickButtonSound.bind(this)],
+            cc_playerHead    : [cc.Sprite],
+            cc_root    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected LabelNickName: cc.Label = null;
-    protected buttonAvatar: GButton = null;
-    protected buttonBg: GButton = null;
-    protected buttonGameRule: GButton = null;
-    protected buttonHistory: GButton = null;
-    protected buttonMusic: GButton = null;
-    protected buttonSound: GButton = null;
-    protected playerHead: cc.Sprite = null;
-    protected root: cc.Node = null;
+   protected LabelNickName: cc.Label    = null;
+   protected buttonAvatar: GButton    = null;
+   protected buttonBg: GButton    = null;
+   protected buttonGameRule: GButton    = null;
+   protected buttonHistory: GButton    = null;
+   protected buttonMusic: GButton    = null;
+   protected buttonSound: GButton    = null;
+   protected playerHead: cc.Sprite    = null;
+   protected root: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomMenu';
+   public static readonly VIEW_NAME    = 'CustomMenu';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomMenu.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomMenu.VIEW_NAME;
     }
-
     // @view export resource end
 }

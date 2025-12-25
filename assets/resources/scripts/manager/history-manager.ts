@@ -3,7 +3,6 @@ import { Global } from "db://assets/resources/scripts/global";
 import BaseManager from "../core/manager/base-manager";
 import UIHelper from "../network/helper/ui-helper";
 import { MessageSender } from "../network/net/message-sender";
-// import SevenUpSevenDownManager from "./sevenupsevendown-manager";
 
 export default class HistoryManager extends BaseManager {
 
@@ -90,7 +89,7 @@ export default class HistoryManager extends BaseManager {
         }
         const data: game.MsgSevenUpDownPlayerHistoryReq = {
             theme_id: THEME_ID,
-            // desk_id: SevenUpSevenDownManager.DeskId,
+            // desk_id: ,
             page: this._pageIndex,
         };
         MessageSender.SendMessage(game.Message.MsgSevenUpDownPlayerHistoryReq, data);

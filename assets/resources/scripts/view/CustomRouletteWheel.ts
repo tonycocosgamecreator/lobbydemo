@@ -204,7 +204,6 @@ export default class CustomRouletteWheel extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
         };
@@ -214,21 +213,20 @@ export default class CustomRouletteWheel extends ViewBase {
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'CustomRouletteWheel';
+   public static readonly VIEW_NAME    = 'CustomRouletteWheel';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return CustomRouletteWheel.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return CustomRouletteWheel.VIEW_NAME;
     }
-
     // @view export resource end
 }

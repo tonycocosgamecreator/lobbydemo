@@ -90,43 +90,41 @@ export default class PanelChangeAvatar extends ViewBase {
 
 
     // @view export resource begin
-
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
-            cc_bg: [cc.Node],
-            cc_buttonClose: [GButton, this.onClickButtonClose.bind(this)],
-            cc_buttonOk: [GButton, this.onClickButtonOk.bind(this)],
-            cc_listAvatars: [List],
-            cc_okTitle_i18n: [cc.Label],
-            cc_root: [cc.Node],
+            cc_bg    : [cc.Node],
+            cc_buttonClose    : [GButton,this.onClickButtonClose.bind(this)],
+            cc_buttonOk    : [GButton,this.onClickButtonOk.bind(this)],
+            cc_listAvatars    : [List],
+            cc_okTitle_i18n    : [cc.Label],
+            cc_root    : [cc.Node],
         };
     }
     //------------------------ 所有可用变量 ------------------------//
-    protected bg: cc.Node = null;
-    protected buttonClose: GButton = null;
-    protected buttonOk: GButton = null;
-    protected listAvatars: List = null;
-    protected okTitle_i18n: cc.Label = null;
-    protected root: cc.Node = null;
+   protected bg: cc.Node    = null;
+   protected buttonClose: GButton    = null;
+   protected buttonOk: GButton    = null;
+   protected listAvatars: List    = null;
+   protected okTitle_i18n: cc.Label    = null;
+   protected root: cc.Node    = null;
     /**
      * 当前界面的名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly VIEW_NAME = 'PanelChangeAvatar';
+   public static readonly VIEW_NAME    = 'PanelChangeAvatar';
     /**
      * 当前界面的所属的bundle名字
      * 请勿修改，脚本自动生成
     */
-    public static readonly BUNDLE_NAME = 'resources';
+   public static readonly BUNDLE_NAME  = 'resources';
     /**
      * 请勿修改，脚本自动生成
     */
-    public get bundleName() {
+   public get bundleName() {
         return PanelChangeAvatar.BUNDLE_NAME;
     }
-    public get viewName() {
+   public get viewName(){
         return PanelChangeAvatar.VIEW_NAME;
     }
-
     // @view export resource end
 }

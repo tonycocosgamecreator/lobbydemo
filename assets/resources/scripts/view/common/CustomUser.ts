@@ -39,7 +39,7 @@ export default class CustomUser extends ViewBase {
         this._currency = WalletManager.currency;
         BaseGlobal.registerListeners(this, {
             [GameEvent.PLAYER_INFO_UPDATE]: this.updateTotalBalance,
-            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
+            [GameEvent.ANIMATION_END_UPDATE]: this.updatePlayBalance,
             [GameEvent.PLAYER_CHANGE_AVATAR]: this.updateHead,
         });
     }
@@ -64,14 +64,7 @@ export default class CustomUser extends ViewBase {
     }
 
     updateResult() {
-        const data = GameManager.getBetInfoByPlayId();
-        if (!data || data.length == 0) return;
-        let count = 0;
-        data.forEach(v => {
-            if (v.win > 0) {
-                count = count.add(v.win);
-            }
-        })
+        let count = GameManager.getWinByPlayId();
         if (count > 0) {
             this.playWinLabelAnimation(count);
         }

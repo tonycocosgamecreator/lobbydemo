@@ -3,12 +3,12 @@ import ViewBase from 'db://assets/resources/scripts/core/view/view-base';
 import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDebug } from 'db://assets/resources/scripts/core/define';
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
-import { Tween } from 'cc';
 import { UIOpacity } from 'cc';
+import { Tween } from 'cc';
 import { v3 } from 'cc';
 import { CurrencyHelper } from '../../helper/currency-helper';
-import WalletManager from '../../manager/wallet-manager';
 import { tween } from 'cc';
+import WalletManager from '../../manager/wallet-manager';
 import BaseGlobal from '../../core/message/base-global';
 import { GameEvent } from '../../define';
 import CommonManager from '../../manager/common-manager';
@@ -43,14 +43,14 @@ export default class CustomTopRankUser extends ViewBase {
             this.ndMask.active = false;
         }
         BaseGlobal.registerListeners(this, {
-            [GameEvent.PLYER_TOTAL_BET_UPDATE]: this.updatePlayBalance,
+            [GameEvent.ANIMATION_END_UPDATE]: this.updatePlayBalance,
         });
     }
-    
+
     @ViewBase.requireResourceLoaded
     init(index: number, data: baccarat.RankList | null) {
         this._index = index;
-        this.sprRank.spriteFrame = this.getSpriteFrame(`textures/common/rankings_${index + 1}`);
+        this.sprRank.spriteFrame = this.getSpriteFrame(`textures/common/user/rankings_${index + 1}`);
         this.ndCrown.active = index == 0 ? true : false;
         if (!data) {
             this._playerId = '-1';
@@ -135,14 +135,7 @@ export default class CustomTopRankUser extends ViewBase {
 
     updateResult() {
         if (this._playerId == '-1') return;
-        const data = GameManager.getBetInfoByPlayId(this._playerId);
-        if (!data || data.length == 0) return;
-        let count = 0;
-        data.forEach(v => {
-            if (v.win > 0) {
-                count = count.add(v.win);
-            }
-        })
+        let count = GameManager.getWinByPlayId(this._playerId);
         if (count > 0) {
             this.playWinLabelAnimation(count);
         }

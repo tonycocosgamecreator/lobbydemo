@@ -77,7 +77,7 @@ export default class Initializer {
         const playerId = BrowserUtils.getParam('player_id') || Tools.Uuid;
         CoreInit(BaseDefine.APP_NAME, playerId);
         this.initLanguage();
-        //GameInit();
+        //PanelGameInit();
         ViewManager.Init(canvas, camera);
         if (!NATIVE) {
             window.addEventListener('resize', () => { ViewManager.updateResolution(); });
