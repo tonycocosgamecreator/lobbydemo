@@ -24,7 +24,7 @@ export default class PanelGameRule extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
-    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.BOTTOM_TO_CENTER;
+    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.CENTER_SCALE_IN;
 
 
 

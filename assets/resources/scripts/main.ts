@@ -78,7 +78,7 @@ export class main extends Component {
                 return;
             }
 
-            ViewManager.OpenPanel(module, "PanelSevenUpSevenDownInit");
+            ViewManager.OpenPanel(module, "PanelGameInit");
             fadeOutLogo && fadeOutLogo();
         });
     }

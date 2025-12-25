@@ -2,10 +2,10 @@
   "__version__": "1.0.6",
   "general": {
     "designResolution": {
-      "width": 720,
-      "height": 1560,
-      "fitWidth": false,
-      "fitHeight": true
+      "width": 1334,
+      "height": 750,
+      "fitWidth": true,
+      "fitHeight": false
     },
     "downloadMaxConcurrency": 256
   },

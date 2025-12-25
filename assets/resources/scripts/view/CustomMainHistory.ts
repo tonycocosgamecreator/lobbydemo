@@ -5,11 +5,11 @@ import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import List from 'db://assets/resources/scripts/core/view/list-view';
-import { GButtonTouchStyle } from '../core/view/view-define';
 import { v3 } from 'cc';
+import { GButtonTouchStyle } from '../core/view/view-define';
+import GameManager from '../manager/game-manager';
 import BaseGlobal from '../core/message/base-global';
 import { GameEvent } from '../define';
-import SevenUpSevenDownManager from '../manager/sevenupsevendown-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -31,27 +31,24 @@ export default class CustomMainHistory extends ViewBase {
 
 
     //------------------------ 内部逻辑 ------------------------//
+
     _showAnimation: boolean = false;
     _show: boolean = false;
     buildUi() {
-        this.labelmax.string = '';
-        this.labelmiddle.string = '';
-        this.labelmin.string = '';
-        this.historyDetailList.numItems = 0;
-        this.historyList.numItems = 0;
-        this.buttonHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
-        this.history_detail_node.scale = v3(1, 0, 1);
-        this.jiantou.node.setScale(v3(1, 1, 1));
-        BaseGlobal.registerListeners(this, {
-            [GameEvent.UPDATE_HISTORY]: this.updateHistory,
+        this.reset();
+            BaseGlobal.registerListeners(this, {
             [GameEvent.UPDATE_HISTORY_PROBABILITY]: this.updateHistoryProbability,
         });
+        this.buttonHistory.touchEffectStyle = GButtonTouchStyle.SCALE_SMALLER;
+    }
+
+    updateHistoryData() {
         this.updateHistory();
         this.updateHistoryProbability();
     }
 
     updateHistory() {
-        const _data = SevenUpSevenDownManager.Records;
+        const _data = GameManager.Records;
         const _records = [..._data].reverse();
         this.historyList.itemRender = (item: cc.Node, i: number) => {
             item.getChildByName('light').active = i == 0;
@@ -74,7 +71,7 @@ export default class CustomMainHistory extends ViewBase {
     }
 
     updateHistoryProbability() {
-        const _data = SevenUpSevenDownManager.Probability;
+        const _data = GameManager.Probability;
         this.labelmin.string = `2-6:${(_data[0]).toFixed(0)}%`;
         this.labelmiddle.string = `7:${(_data[1]).toFixed(0)}%`;
         this.labelmax.string = `8-12:${(_data[2]).toFixed(0)}%`;
@@ -85,18 +82,31 @@ export default class CustomMainHistory extends ViewBase {
         this._showAnimation = true;
         if (show) {
             this.jiantou.node.setScale(v3(1, -1, 1));
-            cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 1, 1) }).call(() => {
+            this.history_detail_node.setScale(v3(1, 1, 1));
+            // cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 1, 1) }).call(() => {
                 this._showAnimation = false;
                 this._show = true;
-            }).start();
+            // }).start();
         } else {
             this.jiantou.node.setScale(v3(1, 1, 1));
-            cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 0, 1) }).call(() => {
+            this.history_detail_node.setScale(v3(1, 0, 1));
+            // cc.tween(this.history_detail_node).to(0.05, { scale: v3(1, 0, 1) }).call(() => {
                 this._showAnimation = false;
                 this._show = false;
-            }).start();
+            // }).start();
         }
     }
+
+    reset() {
+        this.labelmax.string = '';
+        this.labelmiddle.string = '';
+        this.labelmin.string = '';
+        this.historyDetailList.numItems = 0;
+        this.historyList.numItems = 0;
+        this.history_detail_node.scale = v3(1, 0, 1);
+        this.jiantou.node.setScale(v3(1, 1, 1));
+    }
+
     //------------------------ 网络消息 ------------------------//
     // @view export net begin
 
@@ -113,6 +123,7 @@ export default class CustomMainHistory extends ViewBase {
 
 
     // @view export resource begin
+
     protected _getResourceBindingConfig(): ViewBindConfigResult {
         return {
             cc_buttonHistory: [GButton, this.onClickButtonHistory.bind(this)],
@@ -153,5 +164,6 @@ export default class CustomMainHistory extends ViewBase {
     public get viewName() {
         return CustomMainHistory.VIEW_NAME;
     }
+
     // @view export resource end
 }

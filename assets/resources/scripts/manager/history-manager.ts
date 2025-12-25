@@ -3,7 +3,6 @@ import { Global } from "db://assets/resources/scripts/global";
 import BaseManager from "../core/manager/base-manager";
 import UIHelper from "../network/helper/ui-helper";
 import { MessageSender } from "../network/net/message-sender";
-import SevenUpSevenDownManager from "./sevenupsevendown-manager";
 
 export default class HistoryManager extends BaseManager {
 
@@ -48,8 +47,8 @@ export default class HistoryManager extends BaseManager {
      * @returns 如果返回true，说明消息被框架拦截了，不需要继续向下传递
      */
     public static onNetMessage(msgType: string, data: any): boolean {
-        if (msgType == sevenupdown.Message.MsgSevenUpDownPlayerHistoryRsp) {
-            const msg = data as sevenupdown.MsgSevenUpDownPlayerHistoryRsp;
+        if (msgType == game.Message.MsgSevenUpDownPlayerHistoryRsp) {
+            const msg = data as game.MsgSevenUpDownPlayerHistoryRsp;
             const result = msg.result;
             if (result && result.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //如果有错误码，说明进入游戏失败了
@@ -82,18 +81,17 @@ export default class HistoryManager extends BaseManager {
     }
 
 
-
     public static doNetGetHistory() {
         if (this._isLastPage) {
             //如果已经是最后一页了，就不需要再请求了
             return false;
         }
-        const data: sevenupdown.MsgSevenUpDownPlayerHistoryReq = {
+        const data: game.MsgSevenUpDownPlayerHistoryReq = {
             theme_id: THEME_ID,
-            desk_id: SevenUpSevenDownManager.DeskId,
+            // desk_id: ,
             page: this._pageIndex,
         };
-        MessageSender.SendMessage(sevenupdown.Message.MsgSevenUpDownPlayerHistoryReq, data);
+        MessageSender.SendMessage(game.Message.MsgSevenUpDownPlayerHistoryReq, data);
         return true;
     }
 
@@ -120,9 +118,9 @@ export default class HistoryManager extends BaseManager {
         return this._isLastPage;
     }
 
-    private static _datas: sevenupdown.SevenUpDownPlayerHistory[] = [];
+    private static _datas: game.SevenUpDownPlayerHistory[] = [];
 
-    public static get datas(): sevenupdown.SevenUpDownPlayerHistory[] {
+    public static get datas(): game.SevenUpDownPlayerHistory[] {
         return this._datas;
     }
 

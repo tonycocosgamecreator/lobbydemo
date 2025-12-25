@@ -31,10 +31,6 @@
         "statisticalId": 100001007,
         "panelId": 7
     },
-    "CustomDesk": {
-        "statisticalId": 100001008,
-        "panelId": 8
-    },
     "CustomHandle": {
         "statisticalId": 100001009,
         "panelId": 9
@@ -59,7 +55,7 @@
         "statisticalId": 100001014,
         "panelId": 14
     },
-    "CustomFlyChip": {
+    "CustomChipAnimation": {
         "statisticalId": 100001015,
         "panelId": 15
     },
@@ -99,17 +95,9 @@
         "statisticalId": 100001024,
         "panelId": 24
     },
-    "CustomScore": {
-        "statisticalId": 100001025,
-        "panelId": 25
-    },
     "PanelUserCenter": {
         "statisticalId": 100001026,
         "panelId": 26
-    },
-    "CustomStar": {
-        "statisticalId": 100001027,
-        "panelId": 27
     },
     "CustomRoomData": {
         "statisticalId": 100001028,
@@ -118,5 +106,53 @@
     "CustomEndAnimation": {
         "statisticalId": 100001029,
         "panelId": 29
+    },
+    "PanelGameInit": {
+        "statisticalId": 100001030,
+        "panelId": 30
+    },
+    "PanelGameMain": {
+        "statisticalId": 100001031,
+        "panelId": 31
+    },
+    "CustomLuckRankUser": {
+        "statisticalId": 100001032,
+        "panelId": 32
+    },
+    "CustomAllUser": {
+        "statisticalId": 100001033,
+        "panelId": 33
+    },
+    "CustomDeskInfoItem": {
+        "statisticalId": 100001034,
+        "panelId": 34
+    },
+    "CustomDeskStar": {
+        "statisticalId": 100001035,
+        "panelId": 35
+    },
+    "CustomDeskAnimationItem": {
+        "statisticalId": 100001036,
+        "panelId": 36
+    },
+    "CustomDeskAnimation": {
+        "statisticalId": 100001037,
+        "panelId": 37
+    },
+    "CustomDeskScore": {
+        "statisticalId": 100001038,
+        "panelId": 38
+    },
+    "CustomDeskScoreItem": {
+        "statisticalId": 100001039,
+        "panelId": 39
+    },
+    "CustomDeskInfo": {
+        "statisticalId": 100001040,
+        "panelId": 40
+    },
+    "PanelGameButtom": {
+        "statisticalId": 100001041,
+        "panelId": 41
     }
 }

@@ -6,11 +6,9 @@ import * as cc from 'cc';
 //------------------------特殊引用开始----------------------------//
 import List from 'db://assets/resources/scripts/core/view/list-view';
 import { ViewOpenAnimationType } from '../../core/view/view-define';
-import { GameEvent } from '../../define';
-import { Global } from '../../global';
 import UIHelper from '../../network/helper/ui-helper';
-import SevenUpSevenDownManager from '../../manager/sevenupsevendown-manager';
 import { MessageSender } from '../../network/net/message-sender';
+import GameManager from '../../manager/game-manager';
 //------------------------特殊引用完毕----------------------------//
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
@@ -33,9 +31,9 @@ export default class PanelChangeAvatar extends ViewBase {
 
     //------------------------ 内部逻辑 ------------------------//
 
-    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.BOTTOM_TO_CENTER;
+    protected _open_animation_type: ViewOpenAnimationType = ViewOpenAnimationType.CENTER_SCALE_IN;
     protected buildUi() {
-        const player_avatar_id = SevenUpSevenDownManager.HeadId;
+        const player_avatar_id = GameManager.Icon;
 
         this.listAvatars.itemRender = (item: cc.Node, index: number) => {
             const id = index + 1;
@@ -50,10 +48,10 @@ export default class PanelChangeAvatar extends ViewBase {
             //选中
             const id = index + 1;
             if (id != player_avatar_id) {
-                const req: sevenupdown.MsgUpdatePlayerDataReq = {
+                const req: game.MsgUpdatePlayerDataReq = {
                     icon: id
                 }
-                MessageSender.SendMessage(sevenupdown.Message.MsgUpdatePlayerDataReq, req);
+                MessageSender.SendMessage(game.Message.MsgUpdatePlayerDataReq, req);
             }
         });
         this.listAvatars.numItems = 64;
@@ -63,16 +61,15 @@ export default class PanelChangeAvatar extends ViewBase {
     // @view export net begin
 
     public onNetworkMessage(msgType: string, data: any): boolean {
-        if (msgType == sevenupdown.Message.MsgUpdatePlayerDataRsp) {
-            const msg = data as sevenupdown.MsgUpdatePlayerDataRsp;
+        if (msgType == game.Message.MsgUpdatePlayerDataRsp) {
+            const msg = data as game.MsgUpdatePlayerDataRsp;
             if (msg && msg.err_code != commonrummy.RummyErrCode.EC_SUCCESS) {
                 //更新失败了
                 UIHelper.showToastId(resourcesDb.I18N_RESOURCES_DB_INDEX.AVATAR_CHANGED_FAILED);
                 return;
-                return;
             }
             //更新成功了
-            SevenUpSevenDownManager.HeadId = msg.icon || 1;
+            GameManager.Icon = msg.icon || 1;
             this.close();
             return true;
         }

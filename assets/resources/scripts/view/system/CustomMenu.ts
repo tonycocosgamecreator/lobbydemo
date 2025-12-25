@@ -4,9 +4,9 @@ import { ClickEventCallback, ViewBindConfigResult, EmptyCallback, AssetType, bDe
 import { GButton } from 'db://assets/resources/scripts/core/view/gbutton';
 import * as cc from 'cc';
 import AudioManager from '../../core/manager/audio-manager';
-import SevenUpSevenDownManager from '../../manager/sevenupsevendown-manager';
 import { v3 } from 'cc';
 import ViewManager from '../../core/manager/view-manager';
+import GameManager from '../../manager/game-manager';
 //------------------------上述内容请勿修改----------------------------//
 // @view export import end
 
@@ -65,8 +65,8 @@ export default class CustomMenu extends ViewBase {
      */
     public show(bShow: boolean, duration: number) {
         if (bShow) {
-            this.LabelNickName.string = "Player_" + SevenUpSevenDownManager.PlayerId;
-            this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${SevenUpSevenDownManager.HeadId}`);
+            this.LabelNickName.string = "Player_" + GameManager.PlayerId;
+            this.playerHead.spriteFrame = this.getSpriteFrame(`textures/avatars/av-${GameManager.Icon}`);
         }
         let y = this.root.position.y;
         if (duration <= 0) {

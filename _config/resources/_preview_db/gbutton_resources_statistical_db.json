@@ -44,394 +44,70 @@
     }
 ],
 'datas': {
-    "CustomBaccaratTop": {
-        "cc_buttonMenu": {
-            "viewName": "CustomBaccaratTop",
-            "buttonName": "cc_buttonMenu",
+    "CustomDeskInfoItem": {
+        "cc_buttonClick": {
+            "viewName": "CustomDeskInfoItem",
+            "buttonName": "cc_buttonClick",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100003200
+            "statisticalId": 100004500
         }
     },
-    "CustomChip": {
-        "cc_buttonclick": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonclick",
+    "CustomLuckRankUser": {
+        "cc_buttonClick": {
+            "viewName": "CustomLuckRankUser",
+            "buttonName": "cc_buttonClick",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100001800
-        },
-        "cc_buttonidx1": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx1",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001801
-        },
-        "cc_buttonidx2": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx2",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001802
-        },
-        "cc_buttonidx3": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx3",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001803
-        },
-        "cc_buttonidx4": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx4",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001804
-        },
-        "cc_buttonidx5": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx5",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001805
-        },
-        "cc_buttonidx6": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonidx6",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001806
-        },
-        "cc_buttons_node": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttons_node",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001807
-        },
-        "cc_buttonchoose": {
-            "viewName": "CustomChip",
-            "buttonName": "cc_buttonchoose",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001808
-        }
-    },
-    "CustomDesk": {
-        "cc_button_click0": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click0",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001900
-        },
-        "cc_button_click1": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click1",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001901
-        },
-        "cc_button_click2": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click2",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001902
-        },
-        "cc_button_click3": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click3",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001903
-        },
-        "cc_button_click4": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click4",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001904
-        },
-        "cc_button_click5": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click5",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001905
-        },
-        "cc_button_click6": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click6",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001906
-        },
-        "cc_button_click7": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click7",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001907
-        },
-        "cc_button_click8": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click8",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001908
-        },
-        "cc_button_click9": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click9",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001909
-        },
-        "cc_button_click10": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click10",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001910
-        },
-        "cc_button_click11": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click11",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001911
-        },
-        "cc_button_click12": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click12",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001912
-        },
-        "cc_button_click13": {
-            "viewName": "CustomDesk",
-            "buttonName": "cc_button_click13",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001913
-        }
-    },
-    "CustomGameItem": {
-        "cc_buttonIcon": {
-            "viewName": "CustomGameItem",
-            "buttonName": "cc_buttonIcon",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001200
-        }
-    },
-    "CustomHandle": {
-        "cc_button_auto": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_auto",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002000
-        },
-        "cc_button_agail": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_agail",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002001
-        },
-        "cc_button_undo": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_undo",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002002
-        },
-        "cc_button_clear": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_clear",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002003
-        },
-        "cc_button_double": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_double",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002004
-        },
-        "cc_button_unauto": {
-            "viewName": "CustomHandle",
-            "buttonName": "cc_button_unauto",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002005
+            "statisticalId": 100004300
         }
     },
     "CustomMainHistory": {
-        "cc_buttonCloseDetail": {
+        "cc_buttonHistory": {
             "viewName": "CustomMainHistory",
-            "buttonName": "cc_buttonCloseDetail",
+            "buttonName": "cc_buttonHistory",
             "bundleName": "resources",
             "desc": "",
             "statisticalId": 100001700
-        },
-        "cc_buttonHistory": {
-            "viewName": "CustomMainHistory",
-            "buttonName": "cc_buttonHistory",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001701
         }
     },
-    "CustomRank": {
+    "PanelGameButtom": {
         "cc_buttonallbets": {
-            "viewName": "CustomRank",
+            "viewName": "PanelGameButtom",
             "buttonName": "cc_buttonallbets",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100002900
+            "statisticalId": 100005200
         },
         "cc_buttontop": {
-            "viewName": "CustomRank",
+            "viewName": "PanelGameButtom",
             "buttonName": "cc_buttontop",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100002901
+            "statisticalId": 100005201
         },
-        "cc_buttontop-001": {
-            "viewName": "CustomRank",
-            "buttonName": "cc_buttontop-001",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002902
-        },
-        "cc_buttonallday": {
-            "viewName": "CustomRank",
-            "buttonName": "cc_buttonallday",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002903
-        },
-        "cc_buttonweek": {
-            "viewName": "CustomRank",
-            "buttonName": "cc_buttonweek",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002903
-        },
-        "cc_buttonmonth": {
-            "viewName": "CustomRank",
-            "buttonName": "cc_buttonmonth",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002903
-        }
-    },
-    "CustomRecord": {
-        "cc_buttonallbets": {
-            "viewName": "CustomRecord",
-            "buttonName": "cc_buttonallbets",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002700
-        },
-        "cc_buttontop": {
-            "viewName": "CustomRecord",
-            "buttonName": "cc_buttontop",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100002701
-        }
-    },
-    "CustomTop": {
-        "cc_button_menu": {
-            "viewName": "CustomTop",
-            "buttonName": "cc_button_menu",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001600
-        },
-        "cc_button_help": {
-            "viewName": "CustomTop",
-            "buttonName": "cc_button_help",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001601
-        },
-        "cc_button_histoy": {
-            "viewName": "CustomTop",
-            "buttonName": "cc_button_histoy",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001601
-        },
-        "cc_button_record": {
-            "viewName": "CustomTop",
-            "buttonName": "cc_button_record",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001601
-        },
-        "cc_button_set": {
-            "viewName": "CustomTop",
-            "buttonName": "cc_button_set",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001601
-        }
-    },
-    "CustomUser": {
-        "cc_buttonOne": {
-            "viewName": "CustomUser",
-            "buttonName": "cc_buttonOne",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100003000
-        },
-        "cc_buttonTwo": {
-            "viewName": "CustomUser",
-            "buttonName": "cc_buttonTwo",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100003001
-        },
-        "cc_buttonThree": {
-            "viewName": "CustomUser",
-            "buttonName": "cc_buttonThree",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100003002
-        }
-    },
-    "PanelSevenUpSevenDownMain": {
-        "cc_buttonHistory": {
-            "viewName": "PanelSevenUpSevenDownMain",
-            "buttonName": "cc_buttonHistory",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001500
-        }
-    },
-    "PanelThirdGame": {
-        "cc_buttonBack": {
-            "viewName": "PanelThirdGame",
-            "buttonName": "cc_buttonBack",
-            "bundleName": "resources",
-            "desc": "",
-            "statisticalId": 100001400
-        }
-    },
-    "PanelUserCenter": {
         "cc_buttonClose": {
-            "viewName": "PanelUserCenter",
+            "viewName": "PanelGameButtom",
             "buttonName": "cc_buttonClose",
             "bundleName": "resources",
             "desc": "",
-            "statisticalId": 100003700
+            "statisticalId": 100005202
+        }
+    },
+    "PanelGameMain": {
+        "cc_buttonMenu": {
+            "viewName": "PanelGameMain",
+            "buttonName": "cc_buttonMenu",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100004200
+        },
+        "cc_buttonList": {
+            "viewName": "PanelGameMain",
+            "buttonName": "cc_buttonList",
+            "bundleName": "resources",
+            "desc": "",
+            "statisticalId": 100004201
         }
     }
 }

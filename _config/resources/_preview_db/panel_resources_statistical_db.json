@@ -36,47 +36,59 @@
     }
 ],
 'datas': {
-    "CustomBaccaratTop": {
-        "viewName": "CustomBaccaratTop",
+    "CustomAllUser": {
+        "viewName": "CustomAllUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001021
+        "statisticalId": 100001033
     },
-    "CustomBigWinner": {
-        "viewName": "CustomBigWinner",
+    "CustomDeskAnimationItem": {
+        "viewName": "CustomDeskAnimationItem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001012
+        "statisticalId": 100001036
     },
-    "CustomChipItem": {
-        "viewName": "CustomChipItem",
+    "CustomDeskAnimation": {
+        "viewName": "CustomDeskAnimation",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001014
+        "statisticalId": 100001037
     },
-    "CustomChip": {
-        "viewName": "CustomChip",
+    "CustomDeskInfoItem": {
+        "viewName": "CustomDeskInfoItem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001007
+        "statisticalId": 100001034
     },
-    "CustomDesk": {
-        "viewName": "CustomDesk",
+    "CustomDeskInfo": {
+        "viewName": "CustomDeskInfo",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001008
+        "statisticalId": 100001040
     },
-    "CustomDouble": {
-        "viewName": "CustomDouble",
+    "CustomDeskScoreIem": {
+        "viewName": "CustomDeskScoreIem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001024
+        "statisticalId": 100001039
     },
-    "CustomEndAnimation": {
-        "viewName": "CustomEndAnimation",
+    "CustomDeskScoreItem": {
+        "viewName": "CustomDeskScoreItem",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001029
+        "statisticalId": 100001039
+    },
+    "CustomDeskScore": {
+        "viewName": "CustomDeskScore",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001038
+    },
+    "CustomDeskStar": {
+        "viewName": "CustomDeskStar",
+        "bundleName": "resources",
+        "desc": "",
+        "statisticalId": 100001035
     },
     "CustomFlyChip": {
         "viewName": "CustomFlyChip",
@@ -84,29 +96,11 @@
         "desc": "",
         "statisticalId": 100001015
     },
-    "CustomGameItem": {
-        "viewName": "CustomGameItem",
+    "CustomLuckRankUser": {
+        "viewName": "CustomLuckRankUser",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001001
-    },
-    "CustomHandle": {
-        "viewName": "CustomHandle",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001009
-    },
-    "CustomHead": {
-        "viewName": "CustomHead",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001010
-    },
-    "CustomHistoryItem": {
-        "viewName": "CustomHistoryItem",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001022
+        "statisticalId": 100001032
     },
     "CustomMainHistory": {
         "viewName": "CustomMainHistory",
@@ -120,113 +114,23 @@
         "desc": "",
         "statisticalId": 100001011
     },
-    "CustomRank": {
-        "viewName": "CustomRank",
+    "PanelGameButtom": {
+        "viewName": "PanelGameButtom",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001018
+        "statisticalId": 100001041
     },
-    "CustomRecord": {
-        "viewName": "CustomRecord",
+    "PanelGameInit": {
+        "viewName": "PanelGameInit",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001016
+        "statisticalId": 100001030
     },
-    "CustomResult": {
-        "viewName": "CustomResult",
+    "PanelGameMain": {
+        "viewName": "PanelGameMain",
         "bundleName": "resources",
         "desc": "",
-        "statisticalId": 100001020
-    },
-    "CustomRoomData": {
-        "viewName": "CustomRoomData",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001028
-    },
-    "CustomScore": {
-        "viewName": "CustomScore",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001025
-    },
-    "CustomStar": {
-        "viewName": "CustomStar",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001027
-    },
-    "CustomTime": {
-        "viewName": "CustomTime",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001013
-    },
-    "CustomToast": {
-        "viewName": "CustomToast",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001019
-    },
-    "CustomTop": {
-        "viewName": "CustomTop",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001005
-    },
-    "CustomUserIcon": {
-        "viewName": "CustomUserIcon",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001023
-    },
-    "CustomUser": {
-        "viewName": "CustomUser",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001019
-    },
-    "CustomWinTip": {
-        "viewName": "CustomWinTip",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001017
-    },
-    "PanelCircleLoading": {
-        "viewName": "PanelCircleLoading",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001020
-    },
-    "PanelLobby": {
-        "viewName": "PanelLobby",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001000
-    },
-    "PanelSevenUpSevenDownInit": {
-        "viewName": "PanelSevenUpSevenDownInit",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001003
-    },
-    "PanelSevenUpSevenDownMain": {
-        "viewName": "PanelSevenUpSevenDownMain",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001004
-    },
-    "PanelThirdGame": {
-        "viewName": "PanelThirdGame",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001003
-    },
-    "PanelUserCenter": {
-        "viewName": "PanelUserCenter",
-        "bundleName": "resources",
-        "desc": "",
-        "statisticalId": 100001026
+        "statisticalId": 100001031
     }
 }
 }

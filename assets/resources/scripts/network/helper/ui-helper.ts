@@ -5,9 +5,9 @@ import { bDebug } from '../../core/define';
 import { UIConfirmContext } from '../../core/view/view-define';
 import PoolManager from '../../core/manager/pool-manager';
 import BrowserUtils from '../../core/utils/browser-utils';
-import PanelCircleLoading from '../../view/common/PanelCircleLoading';
-import CustomToast from '../../view/common/CustomToast';
-import PanelMessageBox from '../../view/common/PanelMessageBox';
+import PanelCircleLoading from '../../view/tips/PanelCircleLoading';
+import CustomToast from '../../view/tips/CustomToast';
+import PanelMessageBox from '../../view/tips/PanelMessageBox';
 
 
 
@@ -131,7 +131,7 @@ export default class UIHelper {
     private static _showFirstConfirm() {
         const context = this._confirmContexts.shift();
         this._bShowingConfirm = true;
-        this._confirmPanel = ViewManager.Open(PanelMessageBox, context, 'common') as PanelMessageBox;
+        this._confirmPanel = ViewManager.Open(PanelMessageBox, context, 'tips') as PanelMessageBox;
         this._confirmPanel.onClose = () => {
             this._bShowingConfirm = false;
             this._confirmPanel = null;
@@ -159,7 +159,7 @@ export default class UIHelper {
 
         UIHelper._circleLoading = ViewManager.Open(PanelCircleLoading, {
             info: info
-        }, 'common') as PanelCircleLoading;
+        }, 'tips') as PanelCircleLoading;
     }
 
     /**
@@ -219,7 +219,7 @@ export default class UIHelper {
             return;
         }
         if (!this._tipNode) {
-            const comp = PoolManager.Get(CustomToast, null, 'common');
+            const comp = PoolManager.Get(CustomToast, null, 'tips');
             if (comp) {
                 this._tipNode = comp;
                 this._tipResLoadStatus = TipPrefabLoadStatus.Loaded;

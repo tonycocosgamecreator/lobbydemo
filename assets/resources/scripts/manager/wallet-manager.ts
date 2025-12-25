@@ -178,6 +178,16 @@ export default class WalletManager extends BaseManager {
         }
         return 0;
     }
+    private static _chooseChip: number = -1;
+    public static set ChooseChip(value: number) { this._chooseChip = value }
+    public static get ChooseChip(): number { return this._chooseChip; }
+
+    public static getCurrencyBetGold(): number {
+        let betSize = this.getCurrencyBetSize();
+        if (!betSize || betSize.length == 0) return 0;
+        if (this._chooseChip == -1) return 0
+        return betSize[this._chooseChip] || 0;
+    }
     /**
      * 获取指定币种的倍数列表
      * @param currency 

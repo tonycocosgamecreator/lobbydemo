@@ -407,6 +407,18 @@ export namespace baccarat{
         MsgAndarBaharPlayerHistoryReq = 'MsgAndarBaharPlayerHistoryReq',
         /** 玩家下注信息 */
         MsgAndarBaharPlayerHistoryRsp = 'MsgAndarBaharPlayerHistoryRsp',
+        /** 玩家获胜通知(跑马灯形式展示) */
+        MsgLastWinNtf = 'MsgLastWinNtf',
+        /** 前三名数据 */
+        MsgPlayerRankNtf = 'MsgPlayerRankNtf',
+        /** 前三名数据 */
+        RankInfo = 'RankInfo',
+        /** 前三名数据 */
+        RankList = 'RankList',
+        /** 请求排行榜 */
+        MsgGetRankReq = 'MsgGetRankReq',
+        /** 请求排行榜回复 */
+        MsgGetRankRsp = 'MsgGetRankRsp',
     }
 
     /** 选择区域  0-9 为选择号码   10:绿色  11:紫色   12：红色 13 大 14 小 */
@@ -2119,6 +2131,56 @@ export namespace baccarat{
         is_last? : boolean;
         /**  最大页数 */
         max_page_num? : number;
+    }
+
+    /** 玩家获胜通知(跑马灯形式展示) */
+    export interface MsgLastWinNtf{
+        /**  玩家头像 */
+        avatar? : number;
+        /**  */
+        countryCode? : string;
+        /** 货币类型     */
+        currency? : string;
+        /** 玩家名字   */
+        username? : string;
+        /** 赢分      */
+        winAmount? : string;
+    }
+
+    /** 前三名数据 */
+    export interface MsgPlayerRankNtf{
+        /** 前三名信息 */
+        ranks : RankList[];
+    }
+
+    /** 前三名数据 */
+    export interface RankInfo{
+        /** 前三名信息 */
+        ranks : RankList[];
+    }
+
+    /** 前三名数据 */
+    export interface RankList{
+        /** 玩家id */
+        player_id? : string;
+        /** 玩家金额 */
+        balance? : number;
+        /** 玩家icon */
+        icon? : number;
+    }
+
+    /** 请求排行榜 */
+    export interface MsgGetRankReq{
+        /**  147，日榜，258，月，369，年 */
+        rank_type? : number;
+    }
+
+    /** 请求排行榜回复 */
+    export interface MsgGetRankRsp{
+        /** 请求时间  */
+        save_time? : string;
+        /**  我的开奖数据 */
+        rank : game.SevenUpDownRankData[];
     }
 
 }

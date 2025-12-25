@@ -45,25 +45,13 @@ export enum GameEvent {
      */
     UPDATE_AUTO = 'UPDATE_AUTO',
     /**
-     *历史记录
+     * 玩家获胜通知
      */
-    UPDATE_HISTORY = 'UPDATE_HISTORY',
-    /**
-     *历史记录中奖区域的概率
-     */
-    UPDATE_HISTORY_PROBABILITY = 'UPDATE_HISTORY_PROBABILITY',
-    /**
-     *房间在线人数
-     */
-    UPDATE_ONLINE_ROOM = 'UPDATE_ONLINE_ROOM',
-    /**
-     *实时在线人数
-     */
-    UPDATE_ONLINE = 'UPDATE_ONLINE',
+    UPDATE_USERWIN = 'UPDATE_USERWIN',
     /**
      * 玩家总下注额度更新
      */
-    PLYER_TOTAL_BET_UPDATE = 'PLYER_TOTAL_BET_UPDATE',
+    ANIMATION_END_UPDATE = 'ANIMATION_END_UPDATE',
     /**
      *LED
      */
@@ -83,7 +71,19 @@ export enum GameEvent {
     /**
     *sta动画
     */
-    UPDATE_STAR = 'UPDATE_STAR'
+    UPDATE_STAR = 'UPDATE_STAR',
+    /**
+     * 房间在线人数
+     */
+    UPDATE_ONLINE_ROOM = 'UPDATE_ONLINE_ROOM',
+    /**
+     *实时在线人数
+     */
+    UPDATE_ONLINE = 'UPDATE_ONLINE',
+    /**
+     *历史记录中奖区域的概率
+     */
+    UPDATE_HISTORY_PROBABILITY = 'UPDATE_HISTORY_PROBABILITY',
 
 }
 

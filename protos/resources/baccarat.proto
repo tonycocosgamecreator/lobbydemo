@@ -1262,3 +1262,38 @@ message MsgAndarBaharPlayerHistoryRsp {
     optional bool is_last = 3;   // 是否最后一页
     optional int32 max_page_num = 4; // 最大页数
 }
+
+//玩家获胜通知(跑马灯形式展示)
+message MsgLastWinNtf {
+    optional int64 avatar = 1;// 玩家头像
+    optional string countryCode = 2;    
+    optional string currency = 3; //货币类型    
+    optional string username = 4; //玩家名字  
+    optional string winAmount = 5; //赢分     
+}
+
+//前三名数据
+message MsgPlayerRankNtf {
+    repeated RankList ranks  = 1;    //前三名信息
+}
+
+message RankInfo {
+    repeated RankList ranks  = 1;    //前三名信息
+}
+
+message RankList {
+    optional string player_id = 1;    //玩家id
+    optional int64 balance = 2; //玩家金额
+    optional int64 icon = 3; //玩家icon
+}
+
+//请求排行榜
+message MsgGetRankReq {
+    optional int64 rank_type= 1;                       // 147，日榜，258，月，369，年
+}
+
+//请求排行榜回复
+message MsgGetRankRsp {
+    optional string save_time = 2; //请求时间 
+    repeated SevenUpDownRankData  rank = 2;                    // 我的开奖数据
+}
